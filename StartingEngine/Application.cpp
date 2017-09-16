@@ -86,7 +86,9 @@ update_status Application::Update()
 	}
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
-		(*item)->PostUpdate(dt);
+		ret = (*item)->PostUpdate(dt);
+		if (ret == update_status::UPDATE_ERROR || ret == update_status::UPDATE_STOP)
+			break;
 	}
 
 	FinishUpdate();

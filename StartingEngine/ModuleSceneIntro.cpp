@@ -27,7 +27,7 @@ bool ModuleSceneIntro::Start()
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
 	//io.IniFilename = "/Settings/imgui.ini";
-	
+	SliderTest_Int_value = new int();
 	
 	//Only to try if we can print objects
 	/*App->camera->LookAt(vec3(0, 0, 0));
@@ -59,13 +59,22 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
-	ImGui::ShowTestWindow();
 
-	ImGui::Begin("Click here to close the APP");
-	paco=ImGui::Button("Click here to close the APP", ImVec2(0, 0));
-	ImGui::Text("Hello, world!");
-	ImGui::End();
+	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
+		show_gui_engine = !show_gui_engine;
 
+
+	if (show_gui_engine) {
+		ImGui::ShowTestWindow();
+		//------
+		ImGui::Begin("Click here to close the APP");
+		//to change the font scale of the window
+		//ImGui::SetWindowFontScale(1);
+		button_exit_app = ImGui::Button("Click here to close the APP", ImVec2(0, 0));
+		ImGui::SliderInt("Slider to test", SliderTest_Int_value, 0, 100);
+		ImGui::Text("Hello, world!");
+		ImGui::End();
+	}
 	for (int i = 0; i < MyCubeMap.size(); i++) {
 		MyPhysbodyCubeMap[i]->GetTransform(&MyCubeMap[i].transform);
 		MyCubeMap[i].Render();
@@ -95,7 +104,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 update_status ModuleSceneIntro::PostUpdate(float dt)
 {
-	if (paco == true) {
+	if (button_exit_app == true) {
 		return UPDATE_STOP;
 	}
 	return UPDATE_CONTINUE;

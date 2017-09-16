@@ -48,6 +48,8 @@ public:
 
 	std::vector<Cube>MySensorCube;
 	std::vector<PhysBody3D*>MySensorCubeBody;
-	bool paco = false;
+	bool button_exit_app = false;
+	int* SliderTest_Int_value = nullptr;
+	bool show_gui_engine = false;
 
 };

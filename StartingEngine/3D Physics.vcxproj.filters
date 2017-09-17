@@ -108,6 +108,9 @@
     <ClInclude Include="Imgui\stb_truetype.h">
       <Filter>Sources\Modules\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleGui.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -175,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="Imgui\imgui_impl_sdl_gl3.cpp">
       <Filter>Sources\Modules\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleGui.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

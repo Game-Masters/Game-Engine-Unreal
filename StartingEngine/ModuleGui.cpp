@@ -80,6 +80,6 @@ update_status ModuleGui::PostUpdate(float dt)
 // Called before quitting
 bool ModuleGui::CleanUp()
 {
-
+	delete SliderTest_Int_value;
 	return true;
 }

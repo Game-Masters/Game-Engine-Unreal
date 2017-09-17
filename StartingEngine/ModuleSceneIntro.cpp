@@ -70,6 +70,23 @@ update_status ModuleSceneIntro::Update(float dt)
 		ImGui::Begin("Click here to close the APP");
 		//to change the font scale of the window
 		//ImGui::SetWindowFontScale(1);
+		if (ImGui::CollapsingHeader("Widgets"))
+		{
+			if (ImGui::TreeNode("Bullets"))
+			{
+				ImGui::BulletText("Bullet point 1");
+				ImGui::TreePop();
+			}
+			if (ImGui::TreeNode("Colored Text"))
+			{
+				// Using shortcut. You can use PushStyleColor()/PopStyleColor() for more flexibility.
+				ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Pink");
+				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Yellow");
+
+				ImGui::TreePop();
+			}
+		}
+
 		button_exit_app = ImGui::Button("Click here to close the APP", ImVec2(0, 0));
 		ImGui::SliderInt("Slider to test", SliderTest_Int_value, 0, 100);
 		ImGui::Text("Hello, world!");

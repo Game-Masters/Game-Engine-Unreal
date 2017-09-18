@@ -35,18 +35,18 @@ public:
 
 	PhysBody3D*PlainGame_Body;
 
-	std::vector<Cube>MyCubeMap;
+	std::vector<Cube_P>MyCubeMap;
 	std::vector<PhysBody3D*>MyPhysbodyCubeMap;
 
-	std::vector<Cube>MySphereObj;
+	std::vector<Sphere_P>MySphereObj;
 	std::vector<PhysBody3D*>MyPhysbodySphereobj;
 
 
-	std::vector<Cube>MyCubeObj;
+	std::vector<Cube_P>MyCubeObj;
 	std::vector<PhysBody3D*>MyPhysbodyCubeobj;
 
 
-	std::vector<Cube>MySensorCube;
+	std::vector<Cube_P>MySensorCube;
 	std::vector<PhysBody3D*>MySensorCubeBody;
 
 

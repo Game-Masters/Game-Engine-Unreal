@@ -22,20 +22,25 @@ bool ModuleSceneIntro::Start()
 	//LOG("Loading Intro assets");
 	bool ret = true;
 	Circle *n_circle_one;
+	//n_circle_one->pos = { 0,0,0 };
+	
 	//const vec &center, const vec &normal, float radius
 	
 
 	//Only to try if we can print objects
-	/*App->camera->LookAt(vec3(0, 0, 0));
+	App->camera->LookAt(vec3(0, 0, 0));
 	App->camera->Position = {0,80,0};
-	Cube PlainGame;
+	Cube_P PlainGame;
 	PlainGame.size.x = 700;
 	PlainGame.size.z = 700;
 	MyCubeMap.push_back(PlainGame);
 	PlainGame_Body = App->physics->AddBody(PlainGame, 0);
 	PlainGame_Body->SetPos(50, 0, 0);
-	PlainGame_Body->collision_listeners.add(this);
-	MyPhysbodyCubeMap.push_back(PlainGame_Body);*/
+	PlainGame_Body->collision_listeners.push_back(this);
+	MyPhysbodyCubeMap.push_back(PlainGame_Body);
+
+	Sphere_P sphere_test_1;
+
 	
 	return ret;
 }

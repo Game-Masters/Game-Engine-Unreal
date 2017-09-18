@@ -22,16 +22,16 @@ public:
 
 
 public:
-	Cube n;
+	Cube_P n;
 	PhysBody3D* turret;
-	Cylinder canon;
+
 	PhysBody3D* canonbody;
 
 	btHingeConstraint* canon_turretconst;
 	btHingeConstraint* turret_carconst;
 
 	PhysVehicle3D* vehicle;
-	p2DynArray<Sphere> CanonBallsSpheres;
+
 	p2DynArray<PhysBody3D*> CanonBallsBody;
 
 	float turn;

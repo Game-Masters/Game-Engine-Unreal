@@ -7,6 +7,8 @@
 #include"Imgui/imgui.h"
 
 #include<vector>
+#include"MathGeoLib\MathGeoLib.h"
+#include"MathGeoLib\MathBuildConfig.h"
 
 #define MAX_SNAKE 2
 #define MAX_CUBE 50

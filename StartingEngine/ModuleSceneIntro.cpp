@@ -1,11 +1,8 @@
 ﻿#include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-#include "Primitive.h"
-#include "PhysBody3D.h"
-#include"ModulePlayer.h"
-#include"MathGeoLib\MathGeoLib.h"
-#include"MathGeoLib\MathBuildConfig.h"
+
+
 
 
 
@@ -21,14 +18,22 @@ bool ModuleSceneIntro::Start()
 {
 	//LOG("Loading Intro assets");
 	bool ret = true;
-	Circle *n_circle_one;
-	//n_circle_one->pos = { 0,0,0 };
-	
 	//const vec &center, const vec &normal, float radius
+
+	//const vec &center, float radius
+	vec paco = { 0,0,0 };
+	Sphere *n_sphere_one = new Sphere(paco,1);
+	Sphere *n_sphere_two = new Sphere(paco, 1);
+	bool test = false;
+	test=n_sphere_one->Intersects(*n_sphere_two);
+
+
+
+	
 	
 
 	//Only to try if we can print objects
-	App->camera->LookAt(vec3(0, 0, 0));
+	/*App->camera->LookAt(vec3(0, 0, 0));
 	App->camera->Position = {0,80,0};
 	Cube_P PlainGame;
 	PlainGame.size.x = 700;
@@ -37,9 +42,9 @@ bool ModuleSceneIntro::Start()
 	PlainGame_Body = App->physics->AddBody(PlainGame, 0);
 	PlainGame_Body->SetPos(50, 0, 0);
 	PlainGame_Body->collision_listeners.push_back(this);
-	MyPhysbodyCubeMap.push_back(PlainGame_Body);
+	MyPhysbodyCubeMap.push_back(PlainGame_Body);*/
 
-	Sphere_P sphere_test_1;
+	
 
 	
 	return ret;
@@ -60,7 +65,7 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	
 	
-	for (int i = 0; i < MyCubeMap.size(); i++) {
+	/*for (int i = 0; i < MyCubeMap.size(); i++) {
 		MyPhysbodyCubeMap[i]->GetTransform(&MyCubeMap[i].transform);
 		MyCubeMap[i].Render();
 	}
@@ -73,7 +78,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	for (int i = 0; i < MyCubeObj.size(); i++) {
 		MyPhysbodyCubeobj[i]->GetTransform(&MyCubeMap[i].transform);
 		MyCubeObj[i].Render();
-	}
+	}*/
 
 	
 

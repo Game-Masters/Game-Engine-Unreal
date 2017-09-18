@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "SDL\include\SDL_opengl.h"
+
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -20,6 +21,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 bool ModuleRenderer3D::Init()
 {
 	LOG("Creating 3D Renderer context");
+
 	bool ret = true;
 	
 	//Create context

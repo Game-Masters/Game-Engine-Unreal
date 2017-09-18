@@ -19,6 +19,6 @@
 #pragma once
 
 #include "Geometry/GeometryAll.h"
-#include "../MathGeoLib/Math/MathAll.h"
+#include "Math/MathAll.h"
 #include "Algorithm/Random/LCG.h"
 #include "Time/Clock.h"

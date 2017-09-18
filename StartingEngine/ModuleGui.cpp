@@ -59,6 +59,36 @@ update_status ModuleGui::Update(float dt)
 		}
 
 		button_exit_app = ImGui::Button("Click here to close the APP", ImVec2(0, 0));
+		button_rand = ImGui::Button("Click here to create random int", ImVec2(0, 0));
+	
+		if(button_rand== true)
+		{
+			
+			
+			iop = rand_test.Int(0, 100);
+			n1 = true;
+			
+		}
+		
+		if(n1==true)
+		{
+			
+			ImGui::SameLine(250);
+			ImGui::Text("%i", iop);
+		}
+		button_rand2 = ImGui::Button("Click here to create random floatie", ImVec2(0, 0));
+		if (button_rand2 == true)
+		{
+			iop2 = rand_test.Float(0.0, 1.0);
+			n2 = true;
+		}
+		if (n2 == true)
+		{
+
+			ImGui::SameLine(300);
+			ImGui::Text("%.4f", iop2);
+		}
+		
 		ImGui::SliderInt("Slider to test", SliderTest_Int_value, 0, 100);
 		ImGui::Text("Hello, world!");
 		ImGui::End();

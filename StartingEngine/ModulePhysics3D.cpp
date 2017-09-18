@@ -120,7 +120,7 @@ update_status ModulePhysics3D::Update(float dt)
 	if(debug == true)
 	{
 		world->debugDrawWorld();
-		
+		debug_draw->drawGrid(10);
 	}
 	
 	return UPDATE_CONTINUE;
@@ -342,4 +342,21 @@ void DebugDrawer::setDebugMode(int debugMode)
 int	 DebugDrawer::getDebugMode() const
 {
 	return mode;
+}
+
+void DebugDrawer::drawGrid(int grid_size)
+{
+
+	btVector3 line_color = { 100, 100 ,100 };
+	for (int i = -grid_size; i <= grid_size; i++)
+	{
+		btVector3 vect = { (float)i, 0 , (float)-grid_size };
+		btVector3 vect2 = { (float)i, 0 , (float)grid_size };
+		drawLine(vect, vect2, line_color);
+
+		vect = { (float)-grid_size, 0 , (float)i };
+		vect2 = { (float)grid_size, 0 , (float)i };
+		drawLine(vect, vect2, line_color);
+
+	}
 }

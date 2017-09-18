@@ -73,7 +73,7 @@ public:
 	void draw3dText(const btVector3& location, const char* textString);
 	void setDebugMode(int debugMode);
 	int	 getDebugMode() const;
-
+	void DebugDrawer::drawGrid(int grid_size);
 	DebugDrawModes mode;
 	Line_P line;
 	Primitive point;

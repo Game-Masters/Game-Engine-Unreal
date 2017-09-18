@@ -18,18 +18,19 @@ bool ModuleSceneIntro::Start()
 {
 	//LOG("Loading Intro assets");
 	bool ret = true;
-	//const vec &center, const vec &normal, float radius
 
-	//const vec &center, float radius
 	vec paco = { 0,0,0 };
 	Sphere *n_sphere_one = new Sphere(paco,1);
 	Sphere *n_sphere_two = new Sphere(paco, 1);
 	bool test = false;
 	test=n_sphere_one->Intersects(*n_sphere_two);
 
-
-
-	
+	//Random
+	LCG rand_test;
+	int iop;
+	float iop2;
+	iop = rand_test.Int(0, 1500);
+	iop2 = rand_test.Float(0.0,1.0);
 	
 
 	//Only to try if we can print objects

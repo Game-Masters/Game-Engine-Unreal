@@ -22,6 +22,9 @@
     <Filter Include="Sources\Modules\imgui">
       <UniqueIdentifier>{3efb7020-b830-40ee-a6b7-33abe786a8ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\MathGeoLib">
+      <UniqueIdentifier>{bf373680-0b7c-483b-9598-ad4acc9a7195}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -110,6 +113,15 @@
     </ClInclude>
     <ClInclude Include="ModuleGui.h">
       <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\MathBuildConfig.h">
+      <Filter>Sources\Modules\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\MathGeoLib.h">
+      <Filter>Sources\Modules\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\MathGeoLibFwd.h">
+      <Filter>Sources\Modules\MathGeoLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

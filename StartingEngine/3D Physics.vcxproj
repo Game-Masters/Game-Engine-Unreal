@@ -87,6 +87,9 @@
     <ClInclude Include="Imgui\stb_truetype.h" />
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="MathGeoLib\MathBuildConfig.h" />
+    <ClInclude Include="MathGeoLib\MathGeoLib.h" />
+    <ClInclude Include="MathGeoLib\MathGeoLibFwd.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModulePhysics3D.h" />

@@ -4,7 +4,8 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 #include"ModulePlayer.h"
-
+#include"MathGeoLib\MathGeoLib.h"
+#include"MathGeoLib\MathBuildConfig.h"
 
 
 
@@ -18,10 +19,12 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
-	LOG("Loading Intro assets");
+	//LOG("Loading Intro assets");
 	bool ret = true;
+	Circle *n_circle_one;
+	//const vec &center, const vec &normal, float radius
 	
-	
+
 	//Only to try if we can print objects
 	/*App->camera->LookAt(vec3(0, 0, 0));
 	App->camera->Position = {0,80,0};

@@ -1,0 +1,8 @@
+version: 1.0.0{build}
+configuration: Release
+build:
+  project: /StartingEngine/3D Physics.vcxproj
+  verbosity: minimal
+artifacts:
+- path: /StartingEngine/Release
+  name: Release

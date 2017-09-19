@@ -19,11 +19,11 @@ bool ModuleSceneIntro::Start()
 	//LOG("Loading Intro assets");
 	bool ret = true;
 
-	vec paco = { 0,0,0 };
-	Sphere *n_sphere_one = new Sphere(paco,1);
-	Sphere *n_sphere_two = new Sphere(paco, 1);
-	bool test = false;
-	test=n_sphere_one->Intersects(*n_sphere_two);
+	vec p1 = { 2,0,0 };
+	vec p2 = { -2,0,0 };
+	n_sphere_one = new Sphere(p1,1);
+	n_sphere_two = new Sphere(p2,1);
+	
 
 	//Random
 	LCG rand_test;
@@ -65,7 +65,7 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
-	
+
 	/*for (int i = 0; i < MyCubeMap.size(); i++) {
 		MyPhysbodyCubeMap[i]->GetTransform(&MyCubeMap[i].transform);
 		MyCubeMap[i].Render();

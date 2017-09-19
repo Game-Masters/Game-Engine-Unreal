@@ -4,6 +4,8 @@
 #include "Glew\include\glew.h"
 #include "Imgui\imgui_impl_sdl_gl3.h"
 #include"Imgui\imgui.h"
+#include"ModuleSceneIntro.h"
+
 
 ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -29,6 +31,10 @@ bool ModuleGui::Start()
 
 update_status ModuleGui::Update(float dt)
 {
+	bool test = false;
+	test = App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
+
+
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
@@ -39,8 +45,6 @@ update_status ModuleGui::Update(float dt)
 		ImGui::ShowTestWindow();
 		//------
 		ImGui::Begin("Click here to close the APP");
-
-		
 
 		//to change the font scale of the window
 		//ImGui::SetWindowFontScale(1);
@@ -92,11 +96,22 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Text("%.4f", iop2);
 		}
 		
-		ImGui::SliderInt("Slider to test", SliderTest_Int_value, 0, 100);
-		ImGui::Text("Hello, world!");
+	
+
+		ImGui::Text("Two Spheres intersecting");
+		ImGui::SliderFloat("s1", &App->scene_intro->n_sphere_one->pos.x, 2.0, -2.0);
+		ImGui::SameLine(350);
+		ImGui::Checkbox("Inters", &test);
+		ImGui::SliderFloat("s2", &App->scene_intro->n_sphere_two->pos.x, 2.0, -2.0);
+		ImGui::SameLine(350);
+		ImGui::Checkbox("Inters", &test);
+
+		
 		ImGui::End();
 	}
 	ImGui::Render();
+
+
 
 	return UPDATE_CONTINUE;
 }

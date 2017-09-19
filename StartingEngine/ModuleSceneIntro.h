@@ -32,6 +32,9 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	update_status PostUpdate(float dt);
 
+	Sphere *n_sphere_one=nullptr;
+	Sphere *n_sphere_two=nullptr;
+
 
 public:
 

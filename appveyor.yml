@@ -4,5 +4,5 @@ build:
   project: /StartingEngine/3D Physics.vcxproj
   verbosity: minimal
 artifacts:
-- path: /StartingEngine/Release/3D Physics - class5.exe
+- path: /StartingEngine/Release
   name: Release

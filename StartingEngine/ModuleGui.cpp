@@ -39,6 +39,9 @@ update_status ModuleGui::Update(float dt)
 		ImGui::ShowTestWindow();
 		//------
 		ImGui::Begin("Click here to close the APP");
+
+		
+
 		//to change the font scale of the window
 		//ImGui::SetWindowFontScale(1);
 		if (ImGui::CollapsingHeader("Widgets"))

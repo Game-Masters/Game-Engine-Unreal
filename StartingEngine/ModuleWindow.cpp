@@ -1,6 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "Glew\include\glew.h"
+#include "Imgui\imgui_impl_sdl_gl3.h"
+#include"Imgui\imgui.h"
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -97,14 +100,12 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 
 	if (ImGui::CollapsingHeader("Windows"))
 	{
-		bool paco = true;
-		char str_p [64] = { 0 };
-		paco=ImGui::InputText("default", str_p, 64);
+		//Button to change the name of the window
+		ImGui::InputText("Name of the window", str_p, 64);
 		std::string str; 
 		str=str_p;
-		if (paco) {
-		LOG("PACO IS HERE");
-		}
+		SetTitle(str.c_str());
+
 	}
 
 	return true;

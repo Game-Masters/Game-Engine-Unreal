@@ -92,6 +92,24 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+bool ModuleWindow::Gui_Engine_Modules(float dt)
+{
+
+	if (ImGui::CollapsingHeader("Windows"))
+	{
+		bool paco = true;
+		char str_p [64] = { 0 };
+		paco=ImGui::InputText("default", str_p, 64);
+		std::string str; 
+		str=str_p;
+		if (paco) {
+		LOG("PACO IS HERE");
+		}
+	}
+
+	return true;
+}
+
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);

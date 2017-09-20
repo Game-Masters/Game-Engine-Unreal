@@ -1,5 +1,7 @@
 #include "Application.h"
-
+#include "Glew\include\glew.h"
+#include "Imgui\imgui_impl_sdl_gl3.h"
+#include"Imgui\imgui.h"
 
 Application::Application()
 {
@@ -51,11 +53,16 @@ bool Application::Init()
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
+	glewInit();
+	ImGui_ImplSdlGL3_Init(window->window);
+	ImGuiIO& io{ ImGui::GetIO() };
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
 		(*item)->Start();
 	}
 	
+	
+
 	ms_timer.Start();
 	return ret;
 }
@@ -76,12 +83,21 @@ void Application::FinishUpdate()
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
+	ImGui_ImplSdlGL3_NewFrame(window->window);
 	PrepareUpdate();
 	
+	
+
+
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
 		(*item)->PreUpdate(dt);
 	}
 
+	ImGui::Begin("Info");
+	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+		(*item)->Gui_Engine_Modules(dt);
+	}
+	ImGui::End();
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
 		(*item)->Update(dt);
@@ -92,6 +108,7 @@ update_status Application::Update()
 		if (ret == update_status::UPDATE_ERROR || ret == update_status::UPDATE_STOP)
 			break;
 	}
+	
 
 	FinishUpdate();
 	return ret;

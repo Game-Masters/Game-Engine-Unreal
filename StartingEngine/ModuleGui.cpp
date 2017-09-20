@@ -20,9 +20,7 @@ ModuleGui::~ModuleGui()
 // Called before render is available
 bool ModuleGui::Start()
 {
-	glewInit();
-	ImGui_ImplSdlGL3_Init(App->window->window);
-	ImGuiIO& io{ ImGui::GetIO() };
+	
 	//io.IniFilename = "/Settings/imgui.ini";
 	SliderTest_Int_value = new int();
 	return true;
@@ -35,7 +33,7 @@ update_status ModuleGui::Update(float dt)
 	test = App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
 
 
-	ImGui_ImplSdlGL3_NewFrame(App->window->window);
+
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 		show_gui_engine = !show_gui_engine;

@@ -27,6 +27,11 @@ public:
 		return true;
 	}
 
+	virtual bool Gui_Engine_Modules(float dt)
+	{
+		return true;
+	}
+
 	virtual update_status PreUpdate(float dt)
 	{
 		return UPDATE_CONTINUE;

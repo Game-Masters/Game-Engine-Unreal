@@ -41,9 +41,28 @@ update_status ModuleGui::Update(float dt)
 		show_gui_engine = !show_gui_engine;
 
 
-	if (show_gui_engine) {
-		ImGui::ShowTestWindow();
+	
 		//------
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("Menu"))
+			{
+				
+				if (ImGui::MenuItem("Show/Hide menu")) { show_gui_engine = !show_gui_engine; }
+				if (ImGui::MenuItem("Close App"))
+				{
+					button_exit_app = true;
+				}
+
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+
+		}
+		if (show_gui_engine) {
+			ImGui::ShowTestWindow();
 		ImGui::Begin("Click here to close the APP");
 
 		//to change the font scale of the window
@@ -65,7 +84,7 @@ update_status ModuleGui::Update(float dt)
 			}
 		}
 
-		button_exit_app = ImGui::Button("Click here to close the APP", ImVec2(0, 0));
+		//button_exit_app = ImGui::Button("Click here to close the APP", ImVec2(0, 0));
 		button_rand = ImGui::Button("Click here to create random int", ImVec2(0, 0));
 	
 		if(button_rand== true)

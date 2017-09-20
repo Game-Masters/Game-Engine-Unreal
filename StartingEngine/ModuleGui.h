@@ -29,6 +29,8 @@ public:
 	bool show_gui_engine = false;
 	bool n1 = false;
 	bool n2 = false;
+
+
 	LCG rand_test;
 	int iop;
 	float iop2;

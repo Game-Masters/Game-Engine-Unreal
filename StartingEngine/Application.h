@@ -33,7 +33,7 @@ private:
 	Timer	ms_timer;
 	float	dt;
 	//p2List<Module*> list_modules;
-	std::list<Module*> list_modules;
+	
 public:
 
 	Application();
@@ -42,7 +42,7 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
-
+	std::list<Module*> list_modules;
 private:
 
 	void AddModule(Module* mod);

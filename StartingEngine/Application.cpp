@@ -31,9 +31,21 @@ Application::Application()
 	AddModule(scene_intro);
 	AddModule(physics);
 	AddModule(player);
-	AddModule(gui);
+	
 	// Renderer last!
 	AddModule(renderer3D);
+	AddModule(gui);
+
+
+	window->name = "window";
+	camera->name = "camera";
+	input->name = "input";
+	physics->name = "physics";
+	renderer3D->name = "renderer3D";
+	gui->name = "gui";
+	audio->name = "audio";
+	player->name = "player";
+	scene_intro->name = "scene intro";
 }
 
 Application::~Application()
@@ -60,6 +72,7 @@ bool Application::Init()
 	{
 
 		ret = (*item)->Init();
+		(*item)->module_timer = new Timer();
 		item++;
 	}
 
@@ -100,7 +113,9 @@ update_status Application::Update()
 
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+		(*item)->StartTimer();
 		(*item)->PreUpdate(dt);
+		(*item)->PauseTimer();
 	}
 
 	ImGui::Begin("Info");
@@ -110,11 +125,15 @@ update_status Application::Update()
 	ImGui::End();
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+		(*item)->ResumeTimer();
 		(*item)->Update(dt);
+		(*item)->PauseTimer();
 	}
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+		(*item)->ResumeTimer();
 		ret = (*item)->PostUpdate(dt);
+		(*item)->StopTimer();
 		if (ret == update_status::UPDATE_ERROR || ret == update_status::UPDATE_STOP)
 			break;
 	}

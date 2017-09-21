@@ -1,11 +1,12 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleGui.h"
+#include "Module.h"
 #include "Glew\include\glew.h"
 #include "Imgui\imgui_impl_sdl_gl3.h"
 #include"Imgui\imgui.h"
 #include"ModuleSceneIntro.h"
-
+#define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 ModuleGui::ModuleGui(bool start_enabled) : Module(start_enabled)
 {
@@ -51,6 +52,7 @@ update_status ModuleGui::Update(float dt)
 				{
 					button_exit_app = true;
 				}
+				if (ImGui::MenuItem("Performance")) { show_performance = !show_performance; }
 
 
 				ImGui::EndMenu();
@@ -58,6 +60,23 @@ update_status ModuleGui::Update(float dt)
 
 			ImGui::EndMainMenuBar();
 
+		}
+		if(show_performance)
+		{
+	
+			std::list<Module*>::iterator item = App->list_modules.begin();
+			
+				while (item != App->list_modules.end())
+				 {
+				
+					const char* name = (*item)->name.c_str();
+				
+					(*item)->performance[(*item)->performance_offset] = (*item)->module_timer->Read_ms();
+				(*item)->performance_offset = ((*item)->performance_offset + 1) % IM_ARRAYSIZE((*item)->performance);
+				
+					ImGui::PlotHistogram((char*)name, (*item)->performance, IM_ARRAYSIZE((*item)->performance), 0, name, 0.0f, 30.f, ImVec2(0, 40));
+				item++;
+				}
 		}
 		if (show_gui_engine) {
 			ImGui::ShowTestWindow();

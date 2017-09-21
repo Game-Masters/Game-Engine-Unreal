@@ -1,5 +1,6 @@
 #pragma once
-
+#include<string>
+#include"Timer.h"
 class Application;
 struct PhysBody3D;
 
@@ -51,7 +52,29 @@ public:
 	{ 
 		return true; 
 	}
+	virtual void StartTimer() {
+		this->module_timer->Start();
+		
+	};
+	virtual void PauseTimer() {
+		this->module_timer->Pause();
+		
+	};
+	virtual void ResumeTimer() {
+		this->module_timer->Resume();
+		
+	};
+	virtual void StopTimer() {
+		this->module_timer->Stop();
+		
+	}
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
+public:
+	Timer* module_timer;
+	std::string name = "";
+	
+	float performance[90] = { 0 };
+	int performance_offset = 0;
 };

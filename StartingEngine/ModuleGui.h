@@ -27,6 +27,7 @@ public:
 	bool button_rand2 = false;
 	int* SliderTest_Int_value = nullptr;
 	bool show_gui_engine = false;
+	bool show_performance = false;
 	bool n1 = false;
 	bool n2 = false;
 

@@ -102,9 +102,34 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 	{
 		//Button to change the name of the window
 		ImGui::InputText("Name of the window", str_p, 64);
-		std::string str; 
-		str=str_p;
+		std::string str;
+		str = str_p;
 		SetTitle(str.c_str());
+		ImGui::Checkbox("Fullscreen", &fullscreen_bool);
+		if (fullscreen_bool) {
+			//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
+			LOG("Fullscreen mode applicated");
+		}
+		ImGui::Checkbox("Fullscreen desktop ", &fullscreen_desktop_bool);
+		if (fullscreen_desktop_bool) {
+			//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			LOG("Fullscreen Desktop mode applicated");
+		}
+
+		int display_count = 0, display_index = 0, mode_index = 0;
+		SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+
+		if (SDL_GetDisplayMode(display_index, mode_index, &mode) != 0) {
+			SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
+			return 1;
+		}
+		SDL_Log("SDL_GetDisplayMode(0, 0, &mode):\t\t%i bpp\t%i x %i",
+			SDL_BITSPERPIXEL(mode.format), mode.w, mode.h);
+
+		ImGui::Text("Number of Displays:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetNumVideoDisplays());
+		ImGui::Text("Refresh rate:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.refresh_rate);
+		ImGui::Text("Width:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.w);
+		ImGui::Text("Height:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.h);
 
 	}
 

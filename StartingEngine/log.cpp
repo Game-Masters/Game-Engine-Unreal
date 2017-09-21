@@ -16,7 +16,7 @@ void log(const char file[], int line, const char* format, ...)
 	if (App) {
 		std::string str_log;
 		str_log = tmp_string;
-		//App->gui->console_imgui->console_log_str.push_back(str_log);
+		App->gui->console_imgui.console_log_str.push_back(str_log);
 	}
 	
 

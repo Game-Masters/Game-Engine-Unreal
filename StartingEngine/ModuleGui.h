@@ -19,6 +19,7 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
+	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
 
 public:
@@ -28,10 +29,11 @@ public:
 	int* SliderTest_Int_value = nullptr;
 	bool show_gui_engine = false;
 	bool show_performance = false;
+	bool show_console = false;
 	bool n1 = false;
 	bool n2 = false;
 
-	Console *console_imgui;
+	Console console_imgui;
 	LCG rand_test;
 	int iop;
 	float iop2;

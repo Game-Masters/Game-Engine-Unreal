@@ -34,8 +34,6 @@ update_status ModuleGui::Update(float dt)
 	test = App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
 
 
-	console_imgui->Enable_Console_Imgui(true);
-
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 		show_gui_engine = !show_gui_engine;
 
@@ -48,6 +46,7 @@ update_status ModuleGui::Update(float dt)
 			{
 				
 				if (ImGui::MenuItem("Show/Hide menu")) { show_gui_engine = !show_gui_engine; }
+				if (ImGui::MenuItem("Console")) { show_console = !show_console; }
 				if (ImGui::MenuItem("Close App"))
 				{
 					button_exit_app = true;
@@ -61,6 +60,7 @@ update_status ModuleGui::Update(float dt)
 			ImGui::EndMainMenuBar();
 
 		}
+		console_imgui.Enable_Console_Imgui(show_console);
 		if(show_performance)
 		{
 	
@@ -158,6 +158,33 @@ update_status ModuleGui::PostUpdate(float dt)
 		return UPDATE_STOP;
 	}
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleGui::Gui_Engine_Modules(float dt)
+{
+	if (ImGui::CollapsingHeader("Hardware"))
+	{
+		ImGui::Text("CPU Cache Line Size:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetCPUCacheLineSize());
+		ImGui::Text("Number of logical CPU cores:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetCPUCount());
+		ImGui::Text("The amount of RAM:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i Gb", SDL_GetSystemRAM() / 1024);
+
+		ImGui::Text("Graphic Card Corporation:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VENDOR));
+		ImGui::Text("Graphic Card:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_RENDERER));
+		ImGui::Text("Graphic Card Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
+
+		SDL_version sdl_vers;
+		SDL_GetVersion(&sdl_vers);
+
+		ImGui::Text("SDL Version patch:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers.patch);
+		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers.major);
+		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers.minor);
+
+
+
+
+
+	}
+	return false;
 }
 
 

@@ -26,6 +26,8 @@ public:
 	char str_p[64] = { 0 };
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
+	bool fullscreen_bool = false;
+	bool fullscreen_desktop_bool = false;
 };
 
 #endif // __ModuleWindow_H__

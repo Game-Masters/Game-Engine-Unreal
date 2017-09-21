@@ -312,6 +312,9 @@
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h">
       <Filter>Sources\Modules\MathGeoLib\Source\Random</Filter>
     </ClInclude>
+    <ClInclude Include="Console_ImGui.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -490,6 +493,9 @@
     </ClCompile>
     <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp">
       <Filter>Sources\Modules\MathGeoLib\Source\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="Console_ImGui.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
-
+#include"Console_ImGui.h"
 
 class Application;
 
@@ -30,7 +30,7 @@ public:
 	bool n1 = false;
 	bool n2 = false;
 
-
+	Console *console_imgui;
 	LCG rand_test;
 	int iop;
 	float iop2;

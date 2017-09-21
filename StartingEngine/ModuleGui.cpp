@@ -33,7 +33,7 @@ update_status ModuleGui::Update(float dt)
 	test = App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
 
 
-
+	console_imgui->Enable_Console_Imgui(true);
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 		show_gui_engine = !show_gui_engine;

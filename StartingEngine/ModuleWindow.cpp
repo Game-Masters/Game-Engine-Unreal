@@ -5,7 +5,7 @@
 #include "Imgui\imgui_impl_sdl_gl3.h"
 #include"Imgui\imgui.h"
 
-ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
 	window = NULL;
 	screen_surface = NULL;

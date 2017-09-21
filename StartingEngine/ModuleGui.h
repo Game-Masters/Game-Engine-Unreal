@@ -11,7 +11,7 @@ class ModuleGui : public Module
 {
 public:
 
-	ModuleGui(Application* app, bool start_enabled = true);
+	ModuleGui(bool start_enabled = true);
 
 	// Destructor
 	virtual ~ModuleGui();

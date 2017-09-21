@@ -5,15 +5,15 @@
 
 Application::Application()
 {
-	window = new ModuleWindow(this);
-	input = new ModuleInput(this);
-	audio = new ModuleAudio(this, true);
-	scene_intro = new ModuleSceneIntro(this);
-	renderer3D = new ModuleRenderer3D(this);
-	camera = new ModuleCamera3D(this);
-	physics = new ModulePhysics3D(this);
-	player = new ModulePlayer(this);
-	gui = new ModuleGui(this);
+	window = new ModuleWindow();
+	input = new ModuleInput();
+	audio = new ModuleAudio(true);
+	scene_intro = new ModuleSceneIntro();
+	renderer3D = new ModuleRenderer3D();
+	camera = new ModuleCamera3D();
+	physics = new ModulePhysics3D();
+	player = new ModulePlayer();
+	gui = new ModuleGui();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -53,6 +53,16 @@ bool Application::Init()
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
+	
+
+	std::list<Module*>::iterator item = list_modules.begin();
+	while (item != list_modules.end() && ret == true)
+	{
+
+		ret = (*item)->Init();
+		item++;
+	}
+
 	glewInit();
 	ImGui_ImplSdlGL3_Init(window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -125,6 +135,6 @@ bool Application::CleanUp()
 
 void Application::AddModule(Module* mod)
 {
-	mod->Init();
+
 	list_modules.push_back(mod);
 }

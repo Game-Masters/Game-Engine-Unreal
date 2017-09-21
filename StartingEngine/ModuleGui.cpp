@@ -7,7 +7,7 @@
 #include"ModuleSceneIntro.h"
 
 
-ModuleGui::ModuleGui(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleGui::ModuleGui(bool start_enabled) : Module(start_enabled)
 {
 
 }

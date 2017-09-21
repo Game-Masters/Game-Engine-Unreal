@@ -1,5 +1,7 @@
 #ifndef __CONSOLE_IMGUI_H__
 #define __CONSOLE_IMGUI_H__
+#include<list>
+#include<string>
 
 class Console
 {
@@ -13,6 +15,7 @@ public:
 	void Enable_Console_Imgui(bool visible=false);
 
 public:
+	std::list<std::string> console_log_str;
 
 };
 

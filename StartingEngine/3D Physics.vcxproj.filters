@@ -31,6 +31,9 @@
     <Filter Include="Sources\Modules\MathGeoLib\Source\Random">
       <UniqueIdentifier>{81ae555f-6f6f-455a-8325-cddc612c0d57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\JSON">
+      <UniqueIdentifier>{5dedd1bc-67af-4b1e-aa8f-ac1d6e868b7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -315,6 +318,12 @@
     <ClInclude Include="Console_ImGui.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="JSON\parson.h">
+      <Filter>Sources\Modules\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleParson_JSON.h">
+      <Filter>Sources\Modules\JSON</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -496,6 +505,12 @@
     </ClCompile>
     <ClCompile Include="Console_ImGui.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON\parson.c">
+      <Filter>Sources\Modules\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleParson_JSON.cpp">
+      <Filter>Sources\Modules\JSON</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

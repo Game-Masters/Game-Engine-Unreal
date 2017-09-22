@@ -14,6 +14,7 @@ Application::Application()
 	physics = new ModulePhysics3D();
 	player = new ModulePlayer();
 	gui = new ModuleGui();
+	parson_module = new ModuleParson_JSON();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -35,6 +36,7 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D);
 	AddModule(gui);
+	AddModule(parson_module);
 
 
 	window->name = "window";
@@ -117,7 +119,7 @@ update_status Application::Update()
 		(*item)->PreUpdate(dt);
 		(*item)->PauseTimer();
 	}
-
+	//LOG("%f", dt);
 	ImGui::Begin("Info");
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
 		(*item)->Gui_Engine_Modules(dt);

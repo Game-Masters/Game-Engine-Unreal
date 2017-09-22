@@ -13,6 +13,8 @@
 #include "ModulePhysics3D.h"
 #include "ModulePlayer.h"
 #include "ModuleGui.h"
+#include "ModuleParson_JSON.h"
+
 #include <list>
 #include <vector>
 class Application
@@ -27,6 +29,7 @@ public:
 	ModulePhysics3D* physics;
 	ModulePlayer* player;
 	ModuleGui* gui;
+	ModuleParson_JSON* parson_module;
 
 private:
 

@@ -24,30 +24,32 @@ bool ModuleParson_JSON::Start()
 	
 	//Example to show that JSON WORKS
 
+	JSON_Value *root_value = json_value_init_object();
+	JSON_Object *root_object = json_value_get_object(root_value);
+	char *serialized_string = NULL;
 	const char *name = NULL;
-
-	user_data = json_value_init_object();
 
 	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
 		
-			json_object_set_string(json_object(user_data), (*item)->name.c_str(), "");
+			json_object_set_string(root_object, (*item)->name.c_str(), "miquel");
 	}
 
+	serialized_string = json_serialize_to_string_pretty(root_value);
+	puts(serialized_string);
 
-	/*json_object_set_string(json_object(user_data), "name", "MIQUEL ES UN GOD DEL UNIVERS");
-	json_object_set_string(json_object(user_data), "paco", "MIQUEL ES UN GOD DEL UNIVERS");
+
+	json_serialize_to_file(root_value, "test_json.json");
+	JSON_Value* value = json_object_get_value(root_object, "window");
+	const char* string = json_value_get_string(value);
+
+	json_value_free(root_value);
+	json_free_serialized_string(serialized_string);
 
 
-	char *serialized_string = NULL;
-	json_object_set_string(json_object(user_data), "name", "John Smith");
-	json_object_set_number(json_object(user_data), "age", 25);
-	json_object_dotset_string(json_object(user_data), "address.city", "Cupertino");
-	json_object_dotset_value(json_object(user_data), "contact.emails", json_parse_string("[\"email@example.com\",\"email2@example.com\"]"));
-	*/
-	json_serialize_to_file(user_data, "test_json.json");
 
-	json_value_free(user_data);
-	//json_free_serialized_string(serialized_string);
+	
+
+
 
 	return true;
 }

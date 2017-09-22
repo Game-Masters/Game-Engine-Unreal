@@ -8,9 +8,9 @@
 #include"ModuleSceneIntro.h"
 #define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
-ModuleGui::ModuleGui(bool start_enabled) : Module(start_enabled)
+ModuleGui::ModuleGui(bool start_enabled) : Module(start_enabled), frames_on_last_update(100)
 {
-
+	
 }
 
 // Destructor
@@ -63,7 +63,23 @@ update_status ModuleGui::Update(float dt)
 		console_imgui.Enable_Console_Imgui(show_console);
 		if(show_performance)
 		{
-	
+			const char* fps = "fps";
+			
+			//frames_on_last_update.push_back(App->frames_on_last_update);
+			static uint count = 0;
+
+			if (count >= 100)
+				for (int i = 0; i < 100 - 1; i++)
+				{
+					frames_on_last_update[i] = frames_on_last_update[i + 1];
+					
+				}
+			else
+				count++;
+			frames_on_last_update[count - 1] = App->frames_on_last_update;
+
+			ImGui::PlotHistogram(fps, &frames_on_last_update[0], frames_on_last_update.size(), 0, fps, 0.0f,100.f, ImVec2(0, 40));
+
 			std::list<Module*>::iterator item = App->list_modules.begin();
 			
 				while (item != App->list_modules.end())

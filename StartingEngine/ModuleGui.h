@@ -32,6 +32,7 @@ public:
 	bool show_console = false;
 	bool n1 = false;
 	bool n2 = false;
+	std::vector<float> frames_on_last_update;
 
 	Console console_imgui;
 	LCG rand_test;

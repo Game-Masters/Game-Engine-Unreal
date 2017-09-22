@@ -36,7 +36,20 @@ private:
 	Timer	ms_timer;
 	float	dt;
 	//p2List<Module*> list_modules;
+	j1PerfTimer			ptimer;
+	unsigned int long	frame_count = 0;
+	Timer				startup_time;
+	Timer				frame_time;
+	Timer				last_sec_frame_time;
+	Uint32				last_sec_frame_count = 0;
+	Uint32				prev_last_sec_frame_count = 0;
+//	float				dt = 0.0f;
+	int					capped_ms = -1;
+	float				avg_fps = 0.0f;
+	float				seconds_since_startup = 0.0f;
+	Uint32				last_frame_ms = 0;
 	
+
 public:
 
 	Application();
@@ -46,6 +59,7 @@ public:
 	update_status Update();
 	bool CleanUp();
 	std::list<Module*> list_modules;
+	Uint32				frames_on_last_update = 0;
 private:
 
 	void AddModule(Module* mod);

@@ -98,6 +98,11 @@ void Application::PrepareUpdate()
 {
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
+	frame_count++;
+	last_sec_frame_count++;
+
+	dt = frame_time.ReadSec();
+	frame_time.Start();
 }
 
 // ---------------------------------------------
@@ -120,7 +125,7 @@ update_status Application::Update()
 		(*item)->PreUpdate(dt);
 		(*item)->PauseTimer();
 	}
-	//LOG("%f", dt);
+	//LOG("%f", 1/dt);
 	ImGui::Begin("Info");
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
 		(*item)->Gui_Engine_Modules(dt);
@@ -140,7 +145,27 @@ update_status Application::Update()
 		if (ret == update_status::UPDATE_ERROR || ret == update_status::UPDATE_STOP)
 			break;
 	}
-	
+	// Framerate calculations --
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	avg_fps = float(frame_count) / startup_time.ReadSec();
+	seconds_since_startup = startup_time.ReadSec();
+	last_frame_ms = frame_time.Read();
+	frames_on_last_update = prev_last_sec_frame_count;
+
+
+
+	if (capped_ms > 0 && (int)last_frame_ms < capped_ms)
+	{
+		j1PerfTimer t;
+		SDL_Delay(capped_ms - last_frame_ms);
+		LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
+	}
 
 	FinishUpdate();
 	return ret;

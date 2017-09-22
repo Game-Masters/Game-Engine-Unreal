@@ -15,5 +15,8 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
 
+public:
+	JSON_Value *user_data = nullptr;
+
 };
 #endif

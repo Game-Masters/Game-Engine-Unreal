@@ -4,7 +4,7 @@
 #include "Glew\include\glew.h"
 #include "Imgui\imgui_impl_sdl_gl3.h"
 #include"Imgui\imgui.h"
-
+#include"JSON\parson.h"
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
 	window = NULL;
@@ -125,6 +125,7 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 		}
 		SDL_Log("SDL_GetDisplayMode(0, 0, &mode):\t\t%i bpp\t%i x %i",
 			SDL_BITSPERPIXEL(mode.format), mode.w, mode.h);
+
 
 		ImGui::Text("Number of Displays:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetNumVideoDisplays());
 		ImGui::Text("Refresh rate:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.refresh_rate);

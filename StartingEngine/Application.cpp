@@ -48,6 +48,7 @@ Application::Application()
 	audio->name = "audio";
 	player->name = "player";
 	scene_intro->name = "scene intro";
+	parson_module->name = "json module";
 }
 
 Application::~Application()

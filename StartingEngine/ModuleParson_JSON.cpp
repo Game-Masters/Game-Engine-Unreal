@@ -25,9 +25,16 @@ bool ModuleParson_JSON::Start()
 	//Example to show that JSON WORKS
 
 	const char *name = NULL;
-	JSON_Value *user_data = nullptr;
+
 	user_data = json_value_init_object();
-	json_object_set_string(json_object(user_data), "name", "MIQUEL ES UN GOD DEL UNIVERS");
+
+	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
+		
+			json_object_set_string(json_object(user_data), (*item)->name.c_str(), "");
+	}
+
+
+	/*json_object_set_string(json_object(user_data), "name", "MIQUEL ES UN GOD DEL UNIVERS");
 	json_object_set_string(json_object(user_data), "paco", "MIQUEL ES UN GOD DEL UNIVERS");
 
 
@@ -36,14 +43,11 @@ bool ModuleParson_JSON::Start()
 	json_object_set_number(json_object(user_data), "age", 25);
 	json_object_dotset_string(json_object(user_data), "address.city", "Cupertino");
 	json_object_dotset_value(json_object(user_data), "contact.emails", json_parse_string("[\"email@example.com\",\"email2@example.com\"]"));
+	*/
+	json_serialize_to_file(user_data, "test_json.json");
 
-
-	
-	json_serialize_to_file(user_data, "user_data.json");
-
-	//json_value_free(schema);
 	json_value_free(user_data);
-	json_free_serialized_string(serialized_string);
+	//json_free_serialized_string(serialized_string);
 
 	return true;
 }

@@ -57,7 +57,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, win_width, win_height, flags);
+		window = SDL_CreateWindow(str_window.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, win_width, win_height, flags);
 
 		if(window == NULL)
 		{
@@ -172,7 +172,13 @@ bool ModuleWindow::LoadConfig(JSON_Object * node)
 		win_width = json_object_get_number(node, "width");
 	}
 	//str_window
-
+	if (json_object_get_value(node, "window title") == NULL) {
+		json_object_set_value(node, "window title", json_value_init_object());
+		json_object_set_string(node, "height", str_window.c_str());
+	}
+	else {
+		str_window = json_object_get_string(node, "window title");
+	}
 
 
 
@@ -184,6 +190,7 @@ bool ModuleWindow::SaveConfig(JSON_Object * node)
 
 	json_object_set_number(node, "width", win_width);
 	json_object_set_number(node, "height", win_height);
+	json_object_set_string(node, "window title",str_window.c_str());
 
 	return true;
 }

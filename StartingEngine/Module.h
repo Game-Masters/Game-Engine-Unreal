@@ -1,6 +1,7 @@
 #pragma once
 #include<string>
 #include"Timer.h"
+#include"JSON\parson.h"
 class Application;
 struct PhysBody3D;
 
@@ -29,6 +30,16 @@ public:
 	}
 
 	virtual bool Gui_Engine_Modules(float dt)
+	{
+		return true;
+	}
+
+	virtual bool LoadConfig(JSON_Object* node)
+	{
+		return true;
+	}
+
+	virtual bool SaveConfig(JSON_Object* node)
 	{
 		return true;
 	}

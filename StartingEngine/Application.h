@@ -13,8 +13,8 @@
 #include "ModulePhysics3D.h"
 #include "ModulePlayer.h"
 #include "ModuleGui.h"
-#include "ModuleParson_JSON.h"
-
+#include "Parson_JSON.h"
+#include"Parson_JSON.h"
 #include <list>
 #include <vector>
 class Application
@@ -29,7 +29,11 @@ public:
 	ModulePhysics3D* physics;
 	ModulePlayer* player;
 	ModuleGui* gui;
-	ModuleParson_JSON* parson_module;
+
+
+
+	//----
+	Parson_JSON* json_class;
 
 private:
 
@@ -60,6 +64,9 @@ public:
 	bool CleanUp();
 	std::list<Module*> list_modules;
 	Uint32				frames_on_last_update = 0;
+	void LoadModules();
+	void SaveModules();
+
 private:
 
 	void AddModule(Module* mod);

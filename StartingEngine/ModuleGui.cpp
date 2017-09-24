@@ -21,8 +21,10 @@ ModuleGui::~ModuleGui()
 // Called before render is available
 bool ModuleGui::Start()
 {
-	
-	//io.IniFilename = "/Settings/imgui.ini";
+	glewInit();
+	ImGui_ImplSdlGL3_Init(App->window->window);
+	ImGuiIO& io{ ImGui::GetIO() };
+
 	SliderTest_Int_value = new int();
 	return true;
 }
@@ -30,7 +32,13 @@ bool ModuleGui::Start()
 
 update_status ModuleGui::Update(float dt)
 {
+	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 	bool test = false;
+	ImGui::Begin("Info");
+	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
+		(*item)->Gui_Engine_Modules(dt);
+	}
+	ImGui::End();
 	test = App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
 
 
@@ -47,11 +55,8 @@ update_status ModuleGui::Update(float dt)
 				
 				if (ImGui::MenuItem("Show/Hide menu")) { show_gui_engine = !show_gui_engine; }
 				if (ImGui::MenuItem("Console")) { show_console = !show_console; }
-				if (ImGui::MenuItem("Close App"))
-				{
-					button_exit_app = true;
-				}
 				if (ImGui::MenuItem("Performance")) { show_performance = !show_performance; }
+				if (ImGui::MenuItem("Close App")){button_exit_app = true;}
 
 
 				ImGui::EndMenu();

@@ -30,8 +30,7 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH * SCREEN_SIZE;
-		int height = SCREEN_HEIGHT * SCREEN_SIZE;
+
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
@@ -58,7 +57,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, win_width, win_height, flags);
 
 		if(window == NULL)
 		{
@@ -75,6 +74,9 @@ bool ModuleWindow::Init()
 	//Lock the cursor on screen 
 	//SDL_ShowCursor(SDL_DISABLE);
 	//SDL_SetWindowGrab(window, SDL_TRUE);
+
+
+	
 
 	return ret;
 }
@@ -102,9 +104,8 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 	{
 		//Button to change the name of the window
 		ImGui::InputText("Name of the window", str_p, 64);
-		std::string str;
-		str = str_p;
-		SetTitle(str.c_str());
+		str_window = str_p;
+		SetTitle(str_window.c_str());
 		ImGui::Checkbox("Fullscreen", &fullscreen_bool);
 		if (fullscreen_bool) {
 			//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
@@ -129,8 +130,17 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 
 		ImGui::Text("Number of Displays:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetNumVideoDisplays());
 		ImGui::Text("Refresh rate:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.refresh_rate);
-		ImGui::Text("Width:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.w);
-		ImGui::Text("Height:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.h);
+
+		
+		ImGui::InputText("Window Width", str_w, 64, ImGuiInputTextFlags_CharsDecimal);
+		win_width=std::atoi(str_w);
+
+		ImGui::InputText("Window Height", str_h, 64, ImGuiInputTextFlags_CharsDecimal);
+		win_height = std::atoi(str_h);
+		
+		if (ImGui::Button("Save win config")) {
+			SDL_SetWindowSize(window, win_width, win_height);
+		}
 
 	}
 
@@ -140,4 +150,47 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+}
+
+bool ModuleWindow::LoadConfig(JSON_Object * node)
+{
+	if (json_object_get_value(node, "height") == NULL) {
+		json_object_set_value(node, "height", json_value_init_object());
+		win_height = SCREEN_HEIGHT*SCREEN_SIZE;
+		json_object_set_number(node, "height", win_height);
+	}
+	else {
+		win_height = json_object_get_number(node, "height");
+	}
+
+	if (json_object_get_value(node, "width") == NULL) {
+		json_object_set_value(node, "width", json_value_init_object());
+		win_width = SCREEN_WIDTH*SCREEN_SIZE;
+		json_object_set_number(node, "width", win_width);
+	}
+	else {
+		win_width = json_object_get_number(node, "width");
+	}
+	//str_window
+
+
+
+
+	return true;
+}
+
+bool ModuleWindow::SaveConfig(JSON_Object * node)
+{
+
+	json_object_set_number(node, "width", win_width);
+	json_object_set_number(node, "height", win_height);
+
+	return true;
+}
+
+update_status ModuleWindow::PreUpdate(float dt)
+{
+	SDL_GetWindowSize(window, &win_width, &win_height);
+
+	return update_status::UPDATE_CONTINUE;
 }

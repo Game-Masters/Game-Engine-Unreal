@@ -14,7 +14,7 @@ Application::Application()
 	physics = new ModulePhysics3D();
 	player = new ModulePlayer();
 	gui = new ModuleGui();
-	parson_module = new ModuleParson_JSON();
+
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -36,7 +36,7 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D);
 	AddModule(gui);
-	AddModule(parson_module);
+
 
 
 	window->name = "window";
@@ -48,7 +48,7 @@ Application::Application()
 	audio->name = "audio";
 	player->name = "player";
 	scene_intro->name = "scene intro";
-	parson_module->name = "json module";
+
 }
 
 Application::~Application()
@@ -70,6 +70,11 @@ bool Application::Init()
 	LOG("Application Start --------------");
 	
 
+	json_class = new Parson_JSON();
+	json_class->Init();
+	json_class->Load();
+
+
 	std::list<Module*>::iterator item = list_modules.begin();
 	while (item != list_modules.end() && ret == true)
 	{
@@ -79,9 +84,7 @@ bool Application::Init()
 		item++;
 	}
 
-	glewInit();
-	ImGui_ImplSdlGL3_Init(window->window);
-	ImGuiIO& io{ ImGui::GetIO() };
+	
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
 		(*item)->Start();
@@ -114,7 +117,7 @@ void Application::FinishUpdate()
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
-	ImGui_ImplSdlGL3_NewFrame(window->window);
+	
 	PrepareUpdate();
 	
 	
@@ -126,11 +129,7 @@ update_status Application::Update()
 		(*item)->PauseTimer();
 	}
 	//LOG("%f", 1/dt);
-	ImGui::Begin("Info");
-	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
-		(*item)->Gui_Engine_Modules(dt);
-	}
-	ImGui::End();
+	
 
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
 		(*item)->ResumeTimer();
@@ -177,7 +176,20 @@ bool Application::CleanUp()
 	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
 		(*item)->CleanUp();
 	}
+	json_class->Save();
+	
 	return ret;
+}
+
+void Application::LoadModules()
+{
+
+
+
+}
+
+void Application::SaveModules()
+{
 }
 
 void Application::AddModule(Module* mod)

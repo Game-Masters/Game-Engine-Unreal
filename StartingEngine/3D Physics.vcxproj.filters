@@ -321,7 +321,7 @@
     <ClInclude Include="JSON\parson.h">
       <Filter>Sources\Modules\JSON</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleParson_JSON.h">
+    <ClInclude Include="Parson_JSON.h">
       <Filter>Sources\Modules\JSON</Filter>
     </ClInclude>
   </ItemGroup>
@@ -509,7 +509,7 @@
     <ClCompile Include="JSON\parson.c">
       <Filter>Sources\Modules\JSON</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleParson_JSON.cpp">
+    <ClCompile Include="Parson_JSON.cpp">
       <Filter>Sources\Modules\JSON</Filter>
     </ClCompile>
   </ItemGroup>

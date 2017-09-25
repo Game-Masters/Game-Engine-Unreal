@@ -53,7 +53,7 @@ Application::Application()
 
 Application::~Application()
 {
-	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		RELEASE((*item));
 	}
 
@@ -86,7 +86,7 @@ bool Application::Init()
 
 	
 
-	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->Start();
 	}
 	
@@ -123,7 +123,7 @@ update_status Application::Update()
 	
 
 
-	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->StartTimer();
 		(*item)->PreUpdate(dt);
 		(*item)->PauseTimer();
@@ -131,13 +131,13 @@ update_status Application::Update()
 	//LOG("%f", 1/dt);
 	
 
-	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->ResumeTimer();
 		(*item)->Update(dt);
 		(*item)->PauseTimer();
 	}
 
-	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->ResumeTimer();
 		ret = (*item)->PostUpdate(dt);
 		(*item)->StopTimer();
@@ -173,7 +173,7 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
-	for (std::list<Module*>::reverse_iterator item = list_modules.rbegin(); item != list_modules.crend(); ++item) {
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->CleanUp();
 	}
 	json_class->Save();

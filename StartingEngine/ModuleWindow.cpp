@@ -6,6 +6,10 @@
 #include"Imgui\imgui.h"
 #include"JSON\parson.h"
 #include<stdlib.h>
+#include "../StartingEngine/Glew/include/glew.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+#include "SDL\include\SDL_opengl.h"
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
 	window = NULL;
@@ -35,8 +39,16 @@ bool ModuleWindow::Init()
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
+
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+		//-----
+		/*SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);*/
+	
 
 		if(WIN_FULLSCREEN == true)
 		{
@@ -71,6 +83,7 @@ bool ModuleWindow::Init()
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
+
 
 	//Lock the cursor on screen 
 	//SDL_ShowCursor(SDL_DISABLE);

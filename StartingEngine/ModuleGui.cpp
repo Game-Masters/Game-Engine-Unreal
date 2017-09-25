@@ -200,8 +200,13 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers.major);
 		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers.minor);
 
+		/*
+		SDL_version sdl_vers_ret;
+		SDL_VERSION(&sdl_vers_ret);
 
-
+		ImGui::Text("SDL Version patch:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers_ret.patch);
+		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers_ret.major);
+		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers_ret.minor);*/
 
 
 	}

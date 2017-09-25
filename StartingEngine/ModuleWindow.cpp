@@ -5,6 +5,7 @@
 #include"Imgui/imgui_impl_sdl.h"
 #include"Imgui\imgui.h"
 #include"JSON\parson.h"
+#include<stdlib.h>
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
 	window = NULL;
@@ -103,9 +104,10 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 	if (ImGui::CollapsingHeader("Windows"))
 	{
 		//Button to change the name of the window
-		ImGui::InputText("Name of the window", str_p, 64);
-		str_window = str_p;
-		SetTitle(str_window.c_str());
+		if (ImGui::InputText("Name of the window", str_p, 64, ImGuiInputTextFlags_EnterReturnsTrue)) {
+			str_window = str_p;
+			SetTitle(str_window.c_str());
+		}
 		ImGui::Checkbox("Fullscreen", &fullscreen_bool);
 		if (fullscreen_bool) {
 			//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
@@ -132,12 +134,14 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 		ImGui::Text("Refresh rate:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.refresh_rate);
 
 		
-		ImGui::InputText("Window Width", str_w, 64, ImGuiInputTextFlags_CharsDecimal);
-		win_width=std::atoi(str_w);
+		ImGui::InputText("Window Width", str_w, 64, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
+		win_width = std::atoi(str_w);
+		
 
-		ImGui::InputText("Window Height", str_h, 64, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::InputText("Window Height", str_h, 64, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
 		win_height = std::atoi(str_h);
 		
+
 		if (ImGui::Button("Save win config")) {
 			SDL_SetWindowSize(window, win_width, win_height);
 		}
@@ -161,6 +165,7 @@ bool ModuleWindow::LoadConfig(JSON_Object * node)
 	}
 	else {
 		win_height = json_object_get_number(node, "height");
+		 itoa(win_height, str_h, 10);
 	}
 
 	if (json_object_get_value(node, "width") == NULL) {
@@ -170,6 +175,7 @@ bool ModuleWindow::LoadConfig(JSON_Object * node)
 	}
 	else {
 		win_width = json_object_get_number(node, "width");
+		itoa(win_width, str_w, 10);
 	}
 	//str_window
 	if (json_object_get_value(node, "window title") == NULL) {
@@ -178,6 +184,7 @@ bool ModuleWindow::LoadConfig(JSON_Object * node)
 	}
 	else {
 		str_window = json_object_get_string(node, "window title");
+		strcpy(str_p, str_window.c_str());
 	}
 
 

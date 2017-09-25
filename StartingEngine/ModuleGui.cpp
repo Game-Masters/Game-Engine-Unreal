@@ -173,7 +173,7 @@ update_status ModuleGui::Update(float dt)
 		ImGui::End();
 	}
 	
-
+		ImGui::Render();
 
 
 	return UPDATE_CONTINUE;

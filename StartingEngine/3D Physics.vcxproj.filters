@@ -324,6 +324,9 @@
     <ClInclude Include="Imgui\imgui_impl_sdl.h">
       <Filter>Sources\Modules\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Imgui\imgui_impl_sdl_gl3.h">
+      <Filter>Sources\Modules\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -510,6 +513,9 @@
       <Filter>Sources\Modules\JSON</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui_impl_sdl.cpp">
+      <Filter>Sources\Modules\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_impl_sdl_gl3.cpp">
       <Filter>Sources\Modules\imgui</Filter>
     </ClCompile>
   </ItemGroup>

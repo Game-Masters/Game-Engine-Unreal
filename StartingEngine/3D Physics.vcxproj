@@ -82,6 +82,7 @@
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_sdl.h" />
+    <ClInclude Include="Imgui\imgui_impl_sdl_gl3.h" />
     <ClInclude Include="Imgui\imgui_internal.h" />
     <ClInclude Include="Imgui\stb_rect_pack.h" />
     <ClInclude Include="Imgui\stb_textedit.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
     <ClCompile Include="Imgui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="Imgui\imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="j1PerfTimer.cpp" />
     <ClCompile Include="JSON\parson.c" />
     <ClCompile Include="Light.cpp" />

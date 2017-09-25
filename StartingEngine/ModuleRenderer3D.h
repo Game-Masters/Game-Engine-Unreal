@@ -25,7 +25,7 @@ public:
 	void OnResize(int width, int height);
 
 public:
-	GLuint vertexbuffer;
+	
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;

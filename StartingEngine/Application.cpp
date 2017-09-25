@@ -104,7 +104,8 @@ void Application::PrepareUpdate()
 	frame_count++;
 	last_sec_frame_count++;
 
-	dt = frame_time.ReadSec();
+	//IF WE HAVE PROBLEMS UNCOMMENT THIS
+	//dt = frame_time.ReadSec();
 	frame_time.Start();
 }
 

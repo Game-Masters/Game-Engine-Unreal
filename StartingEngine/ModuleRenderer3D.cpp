@@ -32,29 +32,6 @@ bool ModuleRenderer3D::Init()
 		ret = false;
 	}
 
-	glewInit();
-	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	GLuint VertexArrayID;
-	glGenVertexArrays(1, &VertexArrayID);
-	glBindVertexArray(VertexArrayID);
-
-
-	// An array of 3 vectors which represents 3 vertices
-	static const GLfloat g_vertex_buffer_data[] = {
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
-	};
-
-	// This will identify our vertex buffer
-
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
 	
 	if(ret == true)
 	{
@@ -124,7 +101,14 @@ bool ModuleRenderer3D::Init()
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	
+	
+
+	glewInit();
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	
+
+
+
 	return ret;
 }
 
@@ -137,7 +121,36 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());
 
+	
 
+	// light 0 on cam pos
+	/*lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+
+	for(uint i = 0; i < MAX_LIGHTS; ++i)
+		lights[i].Render();*/
+
+	return UPDATE_CONTINUE;
+}
+
+// PostUpdate present buffer to screen
+update_status ModuleRenderer3D::PostUpdate(float dt)
+{
+
+	// An array of 3 vectors which represents 3 vertices
+	static const GLfloat g_vertex_buffer_data[] = {
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		0.0f,  1.0f, 0.0f,
+	};
+
+	// This will identify our vertex buffer
+	GLuint vertexbuffer;
+	// Generate 1 buffer, put the resulting identifier in vertexbuffer
+	glGenBuffers(1, &vertexbuffer);
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	// 1rst attribute buffer : vertices
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -152,21 +165,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	// Draw the triangle !
 	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
+	glDeleteBuffers(1, &vertexbuffer);
+	ImGui::Render();
 
-
-
-	// light 0 on cam pos
-	/*lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-
-	for(uint i = 0; i < MAX_LIGHTS; ++i)
-		lights[i].Render();*/
-
-	return UPDATE_CONTINUE;
-}
-
-// PostUpdate present buffer to screen
-update_status ModuleRenderer3D::PostUpdate(float dt)
-{
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }

@@ -29,10 +29,15 @@ bool ModuleGui::Start()
 	return true;
 }
 
+update_status ModuleGui::PreUpdate(float dt)
+{
+	ImGui_ImplSdlGL2_NewFrame(App->window->window);
+	return update_status::UPDATE_CONTINUE;
+}
 
 update_status ModuleGui::Update(float dt)
 {
-	ImGui_ImplSdlGL2_NewFrame(App->window->window);
+
 
 	bool test = false;
 	ImGui::Begin("Info");
@@ -167,12 +172,13 @@ update_status ModuleGui::Update(float dt)
 		
 		ImGui::End();
 	}
-	ImGui::Render();
+	
 
 
 
 	return UPDATE_CONTINUE;
 }
+
 
 update_status ModuleGui::PostUpdate(float dt)
 {

@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "Glew\include\glew.h"
-#include "Imgui\imgui_impl_sdl_gl3.h"
+#include"Imgui/imgui_impl_sdl.h"
 #include"Imgui\imgui.h"
 #include"JSON\parson.h"
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)

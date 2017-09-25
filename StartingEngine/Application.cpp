@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "Glew\include\glew.h"
-#include "Imgui\imgui_impl_sdl_gl3.h"
+#include"Imgui/imgui_impl_sdl.h"
 #include"Imgui\imgui.h"
 
 Application::Application()

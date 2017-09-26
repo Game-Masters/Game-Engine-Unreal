@@ -222,6 +222,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	// Draw the triangle !
 	glDrawArrays(GL_TRIANGLES, 0, 1536); // Starting from vertex 0; 3 vertices total -> 1 triangle
+	
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(0);
 	//glDeleteBuffers(1, &vertexbuffer);
@@ -246,7 +247,37 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 {
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
+		if (ImGui::Button("Wireframe Mode"))
+		{
+			wireframe = !wireframe;
+		}
+		if (wireframe == true)
+		{
+			
+			ImGui::SameLine(150);
+			ImGui::Text("on");
+		}
+		
+		if (ImGui::Button("Point Mode"))
+		{
+			points = !points;
+		}
+		if (wireframe == true)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+		else if (points == true)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+			ImGui::SameLine(150);
+			ImGui::Text("on");
+		}
 
+		else
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		}
 	}
 	return false;
 }

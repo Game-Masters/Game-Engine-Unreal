@@ -247,37 +247,27 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 {
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
-		if (ImGui::Button("Wireframe Mode"))
-		{
-			wireframe = !wireframe;
-		}
-		
-		if (ImGui::Button("Point Mode"))
-		{
-			points = !points;
-		}
-		if (ImGui::Button("Backface culling"))
-		{
-			cullface = !cullface;
-		}
-		if (cullface == true)
+		ImGui::Checkbox("Backface culling", &cullface);
+		ImGui::Checkbox("Point Mode", &points);
+		ImGui::Checkbox("Wireframe Mode", &wireframe);
+		if (cullface)
 		{
 			glDisable(GL_CULL_FACE);
 		}
-		else if (wireframe == true)
-		{
+		else if (wireframe) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
-		else if (points == true)
+		else if (points)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-			
+
 		}
 		else
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glEnable(GL_CULL_FACE);
 		}
+
 	}
 	return false;
 }

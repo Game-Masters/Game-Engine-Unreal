@@ -251,31 +251,32 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 		{
 			wireframe = !wireframe;
 		}
-		if (wireframe == true)
-		{
-			
-			ImGui::SameLine(150);
-			ImGui::Text("on");
-		}
 		
 		if (ImGui::Button("Point Mode"))
 		{
 			points = !points;
 		}
-		if (wireframe == true)
+		if (ImGui::Button("Backface culling"))
+		{
+			cullface = !cullface;
+		}
+		if (cullface == true)
+		{
+			glDisable(GL_CULL_FACE);
+		}
+		else if (wireframe == true)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 		else if (points == true)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-			ImGui::SameLine(150);
-			ImGui::Text("on");
+			
 		}
-
 		else
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glEnable(GL_CULL_FACE);
 		}
 	}
 	return false;

@@ -32,4 +32,5 @@ public:
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	bool wireframe = false;
 	bool points = false;
+	bool cullface = false;
 };

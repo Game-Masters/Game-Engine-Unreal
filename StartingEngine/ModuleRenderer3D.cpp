@@ -86,15 +86,15 @@ bool ModuleRenderer3D::Init()
 		lights[0].SetPos(1.0f, 0.0f, 2.5f);
 		lights[0].Init();
 		
-		/*GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
+		/*GLfloat MaterialAmbient[] = {255.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MaterialAmbient);
 
-		GLfloat MaterialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+		GLfloat MaterialDiffuse[] = {255.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);*/
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
-		lights[0].Active(true);
+		//lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 	}
@@ -250,6 +250,8 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 		ImGui::Checkbox("Backface culling", &cullface);
 		ImGui::Checkbox("Point Mode", &points);
 		ImGui::Checkbox("Wireframe Mode", &wireframe);
+		ImGui::Checkbox("Shadeless", &mat);
+		ImGui::Checkbox("Set Material", &color);
 		if (cullface)
 		{
 			glDisable(GL_CULL_FACE);
@@ -262,10 +264,44 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 
 		}
+		else if (mat)
+		{
+			glDisable(GL_LIGHTING);
+			//glEnable(GL_COLOR_MATERIAL);
+			
+		}
+		else if (color)
+		{	float diffuse_light[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+			float specular_light[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+			glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
+			glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
+			glEnable(GL_COLOR_MATERIAL);
+			glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+			glColorMaterial(GL_FRONT_AND_BACK, GL_SPECULAR);
+			glEnable(GL_COLOR_MATERIAL);
+			//glColor3f(1.0f, 0.0f, 0.0f);
+
+		}
 		else
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glEnable(GL_CULL_FACE);
+			/*float specular_light[] = { 1.0f, 1.0f, 0.0f, 1.0f };
+			float diffuse_light[] = { 0.4f, 0.4f, 0.4f, 1.0f };
+			glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
+			glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
+			glEnable(GL_COLOR_MATERIAL);
+			glColorMaterial(GL_FRONT, GL_DIFFUSE);
+			glColorMaterial(GL_FRONT, GL_SPECULAR);*/
+			//glEnable(GL_DEPTH_TEST);
+			//glEnable(GL_CULL_FACE);
+			//lights[0].Active(true);
+			//glDisable(GL_LIGHTING);
+			//glDisable(GL_COLOR_MATERIAL);
+			glEnable(GL_LIGHTING);
+			glDisable(GL_COLOR_MATERIAL);
+			//glColor3f(0.0f, 0.0f, 0.0f);
+			
 		}
 
 	}

@@ -33,4 +33,6 @@ public:
 	bool wireframe = false;
 	bool points = false;
 	bool cullface = false;
+	bool mat = false;
+	bool color = false;
 };

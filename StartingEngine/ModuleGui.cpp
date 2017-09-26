@@ -43,7 +43,7 @@ update_status ModuleGui::Update(float dt)
 
 	bool test = false;
 	ImGui::Begin("Info");
-	for (std::list<Module*>::iterator item = App->list_modules.begin(); item != App->list_modules.end(); ++item) {
+	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
 		(*item)->Gui_Engine_Modules(dt);
 	}
 	ImGui::End();

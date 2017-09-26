@@ -132,74 +132,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRenderer3D::Update(float dt)
-{
-
-	vec p1 = { 2,0,0 };
-	vec p2 = { -2,0,0 };
-	Sphere *n_sphere_o = new Sphere(p1, 1);
-	//App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
-	math::vec vec1[1536];
-	math::vec vec2[1536];
-	n_sphere_o->Triangulate(vec1, vec2, NULL, 1536, false);
-
-
-	// This will identify our vertex buffer
-	GLuint vertexbuffer;
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec1), vec1, GL_STATIC_DRAW);
-	// 1rst attribute buffer : vertices
-
-	GLuint normalbuffer;
-	glGenBuffers(1, &normalbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2), vec2, GL_STATIC_DRAW);
-
-
-
-
-
-
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(
-		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
-
-
-	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glVertexAttribPointer(
-		2,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
-
-
-	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, 1536); // Starting from vertex 0; 3 vertices total -> 1 triangle
-
-	glDisableVertexAttribArray(2);
-	glDisableVertexAttribArray(0);
-	//glDeleteBuffers(1, &vertexbuffer);
-	//glDeleteBuffers(1, &normalbuffer);
-
-
-	return update_status::UPDATE_CONTINUE;
-}
-
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
@@ -238,6 +170,63 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	///-------------------
 
 
+	vec p1 = { 2,0,0 };
+	vec p2 = { -2,0,0 };
+	Sphere *n_sphere_o = new Sphere(p1, 1);
+	//App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
+	math::vec vec1[1536];
+	math::vec vec2[1536];
+	n_sphere_o->Triangulate(vec1, vec2, NULL, 1536, false);
+
+
+	// This will identify our vertex buffer
+	GLuint vertexbuffer;
+	// Generate 1 buffer, put the resulting identifier in vertexbuffer
+	glGenBuffers(1, &vertexbuffer);
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec1), vec1, GL_STATIC_DRAW);
+	// 1rst attribute buffer : vertices
+
+	GLuint normalbuffer;
+	glGenBuffers(1, &normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2), vec2, GL_STATIC_DRAW);
+
+
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glVertexAttribPointer(
+		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
+
+
+	glEnableVertexAttribArray(2);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glVertexAttribPointer(
+		2,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+		3,                  // size
+		GL_FLOAT,           // type
+		GL_FALSE,           // normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
+
+
+	// Draw the triangle !
+	glDrawArrays(GL_TRIANGLES, 0, 1536); // Starting from vertex 0; 3 vertices total -> 1 triangle
+	
+	glDisableVertexAttribArray(2);
+	glDisableVertexAttribArray(0);
+	//glDeleteBuffers(1, &vertexbuffer);
+	//glDeleteBuffers(1, &normalbuffer);
 	
 
 	SDL_GL_SwapWindow(App->window->window);
@@ -259,20 +248,24 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
 		if (ImGui::Button("Wireframe Mode"))
+		{
 			wireframe = !wireframe;
-
-
-		if (ImGui::Button("Point Mode"))
-			points = !points;
-
-
+		}
 		if (wireframe == true)
 		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			
 			ImGui::SameLine(150);
 			ImGui::Text("on");
 		}
 		
+		if (ImGui::Button("Point Mode"))
+		{
+			points = !points;
+		}
+		if (wireframe == true)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
 		else if (points == true)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);

@@ -3,6 +3,7 @@
 #include "ModuleGui.h"
 #include "Module.h"
 #include"Imgui/imgui_impl_sdl.h"
+#include"Imgui\imgui_impl_sdl_gl3.h"
 #include"Imgui/imgui.h"
 #include"ModuleSceneIntro.h"
 #define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
@@ -20,9 +21,9 @@ ModuleGui::~ModuleGui()
 // Called before render is available
 bool ModuleGui::Start()
 {
-
-	ImGui_ImplSdlGL2_Init(App->window->window);
-
+	
+	//ImGui_ImplSdlGL2_Init(App->window->window);
+	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
 
 	SliderTest_Int_value = new int();
@@ -31,7 +32,8 @@ bool ModuleGui::Start()
 
 update_status ModuleGui::PreUpdate(float dt)
 {
-	ImGui_ImplSdlGL2_NewFrame(App->window->window);
+	//ImGui_ImplSdlGL2_NewFrame(App->window->window);
+	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 	return update_status::UPDATE_CONTINUE;
 }
 

@@ -29,6 +29,11 @@ bool ModulePlayer::Start()
 	return true;
 }
 
+bool ModulePlayer::Gui_Engine_Modules(float dt)
+{
+	return false;
+}
+
 // Unload assets
 bool ModulePlayer::CleanUp()
 {

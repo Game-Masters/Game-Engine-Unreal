@@ -21,7 +21,7 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
-
+	bool Gui_Engine_Modules(float dt);
 	void OnResize(int width, int height);
 
 public:

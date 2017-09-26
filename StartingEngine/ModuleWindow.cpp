@@ -114,7 +114,7 @@ bool ModuleWindow::CleanUp()
 bool ModuleWindow::Gui_Engine_Modules(float dt)
 {
 
-	if (ImGui::CollapsingHeader("Windows"))
+	if (ImGui::CollapsingHeader(name.c_str()))
 	{
 		//Button to change the name of the window
 		if (ImGui::InputText("Name of the window", str_p, 64, ImGuiInputTextFlags_EnterReturnsTrue)) {

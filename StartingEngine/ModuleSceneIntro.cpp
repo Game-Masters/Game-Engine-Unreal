@@ -101,6 +101,11 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+bool ModuleSceneIntro::Gui_Engine_Modules(float dt)
+{
+	return false;
+}
+
 
 
 

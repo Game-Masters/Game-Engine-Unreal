@@ -15,7 +15,7 @@ public:
 
 	bool Init();
 	bool CleanUp();
-
+	bool Gui_Engine_Modules(float dt);
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
@@ -28,7 +28,7 @@ public:
 	bool ResumeMusic();
 	void VolumeMusic(int volume);
 private:
-
+	int volume = 0;
 	Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
 };

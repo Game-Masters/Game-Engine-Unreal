@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include"Imgui/imgui_impl_sdl.h"
+#include"Winuser.h"
 
 #define MAX_KEYS 300
 
@@ -128,4 +129,27 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+bool ModuleInput::Gui_Engine_Modules(float dt)
+{
+
+	if (ImGui::CollapsingHeader(name.c_str()))
+	{
+	https://msdn.microsoft.com/en-us/library/windows/desktop/ms645597.aspx
+		UINT nDevices;
+		PRAWINPUTDEVICELIST pRawInputDeviceList;
+		GetRawInputDeviceList(NULL, &nDevices, sizeof(RAWINPUTDEVICELIST));
+		pRawInputDeviceList =  new RAWINPUTDEVICELIST();
+		
+		//GetRawInputDeviceInfo(pRawInputDeviceList, RIDI_DEVICENAME, &nDevices, Trying to find what goes here);
+
+		LOG("TRY");
+	
+
+		
+
+
+	}
+	return false;
 }

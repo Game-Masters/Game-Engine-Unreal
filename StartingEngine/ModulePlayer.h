@@ -17,6 +17,7 @@ public:
 	virtual ~ModulePlayer();
 
 	bool Start();
+	bool Gui_Engine_Modules(float dt);
 	update_status Update(float dt);
 	bool CleanUp();
 

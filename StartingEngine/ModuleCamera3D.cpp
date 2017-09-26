@@ -37,6 +37,19 @@ bool ModuleCamera3D::CleanUp()
 	return true;
 }
 
+bool ModuleCamera3D::Gui_Engine_Modules(float dt)
+{
+
+	if (ImGui::CollapsingHeader(name.c_str()))
+	{
+
+
+
+	}
+
+	return false;
+}
+
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {

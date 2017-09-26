@@ -68,6 +68,19 @@ bool ModuleAudio::CleanUp()
 	return true;
 }
 
+bool ModuleAudio::Gui_Engine_Modules(float dt)
+{
+
+	if (ImGui::CollapsingHeader(name.c_str()))
+	{
+
+		ImGui::SliderInt("Volume", &volume, 0, 100);
+
+
+	}
+	return false;
+}
+
 bool ModuleAudio::StopMusic()
 {
 	bool ret = true;

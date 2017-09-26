@@ -31,6 +31,7 @@ public:
 	update_status Update(float dt);
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	update_status PostUpdate(float dt);
+	bool Gui_Engine_Modules(float dt);
 
 	Sphere *n_sphere_one=nullptr;
 	Sphere *n_sphere_two=nullptr;

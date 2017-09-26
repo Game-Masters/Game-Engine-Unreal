@@ -174,9 +174,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	vec p2 = { -2,0,0 };
 	Sphere *n_sphere_o = new Sphere(p1, 1);
 	//App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
-	math::vec vec1[6144];
-	math::vec vec2[6144];
-	n_sphere_o->Triangulate(vec1, vec2, NULL, 6144, false);
+	math::vec vec1[1536];
+	math::vec vec2[1536];
+	n_sphere_o->Triangulate(vec1, vec2, NULL, 1536, false);
 
 
 	// This will identify our vertex buffer
@@ -221,7 +221,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 
 	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, 6144); // Starting from vertex 0; 3 vertices total -> 1 triangle
+	glDrawArrays(GL_TRIANGLES, 0, 1536); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(0);
 	//glDeleteBuffers(1, &vertexbuffer);

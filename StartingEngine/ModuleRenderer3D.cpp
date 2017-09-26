@@ -276,7 +276,6 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 		else
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
 		}
 	}
 	return false;

@@ -121,7 +121,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetViewMatrix());
-
+	/*
 	glLineWidth(2.0f);
 	glBegin(GL_TRIANGLES);
 	
@@ -183,36 +183,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glEnd();
 	glLineWidth(1.0f);
-	/*
-	static const GLfloat g_vertex_buffer_data[] = {
-		0.0f, -1.0f, 0.0f,
-		0.0f, -0.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
-
-	};
-	GLuint vertexbuffer;
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-	// 1rst attribute buffer : vertices
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(
-		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
-
-	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-	glDisableVertexAttribArray(0);
+	*/
 	
-	glDeleteBuffers(1, &vertexbuffer);*/
+	
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
@@ -227,10 +200,54 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 
 	// An array of 3 vectors which represents 3 vertices
-	/*static const GLfloat g_vertex_buffer_data[] = {
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
+	static const GLfloat g_vertex_buffer_data[] = {
+	0, 1, 0,
+	0, 0, 0,
+	1, 0, 0,
+
+	0, 1, 0,
+	1, 0, 0,
+	1, 1, 0,
+
+	1, 1, 0,
+	1, 0, 0,
+	1, 1, -1,
+
+	1, 0, 0,
+	1, 0, -1,
+	1, 1, -1,
+
+	0, 1, 0,
+	1, 1, 0,
+	1, 1, -1,
+
+	0, 1, 0,
+	1, 1, -1,
+	0, 1,-1,
+
+	0, 1, 0,
+	0, 0, -1,
+	0, 0, 0,
+
+	0, 1, 0,
+	0, 1, -1,
+	0, 0,-1,
+
+	1, 1, -1,
+	1, 0, -1,
+	0, 0, -1,
+
+	1, 1, -1,
+	0, 0, -1,
+	0, 1, -1,
+
+	0, 0, -0,
+	0, 0, -1,
+	1, 0, -1,
+
+	0, 0, 0,
+	1, 0, -1,
+	1, 0, 0,
 	};
 
 	// This will identify our vertex buffer
@@ -253,13 +270,13 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		(void*)0            // array buffer offset
 	);
 	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+	glDrawArrays(GL_TRIANGLES, 0, sizeof(g_vertex_buffer_data)); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
-	glDeleteBuffers(1, &vertexbuffer);*/
+	glDeleteBuffers(1, &vertexbuffer);
 
 	///-------------------
 
-
+	
 	vec p1 = { 2,0,0 };
 	vec p2 = { -2,0,0 };
 	Sphere *n_sphere_o = new Sphere(p1, 1);
@@ -270,11 +287,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 
 	// This will identify our vertex buffer
-	GLuint vertexbuffer;
+	GLuint vertexbuffer1;
 	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
+	glGenBuffers(1, &vertexbuffer1);
 	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer1);
 	// Give our vertices to OpenGL.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vec1), vec1, GL_STATIC_DRAW);
 	// 1rst attribute buffer : vertices
@@ -283,11 +300,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2), vec2, GL_STATIC_DRAW);
-
+	
 
 
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer1);
 	glVertexAttribPointer(
 		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
 		3,                  // size
@@ -308,7 +325,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		0,                  // stride
 		(void*)0            // array buffer offset
 	);
-
+	
 
 	// Draw the triangle !
 	glDrawArrays(GL_TRIANGLES, 0, 1536); // Starting from vertex 0; 3 vertices total -> 1 triangle

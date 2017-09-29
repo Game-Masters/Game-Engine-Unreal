@@ -834,7 +834,7 @@ void Sphere::ExtendRadiusToContain(const Sphere &sphere, float epsilon)
 	r = Max(r, requiredRadius);
 }
 
-int Sphere::Triangulate(vec *outPos, vec *outNormal, float2 *outUV, int numVertices, bool ccwIsFrontFacing) const
+int Sphere::Triangulate(std::vector<vec> *outPos, std::vector<vec> *outNormal, float2 *outUV, int numVertices, bool ccwIsFrontFacing) const
 {
 	assume(outPos);
 	assume(numVertices >= 24 && "At minimum, sphere triangulation will contain at least 8 triangles, which is 24 vertices, but fewer were specified!");
@@ -905,17 +905,28 @@ int Sphere::Triangulate(vec *outPos, vec *outNormal, float2 *outUV, int numVerti
 
 	for(size_t i = oldEnd, j = 0; i < temp.size(); ++i, ++j)
 	{
+
+		outPos->push_back((this->pos + TRIANGLE(temp[i]).a));
+		outPos->push_back((this->pos + TRIANGLE(temp[i]).b));
+		outPos->push_back((this->pos + TRIANGLE(temp[i]).c));
+
+		/*
 		outPos[3*j] = this->pos + TRIANGLE(temp[i]).a;
 		outPos[3*j+1] = this->pos + TRIANGLE(temp[i]).b;
 		outPos[3*j+2] = this->pos + TRIANGLE(temp[i]).c;
+		*/
 	}
 
 	if (outNormal)
 		for(size_t i = oldEnd, j = 0; i < temp.size(); ++i, ++j)
 		{
-			outNormal[3*j] = TRIANGLE(temp[i]).a.Normalized();
+			outNormal->push_back(TRIANGLE(temp[i]).a.Normalized());
+			outNormal->push_back(TRIANGLE(temp[i]).b.Normalized());
+			outNormal->push_back(TRIANGLE(temp[i]).c.Normalized());
+
+			/*outNormal[3*j] = TRIANGLE(temp[i]).a.Normalized();
 			outNormal[3*j+1] = TRIANGLE(temp[i]).b.Normalized();
-			outNormal[3*j+2] = TRIANGLE(temp[i]).c.Normalized();
+			outNormal[3*j+2] = TRIANGLE(temp[i]).c.Normalized();*/
 		}
 
 	if (outUV)

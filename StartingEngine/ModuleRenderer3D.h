@@ -24,6 +24,7 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	void OnResize(int width, int height);
 
+	Sphere* sphere;
 public:
 	
 	Light lights[MAX_LIGHTS];

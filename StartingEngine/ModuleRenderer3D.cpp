@@ -199,6 +199,111 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 
+	GLuint vertexbuffer;
+	GLuint normalbuffer;
+	std::vector<vec> vect;
+	std::vector<vec> norms;
+
+
+	std::vector<unsigned int> indices;
+	GLuint my_indices = 0;
+	std::vector<GLfloat> cube_vertices;
+
+
+	GLuint vao;
+	GLuint vbo;
+	GLuint ibo;
+
+	sphere = new Sphere({ 0,0,0 }, 3);
+	sphere->Triangulate(&vect, &norms, NULL, 6144, false);
+
+	glGenBuffers(1, &vertexbuffer);
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, vect.size() * sizeof(float) * 3, &vect[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &normalbuffer);
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, norms.size() * sizeof(float) * 3, &norms[0], GL_STATIC_DRAW);
+
+
+	indices = {
+		//trying to make our cube
+		// front
+		0, 1, 2,
+		0, 2, 3,
+		/*
+		// top
+		1, 5, 6,
+		6, 2, 1,
+		// back
+		7, 6, 5,
+		5, 4, 7,
+		// bottom
+		4, 0, 3,
+		3, 7, 4,
+		// left
+		4, 5, 1,
+		1, 0, 4,
+		// right
+		3, 2, 6,
+		6, 7, 3,
+		*/
+	};
+	cube_vertices = {
+
+		//our cube
+		0, 1, 0,
+		0, 0, 0,
+		1, 0, 0,
+		1, 1, 0,
+
+		0,1,1,
+		1,1,1,
+		0,0,-1,
+		1,0,1,
+		
+	//other cube
+		/*
+		// front
+		2.0, -1.0,  1.0,
+		4.0, -1.0,  1.0,
+		4.0,  1.0,  1.0,
+		2.0,  1.0,  1.0,
+		// back
+		2.0, -1.0, -1.0,
+		4.0, -1.0, -1.0,
+		4.0,  1.0, -1.0,
+		2.0,  1.0, -1.0,
+		*/
+	};
+
+
+
+	glGenBuffers(1, (GLuint*)&vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *cube_vertices.size() * 3, &cube_vertices[0], GL_STATIC_DRAW);
+
+	// Buffer for indices
+	glGenBuffers(1, (GLuint*)&my_indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indices.size(), &indices[0], GL_STATIC_DRAW);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+
+
+
+
+
+	
 	// An array of 3 vectors which represents 3 vertices
 	static const GLfloat g_vertex_buffer_data[] = {
 	0, 1, 0,
@@ -251,7 +356,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	};
 
 	// This will identify our vertex buffer
-	GLuint vertexbuffer;
+//	GLuint vertexbuffer;
 	// Generate 1 buffer, put the resulting identifier in vertexbuffer
 	glGenBuffers(1, &vertexbuffer);
 	// The following commands will talk about our 'vertexbuffer' buffer
@@ -273,7 +378,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(g_vertex_buffer_data)); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
 	glDeleteBuffers(1, &vertexbuffer);
-
+	
 	///-------------------
 
 	
@@ -281,9 +386,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	vec p2 = { -2,0,0 };
 	Sphere *n_sphere_o = new Sphere(p1, 1);
 	//App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
-	math::vec vec1[1536];
-	math::vec vec2[1536];
-	n_sphere_o->Triangulate(vec1, vec2, NULL, 1536, false);
+	std::vector<vec> vec1;
+	std::vector<vec> vec2;
+	n_sphere_o->Triangulate(&vec1, &vec2, NULL, 1536, false);
 
 
 	// This will identify our vertex buffer
@@ -293,13 +398,13 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	// The following commands will talk about our 'vertexbuffer' buffer
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer1);
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec1), vec1, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vec1.size() * sizeof(float) * 3, &vec1[0], GL_STATIC_DRAW);
 	// 1rst attribute buffer : vertices
 
-	GLuint normalbuffer;
+//	GLuint normalbuffer;
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vec2), vec2, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
 	
 
 
@@ -335,7 +440,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	//glDeleteBuffers(1, &vertexbuffer);
 	//glDeleteBuffers(1, &normalbuffer);
 	
-
+	
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }

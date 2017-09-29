@@ -48,8 +48,6 @@ bool ModuleSceneIntro::Start()
 
 
 	
-
-	
 	return ret;
 }
 

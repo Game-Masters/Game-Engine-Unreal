@@ -37,6 +37,12 @@ public:
 	Sphere *n_sphere_two=nullptr;
 
 
+	
+	vec* temp;
+
+
+
+
 public:
 
 	PhysBody3D*PlainGame_Body;

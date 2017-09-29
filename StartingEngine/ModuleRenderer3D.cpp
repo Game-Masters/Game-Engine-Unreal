@@ -199,43 +199,23 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 
-	GLuint vertexbuffer;
-	GLuint normalbuffer;
-	std::vector<vec> vect;
-	std::vector<vec> norms;
+
+	std::vector<vec> vect_v;
+	std::vector<vec> norm_v;
 
 
-	std::vector<unsigned int> indices;
+	std::vector<unsigned int> index;
 	GLuint my_indices = 0;
-	std::vector<GLfloat> cube_vertices;
-
-
-	GLuint vao;
-	GLuint vbo;
-	GLuint ibo;
+	std::vector<GLfloat> cube_vert;	
+	GLuint my_vertex;
 
 	sphere = new Sphere({ 0,0,0 }, 3);
-	sphere->Triangulate(&vect, &norms, NULL, 6144, false);
+	sphere->Triangulate(&vect_v, &norm_v, NULL, 6144, false);
 
-	glGenBuffers(1, &vertexbuffer);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, vect.size() * sizeof(float) * 3, &vect[0], GL_STATIC_DRAW);
-
-	glGenBuffers(1, &normalbuffer);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, norms.size() * sizeof(float) * 3, &norms[0], GL_STATIC_DRAW);
-
-
-	indices = {
-		//trying to make our cube
+	index = {
 		// front
 		0, 1, 2,
-		0, 2, 3,
-		/*
+		2, 3, 0,
 		// top
 		1, 5, 6,
 		6, 2, 1,
@@ -251,52 +231,33 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		// right
 		3, 2, 6,
 		6, 7, 3,
-		*/
 	};
-	cube_vertices = {
-
-		//our cube
-		0, 1, 0,
-		0, 0, 0,
-		1, 0, 0,
-		1, 1, 0,
-
-		0,1,1,
-		1,1,1,
-		0,0,-1,
-		1,0,1,
-		
-	//other cube
-		/*
+	cube_vert = {
 		// front
-		2.0, -1.0,  1.0,
-		4.0, -1.0,  1.0,
-		4.0,  1.0,  1.0,
-		2.0,  1.0,  1.0,
+		7.0, 4.0,  6.0,
+		9.0, 4.0,  6.0,
+		9.0,  6.0,  6.0,
+		7.0,  6.0,  6.0,
 		// back
-		2.0, -1.0, -1.0,
-		4.0, -1.0, -1.0,
-		4.0,  1.0, -1.0,
-		2.0,  1.0, -1.0,
-		*/
+		7.0, 4.0, 4.0,
+		9.0, 4.0, 4.0,
+		9.0,  6.0, 4.0,
+		7.0,  6.0, 4.0,
 	};
 
 
 
-	glGenBuffers(1, (GLuint*)&vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *cube_vertices.size() * 3, &cube_vertices[0], GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*)&my_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *cube_vert.size() * 3, &cube_vert[0], GL_STATIC_DRAW);
 
 	// Buffer for indices
 	glGenBuffers(1, (GLuint*)&my_indices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * indices.size(), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * index.size(), &index[0], GL_STATIC_DRAW);
+
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 
 
@@ -357,6 +318,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	// This will identify our vertex buffer
 //	GLuint vertexbuffer;
+
+	GLuint vertexbuffer;
+	GLuint normalbuffer;
 	// Generate 1 buffer, put the resulting identifier in vertexbuffer
 	glGenBuffers(1, &vertexbuffer);
 	// The following commands will talk about our 'vertexbuffer' buffer

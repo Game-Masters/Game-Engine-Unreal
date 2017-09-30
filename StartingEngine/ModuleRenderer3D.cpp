@@ -184,20 +184,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glEnd();
 	glLineWidth(1.0f);
 	*/
-	
-	
-	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-
-	for(uint i = 0; i < MAX_LIGHTS; ++i)
-		lights[i].Render();
-
-	return UPDATE_CONTINUE;
-}
-
-// PostUpdate present buffer to screen
-update_status ModuleRenderer3D::PostUpdate(float dt)
-{
 
 
 	std::vector<vec> vect_v;
@@ -206,7 +192,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	std::vector<unsigned int> index;
 	GLuint my_indices = 0;
-	std::vector<GLfloat> cube_vert;	
+	std::vector<GLfloat> cube_vert;
 	GLuint my_vertex;
 
 	sphere = new Sphere({ 0,0,0 }, 3);
@@ -264,60 +250,60 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 
 
-	
+
 	// An array of 3 vectors which represents 3 vertices
 	static const GLfloat g_vertex_buffer_data[] = {
-	0, 1, 0,
-	0, 0, 0,
-	1, 0, 0,
+		0, 1, 0,
+		0, 0, 0,
+		1, 0, 0,
 
-	0, 1, 0,
-	1, 0, 0,
-	1, 1, 0,
+		0, 1, 0,
+		1, 0, 0,
+		1, 1, 0,
 
-	1, 1, 0,
-	1, 0, 0,
-	1, 1, -1,
+		1, 1, 0,
+		1, 0, 0,
+		1, 1, -1,
 
-	1, 0, 0,
-	1, 0, -1,
-	1, 1, -1,
+		1, 0, 0,
+		1, 0, -1,
+		1, 1, -1,
 
-	0, 1, 0,
-	1, 1, 0,
-	1, 1, -1,
+		0, 1, 0,
+		1, 1, 0,
+		1, 1, -1,
 
-	0, 1, 0,
-	1, 1, -1,
-	0, 1,-1,
+		0, 1, 0,
+		1, 1, -1,
+		0, 1,-1,
 
-	0, 1, 0,
-	0, 0, -1,
-	0, 0, 0,
+		0, 1, 0,
+		0, 0, -1,
+		0, 0, 0,
 
-	0, 1, 0,
-	0, 1, -1,
-	0, 0,-1,
+		0, 1, 0,
+		0, 1, -1,
+		0, 0,-1,
 
-	1, 1, -1,
-	1, 0, -1,
-	0, 0, -1,
+		1, 1, -1,
+		1, 0, -1,
+		0, 0, -1,
 
-	1, 1, -1,
-	0, 0, -1,
-	0, 1, -1,
+		1, 1, -1,
+		0, 0, -1,
+		0, 1, -1,
 
-	0, 0, -0,
-	0, 0, -1,
-	1, 0, -1,
+		0, 0, -0,
+		0, 0, -1,
+		1, 0, -1,
 
-	0, 0, 0,
-	1, 0, -1,
-	1, 0, 0,
+		0, 0, 0,
+		1, 0, -1,
+		1, 0, 0,
 	};
 
 	// This will identify our vertex buffer
-//	GLuint vertexbuffer;
+	//	GLuint vertexbuffer;
 
 	GLuint vertexbuffer;
 	GLuint normalbuffer;
@@ -341,11 +327,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	// Draw the triangle !
 	glDrawArrays(GL_TRIANGLES, 0, sizeof(g_vertex_buffer_data)); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
-	glDeleteBuffers(1, &vertexbuffer);
-	
+
+
 	///-------------------
 
-	
+
 	vec p1 = { 2,0,0 };
 	vec p2 = { -2,0,0 };
 	Sphere *n_sphere_o = new Sphere(p1, 1);
@@ -365,11 +351,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	glBufferData(GL_ARRAY_BUFFER, vec1.size() * sizeof(float) * 3, &vec1[0], GL_STATIC_DRAW);
 	// 1rst attribute buffer : vertices
 
-//	GLuint normalbuffer;
+	//	GLuint normalbuffer;
 	glGenBuffers(1, &normalbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
-	
+
 
 
 	glEnableVertexAttribArray(0);
@@ -394,16 +380,31 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		0,                  // stride
 		(void*)0            // array buffer offset
 	);
-	
+
 
 	// Draw the triangle !
 	glDrawArrays(GL_TRIANGLES, 0, 1536); // Starting from vertex 0; 3 vertices total -> 1 triangle
-	
+
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(0);
-	//glDeleteBuffers(1, &vertexbuffer);
-	//glDeleteBuffers(1, &normalbuffer);
+
+
 	
+	
+	// light 0 on cam pos
+	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+
+	for(uint i = 0; i < MAX_LIGHTS; ++i)
+		lights[i].Render();
+
+	return UPDATE_CONTINUE;
+}
+
+// PostUpdate present buffer to screen
+update_status ModuleRenderer3D::PostUpdate(float dt)
+{
+
+
 	
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;

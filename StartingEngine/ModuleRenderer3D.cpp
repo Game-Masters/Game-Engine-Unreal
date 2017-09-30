@@ -165,7 +165,68 @@ bool ModuleRenderer3D::Init()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * index.size(), &index[0], GL_STATIC_DRAW);
 
 
+	// An array of 3 vectors which represents 3 vertices
+	g_vertex_buffer_data = {
+		0, 1, 0,
+		0, 0, 0,
+		1, 0, 0,
 
+		0, 1, 0,
+		1, 0, 0,
+		1, 1, 0,
+
+		1, 1, 0,
+		1, 0, 0,
+		1, 1, -1,
+
+		1, 0, 0,
+		1, 0, -1,
+		1, 1, -1,
+
+		0, 1, 0,
+		1, 1, 0,
+		1, 1, -1,
+
+		0, 1, 0,
+		1, 1, -1,
+		0, 1,-1,
+
+		0, 1, 0,
+		0, 0, -1,
+		0, 0, 0,
+
+		0, 1, 0,
+		0, 1, -1,
+		0, 0,-1,
+
+		1, 1, -1,
+		1, 0, -1,
+		0, 0, -1,
+
+		1, 1, -1,
+		0, 0, -1,
+		0, 1, -1,
+
+		0, 0, -0,
+		0, 0, -1,
+		1, 0, -1,
+
+		0, 0, 0,
+		1, 0, -1,
+		1, 0, 0,
+	};
+
+	// This will identify our vertex buffer
+	//	GLuint vertexbuffer;
+
+
+	// Generate 1 buffer, put the resulting identifier in vertexbuffer
+	glGenBuffers(1, &vertexbuffer);
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) *g_vertex_buffer_data.size() * 3, &g_vertex_buffer_data[0], GL_STATIC_DRAW);
+	// 1rst attribute buffer : vertices
 
 
 
@@ -278,68 +339,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 
 	
-	// An array of 3 vectors which represents 3 vertices
-	g_vertex_buffer_data = {
-		0, 1, 0,
-		0, 0, 0,
-		1, 0, 0,
 
-		0, 1, 0,
-		1, 0, 0,
-		1, 1, 0,
-
-		1, 1, 0,
-		1, 0, 0,
-		1, 1, -1,
-
-		1, 0, 0,
-		1, 0, -1,
-		1, 1, -1,
-
-		0, 1, 0,
-		1, 1, 0,
-		1, 1, -1,
-
-		0, 1, 0,
-		1, 1, -1,
-		0, 1,-1,
-
-		0, 1, 0,
-		0, 0, -1,
-		0, 0, 0,
-
-		0, 1, 0,
-		0, 1, -1,
-		0, 0,-1,
-
-		1, 1, -1,
-		1, 0, -1,
-		0, 0, -1,
-
-		1, 1, -1,
-		0, 0, -1,
-		0, 1, -1,
-
-		0, 0, -0,
-		0, 0, -1,
-		1, 0, -1,
-
-		0, 0, 0,
-		1, 0, -1,
-		1, 0, 0,
-	};
-
-	// This will identify our vertex buffer
-	//	GLuint vertexbuffer;
-
-
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) *g_vertex_buffer_data.size() * 3, &g_vertex_buffer_data[0], GL_STATIC_DRAW);
-	// 1rst attribute buffer : vertices
 
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -411,6 +411,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+
+
 
 
 	

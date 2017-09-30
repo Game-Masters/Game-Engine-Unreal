@@ -31,9 +31,13 @@ public:
 
 
 	std::vector<unsigned int> index;
+	std::vector<unsigned int> planeindex;
 	GLuint my_indices = 0;
+	GLuint plane_indices = 0;
 	std::vector<GLfloat> cube_vert;
+	std::vector<GLfloat> plane_vert;
 	GLuint my_vertex;
+	GLuint plane_vertex;
 	GLuint vertexbuffer;
 	GLuint normalbuffer;
 	Sphere *n_sphere_o = nullptr;

@@ -140,6 +140,20 @@ bool ModuleRenderer3D::Init()
 		3, 2, 6,
 		6, 7, 3,
 	};
+	planeindex =
+	{
+		// bottom
+		0, 1, 2,
+		2, 3, 0,
+	};
+	plane_vert = 
+	{
+		100,0,100,
+		100,0,-100,
+		-100,0,-100,
+		-100,0,100,
+
+	};
 	cube_vert = {
 		// front
 		7.0, 4.0,  6.0,
@@ -163,6 +177,16 @@ bool ModuleRenderer3D::Init()
 	glGenBuffers(1, (GLuint*)&my_indices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * index.size(), &index[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*)&plane_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, plane_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *plane_vert.size() * 3, &plane_vert[0], GL_STATIC_DRAW);
+
+	// Buffer for indices
+	glGenBuffers(1, (GLuint*)&plane_indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, plane_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * planeindex.size(), &planeindex[0], GL_STATIC_DRAW);
+
 
 
 	// An array of 3 vectors which represents 3 vertices
@@ -334,6 +358,15 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+
+
+	glBindBuffer(GL_ARRAY_BUFFER, plane_vertex);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, plane_indices);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+
 
 
 

@@ -349,7 +349,33 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 
 	
+	glLineWidth(2.0f);
+	glBegin(GL_LINES);
+	glColor3f(0, 1, 0);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(0.f, 3.f, 0.f);
 
+	glEnd();
+	glColor3f(1, 1, 1);
+
+	glLineWidth(2.0f);
+	glBegin(GL_LINES);
+	glColor3f(1, 0, 0);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(3.f, 0.f, 0.f);
+
+	glEnd();
+	glColor3f(1, 1, 1);
+
+
+	glLineWidth(2.0f);
+	glBegin(GL_LINES);
+	glColor3f(0, 0, 1);
+	glVertex3f(0.f, 0.f, 0.f);
+	glVertex3f(0.f, 0.f, 3.f);
+
+	glEnd();
+	glColor3f(1, 1, 1);
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);

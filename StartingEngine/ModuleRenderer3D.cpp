@@ -107,6 +107,83 @@ bool ModuleRenderer3D::Init()
 	glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	
+	//---------------------
+
+	sphere = new Sphere({ 0,0,0 }, 3);
+	sphere->Triangulate(&vect_v, &norm_v, NULL, 6144, false);
+
+	vec p1 = { 2,0,0 };
+	vec p2 = { -2,0,0 };
+	n_sphere_o = new Sphere(p1, 1);
+	//App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
+
+	n_sphere_o->Triangulate(&vec1, &vec2, NULL, 1536, false);
+
+
+	index = {
+		// front
+		0, 1, 2,
+		2, 3, 0,
+		// top
+		1, 5, 6,
+		6, 2, 1,
+		// back
+		7, 6, 5,
+		5, 4, 7,
+		// bottom
+		4, 0, 3,
+		3, 7, 4,
+		// left
+		4, 5, 1,
+		1, 0, 4,
+		// right
+		3, 2, 6,
+		6, 7, 3,
+	};
+	cube_vert = {
+		// front
+		7.0, 4.0,  6.0,
+		9.0, 4.0,  6.0,
+		9.0,  6.0,  6.0,
+		7.0,  6.0,  6.0,
+		// back
+		7.0, 4.0, 4.0,
+		9.0, 4.0, 4.0,
+		9.0,  6.0, 4.0,
+		7.0,  6.0, 4.0,
+	};
+
+
+
+	glGenBuffers(1, (GLuint*)&my_vertex);
+	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *cube_vert.size() * 3, &cube_vert[0], GL_STATIC_DRAW);
+
+	// Buffer for indices
+	glGenBuffers(1, (GLuint*)&my_indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * index.size(), &index[0], GL_STATIC_DRAW);
+
+
+
+
+
+
+
+	// This will identify our vertex buffer
+
+	// Generate 1 buffer, put the resulting identifier in vertexbuffer
+	glGenBuffers(1, &vertexbuffer1);
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer1);
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, vec1.size() * sizeof(float) * 3, &vec1[0], GL_STATIC_DRAW);
+	// 1rst attribute buffer : vertices
+
+	//	GLuint normalbuffer;
+	glGenBuffers(1, &normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
 
 
 
@@ -186,62 +263,13 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	*/
 
 
-	std::vector<vec> vect_v;
-	std::vector<vec> norm_v;
-
-
-	std::vector<unsigned int> index;
-	GLuint my_indices = 0;
-	std::vector<GLfloat> cube_vert;
-	GLuint my_vertex;
-
-	sphere = new Sphere({ 0,0,0 }, 3);
-	sphere->Triangulate(&vect_v, &norm_v, NULL, 6144, false);
-
-	index = {
-		// front
-		0, 1, 2,
-		2, 3, 0,
-		// top
-		1, 5, 6,
-		6, 2, 1,
-		// back
-		7, 6, 5,
-		5, 4, 7,
-		// bottom
-		4, 0, 3,
-		3, 7, 4,
-		// left
-		4, 5, 1,
-		1, 0, 4,
-		// right
-		3, 2, 6,
-		6, 7, 3,
-	};
-	cube_vert = {
-		// front
-		7.0, 4.0,  6.0,
-		9.0, 4.0,  6.0,
-		9.0,  6.0,  6.0,
-		7.0,  6.0,  6.0,
-		// back
-		7.0, 4.0, 4.0,
-		9.0, 4.0, 4.0,
-		9.0,  6.0, 4.0,
-		7.0,  6.0, 4.0,
-	};
+	
 
 
 
-	glGenBuffers(1, (GLuint*)&my_vertex);
 	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *cube_vert.size() * 3, &cube_vert[0], GL_STATIC_DRAW);
-
-	// Buffer for indices
-	glGenBuffers(1, (GLuint*)&my_indices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * index.size(), &index[0], GL_STATIC_DRAW);
-
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
@@ -249,10 +277,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 
 
-
-
+	
 	// An array of 3 vectors which represents 3 vertices
-	static const GLfloat g_vertex_buffer_data[] = {
+	g_vertex_buffer_data = {
 		0, 1, 0,
 		0, 0, 0,
 		1, 0, 0,
@@ -305,15 +332,15 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	// This will identify our vertex buffer
 	//	GLuint vertexbuffer;
 
-	GLuint vertexbuffer;
-	GLuint normalbuffer;
+
 	// Generate 1 buffer, put the resulting identifier in vertexbuffer
 	glGenBuffers(1, &vertexbuffer);
 	// The following commands will talk about our 'vertexbuffer' buffer
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) *g_vertex_buffer_data.size() * 3, &g_vertex_buffer_data[0], GL_STATIC_DRAW);
 	// 1rst attribute buffer : vertices
+
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glVertexAttribPointer(
@@ -325,36 +352,17 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		(void*)0            // array buffer offset
 	);
 	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, sizeof(g_vertex_buffer_data)); // Starting from vertex 0; 3 vertices total -> 1 triangle
+	glDrawArrays(GL_TRIANGLES, g_vertex_buffer_data[0], sizeof(GLfloat) *g_vertex_buffer_data.size() * 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
-
+	
 
 	///-------------------
 
 
-	vec p1 = { 2,0,0 };
-	vec p2 = { -2,0,0 };
-	Sphere *n_sphere_o = new Sphere(p1, 1);
-	//App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
-	std::vector<vec> vec1;
-	std::vector<vec> vec2;
-	n_sphere_o->Triangulate(&vec1, &vec2, NULL, 1536, false);
 
 
-	// This will identify our vertex buffer
-	GLuint vertexbuffer1;
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer1);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer1);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, vec1.size() * sizeof(float) * 3, &vec1[0], GL_STATIC_DRAW);
-	// 1rst attribute buffer : vertices
 
-	//	GLuint normalbuffer;
-	glGenBuffers(1, &normalbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
+
 
 
 
@@ -414,6 +422,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
+	delete sphere;
+	delete n_sphere_o;
 
 	SDL_GL_DeleteContext(context);
 

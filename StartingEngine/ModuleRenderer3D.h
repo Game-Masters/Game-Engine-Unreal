@@ -24,7 +24,26 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	void OnResize(int width, int height);
 
+	//-----------
 	Sphere* sphere;
+	std::vector<vec> vect_v;
+	std::vector<vec> norm_v;
+
+
+	std::vector<unsigned int> index;
+	GLuint my_indices = 0;
+	std::vector<GLfloat> cube_vert;
+	GLuint my_vertex;
+	GLuint vertexbuffer;
+	GLuint normalbuffer;
+	Sphere *n_sphere_o = nullptr;
+	std::vector<vec> vec1;
+	std::vector<vec> vec2;
+	GLuint vertexbuffer1;
+
+	std::vector<GLfloat> g_vertex_buffer_data;
+
+
 public:
 	
 	Light lights[MAX_LIGHTS];

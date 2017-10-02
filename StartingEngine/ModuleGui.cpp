@@ -40,15 +40,15 @@ update_status ModuleGui::PreUpdate(float dt)
 update_status ModuleGui::Update(float dt)
 {
 
+	
 
-	bool test = false;
 	ImGui::Begin("Info");
 	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
 		(*item)->Gui_Engine_Modules(dt);
 	}
+	
 	ImGui::End();
-	test = App->scene_intro->n_sphere_one->Intersects(*App->scene_intro->n_sphere_two);
-
+	
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 		show_gui_engine = !show_gui_engine;
@@ -61,7 +61,7 @@ update_status ModuleGui::Update(float dt)
 			if (ImGui::BeginMenu("Menu"))
 			{
 				
-				if (ImGui::MenuItem("Show/Hide menu")) { show_gui_engine = !show_gui_engine; }
+				
 				if (ImGui::MenuItem("Console")) { show_console = !show_console; }
 				if (ImGui::MenuItem("Performance")) { show_performance = !show_performance; }
 				if (ImGui::MenuItem("Close App")){button_exit_app = true;}
@@ -162,14 +162,7 @@ update_status ModuleGui::Update(float dt)
 		}
 		
 	
-
-		ImGui::Text("Two Spheres intersecting");
-		ImGui::SliderFloat("s1", &App->scene_intro->n_sphere_one->pos.x, 2.0, -2.0);
-		ImGui::SameLine(350);
-		ImGui::Checkbox("Inters", &test);
-		ImGui::SliderFloat("s2", &App->scene_intro->n_sphere_two->pos.x, 2.0, -2.0);
-		ImGui::SameLine(350);
-		ImGui::Checkbox("Inters", &test);
+		
 
 		
 		ImGui::End();

@@ -79,25 +79,25 @@ bool ModuleRenderer3D::Init()
 		
 		GLfloat LightModelAmbient[] = {0.0f, 0.0f, 0.0f, 1.0f};
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
-		
+		/*
 		lights[0].ref = GL_LIGHT0;
 		lights[0].ambient.Set(0.5f, 0.5f, 0.5f, 1.0f);
 		lights[0].diffuse.Set(.5f, .5f, 0.5f, 1.0f);
 		lights[0].SetPos(1.0f, 0.0f, 2.5f);
 		lights[0].Init();
-		
+		*/
 		/*GLfloat MaterialAmbient[] = {255.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MaterialAmbient);
 
 		GLfloat MaterialDiffuse[] = {255.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);*/
-		
+		/*
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
-
+		*/
 	}
 
 	// Projection matrix for
@@ -108,7 +108,7 @@ bool ModuleRenderer3D::Init()
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	
 	//---------------------
-
+	/*
 	sphere = new Sphere({ 0,0,0 }, 3);
 	sphere->Triangulate(&vect_v, &norm_v, NULL, 6144, false);
 
@@ -270,7 +270,7 @@ bool ModuleRenderer3D::Init()
 	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
 	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
 
-
+	*/
 
 	return ret;
 }
@@ -348,7 +348,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	*/
 
 
-	
+	/*
 	glLineWidth(2.0f);
 	glBegin(GL_LINES);
 	glColor3f(0, 1, 0);
@@ -463,7 +463,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
-
+*/
 	return UPDATE_CONTINUE;
 }
 
@@ -483,8 +483,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
-	delete sphere;
-	delete n_sphere_o;
+	//delete sphere;
+	//delete n_sphere_o;
 
 	SDL_GL_DeleteContext(context);
 

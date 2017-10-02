@@ -22,6 +22,7 @@ public:
 	void OnResize(int width, int height);
 
 	//-----------
+	/*
 	Sphere* sphere;
 	std::vector<vec> vect_v;
 	std::vector<vec> norm_v;
@@ -43,7 +44,7 @@ public:
 	GLuint vertexbuffer1;
 
 	std::vector<GLfloat> g_vertex_buffer_data;
-
+	*/
 
 public:
 	

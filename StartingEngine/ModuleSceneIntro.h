@@ -5,13 +5,16 @@
 #include "Geometry.h"
 #include"j1PerfTimer.h"
 #include"Imgui/imgui.h"
-
+#include "Light.h"
 #include<vector>
 #include"MathGeoLib\MathGeoLib.h"
 #include"MathGeoLib\MathBuildConfig.h"
+#include "../StartingEngine/Glew/include/glew.h"
+#include "SDL\include\SDL_opengl.h"
 
 #define MAX_SNAKE 2
 #define MAX_CUBE 50
+#define MAX_LIGHTS 8
 struct PhysBody3D;
 struct PhysMotor3D;
 struct btHingeConstraint;
@@ -35,7 +38,30 @@ public:
 
 	Sphere *n_sphere_one=nullptr;
 	Sphere *n_sphere_two=nullptr;
+	//
+	Light lights[MAX_LIGHTS];
+	Sphere* sphere;
+	std::vector<vec> vect_v;
+	std::vector<vec> norm_v;
 
+
+	std::vector<unsigned int> index;
+	std::vector<unsigned int> planeindex;
+	GLuint my_indices = 0;
+	GLuint plane_indices = 0;
+	std::vector<GLfloat> cube_vert;
+	std::vector<GLfloat> plane_vert;
+	GLuint my_vertex;
+	GLuint plane_vertex;
+	GLuint vertexbuffer;
+	GLuint normalbuffer;
+	Sphere *n_sphere_o = nullptr;
+	std::vector<vec> vec1;
+	std::vector<vec> vec2;
+	GLuint vertexbuffer1;
+
+	std::vector<GLfloat> g_vertex_buffer_data;
+	//
 
 	
 	vec* temp;

@@ -193,7 +193,8 @@ bool ModuleSceneIntro::Start()
 	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
 
 
-	
+
+
 	return ret;
 }
 

@@ -17,6 +17,12 @@
 #include"Parson_JSON.h"
 #include <list>
 #include <vector>
+#include "../StartingEngine/Assimp/include/assimp/cimport.h"
+#include "../StartingEngine/Assimp/include/assimp/scene.h"
+#include "../StartingEngine/Assimp/include/assimp/postprocess.h"
+#include "../StartingEngine/Assimp/include/assimp/cfileio.h"
+
+#pragma comment (lib, "../StartingEngine/Assimp/include/libx86/assimp.lib")
 class Application
 {
 public:

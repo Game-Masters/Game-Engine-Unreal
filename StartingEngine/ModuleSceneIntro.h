@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "p2DynArray.h"
 #include "Globals.h"
-#include "Primitive.h"
+#include "Geometry.h"
 #include"j1PerfTimer.h"
 #include"Imgui/imgui.h"
 
@@ -47,19 +47,6 @@ public:
 
 	PhysBody3D*PlainGame_Body;
 
-	std::vector<Cube_P>MyCubeMap;
-	std::vector<PhysBody3D*>MyPhysbodyCubeMap;
-
-	std::vector<Sphere_P>MySphereObj;
-	std::vector<PhysBody3D*>MyPhysbodySphereobj;
-
-
-	std::vector<Cube_P>MyCubeObj;
-	std::vector<PhysBody3D*>MyPhysbodyCubeobj;
-
-
-	std::vector<Cube_P>MySensorCube;
-	std::vector<PhysBody3D*>MySensorCubeBody;
 
 
 };

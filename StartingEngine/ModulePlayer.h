@@ -23,7 +23,7 @@ public:
 
 
 public:
-	Cube_P n;
+
 	PhysBody3D* turret;
 
 	PhysBody3D* canonbody;

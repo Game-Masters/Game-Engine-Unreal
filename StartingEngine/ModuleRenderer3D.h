@@ -4,9 +4,6 @@
 #include "glmath.h"
 #include "Light.h"
 #include "../StartingEngine/Glew/include/glew.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
-#include <shellapi.h>
 #include "SDL\include\SDL_opengl.h"
 
 #define MAX_LIGHTS 8

@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModulePlayer.h"
-#include "Primitive.h"
+#include "Geometry.h"
 
 #include "PhysBody3D.h"
 #include "ModuleSceneIntro.h"

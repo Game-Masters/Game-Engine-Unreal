@@ -6,6 +6,9 @@
 #include"Imgui\imgui_impl_sdl_gl3.h"
 #include"Imgui/imgui.h"
 #include"ModuleSceneIntro.h"
+
+
+
 #define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 
 ModuleGui::ModuleGui(bool start_enabled) : Module(start_enabled), frames_on_last_update(100)
@@ -25,6 +28,9 @@ bool ModuleGui::Start()
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
+
+	// Stream log messages to Debug window
+
 
 	SliderTest_Int_value = new int();
 	return true;

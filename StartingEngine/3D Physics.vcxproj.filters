@@ -34,6 +34,9 @@
     <Filter Include="Sources\Modules\JSON">
       <UniqueIdentifier>{5dedd1bc-67af-4b1e-aa8f-ac1d6e868b7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Assimp">
+      <UniqueIdentifier>{f30fb1a1-db01-4277-bca8-290d13c92a10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -327,6 +330,117 @@
     <ClInclude Include="Geometry.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\ai_assert.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\anim.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\camera.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\cexport.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\cfileio.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\cimport.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\color4.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\DefaultIOStream.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\DefaultIOSystem.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\DefaultLogger.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\Defines.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\defs.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\Exporter.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\Importer.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\importerdesc.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\IOStream.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\IOSystem.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\light.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\Logger.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\LogStream.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\material.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\matrix3x3.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\matrix4x4.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\mesh.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\metadata.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\NullLogger.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\postprocess.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\ProgressHandler.hpp">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\quaternion.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\scene.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\SceneCombiner.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\texture.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\types.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\vector2.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\vector3.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\version.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="Assimp\include\assimp\config.h">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -543,6 +657,33 @@
     </None>
     <None Include="MathGeoLib\emscripten\library_system.js">
       <Filter>Sources\Modules\MathGeoLib\Source</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\.editorconfig">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\color4.inl">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\config.h.in">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\material.inl">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\matrix3x3.inl">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\matrix4x4.inl">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\quaternion.inl">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\vector2.inl">
+      <Filter>Sources\Modules\Assimp</Filter>
+    </None>
+    <None Include="Assimp\include\assimp\vector3.inl">
+      <Filter>Sources\Modules\Assimp</Filter>
     </None>
   </ItemGroup>
 </Project>

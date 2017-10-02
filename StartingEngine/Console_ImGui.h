@@ -3,6 +3,10 @@
 #include<list>
 #include<string>
 
+
+
+
+
 class Console
 {
 public:
@@ -11,7 +15,7 @@ public:
 
 	// Destructor
 	virtual ~Console();
-
+	bool Init();
 	void Enable_Console_Imgui(bool visible=false);
 
 public:
@@ -19,4 +23,5 @@ public:
 
 };
 
-#endif 
+#endif
+

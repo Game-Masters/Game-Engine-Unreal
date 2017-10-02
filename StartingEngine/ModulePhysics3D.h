@@ -52,10 +52,6 @@ private:
 	std::list<btTypedConstraint*> constraints;
 
 
-	/*p2List<PhysBody3D*> bodies;
-	p2List<btDefaultMotionState*> motions;
-	p2List<btTypedConstraint*> constraints;
-	p2List<PhysVehicle3D*> vehicles;*/
 	
 };
 

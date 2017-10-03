@@ -13,13 +13,13 @@
 struct geometry_base {
 	uint id_vertices = 0; // id in VRAM
 	uint num_indices = 0;
-	std::vector<unsigned int> indices;
+	uint* indices;
 	uint id_indices = 0; // id in VRAM
 	uint num_vertices = 0;
-	std::vector<float> vertices;
+	float* vertices;
 	~geometry_base() {
-		indices.clear();
-		vertices.clear();
+		delete[] indices;
+		delete[] vertices;
 	}
 };
 
@@ -31,7 +31,8 @@ enum PrimitiveTypes
 	Primitive_Plane,
 	Primitive_Cube,
 	Primitive_Sphere,
-	Primitive_Cylinder
+	Primitive_Cylinder,
+	Primitive_Mesh
 };
 
 class Geometry_Manager

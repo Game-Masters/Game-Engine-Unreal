@@ -11,6 +11,7 @@
 #include"MathGeoLib\MathBuildConfig.h"
 #include "../StartingEngine/Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
+//#include"Geometry.h"
 #include"Cube_prim.h"
 #define MAX_SNAKE 2
 #define MAX_CUBE 50
@@ -75,6 +76,6 @@ public:
 	PhysBody3D*PlainGame_Body;
 	Cube_prim * cube_test=nullptr;
 	Cube_prim * plane_test = nullptr;
-
+	Geometry_Manager *m;
 
 };

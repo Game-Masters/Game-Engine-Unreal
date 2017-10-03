@@ -37,7 +37,7 @@ void Geometry_Manager::Draw()
 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
-		glDrawElements(GL_TRIANGLES, sizeof(GLuint)*mesh.num_vertices / 3, GL_UNSIGNED_INT, NULL);
+		glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, NULL);
 	}
 	else {
 		LOG("Impossible to draw the mesh");

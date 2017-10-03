@@ -1,6 +1,7 @@
 
 #pragma once
 #include"Globals.h"
+
 #include"Color.h"
 #include <vector>
 #include "../StartingEngine/Glew/include/glew.h"
@@ -17,6 +18,12 @@ struct geometry_base {
 	uint id_indices = 0; // id in VRAM
 	uint num_vertices = 0;
 	float* vertices;
+	uint id_normales = 0;
+	float* normals=nullptr;
+	uint id_colors = 0;
+	float* colors = nullptr;
+	uint id_texture = 0;
+	float* textures_coord = nullptr;
 	~geometry_base() {
 		delete[] indices;
 		delete[] vertices;

@@ -122,28 +122,29 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 					}
 				}
 			}
+
+			if (scene->mMeshes[i]->HasNormals()) {
+				m->mesh.normals = new float[m->mesh.num_vertices * 3];
+				memcpy(m->mesh.normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->mesh.num_vertices * 3);
+			}
+
+			// colors
+			if (scene->mMeshes[i]->HasVertexColors(0))
+			{
+				m->mesh.colors = new float[m->mesh.num_vertices * 3];
+				memcpy(m->mesh.colors, scene->mMeshes[i]->mColors, sizeof(float) * m->mesh.num_vertices * 3);
+			}
+
+			// texture coords (only one texture for now)
+			if (scene->mMeshes[i]->HasTextureCoords(0))
+			{
+				m->mesh.textures_coord = new float[m->mesh.num_vertices * 3];
+				memcpy(m->mesh.textures_coord, scene->mMeshes[i]->mTextureCoords[0], sizeof(float) * m->mesh.num_vertices * 3);
+			}
+
 			meshes_vec.push_back(m);
 			
-			//trying mesh normals
-			/*
-			if (scene->mMeshes[i]->HasNormals()) {
-				float *normals = new float[scene->mMeshes[i]->mNumVertices * 3];
-				for (int i = 0; i < scene->mMeshes[i]->mNumVertices; ++i) {
-					normals[i * 3] = scene->mMeshes[i]->mNormals[i].x;
-					normals[i * 3 + 1] = scene->mMeshes[i]->mNormals[i].y;
-					normals[i * 3 + 2] = scene->mMeshes[i]->mNormals[i].z;
-				}
-
-				glGenBuffers(1, paco);
-				glBindBuffer(GL_ARRAY_BUFFER, *paco);
-				glBufferData(GL_ARRAY_BUFFER, 3 * scene->mMeshes[i]->mNumVertices * sizeof(GLfloat), normals, GL_STATIC_DRAW);
-
-				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-				glEnableVertexAttribArray(2);
-
-				delete[] normals;
-			}
-			*/
+	
 		}
 		aiReleaseImport(scene);
 	}

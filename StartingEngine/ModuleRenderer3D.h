@@ -57,4 +57,5 @@ public:
 	bool cullface = false;
 	bool mat = false;
 	bool color = false;
+	bool debugnormals = false;
 };

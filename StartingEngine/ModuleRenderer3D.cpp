@@ -500,6 +500,7 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 		ImGui::Checkbox("Wireframe Mode", &wireframe);
 		ImGui::Checkbox("Shadeless", &mat);
 		ImGui::Checkbox("Set Material", &color);
+		ImGui::Checkbox("Normals UV Debug", &debugnormals);
 		if (cullface)
 		{
 			glDisable(GL_CULL_FACE);

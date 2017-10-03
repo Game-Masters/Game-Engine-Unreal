@@ -31,6 +31,13 @@ bool ModuleGui::Start()
 
 	// Stream log messages to Debug window
 
+	// Stream log messages to Debug window
+	struct aiLogStream stream;
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, NULL);
+	aiAttachLogStream(&stream);
+	
+	
+
 
 	SliderTest_Int_value = new int();
 	return true;
@@ -226,5 +233,7 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 bool ModuleGui::CleanUp()
 {
 	delete SliderTest_Int_value;
+	aiDetachAllLogStreams();
+
 	return true;
 }

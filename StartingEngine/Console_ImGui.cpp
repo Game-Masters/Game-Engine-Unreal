@@ -11,17 +11,6 @@ Console::~Console()
 {
 }
 
-bool Console::Init()
-{
-	
-	// Stream log messages to Debug window
-	struct aiLogStream stream;
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-	aiAttachLogStream(&stream);
-	
-	
-	return true;
-}
 
 void Console::Enable_Console_Imgui(bool visible)
 {
@@ -38,10 +27,3 @@ void Console::Enable_Console_Imgui(bool visible)
 
 }
 
-bool Console::CleanUp()
-{
-	// detach log stream
-	aiDetachAllLogStreams();
-
-	return true;
-}

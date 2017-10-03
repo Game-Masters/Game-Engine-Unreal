@@ -13,6 +13,7 @@
 #include "ModulePhysics3D.h"
 #include "ModulePlayer.h"
 #include "ModuleGui.h"
+#include "ModuleAssimp.h"
 #include "Parson_JSON.h"
 #include"Parson_JSON.h"
 #include <list>
@@ -37,7 +38,7 @@ public:
 	ModulePlayer* player;
 	ModuleGui* gui;
 
-
+	ModuleAssimp* assimp;
 
 	//----
 	Parson_JSON* json_class;

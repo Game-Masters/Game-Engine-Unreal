@@ -447,6 +447,9 @@
     <ClInclude Include="Cube_prim.h">
       <Filter>Sources\Modules\Primitives</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleAssimp.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -640,6 +643,9 @@
     </ClCompile>
     <ClCompile Include="Cube_prim.cpp">
       <Filter>Sources\Modules\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleAssimp.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

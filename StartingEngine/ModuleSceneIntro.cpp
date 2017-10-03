@@ -40,6 +40,18 @@ bool ModuleSceneIntro::Start()
 
 	n_sphere_o->Triangulate(&vec1, &vec2, NULL, 1536, false);
 
+	cube_vert = {
+		// front
+		7.0, 4.0,  6.0,
+		9.0, 4.0,  6.0,
+		9.0,  6.0,  6.0,
+		7.0,  6.0,  6.0,
+		// back
+		7.0, 4.0, 4.0,
+		9.0, 4.0, 4.0,
+		9.0,  6.0, 4.0,
+		7.0,  6.0, 4.0,
+	};
 
 	index = {
 		// front
@@ -75,18 +87,7 @@ bool ModuleSceneIntro::Start()
 		-100,0,100,
 
 	};
-	cube_vert = {
-		// front
-		7.0, 4.0,  6.0,
-		9.0, 4.0,  6.0,
-		9.0,  6.0,  6.0,
-		7.0,  6.0,  6.0,
-		// back
-		7.0, 4.0, 4.0,
-		9.0, 4.0, 4.0,
-		9.0,  6.0, 4.0,
-		7.0,  6.0, 4.0,
-	};
+	
 
 
 
@@ -106,40 +107,27 @@ bool ModuleSceneIntro::Start()
 
 	cube_test->Initialize();
 
+	//-----
 
-
-	/*cube_test = new Cube_prim();
-
-	cube_test->mesh.indices = new uint(index.size());
-	cube_test->mesh.num_indices = index.size();
-	cube_test->mesh.id_indices = 0;
-	for (uint i = 0; i < index.size(); ++i)
-	{
-		memcpy(&cube_test->mesh.indices[i], &index[i], sizeof(uint));
-	}
-	cube_test->mesh.num_vertices = 8;
-	cube_test->mesh.vertices = new float(cube_test->mesh.num_vertices*3);
-	cube_test->mesh.id_vertices = 0;
-	memcpy(cube_test->mesh.vertices, &cube_vert[0], cube_test->mesh.num_vertices*3);
-
-	
-
-
-	cube_test->Initialize();*/
-
-	/*
 	plane_test = new Cube_prim();
-	plane_test->mesh.indices = new uint(planeindex.size());
-	memcpy(plane_test->mesh.indices, &planeindex[0], planeindex.size());
-	plane_test->mesh.num_indices = planeindex.size();
-	plane_test->mesh.id_indices = 1;
-	plane_test->mesh.vertices = new float(plane_vert.size());
-	memcpy(cube_test->mesh.indices, &cube_vert[0], plane_vert.size());
-	plane_test->mesh.num_vertices = plane_vert.size();
-	plane_test->mesh.id_vertices = 1;
+
+	plane_test->mesh.num_vertices = 4;
+
+	plane_test->mesh.num_indices = 6;
+
+	plane_test->mesh.vertices = new float[plane_test->mesh.num_vertices * 3];
+	plane_test->mesh.indices = new uint[plane_test->mesh.num_indices];
+	memcpy(plane_test->mesh.vertices, &plane_vert[0], sizeof(float) * plane_test->mesh.num_vertices * 3);
+	for (uint i = 0; i < 6; ++i)
+	{
+		memcpy(&plane_test->mesh.indices[i], &planeindex[i], sizeof(uint));
+	}
 
 	plane_test->Initialize();
-	*/
+
+
+
+
 	
 	// An array of 3 vectors which represents 3 vertices
 	g_vertex_buffer_data = {
@@ -223,28 +211,7 @@ bool ModuleSceneIntro::Start()
 	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
 
 
-	//----------------ASSIMP
-	//m = new Geometry_Manager(PrimitiveTypes::Primitive_Mesh);
-	std::string full_path;
-	full_path = "warrior.FBX";
-	/*const aiScene* scene = aiImportFile(full_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 	
-	if (scene != nullptr && scene->HasMeshes())
-	{
-		// Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (int i = 0; i < scene->mNumMeshes; i++) {
-			//m.mesh.num_vertices = scene->mMeshes[i]->mNumVertices;
-			//m.mesh.vertices = new float[m.mesh.num_vertices * 3];
-			//memcpy(m.vertices, new_mesh->mVertices, sizeof(float) * m.num_vertices * 3);
-			//LOG("New mesh with %d vertices", m.num_vertices);
-		}
-		aiReleaseImport(scene);
-	}
-	else {
-		LOG("Error loading scene %s", full_path);
-	}
-	//aiMesh
-	*/
 	
 	return ret;
 }
@@ -359,7 +326,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 	cube_test->Draw();
-	//plane_test->Draw();
+	plane_test->Draw();
 
 
 

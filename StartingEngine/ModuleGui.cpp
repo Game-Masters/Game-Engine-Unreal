@@ -29,13 +29,6 @@ bool ModuleGui::Start()
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
 
-	// Stream log messages to Debug window
-
-	// Stream log messages to Debug window
-	struct aiLogStream stream;
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, NULL);
-	aiAttachLogStream(&stream);
-	
 	
 
 

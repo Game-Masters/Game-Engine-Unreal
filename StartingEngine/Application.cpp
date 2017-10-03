@@ -14,7 +14,7 @@ Application::Application()
 	physics = new ModulePhysics3D();
 	player = new ModulePlayer();
 	gui = new ModuleGui();
-
+	assimp = new ModuleAssimp();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -26,7 +26,7 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	
+	AddModule(assimp);
 	
 	// Scenes
 	AddModule(scene_intro);
@@ -48,6 +48,7 @@ Application::Application()
 	audio->name = "audio";
 	player->name = "player";
 	scene_intro->name = "scene intro";
+	assimp->name = "assimp";
 
 }
 

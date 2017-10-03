@@ -81,8 +81,7 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 // Called before quitting
 bool ModuleAssimp::CleanUp()
 {
-	
-
+	delete m;
 
 	return true;
 }
@@ -91,7 +90,7 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 {
 
 	//----------------ASSIMP
-	m = new Geometry_Manager(PrimitiveTypes::Primitive_Mesh);
+	
 
 	std::string full_path;
 	full_path = fbx;
@@ -101,6 +100,7 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (int i = 0; i < scene->mNumMeshes; i++) {
+			m = new Geometry_Manager(PrimitiveTypes::Primitive_Mesh);
 			m->mesh.num_vertices = scene->mMeshes[i]->mNumVertices;
 			m->mesh.vertices = new float[m->mesh.num_vertices * 3];
 			memcpy(m->mesh.vertices, scene->mMeshes[i]->mVertices, sizeof(float) * m->mesh.num_vertices * 3);
@@ -110,6 +110,7 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 			{
 				m->mesh.num_indices = scene->mMeshes[i]->mNumFaces * 3;
 				m->mesh.indices = new uint[m->mesh.num_indices]; // assume each face is a triangle
+				
 				for (uint k = 0; k < scene->mMeshes[i]->mNumFaces; ++k)
 				{
 					if (scene->mMeshes[i]->mFaces[k].mNumIndices != 3) {

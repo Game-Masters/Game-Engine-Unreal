@@ -130,6 +130,7 @@ bool ModuleSceneIntro::Start()
 
 	
 	// An array of 3 vectors which represents 3 vertices
+	/*
 	g_vertex_buffer_data = {
 		0, 1, 0,
 		0, 0, 0,
@@ -192,7 +193,7 @@ bool ModuleSceneIntro::Start()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) *g_vertex_buffer_data.size() * 3, &g_vertex_buffer_data[0], GL_STATIC_DRAW);
 	// 1rst attribute buffer : vertices
 
-
+	*/
 
 
 	// This will identify our vertex buffer
@@ -334,7 +335,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 
-
+	/*
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 	glVertexAttribPointer(
@@ -348,7 +349,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	// Draw the triangle !
 	glDrawArrays(GL_TRIANGLES, g_vertex_buffer_data[0], sizeof(GLfloat) *g_vertex_buffer_data.size() * 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 	glDisableVertexAttribArray(0);
-
+	*/
 
 	///-------------------
 
@@ -420,7 +421,14 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 
 bool ModuleSceneIntro::Gui_Engine_Modules(float dt)
 {
-	return false;
+	return true;
+}
+
+bool ModuleSceneIntro::CleanUp()
+{
+	delete cube_test;
+	delete plane_test;
+	return true;
 }
 
 

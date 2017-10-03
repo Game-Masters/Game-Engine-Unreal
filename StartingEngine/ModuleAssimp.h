@@ -30,7 +30,7 @@ public:
 
 	Geometry_Manager* m;
 	std::vector<Geometry_Manager*> meshes_vec;
-	
+	GLuint * paco;
 };
 
 #endif // __ModuleAssimp_H__

@@ -68,6 +68,7 @@ update_status ModuleAssimp::PostUpdate(float dt)
 		App->input->flie_dropped = false;
 	}
 
+
 	return UPDATE_CONTINUE;
 }
 
@@ -95,7 +96,7 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 	std::string full_path;
 	full_path = fbx;
 	const aiScene* scene = aiImportFile(full_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-
+	
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
@@ -122,8 +123,27 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 				}
 			}
 			meshes_vec.push_back(m);
+			
+			//trying mesh normals
+			/*
+			if (scene->mMeshes[i]->HasNormals()) {
+				float *normals = new float[scene->mMeshes[i]->mNumVertices * 3];
+				for (int i = 0; i < scene->mMeshes[i]->mNumVertices; ++i) {
+					normals[i * 3] = scene->mMeshes[i]->mNormals[i].x;
+					normals[i * 3 + 1] = scene->mMeshes[i]->mNormals[i].y;
+					normals[i * 3 + 2] = scene->mMeshes[i]->mNormals[i].z;
+				}
 
+				glGenBuffers(1, paco);
+				glBindBuffer(GL_ARRAY_BUFFER, *paco);
+				glBufferData(GL_ARRAY_BUFFER, 3 * scene->mMeshes[i]->mNumVertices * sizeof(GLfloat), normals, GL_STATIC_DRAW);
 
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+				glEnableVertexAttribArray(2);
+
+				delete[] normals;
+			}
+			*/
 		}
 		aiReleaseImport(scene);
 	}

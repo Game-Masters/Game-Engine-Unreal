@@ -17,6 +17,7 @@
 #include"Parson_JSON.h"
 #include <list>
 #include <vector>
+#include "Geometry.h"
 #include "../StartingEngine/Assimp/include/assimp/cimport.h"
 #include "../StartingEngine/Assimp/include/assimp/scene.h"
 #include "../StartingEngine/Assimp/include/assimp/postprocess.h"

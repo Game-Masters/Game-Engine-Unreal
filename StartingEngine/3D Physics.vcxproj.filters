@@ -37,6 +37,9 @@
     <Filter Include="Sources\Modules\Assimp">
       <UniqueIdentifier>{f30fb1a1-db01-4277-bca8-290d13c92a10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Primitives">
+      <UniqueIdentifier>{914b94bb-df74-4f36-b84d-6ac11a5f7e0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -441,6 +444,9 @@
     <ClInclude Include="Assimp\include\assimp\config.h">
       <Filter>Sources\Modules\Assimp</Filter>
     </ClInclude>
+    <ClInclude Include="Cube_prim.h">
+      <Filter>Sources\Modules\Primitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -631,6 +637,9 @@
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
       <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube_prim.cpp">
+      <Filter>Sources\Modules\Primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

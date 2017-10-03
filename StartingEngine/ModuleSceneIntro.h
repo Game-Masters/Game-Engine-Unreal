@@ -11,10 +11,11 @@
 #include"MathGeoLib\MathBuildConfig.h"
 #include "../StartingEngine/Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
-
+#include"Cube_prim.h"
 #define MAX_SNAKE 2
 #define MAX_CUBE 50
 #define MAX_LIGHTS 8
+
 struct PhysBody3D;
 struct PhysMotor3D;
 struct btHingeConstraint;
@@ -72,7 +73,7 @@ public:
 public:
 
 	PhysBody3D*PlainGame_Body;
-
+	Cube_prim * cube_test=nullptr;
 
 
 };

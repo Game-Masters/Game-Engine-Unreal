@@ -91,15 +91,17 @@ bool ModuleSceneIntro::Start()
 	};
 
 
+	cube_test = new Cube_prim();
+	cube_test->mesh.indices = index;
+	cube_test->mesh.num_indices = index.size();
+	cube_test->mesh.id_indices = 0;
+	cube_test->mesh.vertices = cube_vert;
+	cube_test->mesh.num_vertices = cube_vert.size();
+	cube_test->mesh.id_vertices = 0;
 
-	glGenBuffers(1, (GLuint*)&my_vertex);
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *cube_vert.size() * 3, &cube_vert[0], GL_STATIC_DRAW);
+	cube_test->Initialize();
 
-	// Buffer for indices
-	glGenBuffers(1, (GLuint*)&my_indices);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * index.size(), &index[0], GL_STATIC_DRAW);
+
 
 	glGenBuffers(1, (GLuint*)&plane_vertex);
 	glBindBuffer(GL_ARRAY_BUFFER, plane_vertex);
@@ -307,12 +309,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	glColor3f(1, 1, 1);
 
 
-	glBindBuffer(GL_ARRAY_BUFFER, my_vertex);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_indices);
+	cube_test->Draw();
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, plane_vertex);

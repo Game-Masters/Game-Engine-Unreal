@@ -114,6 +114,7 @@
     <ClInclude Include="Assimp\include\assimp\version.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Console_ImGui.h" />
+    <ClInclude Include="Cube_prim.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console_ImGui.cpp" />
+    <ClCompile Include="Cube_prim.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />

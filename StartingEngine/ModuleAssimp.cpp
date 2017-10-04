@@ -138,10 +138,10 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 			// texture coords (only one texture for now)
 			if (scene->mMeshes[i]->HasTextureCoords(0))
 			{
-				m->mesh.textures_coord = new float[m->mesh.num_vertices * 3];
-				memcpy(m->mesh.textures_coord, scene->mMeshes[i]->mTextureCoords[0], sizeof(float) * m->mesh.num_vertices * 3);
+				//m->mesh.textures_coord = new float[m->mesh.num_vertices * 2];
+				//memcpy(m->mesh.textures_coord, scene->mMeshes[i]->mTextureCoords[0], sizeof(float) * m->mesh.num_vertices * 3);
 			}
-
+			
 			meshes_vec.push_back(m);
 			
 	

@@ -24,12 +24,76 @@ ModuleGui::~ModuleGui()
 // Called before render is available
 bool ModuleGui::Start()
 {
+	//IMGUI STYLE START
+	ImGuiStyle& style = ImGui::GetStyle();
+
+
 	
+	style.WindowPadding = ImVec2(10, 15);
+	style.WindowRounding = 2.0f;
+	style.FramePadding = ImVec2(5, 5);
+	style.FrameRounding = 2.0f;
+	style.ItemSpacing = ImVec2(4,4);
+	style.ItemInnerSpacing = ImVec2(4, 4);
+	style.IndentSpacing = 25.0f;
+	style.ScrollbarSize = 15.0f;
+	style.ScrollbarRounding = 2.0f;
+	style.GrabMinSize = 5.0f;
+	style.GrabRounding = 2.0f;
+	
+	style.Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+	style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
+	style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_PopupBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
+	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
+	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
+	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.47f, 0.47, 0.47f, 0.75f);
+	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
+	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.35f, 0.35f, 0.35f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+	style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_ComboBg] = ImVec4(0.19f, 0.18f, 0.21f, 1.00f);
+	style.Colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+	style.Colors[ImGuiCol_Button] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_Header] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	style.Colors[ImGuiCol_HeaderActive] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	style.Colors[ImGuiCol_Column] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+	style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_CloseButton] = ImVec4(0.40f, 0.39f, 0.38f, 0.16f);
+	style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.40f, 0.39f, 0.38f, 0.39f);
+	style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.40f, 0.39f, 0.38f, 1.00f);
+	style.Colors[ImGuiCol_PlotLines] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
+	style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
+	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
+	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
+	//IMGUI STYLE END
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
-
 	
+	io.Fonts->AddFontFromFileTTF("..\\Game\\Fonts\\OpenSans-Regular.ttf", 16);
+
+	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);
+	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);
+	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 18);
 
 
 	SliderTest_Int_value = new int();
@@ -48,7 +112,7 @@ update_status ModuleGui::Update(float dt)
 
 	
 
-	ImGui::Begin("Info");
+	ImGui::Begin("Info", false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
 		(*item)->Gui_Engine_Modules(dt);
 	}
@@ -193,20 +257,20 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 {
 	if (ImGui::CollapsingHeader("Hardware"))
 	{
-		ImGui::Text("CPU Cache Line Size:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetCPUCacheLineSize());
-		ImGui::Text("Number of logical CPU cores:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetCPUCount());
-		ImGui::Text("The amount of RAM:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i Gb", SDL_GetSystemRAM() / 1024);
+		ImGui::Text("CPU Cache Line Size:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", SDL_GetCPUCacheLineSize());
+		ImGui::Text("Number of logical CPU cores:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", SDL_GetCPUCount());
+		ImGui::Text("The amount of RAM:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i Gb", SDL_GetSystemRAM() / 1024);
 
-		ImGui::Text("Graphic Card Corporation:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VENDOR));
-		ImGui::Text("Graphic Card:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_RENDERER));
-		ImGui::Text("Graphic Card Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
+		ImGui::Text("Graphic Card Corporation:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", glGetString(GL_VENDOR));
+		ImGui::Text("Graphic Card:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", glGetString(GL_RENDERER));
+		ImGui::Text("Graphic Card Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
 
 		SDL_version sdl_vers;
 		SDL_GetVersion(&sdl_vers);
 
-		ImGui::Text("SDL Version patch:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers.patch);
-		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers.major);
-		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers.minor);
+		ImGui::Text("SDL Version patch:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", sdl_vers.patch);
+		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", sdl_vers.major);
+		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", sdl_vers.minor);
 
 		/*
 		SDL_version sdl_vers_ret;

@@ -666,6 +666,7 @@ static ImGuiContext     GImDefaultContext;
 ImGuiContext*           GImGui = &GImDefaultContext;
 #endif
 
+
 //-----------------------------------------------------------------------------
 // User facing structures
 //-----------------------------------------------------------------------------
@@ -2143,7 +2144,7 @@ void ImGui::NewFrame()
 
     SetCurrentFont(GetDefaultFont());
     IM_ASSERT(g.Font->IsLoaded());
-
+	
     g.Time += g.IO.DeltaTime;
     g.FrameCount += 1;
     g.TooltipOverrideCount = 0;

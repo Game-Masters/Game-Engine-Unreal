@@ -34,6 +34,7 @@ public:
 	bool n1 = false;
 	bool n2 = false;
 	std::vector<float> frames_on_last_update;
+	ImGuiStyle style_custom;
 
 	Console console_imgui;
 	LCG rand_test;

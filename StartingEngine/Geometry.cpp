@@ -64,6 +64,7 @@ void Geometry_Manager::Draw()
 			{
 				glLineWidth(2.0f);
 				glColor3f(1.0f, 0.0f, 0.0f);
+				glColor3f(1.0f, 0.0f, 0.0f);
 
 				glBegin(GL_LINES);
 				glVertex3f(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]);

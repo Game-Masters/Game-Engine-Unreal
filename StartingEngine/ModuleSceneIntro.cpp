@@ -212,7 +212,27 @@ bool ModuleSceneIntro::Start()
 	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
 
 
-	
+	for (int i = 0; i < 256; i++) {
+		for (int j = 0; j < 256; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &ImageName);
+	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 	
 	return ret;
 }
@@ -231,69 +251,132 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
-	/*
+	
+
+	
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, ImageName);
+
 	glLineWidth(2.0f);
 	glBegin(GL_TRIANGLES);
 
-	glVertex3f(0, 1, 0);
-	glVertex3f(0, 0, 0);
-	glVertex3f(1, 0, 0);
+	glVertex3f(0, 1, 0);	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(0, 0, 0);	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(1, 0, 0);	glTexCoord2f(1.0f, 0.0f);
+
+
+
+	
 
 	glVertex3f(0, 1, 0);
 	glVertex3f(1, 0, 0);
 	glVertex3f(1, 1, 0);
+
+
+	glTexCoord2f(0.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glTexCoord2f(1.0f, 1.0f);
 
 	glVertex3f(1, 1, 0);
 	glVertex3f(1, 0, 0);
 	glVertex3f(1, 1, -1);
+
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+
 
 	glVertex3f(1, 0, 0);
 	glVertex3f(1, 0, -1);
 	glVertex3f(1, 1, -1);
 
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
+
 	glVertex3f(0, 1, 0);
 	glVertex3f(1, 1, 0);
 	glVertex3f(1, 1, -1);
 
+	//COPY PASTE TEXT
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
+
 	glVertex3f(0, 1, 0);
 	glVertex3f(1, 1, -1);
-	glVertex3f(0, 1,-1);
+	glVertex3f(0, 1, -1);
+
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
+
 
 	glVertex3f(0, 1, 0);
 	glVertex3f(0, 0, -1);
 	glVertex3f(0, 0, 0);
 
+
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
+
+
 	glVertex3f(0, 1, 0);
 	glVertex3f(0, 1, -1);
-	glVertex3f(0, 0,-1);
+	glVertex3f(0, 0, -1);
+
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
+
 
 	glVertex3f(1, 1, -1);
 	glVertex3f(1, 0, -1);
 	glVertex3f(0, 0, -1);
 
+
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
+
+
 	glVertex3f(1, 1, -1);
 	glVertex3f(0, 0, -1);
 	glVertex3f(0, 1, -1);
+
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
 
 	glVertex3f(0, 0, -0);
 	glVertex3f(0, 0, -1);
 	glVertex3f(1, 0, -1);
 
+
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
+
+
 	glVertex3f(0, 0, 0);
 	glVertex3f(1, 0, -1);
 	glVertex3f(1, 0, 0);
 
+	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
 
 
-
-
-
-
-
+	
 
 	glEnd();
 	glLineWidth(1.0f);
-	*/
+
+
+
+
 
 
 	
@@ -326,8 +409,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	glColor3f(1, 1, 1);
 
 
-	cube_test->Draw();
-	plane_test->Draw();
+	/*cube_test->Draw();
+	plane_test->Draw();*/
 
 
 
@@ -360,7 +443,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 
-
+	/*
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer1);
 	glVertexAttribPointer(
@@ -392,7 +475,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	glDisableVertexAttribArray(0);
 
 
-
+	*/
 
 //	 light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);

@@ -41,14 +41,44 @@ void Geometry_Manager::Initialize()
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_colors);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh.num_vertices * 3, &mesh.colors[0], GL_STATIC_DRAW);
 	}
+	*/
+	
 
-	if (mesh.textures_coord!=nullptr) {
+	
+	
+	if (mesh.textures_coord != nullptr) {
+
+		GLubyte checkImage[256][256][4];
+		for (int i = 0; i < 256; i++) {
+			for (int j = 0; j < 256; j++) {
+				int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+				checkImage[i][j][0] = (GLubyte)c;
+				checkImage[i][j][1] = (GLubyte)c;
+				checkImage[i][j][2] = (GLubyte)c;
+				checkImage[i][j][3] = (GLubyte)255;
+			}
+		}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &ImageName);
+	glBindTexture(GL_TEXTURE_2D, ImageName);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+
 	glGenBuffers(1, (GLuint*)&(mesh.id_texture));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_texture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh.num_vertices * 3, &mesh.textures_coord[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh.num_textcoord*2, &mesh.textures_coord[0], GL_STATIC_DRAW);
+	
+
+
 	}
 
-	*/
+	
 
 	
 }
@@ -57,13 +87,18 @@ void Geometry_Manager::Draw()
 {
 	if (mesh.num_indices>0 && mesh.num_vertices>0) {
 
-		glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
+
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_2D, ImageName);
+
+
+		
+		
 		if (App->renderer3D->debugnormals == true && mesh.normals != nullptr) {
 			for (uint i = 0; i < mesh.num_vertices * 3; i += 3)
 			{
 				glLineWidth(2.0f);
-				glColor3f(1.0f, 0.0f, 0.0f);
 				glColor3f(1.0f, 0.0f, 0.0f);
 
 				glBegin(GL_LINES);
@@ -76,10 +111,30 @@ void Geometry_Manager::Draw()
 			}
 		}
 
+		
 
+
+		if (mesh.textures_coord != nullptr) {
+			
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
+			glTexCoordPointer(2, GL_FLOAT,0, NULL);
+			
+		}
+
+	//	
+		
 		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
 		glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, NULL);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
 	}
 	else {
 		LOG("Impossible to draw the mesh");

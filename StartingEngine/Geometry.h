@@ -22,8 +22,10 @@ struct geometry_base {
 	float* normals=nullptr;
 	uint id_colors = 0;
 	float* colors = nullptr;
+	uint num_textcoord = 0;
 	uint id_texture = 0;
 	float* textures_coord = nullptr;
+	
 	~geometry_base() {
 		delete[] indices;
 		delete[] vertices;
@@ -57,7 +59,7 @@ public:
 	void            Draw();
 
 	//protected:
-
+	GLuint ImageName = 0;
 	Color            color = { 255,255,255,255 };
 	PrimitiveTypes    type = Primitive_Undef;
 	uint            geometry_div = 0;

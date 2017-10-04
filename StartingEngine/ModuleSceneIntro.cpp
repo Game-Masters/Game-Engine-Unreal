@@ -40,39 +40,9 @@ bool ModuleSceneIntro::Start()
 
 	n_sphere_o->Triangulate(&vec1, &vec2, NULL, 1536, false);
 
-	cube_vert = {
-		// front
-		7.0, 4.0,  6.0,
-		9.0, 4.0,  6.0,
-		9.0,  6.0,  6.0,
-		7.0,  6.0,  6.0,
-		// back
-		7.0, 4.0, 4.0,
-		9.0, 4.0, 4.0,
-		9.0,  6.0, 4.0,
-		7.0,  6.0, 4.0,
-	};
 
-	index = {
-		// front
-		0, 1, 2,
-		2, 3, 0,
-		// top
-		1, 5, 6,
-		6, 2, 1,
-		// back
-		7, 6, 5,
-		5, 4, 7,
-		// bottom
-		4, 0, 3,
-		3, 7, 4,
-		// left
-		4, 5, 1,
-		1, 0, 4,
-		// right
-		3, 2, 6,
-		6, 7, 3,
-	};
+
+	
 	planeindex =
 	{
 		// bottom
@@ -87,9 +57,57 @@ bool ModuleSceneIntro::Start()
 		-100,0,100,
 
 	};
-	
 
 
+	static std::vector<GLfloat>  vertices =
+	{
+		0.0f,0.0f,0.0f,
+		1.0f,0.0f,0.0f,
+		1.0f,0.0f,1.0f,
+		0.0f,0.0f,1.0f,
+		0.0f,1.0f,1.0f,
+		0.0f,1.0f,0.0f,
+		1.0f,1.0f,0.0f,
+		1.0f,1.0f,1.0f
+	};
+	static std::vector<uint> indices =
+	{
+		3,7,4,
+		3,2,7,
+		2,6,7,
+		2,1,6,
+		1,5,6,
+		1,0,5,
+		0,4,5,
+		0,3,4,
+		4,6,5,
+		4,7,6,
+		1,3,0,
+		2,3,1
+	};
+
+
+	texture_coord =
+	{
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+	};
 
 	cube_test = new Cube_prim();
 
@@ -97,13 +115,20 @@ bool ModuleSceneIntro::Start()
 
 	cube_test->mesh.num_indices = 36;
 
+	cube_test->mesh.num_textcoord = 18;
+
 	cube_test->mesh.vertices = new float[cube_test->mesh.num_vertices * 3];
 	cube_test->mesh.indices = new uint[cube_test->mesh.num_indices];
-	memcpy(cube_test->mesh.vertices, &cube_vert[0], sizeof(float) * cube_test->mesh.num_vertices * 3);
-	for (uint i = 0; i < 36; ++i)
+	memcpy(cube_test->mesh.vertices, &vertices[0], sizeof(float) * cube_test->mesh.num_vertices * 3);
+	for (uint i = 0; i < cube_test->mesh.num_indices; ++i)
 	{
-		memcpy(&cube_test->mesh.indices[i], &index[i], sizeof(uint));
+		memcpy(&cube_test->mesh.indices[i], &indices[i], sizeof(uint));
 	}
+	
+	cube_test->mesh.textures_coord= new float[cube_test->mesh.num_textcoord*2];
+	memcpy(cube_test->mesh.textures_coord, &texture_coord[0], sizeof(float) * cube_test->mesh.num_textcoord * 2);
+	
+	
 
 	cube_test->Initialize();
 
@@ -123,7 +148,7 @@ bool ModuleSceneIntro::Start()
 		memcpy(&plane_test->mesh.indices[i], &planeindex[i], sizeof(uint));
 	}
 
-	plane_test->Initialize();
+	//plane_test->Initialize();
 
 
 
@@ -181,6 +206,16 @@ bool ModuleSceneIntro::Start()
 		1, 0, 0,
 	};
 
+
+
+	
+
+
+
+
+
+
+	
 	// This will identify our vertex buffer
 	//	GLuint vertexbuffer;
 
@@ -192,27 +227,13 @@ bool ModuleSceneIntro::Start()
 	// Give our vertices to OpenGL.
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) *g_vertex_buffer_data.size() * 3, &g_vertex_buffer_data[0], GL_STATIC_DRAW);
 	// 1rst attribute buffer : vertices
-
 	*/
 
 
 	// This will identify our vertex buffer
 
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer1);
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer1);
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, vec1.size() * sizeof(float) * 3, &vec1[0], GL_STATIC_DRAW);
-	// 1rst attribute buffer : vertices
-
-	//	GLuint normalbuffer;
-	glGenBuffers(1, &normalbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
-
-
-	for (int i = 0; i < 256; i++) {
+	
+	/*for (int i = 0; i < 256; i++) {
 		for (int j = 0; j < 256; j++) {
 			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
 			checkImage[i][j][0] = (GLubyte)c;
@@ -227,13 +248,14 @@ bool ModuleSceneIntro::Start()
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &ImageName);
 	glBindTexture(GL_TEXTURE_2D, ImageName);
+	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
-	
+	*/
 	return ret;
 }
 
@@ -251,15 +273,16 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
+	cube_test->Draw();
 	
-
 	
-	glEnable(GL_TEXTURE_2D);
+	/*glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindTexture(GL_TEXTURE_2D, ImageName);
 
 
 	glBegin(GL_TRIANGLES);
+
 
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
@@ -273,10 +296,10 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 0);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, 0);
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
 
 
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, 0);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 0);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
 
@@ -293,14 +316,14 @@ update_status ModuleSceneIntro::Update(float dt)
 	
 	//----
 
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, 0);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, -1);
 	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, 0);
 
 
-	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, 0);
 	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, -1);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, 0);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, 0);
 
 	
 	//----
@@ -324,14 +347,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
 	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 0, 0);
 
-
-
-	
-	
-
 	glEnd();
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glLineWidth(1.0f);
+	glLineWidth(1.0f);*/
+
 
 
 
@@ -368,6 +387,9 @@ update_status ModuleSceneIntro::Update(float dt)
 	glEnd();
 	glColor3f(1, 1, 1);
 
+
+
+	
 
 	/*cube_test->Draw();
 	plane_test->Draw();*/

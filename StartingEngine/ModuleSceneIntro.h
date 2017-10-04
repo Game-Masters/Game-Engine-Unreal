@@ -57,6 +57,7 @@ public:
 	GLuint plane_vertex;
 	GLuint vertexbuffer;
 	GLuint normalbuffer;
+	GLuint texturebuffer;
 	Sphere *n_sphere_o = nullptr;
 	std::vector<vec> vec1;
 	std::vector<vec> vec2;
@@ -68,12 +69,13 @@ public:
 	
 	vec* temp;
 
-
+	std::vector<unsigned int> texture_index;
+	std::vector<GLfloat> texture_coord;
 
 
 public:
-	GLuint ImageName;
-	GLubyte checkImage[256][256][4];
+	//GLuint ImageName;
+	//GLubyte checkImage[256][256][4];
 	PhysBody3D*PlainGame_Body;
 	Cube_prim * cube_test=nullptr;
 	Cube_prim * plane_test = nullptr;

@@ -258,122 +258,82 @@ update_status ModuleSceneIntro::Update(float dt)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindTexture(GL_TEXTURE_2D, ImageName);
 
-	glLineWidth(2.0f);
+
 	glBegin(GL_TRIANGLES);
 
-	glVertex3f(0, 1, 0);	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0, 0, 0);	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1, 0, 0);	glTexCoord2f(1.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, 0);
+
+
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, 0);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, 0);
+
+
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, 0);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
+
+
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
+
+	
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 1, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 1, -1);
+
+
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 1, -1);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, -1);
+
+	
+	//----
+
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, 0);
+
+
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, 0);
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 1, -1);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
+
+	
+	//----
+
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, -1);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(1, 0, -1);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, -1);
+
+
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, -1);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(0, 0, -1);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(0, 1, -1);
+
+	
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 0, -0);
+	glTexCoord2f(0.0f, 0.0f); glVertex3f(0, 0, -1);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
+
+
+	glTexCoord2f(0.0f, 1.0f); glVertex3f(0, 0, 0);
+	glTexCoord2f(1.0f, 0.0f); glVertex3f(1, 0, -1);
+	glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 0, 0);
 
 
 
 	
-
-	glVertex3f(0, 1, 0);
-	glVertex3f(1, 0, 0);
-	glVertex3f(1, 1, 0);
-
-
-	glTexCoord2f(0.0f, 1.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glTexCoord2f(1.0f, 1.0f);
-
-	glVertex3f(1, 1, 0);
-	glVertex3f(1, 0, 0);
-	glVertex3f(1, 1, -1);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-
-
-	glVertex3f(1, 0, 0);
-	glVertex3f(1, 0, -1);
-	glVertex3f(1, 1, -1);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-	glVertex3f(0, 1, 0);
-	glVertex3f(1, 1, 0);
-	glVertex3f(1, 1, -1);
-
-	//COPY PASTE TEXT
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-	glVertex3f(0, 1, 0);
-	glVertex3f(1, 1, -1);
-	glVertex3f(0, 1, -1);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-
-	glVertex3f(0, 1, 0);
-	glVertex3f(0, 0, -1);
-	glVertex3f(0, 0, 0);
-
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-
-	glVertex3f(0, 1, 0);
-	glVertex3f(0, 1, -1);
-	glVertex3f(0, 0, -1);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-
-	glVertex3f(1, 1, -1);
-	glVertex3f(1, 0, -1);
-	glVertex3f(0, 0, -1);
-
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-
-	glVertex3f(1, 1, -1);
-	glVertex3f(0, 0, -1);
-	glVertex3f(0, 1, -1);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-	glVertex3f(0, 0, -0);
-	glVertex3f(0, 0, -1);
-	glVertex3f(1, 0, -1);
-
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-
-	glVertex3f(0, 0, 0);
-	glVertex3f(1, 0, -1);
-	glVertex3f(1, 0, 0);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glTexCoord2f(0.0f, 1.0f);
-
-
 	
 
 	glEnd();
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glLineWidth(1.0f);
-
+
+
 
 
 

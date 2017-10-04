@@ -82,7 +82,7 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 // Called before quitting
 bool ModuleAssimp::CleanUp()
 {
-	delete m;
+	
 
 	return true;
 }

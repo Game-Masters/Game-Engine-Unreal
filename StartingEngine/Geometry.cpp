@@ -48,7 +48,7 @@ void Geometry_Manager::Initialize()
 	
 	if (mesh.textures_coord != nullptr) {
 
-		GLubyte checkImage[256][256][4];
+	/*	GLubyte checkImage[256][256][4];
 		for (int i = 0; i < 256; i++) {
 			for (int j = 0; j < 256; j++) {
 				int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
@@ -60,21 +60,26 @@ void Geometry_Manager::Initialize()
 		}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &ImageName);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glGenTextures(1, &App->assimp->Lenna_texture);
+	glBindTexture(GL_TEXTURE_2D, App->assimp->Lenna_texture);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256,
-		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLuint)ilGetInteger(IL_IMAGE_WIDTH), (GLuint)ilGetInteger(IL_IMAGE_HEIGHT),
+		0, GL_RGBA, GL_UNSIGNED_BYTE, (GLuint*)ilGetData());
+		*/
+
+
+
+	App->assimp->LoadImage_devil(mesh.texture_str, &mesh.id_image_devil);
 
 	glGenBuffers(1, (GLuint*)&(mesh.id_texture));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh.num_textcoord*2, &mesh.textures_coord[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh.num_vertices*3, &mesh.textures_coord[0], GL_STATIC_DRAW);
 	
-
+	
 
 	}
 
@@ -89,7 +94,9 @@ void Geometry_Manager::Draw()
 
 
 
-
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_2D, mesh.id_image_devil);
 
 		
 		
@@ -113,9 +120,7 @@ void Geometry_Manager::Draw()
 
 
 		if (mesh.textures_coord != nullptr) {
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glBindTexture(GL_TEXTURE_2D, ImageName);
+
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
 			glTexCoordPointer(2, GL_FLOAT,0, NULL);

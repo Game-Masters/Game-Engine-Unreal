@@ -23,7 +23,23 @@ ModuleAssimp::~ModuleAssimp()
 // Called before render is available
 bool ModuleAssimp::Start()
 {
-	// Stream log messages to Debug window
+	ilutRenderer(ILUT_OPENGL);
+	ilInit();
+	iluInit();
+	ilutInit();
+	ilutRenderer(ILUT_OPENGL);
+
+	ilClearColour(255, 255, 255, 000);
+
+	//Check for error
+	ILenum ilError = ilGetError();
+	if (ilError != IL_NO_ERROR)
+	{
+		LOG("IlInit error!!");
+	}
+	
+
+
 	struct aiLogStream stream;
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, NULL);
 	aiAttachLogStream(&stream);
@@ -129,17 +145,27 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 			}
 
 			// colors
-			if (scene->mMeshes[i]->HasVertexColors(0))
+			/*if (scene->mMeshes[i]->HasVertexColors(0))
 			{
 				m->mesh.colors = new float[m->mesh.num_vertices * 3];
 				memcpy(m->mesh.colors, scene->mMeshes[i]->mColors, sizeof(float) * m->mesh.num_vertices * 3);
-			}
+			}*/
 
 			// texture coords (only one texture for now)
 			if (scene->mMeshes[i]->HasTextureCoords(0))
 			{
-				//m->mesh.textures_coord = new float[m->mesh.num_vertices * 2];
-				//memcpy(m->mesh.textures_coord, scene->mMeshes[i]->mTextureCoords[0], sizeof(float) * m->mesh.num_vertices * 3);
+				m->mesh.textures_coord = new float[m->mesh.num_vertices * 2];
+
+				for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
+
+					m->mesh.textures_coord[z*2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
+					m->mesh.textures_coord[z * 2+1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
+					
+
+				}
+				m->mesh.texture_str = "Baker_house.png";
+
+				//memcpy(m->mesh.textures_coord, scene->mMeshes[i]->mTextureCoords[0], sizeof(float) * m->mesh.num_vertices * 2);
 			}
 			
 			meshes_vec.push_back(m);
@@ -155,4 +181,76 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 
 
 
+}
+
+GLuint ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
+{
+
+	//Texture loading success
+	bool textureLoaded = false;
+
+	//Generate and set current image ID
+	uint imgID = 0;
+	ilGenImages(1, &imgID);
+	ilBindImage(imgID);
+
+	//Load image
+	ILboolean success = ilLoadImage(theFileName);
+	
+	//Image loaded successfully
+	if (success == IL_TRUE)
+	{
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
+
+		//Convert image to RGBA
+		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+		if (success == IL_TRUE)
+		{
+			textureLoaded = loadTextureFromPixels32((GLuint*)ilGetData(), (GLuint)ilGetInteger(IL_IMAGE_WIDTH), (GLuint)ilGetInteger(IL_IMAGE_HEIGHT), buff);
+			//Create texture from file pixels
+			textureLoaded = true;
+		}
+
+		//Delete file from memory
+		ilDeleteImages(1, &imgID);
+	}
+
+	//Report error
+	if (!textureLoaded)
+	{
+
+	}
+	return textureLoaded;
+
+}
+
+bool ModuleAssimp::loadTextureFromPixels32(GLuint * id_pixels, GLuint width_img, GLuint height_img, GLuint *buff)
+{
+
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, buff);
+	glBindTexture(GL_TEXTURE_2D, *buff);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width_img, height_img,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, id_pixels);
+	glBindTexture(GL_TEXTURE_2D, NULL);
+	//Check for error
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+	{
+		printf("Error loading texture from %p pixels! %s\n", id_pixels, gluErrorString(error));
+		return false;
+	}
+
+	return true;
 }

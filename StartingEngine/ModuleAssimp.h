@@ -5,6 +5,12 @@
 #include "Module.h"
 #include "SDL/include/SDL.h"
 #include"Geometry.h"
+#include"Devil\include\ilut.h"
+
+#pragma comment (lib, "../StartingEngine/Devil/libx86/DevIL.lib")
+#pragma comment (lib, "../StartingEngine/Devil/libx86/ILU.lib")
+#pragma comment (lib, "../StartingEngine/Devil/libx86/ILUT.lib")
+
 
 class Application;
 
@@ -26,8 +32,11 @@ public:
 	void ImportGeometry(char* fbx);
 
 
-public:
+	GLuint LoadImage_devil(const char* theFileName, GLuint *buff);
+	bool loadTextureFromPixels32(GLuint * id_pixels, GLuint width, GLuint height, GLuint *buff);
 
+public:
+	//GLuint *Lenna_texture = 0;
 	Geometry_Manager* m;
 	std::vector<Geometry_Manager*> meshes_vec;
 	GLuint * paco;

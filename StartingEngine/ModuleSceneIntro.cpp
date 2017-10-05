@@ -1,11 +1,6 @@
 ﻿#include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
-#include"Devil\include\ilut.h"
-
-#pragma comment (lib, "../StartingEngine/Devil/libx86/DevIL.lib")
-#pragma comment (lib, "../StartingEngine/Devil/libx86/ILU.lib")
-#pragma comment (lib, "../StartingEngine/Devil/libx86/ILUT.lib")
 
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
@@ -148,10 +143,10 @@ bool ModuleSceneIntro::Start()
 	texture_coord.size();
 
 	cube_test = new Cube_prim();
-
+	cube_test->mesh.texture_str = "Lenna.png";
 	cube_test->Create_Cube_Prim(vertices, indices, texture_coord);	
 
-	cube_test->Initialize();
+	//cube_test->Initialize();
 
 	//-----
 
@@ -171,7 +166,7 @@ bool ModuleSceneIntro::Start()
 
 	//plane_test->Initialize();
 
-	ilutGLBindTexImage();
+
 	
 	
 	// An array of 3 vectors which represents 3 vertices
@@ -293,7 +288,7 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
-	cube_test->Draw();
+	//cube_test->Draw();
 	
 	
 	/*glEnable(GL_TEXTURE_2D);

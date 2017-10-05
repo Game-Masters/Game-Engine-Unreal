@@ -111,24 +111,7 @@ bool ModuleSceneIntro::Start()
 
 	cube_test = new Cube_prim();
 
-	cube_test->mesh.num_vertices = 8;
-
-	cube_test->mesh.num_indices = 36;
-
-	cube_test->mesh.num_textcoord = 18;
-
-	cube_test->mesh.vertices = new float[cube_test->mesh.num_vertices * 3];
-	cube_test->mesh.indices = new uint[cube_test->mesh.num_indices];
-	memcpy(cube_test->mesh.vertices, &vertices[0], sizeof(float) * cube_test->mesh.num_vertices * 3);
-	for (uint i = 0; i < cube_test->mesh.num_indices; ++i)
-	{
-		memcpy(&cube_test->mesh.indices[i], &indices[i], sizeof(uint));
-	}
-	
-	cube_test->mesh.textures_coord= new float[cube_test->mesh.num_textcoord*2];
-	memcpy(cube_test->mesh.textures_coord, &texture_coord[0], sizeof(float) * cube_test->mesh.num_textcoord * 2);
-	
-	
+	cube_test->Create_Cube_Prim(vertices, indices, texture_coord);	
 
 	cube_test->Initialize();
 

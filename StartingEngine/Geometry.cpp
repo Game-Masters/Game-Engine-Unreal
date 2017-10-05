@@ -88,9 +88,7 @@ void Geometry_Manager::Draw()
 	if (mesh.num_indices>0 && mesh.num_vertices>0) {
 
 
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindTexture(GL_TEXTURE_2D, ImageName);
+
 
 
 		
@@ -115,7 +113,9 @@ void Geometry_Manager::Draw()
 
 
 		if (mesh.textures_coord != nullptr) {
-			
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glBindTexture(GL_TEXTURE_2D, ImageName);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
 			glTexCoordPointer(2, GL_FLOAT,0, NULL);

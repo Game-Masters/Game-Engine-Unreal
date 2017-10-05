@@ -33,7 +33,9 @@ void Cube_prim::Create_Cube_Prim(std::vector<float> vert, std::vector<uint> inde
 		memcpy(&mesh.indices[i], &index[i], sizeof(uint));
 	}
 
-	mesh.textures_coord = new float[mesh.num_textcoord * 2];
-	memcpy(mesh.textures_coord, &text[0], sizeof(float) * mesh.num_textcoord * 2);
+	//if (vert[0]!=NULL) {
+		mesh.textures_coord = new float[mesh.num_textcoord * 2];
+		memcpy(mesh.textures_coord, &text[0], sizeof(float) * mesh.num_textcoord * 2);
+	//}
 
 }

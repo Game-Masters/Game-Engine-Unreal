@@ -1,7 +1,11 @@
 ﻿#include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
+#include"Devil\include\ilut.h"
 
+#pragma comment (lib, "../StartingEngine/Devil/libx86/DevIL.lib")
+#pragma comment (lib, "../StartingEngine/Devil/libx86/ILU.lib")
+#pragma comment (lib, "../StartingEngine/Devil/libx86/ILUT.lib")
 
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
@@ -109,6 +113,8 @@ bool ModuleSceneIntro::Start()
 		1.0f, 1.0f,
 	};
 
+	texture_coord.size();
+
 	cube_test = new Cube_prim();
 
 	cube_test->Create_Cube_Prim(vertices, indices, texture_coord);	
@@ -133,9 +139,8 @@ bool ModuleSceneIntro::Start()
 
 	//plane_test->Initialize();
 
-
-
-
+	ilutGLBindTexImage();
+	
 	
 	// An array of 3 vectors which represents 3 vertices
 	/*
@@ -193,7 +198,7 @@ bool ModuleSceneIntro::Start()
 
 	
 
-
+	
 
 
 

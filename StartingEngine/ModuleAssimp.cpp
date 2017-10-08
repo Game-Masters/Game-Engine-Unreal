@@ -164,8 +164,6 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 
 				}
 				m->mesh.texture_str = "Baker_house.png";
-
-				//memcpy(m->mesh.textures_coord, scene->mMeshes[i]->mTextureCoords[0], sizeof(float) * m->mesh.num_vertices * 2);
 			}
 			
 			meshes_vec.push_back(m);

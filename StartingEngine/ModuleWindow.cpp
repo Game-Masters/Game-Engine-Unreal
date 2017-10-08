@@ -10,6 +10,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "SDL\include\SDL_opengl.h"
+#include"Imgui\imguidock.h"
 ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled)
 {
 	window = NULL;
@@ -113,53 +114,54 @@ bool ModuleWindow::CleanUp()
 
 bool ModuleWindow::Gui_Engine_Modules(float dt)
 {
+	
+		if (ImGui::CollapsingHeader(name.c_str()))
+		{
+			//Button to change the name of the window
+			if (ImGui::InputText("Name of the window", str_p, 64, ImGuiInputTextFlags_EnterReturnsTrue)) {
+				str_window = str_p;
+				SetTitle(str_window.c_str());
+			}
+			ImGui::Checkbox("Fullscreen", &fullscreen_bool);
+			if (fullscreen_bool) {
+				//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
+				LOG("Fullscreen mode applicated");
+			}
+			ImGui::Checkbox("Fullscreen desktop ", &fullscreen_desktop_bool);
+			if (fullscreen_desktop_bool) {
+				//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				LOG("Fullscreen Desktop mode applicated");
+			}
 
-	if (ImGui::CollapsingHeader(name.c_str()))
-	{
-		//Button to change the name of the window
-		if (ImGui::InputText("Name of the window", str_p, 64, ImGuiInputTextFlags_EnterReturnsTrue)) {
-			str_window = str_p;
-			SetTitle(str_window.c_str());
+			int display_count = 0, display_index = 0, mode_index = 0;
+			SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+
+			if (SDL_GetDisplayMode(display_index, mode_index, &mode) != 0) {
+				SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
+				return 1;
+			}
+			SDL_Log("SDL_GetDisplayMode(0, 0, &mode):\t\t%i bpp\t%i x %i",
+				SDL_BITSPERPIXEL(mode.format), mode.w, mode.h);
+
+
+			ImGui::Text("Number of Displays:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetNumVideoDisplays());
+			ImGui::Text("Refresh rate:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.refresh_rate);
+
+
+			ImGui::InputText("Window Width", str_w, 64, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
+			win_width = std::atoi(str_w);
+
+
+			ImGui::InputText("Window Height", str_h, 64, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
+			win_height = std::atoi(str_h);
+
+
+			if (ImGui::Button("Save win config")) {
+				SDL_SetWindowSize(window, win_width, win_height);
+			}
+
 		}
-		ImGui::Checkbox("Fullscreen", &fullscreen_bool);
-		if (fullscreen_bool) {
-			//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
-			LOG("Fullscreen mode applicated");
-		}
-		ImGui::Checkbox("Fullscreen desktop ", &fullscreen_desktop_bool);
-		if (fullscreen_desktop_bool) {
-			//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-			LOG("Fullscreen Desktop mode applicated");
-		}
-
-		int display_count = 0, display_index = 0, mode_index = 0;
-		SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
-
-		if (SDL_GetDisplayMode(display_index, mode_index, &mode) != 0) {
-			SDL_Log("SDL_GetDisplayMode failed: %s", SDL_GetError());
-			return 1;
-		}
-		SDL_Log("SDL_GetDisplayMode(0, 0, &mode):\t\t%i bpp\t%i x %i",
-			SDL_BITSPERPIXEL(mode.format), mode.w, mode.h);
-
-
-		ImGui::Text("Number of Displays:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", SDL_GetNumVideoDisplays());
-		ImGui::Text("Refresh rate:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", mode.refresh_rate);
-
-		
-		ImGui::InputText("Window Width", str_w, 64, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
-		win_width = std::atoi(str_w);
-		
-
-		ImGui::InputText("Window Height", str_h, 64, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
-		win_height = std::atoi(str_h);
-		
-
-		if (ImGui::Button("Save win config")) {
-			SDL_SetWindowSize(window, win_width, win_height);
-		}
-
-	}
+	
 
 	return true;
 }

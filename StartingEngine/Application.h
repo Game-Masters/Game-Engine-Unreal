@@ -70,6 +70,7 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	bool Gui_Engine_Modules(float dt);
 	std::list<Module*> list_modules;
 	Uint32				frames_on_last_update = 0;
 	void LoadModules();

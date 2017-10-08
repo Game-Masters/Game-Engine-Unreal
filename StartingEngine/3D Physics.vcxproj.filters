@@ -477,6 +477,12 @@
     <ClInclude Include="Devil\include\ilut_config.h">
       <Filter>Sources\Modules\Devil</Filter>
     </ClInclude>
+    <ClInclude Include="Imgui\imguidock.h">
+      <Filter>Sources\Modules\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture_Engine.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -672,6 +678,12 @@
       <Filter>Sources\Modules\Primitives</Filter>
     </ClCompile>
     <ClCompile Include="ModuleAssimp.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imguidock.cpp">
+      <Filter>Sources\Modules\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture_Engine.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,11 +5,12 @@
 #include"Imgui/imgui_impl_sdl.h"
 #include"Imgui\imgui_impl_sdl_gl3.h"
 #include"Imgui/imgui.h"
+#include"Imgui\imguidock.h"
 #include"ModuleSceneIntro.h"
 
 
 
-#define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
+
 
 ModuleGui::ModuleGui(bool start_enabled) : Module(start_enabled), frames_on_last_update(100)
 {
@@ -104,6 +105,8 @@ update_status ModuleGui::PreUpdate(float dt)
 {
 	//ImGui_ImplSdlGL2_NewFrame(App->window->window);
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
+
+	
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -111,14 +114,40 @@ update_status ModuleGui::Update(float dt)
 {
 
 	
+	ImVec2 display_size = ImGui::GetIO().DisplaySize;
+	ImGui::SetNextWindowSize(display_size);
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::Begin("PanelEditor", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
 
-	ImGui::Begin("Info", false, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+
+	ImGui::Separator();
+
+	ImGui::BeginDockspace();
+
+
+	App->Gui_Engine_Modules(dt);
+	if (ImGui::BeginDock("Information", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
-		(*item)->Gui_Engine_Modules(dt);
+		
+			(*item)->Gui_Engine_Modules(dt);
+		}
+		
 	}
+	ImGui::EndDock();
+
 	
-	ImGui::End();
+
 	
+	if (ImGui::BeginDock("World", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+		//NANI?
+		ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(),ImVec2(0,1), ImVec2(1,0));
+	}
+	ImGui::EndDock();
+	
+
+
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 		show_gui_engine = !show_gui_engine;
@@ -133,7 +162,6 @@ update_status ModuleGui::Update(float dt)
 				
 				
 				if (ImGui::MenuItem("Console")) { show_console = !show_console; }
-				if (ImGui::MenuItem("Performance")) { show_performance = !show_performance; }
 				if (ImGui::MenuItem("Close App")){button_exit_app = true;}
 
 
@@ -143,7 +171,12 @@ update_status ModuleGui::Update(float dt)
 			ImGui::EndMainMenuBar();
 
 		}
-		console_imgui.Enable_Console_Imgui(show_console);
+		if (show_console) {
+			console_imgui.Enable_Console_Imgui(show_console);
+		}
+		ImGui::EndDockspace();
+		ImGui::End();
+
 		if(show_performance)
 		{
 			const char* fps = "fps";
@@ -237,7 +270,7 @@ update_status ModuleGui::Update(float dt)
 		
 		ImGui::End();
 	}
-	
+		App->scene_intro->world_texture->Unbind();
 		ImGui::Render();
 
 

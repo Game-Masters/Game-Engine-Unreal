@@ -127,6 +127,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
+    <ClInclude Include="Imgui\imguidock.h" />
     <ClInclude Include="Imgui\imgui_impl_sdl.h" />
     <ClInclude Include="Imgui\imgui_impl_sdl_gl3.h" />
     <ClInclude Include="Imgui\imgui_internal.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="Parson_JSON.h" />
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Texture_Engine.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +228,7 @@
     <ClCompile Include="Cube_prim.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
+    <ClCompile Include="Imgui\imguidock.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
     <ClCompile Include="Imgui\imgui_impl_sdl.cpp" />
@@ -284,6 +287,7 @@
     <ClCompile Include="Parson_JSON.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Texture_Engine.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>

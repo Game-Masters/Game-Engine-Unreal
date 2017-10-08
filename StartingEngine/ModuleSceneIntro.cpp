@@ -271,13 +271,18 @@ bool ModuleSceneIntro::Start()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 	*/
+
+	world_texture = new Texture_Engine();
+	world_texture->Create(nullptr, App->window->win_width, App->window->win_height);
+
+
 	return ret;
 }
 
 
 update_status ModuleSceneIntro::PreUpdate(float dt)
 {
-
+	world_texture->Bind();
 	
 
 	return UPDATE_CONTINUE;

@@ -11,6 +11,8 @@
 #include"MathGeoLib\MathBuildConfig.h"
 #include "../StartingEngine/Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
+#include"Texture_Engine.h"
+
 //#include"Geometry.h"
 #include"Cube_prim.h"
 #define MAX_SNAKE 2
@@ -80,5 +82,6 @@ public:
 	Cube_prim * cube_test=nullptr;
 	Cube_prim * plane_test = nullptr;
 	Geometry_Manager *m;
+	Texture_Engine *world_texture;
 
 };

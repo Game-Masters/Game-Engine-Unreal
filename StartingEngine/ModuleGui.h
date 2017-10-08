@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "SDL/include/SDL.h"
 #include"Console_ImGui.h"
-
+#define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 class Application;
 
 class ModuleGui : public Module

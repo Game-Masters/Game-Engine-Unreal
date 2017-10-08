@@ -2,7 +2,8 @@
 #include "Application.h"
 #include "ModulePhysics3D.h"
 #include "PhysBody3D.h"
-
+#include "../StartingEngine/Glew/include/glew.h"
+#include "SDL\include\SDL_opengl.h"
 #include "Geometry.h"
 
 #ifdef _DEBUG
@@ -240,8 +241,19 @@ void ModulePhysics3D::DestroyBody(PhysBody3D & bodyA)
 
 
 
-void DebugDrawer::drawLine(const btVector3 & from, const btVector3 & to, const btVector3 & color)
+void DebugDrawer::drawLine(const btVector3 &from, const btVector3 &to, const btVector3 &color)
 {
+}
+
+void DebugDrawer::drawLines(const vec3 from, const vec3 to, const vec3 color)
+{
+	glLineWidth(2.0f);
+	glBegin(GL_LINES);
+	glColor3f(1, 1, 1);
+	glVertex3f(from.x, from.y, from.z);
+	glVertex3f(to.x, to.y, to.z);
+
+	glEnd();
 }
 
 void DebugDrawer::drawContactPoint(const btVector3 & PointOnB, const btVector3 & normalOnB, btScalar distance, int lifeTime, const btVector3 & color)
@@ -271,16 +283,17 @@ int	 DebugDrawer::getDebugMode() const
 void DebugDrawer::drawGrid(int grid_size)
 {
 
-	btVector3 line_color = { 1, 1 ,1 };
+	vec3 line_color = { 1, 1 ,1 };
+	
 	for (int i = -grid_size; i <= grid_size; i++)
 	{
-		btVector3 vect = { (float)i, 0 , (float)-grid_size };
-		btVector3 vect2 = { (float)i, 0 , (float)grid_size };
-		drawLine(vect, vect2, line_color);
+		vec3 vect = { (float)i, 0 , (float)-grid_size };
+		vec3 vect2 = { (float)i, 0 , (float)grid_size };
+		drawLines(vect, vect2, line_color);
 
 		vect = { (float)-grid_size, 0 , (float)i };
 		vect2 = { (float)grid_size, 0 , (float)i };
-		drawLine(vect, vect2, line_color);
+		drawLines(vect, vect2, line_color);
 
 	}
 }

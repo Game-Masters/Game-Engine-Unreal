@@ -379,7 +379,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 
 	
-	glLineWidth(2.0f);
+	glLineWidth(5.0f);
 	glBegin(GL_LINES);
 	glColor3f(0, 1, 0);
 	glVertex3f(0.f, 0.f, 0.f);
@@ -388,7 +388,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	glEnd();
 	glColor3f(1, 1, 1);
 
-	glLineWidth(2.0f);
+	glLineWidth(5.0f);
 	glBegin(GL_LINES);
 	glColor3f(1, 0, 0);
 	glVertex3f(0.f, 0.f, 0.f);
@@ -398,7 +398,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	glColor3f(1, 1, 1);
 
 
-	glLineWidth(2.0f);
+	glLineWidth(5.0f);
 	glBegin(GL_LINES);
 	glColor3f(0, 0, 1);
 	glVertex3f(0.f, 0.f, 0.f);

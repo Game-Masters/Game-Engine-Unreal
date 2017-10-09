@@ -485,7 +485,7 @@ bool ModuleRenderer3D::CleanUp()
 	LOG("Destroying 3D Renderer");
 	//delete sphere;
 	//delete n_sphere_o;
-
+	
 	SDL_GL_DeleteContext(context);
 
 	return true;

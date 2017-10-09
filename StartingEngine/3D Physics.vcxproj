@@ -113,6 +113,7 @@
     <ClInclude Include="Assimp\include\assimp\vector3.h" />
     <ClInclude Include="Assimp\include\assimp\version.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Console_ImGui.h" />
     <ClInclude Include="Cube_prim.h" />
     <ClInclude Include="Devil\include\config.h" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Devil\include\ilut_config.h" />
     <ClInclude Include="Devil\include\ilu_region.h" />
     <ClInclude Include="Devil\include\il_wrap.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -224,8 +226,10 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console_ImGui.cpp" />
     <ClCompile Include="Cube_prim.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imguidock.cpp" />

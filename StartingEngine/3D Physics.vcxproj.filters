@@ -43,6 +43,9 @@
     <Filter Include="Sources\Modules\Devil">
       <UniqueIdentifier>{e96282f8-1dd5-4214-9630-da4195aacec4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\GerarchyGameObjects">
+      <UniqueIdentifier>{2fe8301b-53f1-4c1a-ad3e-cb38d8f9b46e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -483,6 +486,12 @@
     <ClInclude Include="Texture_Engine.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Sources\Modules\GerarchyGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Sources\Modules\GerarchyGameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -685,6 +694,12 @@
     </ClCompile>
     <ClCompile Include="Texture_Engine.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

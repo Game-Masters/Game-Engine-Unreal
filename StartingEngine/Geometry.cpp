@@ -76,21 +76,6 @@ void Geometry_Manager::Draw()
 
 		
 		
-		if (App->renderer3D->debugnormals == true && mesh.normals != nullptr) {
-			for (uint i = 0; i < mesh.num_vertices * 3; i += 3)
-			{
-				glLineWidth(2.0f);
-				glColor3f(1.0f, 0.0f, 0.0f);
-
-				glBegin(GL_LINES);
-				glVertex3f(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]);
-				glVertex3f(mesh.vertices[i] + mesh.normals[i], mesh.vertices[i + 1] + mesh.normals[i + 1], mesh.vertices[i + 2] + mesh.normals[i + 2]);
-				glEnd();
-
-				glLineWidth(1.0f);
-				glColor3f(1.0f, 1.0f, 1.0f);
-			}
-		}
 
 		
 
@@ -113,6 +98,22 @@ void Geometry_Manager::Draw()
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
 		glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, NULL);
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		if (App->renderer3D->debugnormals == true && mesh.normals != nullptr) {
+			for (uint i = 0; i < mesh.num_vertices * 3; i += 3)
+			{
+				glLineWidth(2.0f);
+				glColor3f(1.0f, 0.0f, 0.0f);
+
+				glBegin(GL_LINES);
+				glVertex3f(mesh.vertices[i], mesh.vertices[i + 1], mesh.vertices[i + 2]);
+				glVertex3f(mesh.vertices[i] + mesh.normals[i], mesh.vertices[i + 1] + mesh.normals[i + 1], mesh.vertices[i + 2] + mesh.normals[i + 2]);
+				glEnd();
+
+				glLineWidth(1.0f);
+				glColor3f(1.0f, 1.0f, 1.0f);
+			}
+		}
 
 
 

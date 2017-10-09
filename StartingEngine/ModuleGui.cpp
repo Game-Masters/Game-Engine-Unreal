@@ -22,9 +22,17 @@ ModuleGui::~ModuleGui()
 {
 }
 
+bool ModuleGui::Init() {
+
+	//ImGui::LoadDocks();
+
+	return true;
+}
 // Called before render is available
 bool ModuleGui::Start()
 {
+
+	
 	//IMGUI STYLE START
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -329,6 +337,6 @@ bool ModuleGui::CleanUp()
 {
 	delete SliderTest_Int_value;
 	aiDetachAllLogStreams();
-
+	//ImGui::SaveDocks();
 	return true;
 }

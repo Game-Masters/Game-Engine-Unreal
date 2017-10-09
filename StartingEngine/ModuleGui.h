@@ -15,7 +15,8 @@ public:
 
 	// Destructor
 	virtual ~ModuleGui();
-
+	bool Init();
+	
 	bool Start();
 	update_status Update(float dt);
 	update_status PreUpdate(float dt);

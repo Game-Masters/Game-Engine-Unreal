@@ -90,7 +90,31 @@ update_status ModuleAssimp::PostUpdate(float dt)
 
 bool ModuleAssimp::Gui_Engine_Modules(float dt)
 {
-	
+	if (ImGui::CollapsingHeader(name.c_str()))
+	{
+		for (int p = 0; p < meshes_vec.size(); p++) {
+			ImGui::Text("");
+			ImGui::Text("Mesh %i", p + 1);
+			aiVector3D t_temp = meshes_vec[p]->mesh.translation;
+			ImGui::Text("Translation.x %f", t_temp.x);
+			ImGui::Text("Translation.x %f", t_temp.y);
+			ImGui::Text("Translation.x %f", t_temp.z);
+			aiQuaternion q_temp = meshes_vec[p]->mesh.rotation;
+			ImGui::Text("");
+			ImGui::Text("Rotation.x %f", q_temp.x);
+			ImGui::Text("Rotation.y %f", q_temp.y);
+			ImGui::Text("Rotation.z %f", q_temp.z);
+			ImGui::Text("Rotation.w %f", q_temp.w);
+			aiVector3D s_temp = meshes_vec[p]->mesh.scaling;
+			ImGui::Text("");
+			ImGui::Text("Scale.x %f", s_temp.x);
+			ImGui::Text("Scale.y %f", s_temp.y);
+			ImGui::Text("Scale.z %f", s_temp.z);
+			ImGui::Text("-------------------------");
+		}
+	}
+
+
 	return false;
 }
 
@@ -145,11 +169,11 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 			}
 		
 		
-			/*scene->mRootNode->mTransformation.Decompose(m->mesh.scaling, m->mesh.rotation, m->mesh.translation);
+			scene->mRootNode->mTransformation.Decompose(m->mesh.scaling, m->mesh.rotation, m->mesh.translation);
 			float3 pos(m->mesh.translation.x, m->mesh.translation.y, m->mesh.translation.z);
 			float3 scale(m->mesh.scaling.x, m->mesh.scaling.y, m->mesh.scaling.z);
 			Quat rot(m->mesh.rotation.x, m->mesh.rotation.y, m->mesh.rotation.z, m->mesh.rotation.w);
-			*/
+			
 			// texture coords (only one texture for now)
 			if (scene->mMeshes[i]->HasTextureCoords(0))
 			{

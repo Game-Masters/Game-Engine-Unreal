@@ -8,6 +8,10 @@
 #include "SDL\include\SDL_opengl.h"
 #include"MathGeoLib\MathGeoLib.h"
 #include"MathGeoLib\MathBuildConfig.h"
+#include "../StartingEngine/Assimp/include/assimp/cimport.h"
+#include "../StartingEngine/Assimp/include/assimp/scene.h"
+#include "../StartingEngine/Assimp/include/assimp/postprocess.h"
+#include "../StartingEngine/Assimp/include/assimp/cfileio.h"
 
 
 
@@ -28,6 +32,11 @@ struct geometry_base {
 	float* textures_coord = nullptr;
 	char* texture_str;
 	
+
+	aiVector3D translation;
+	aiVector3D scaling;
+	aiQuaternion rotation;
+
 	~geometry_base() {
 		delete[] indices;
 		delete[] vertices;

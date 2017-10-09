@@ -147,6 +147,11 @@ update_status ModuleGui::Update(float dt)
 	ImGui::EndDock();
 	
 
+	if (ImGui::BeginDock("About", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+
+	}
+	ImGui::EndDock();
+
 
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)

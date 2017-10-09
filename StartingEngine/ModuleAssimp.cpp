@@ -143,14 +143,13 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 				m->mesh.normals = new float[m->mesh.num_vertices * 3];
 				memcpy(m->mesh.normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->mesh.num_vertices * 3);
 			}
-
-			// colors
-			/*if (scene->mMeshes[i]->HasVertexColors(0))
-			{
-				m->mesh.colors = new float[m->mesh.num_vertices * 3];
-				memcpy(m->mesh.colors, scene->mMeshes[i]->mColors, sizeof(float) * m->mesh.num_vertices * 3);
-			}*/
-
+		
+		
+			/*scene->mRootNode->mTransformation.Decompose(m->mesh.scaling, m->mesh.rotation, m->mesh.translation);
+			float3 pos(m->mesh.translation.x, m->mesh.translation.y, m->mesh.translation.z);
+			float3 scale(m->mesh.scaling.x, m->mesh.scaling.y, m->mesh.scaling.z);
+			Quat rot(m->mesh.rotation.x, m->mesh.rotation.y, m->mesh.rotation.z, m->mesh.rotation.w);
+			*/
 			// texture coords (only one texture for now)
 			if (scene->mMeshes[i]->HasTextureCoords(0))
 			{

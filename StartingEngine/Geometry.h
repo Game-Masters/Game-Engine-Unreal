@@ -30,7 +30,7 @@ struct geometry_base {
 	uint id_texture = 0;
 	uint id_image_devil = 0;
 	float* textures_coord = nullptr;
-	char* texture_str;
+	std::string texture_str;
 	
 	float3 translation;
 	float3 scaling;

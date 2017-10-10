@@ -44,7 +44,6 @@ bool ModuleAssimp::Start()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, NULL);
 	aiAttachLogStream(&stream);
 
-	//ImportGeometry();
 
 	for (int p = 0; p < meshes_vec.size(); p++) {
 		meshes_vec[p]->Initialize();
@@ -77,11 +76,13 @@ update_status ModuleAssimp::PostUpdate(float dt)
 {
 
 	if (App->input->flie_dropped) {
+		if (IsTexture(App->input->dropped_filedir) == false) {
+			for (int p = 0; p < meshes_vec.size(); p++) {
+				delete meshes_vec[p];
+			}
 
-		for (int p = 0; p < meshes_vec.size(); p++) {
-			delete meshes_vec[p];
+			meshes_vec.clear();
 		}
-		meshes_vec.clear();
 		ImportGeometry(App->input->dropped_filedir);
 		for (int p = 0; p < meshes_vec.size(); p++) {
 			meshes_vec[p]->Initialize();
@@ -201,9 +202,14 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 					
 
 				}
-				m->mesh.texture_str = "Baker_house.png";
+				
 			}
-			
+
+			aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
+			uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
+			aiString path;
+			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+			m->mesh.texture_str = path.C_Str();
 			meshes_vec.push_back(m);
 			
 	
@@ -211,6 +217,18 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 		aiReleaseImport(scene);
 	}
 	else {
+
+
+		bool textureLoaded = false;
+
+		//Generate and set current image ID
+		
+		if (IsTexture(fbx))
+		{
+			for (int p = 0; p < meshes_vec.size(); p++) {
+				meshes_vec[p]->mesh.texture_str = fbx;
+			}
+		}
 		LOG("Error loading scene %s", full_path);
 	}
 	//aiMesh
@@ -290,3 +308,21 @@ bool ModuleAssimp::loadTextureFromPixels32(GLuint * id_pixels, GLuint width_img,
 
 	return true;
 }
+
+bool ModuleAssimp::IsTexture(char * path)
+{
+	bool ret = false;
+
+	uint imgID = 0;
+	ilGenImages(1, &imgID);
+	ilBindImage(imgID);
+
+	//Load image
+	ILboolean success = ilLoadImage(path);
+	if (success) {
+		ret = true;
+	}
+
+	return ret;
+}
+

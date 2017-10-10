@@ -34,12 +34,13 @@ public:
 
 	GLuint LoadImage_devil(const char* theFileName, GLuint *buff);
 	bool loadTextureFromPixels32(GLuint * id_pixels, GLuint width, GLuint height, GLuint *buff);
-
+	bool IsTexture(char *path);
 public:
 	//GLuint *Lenna_texture = 0;
 	Geometry_Manager* m;
 	std::vector<Geometry_Manager*> meshes_vec;
 	GLuint * paco;
+
 };
 
 #endif // __ModuleAssimp_H__

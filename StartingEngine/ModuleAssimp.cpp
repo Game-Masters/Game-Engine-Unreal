@@ -96,11 +96,7 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 			ImGui::Text("");
 			ImGui::Text("Mesh %i", p + 1);
 			float3 t_temp = meshes_vec[p]->mesh.translation;
-			//ImGui::SliderFloat()
 
-			/*if (ImGui::InputFloat("Translation.x", &t_temp.x, 64, ImGuiInputTextFlags_EnterReturnsTrue|ImGuiInputTextFlags_ReadOnly)) {
-
-			}*/
 			ImGui::Text("Translation.x %f", t_temp.x);
 			ImGui::Text("Translation.x %f", t_temp.y);
 			ImGui::Text("Translation.x %f", t_temp.z);

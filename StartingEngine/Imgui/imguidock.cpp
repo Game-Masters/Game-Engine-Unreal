@@ -34,7 +34,7 @@ SOFTWARE.
 
 #include"../Imgui/imguidock.h"
 
-
+#include "../Imgui/Data.h"
 #include <string>
 
 bool gImGuiDockReuseTabWindowTextureIfAvailable = true;
@@ -1168,36 +1168,39 @@ namespace ImGui {
 
 		void save()
 		{
-			FILE *fp = fopen("imgui_dock.layout", "w");
-			fprintf(fp, "docks %d\n\n", m_docks.size());
+			Data data;
+			data.AddInt("Docks_Count", m_docks.size());
+
 			for (int i = 0; i < m_docks.size(); ++i) {
 				Dock& dock = *m_docks[i];
-
-				fprintf(fp, "index    %d\n", i);
-				fprintf(fp, "label    %s\n", dock.parent ? (dock.label[0] == '\0' ? "DOCK" : dock.label) : "ROOT"),
-					fprintf(fp, "x        %d\n", (int)dock.pos.x);
-				fprintf(fp, "y        %d\n", (int)dock.pos.y);
-				fprintf(fp, "size_x   %d\n", (int)dock.size.x);
-				fprintf(fp, "size_y   %d\n", (int)dock.size.y);
-				fprintf(fp, "status   %d\n", (int)dock.status);
-				fprintf(fp, "active   %d\n", dock.active ? 1 : 0);
-				fprintf(fp, "opened   %d\n", dock.opened ? 1 : 0);
+				data.CreateSection("Dock_" + std::to_string(i));
+				data.AddString("label", dock.parent ? (dock.label[0] == '\0' ? "DOCK" : dock.label) : dock.status == Status_Float ? dock.label : "ROOT");
+				data.AddInt("pos_X", (int)dock.pos.x);
+				data.AddInt("pos_Y", (int)dock.pos.y);
+				data.AddInt("size_X", (int)dock.size.x);
+				data.AddInt("size_Y", (int)dock.size.y);
+				data.AddInt("status", (int)dock.status);
+				data.AddBool("active", dock.active ? true : false);
+				data.AddBool("opened", dock.opened ? true : false);
 				fillLocation(dock);
-				fprintf(fp, "location %s\n", strlen(dock.location) ? dock.location : "-1");
-				fprintf(fp, "child0   %d\n", getDockIndex(dock.children[0]));
-				fprintf(fp, "child1   %d\n", getDockIndex(dock.children[1]));
-				fprintf(fp, "prev_tab %d\n", getDockIndex(dock.prev_tab));
-				fprintf(fp, "next_tab %d\n", getDockIndex(dock.next_tab));
-				fprintf(fp, "parent   %d\n\n", getDockIndex(dock.parent));
+				data.AddString("location", strlen(dock.location) ? dock.location : "-1");
+				data.AddInt("child0", getDockIndex(dock.children[0]));
+				data.AddInt("child1", getDockIndex(dock.children[1]));
+				data.AddInt("prev_tab", getDockIndex(dock.prev_tab));
+				data.AddInt("next_tab", getDockIndex(dock.next_tab));
+				if (dock.parent == nullptr && &dock != getRootDock()) {
+					data.AddInt("parent", getDockIndex(getRootDock()));
+				}
+				else {
+					data.AddInt("parent", getDockIndex(dock.parent));
+				}
+				data.CloseSection();
 			}
-			fclose(fp);
-
+			data.SaveAsBinary("Dock_Config");
 		}
 
 
-
 		Dock* getDockByIndex(int idx) { return idx < 0 ? nullptr : m_docks[(int)idx]; }
-
 
 		void load()
 		{
@@ -1208,62 +1211,45 @@ namespace ImGui {
 			}
 			m_docks.clear();
 
-			FILE *fp = fopen("imgui_dock.layout", "r");
-
-			if (fp) {
-				int ival;
-				char str2[64];
-				fscanf(fp, "docks %d", &ival);
-				printf("%d docks\n", ival);
-
-				for (int i = 0; i < ival; i++) {
+			Data data;
+			if (data.LoadBinary("Dock_Config")) {
+				int docksCount = data.GetInt("Docks_Count");
+				for (int i = 0; i < docksCount; i++) {
 					Dock *new_dock = (Dock *)MemAlloc(sizeof(Dock));
 					m_docks.push_back(new_dock);
 				}
 
-				for (int i = 0; i < ival; i++) {
-					int id, id1, id2, id3, id4, id5;
-					int st;
-					int b1, b2;
-					char lab[32];
+				for (int i = 0; i < docksCount; i++) {
+					data.EnterSection("Dock_" + std::to_string(i));
+					m_docks[i]->label = _strdup(data.GetString("label").c_str());
+					m_docks[i]->id = ImHash(m_docks[i]->label, 0);
+					m_docks[i]->status = (Status_)data.GetInt("status");
+					m_docks[i]->active = data.GetBool("active");
+					m_docks[i]->opened = data.GetBool("opened");
+					std::string str = data.GetString("location");
+					int j = 0;
+					for (std::string::iterator it = str.begin(); it != str.end(); it++) {
+						m_docks[i]->location[j] = *it;
+						j++;
+					}
+					m_docks[i]->location[j] = '\0';
+					m_docks[i]->children[0] = getDockByIndex(data.GetInt("child0"));
+					m_docks[i]->children[1] = getDockByIndex(data.GetInt("child1"));
+					m_docks[i]->prev_tab = getDockByIndex(data.GetInt("prev_tab"));
+					m_docks[i]->next_tab = getDockByIndex(data.GetInt("next_tab"));
+					m_docks[i]->parent = getDockByIndex(data.GetInt("parent"));
+					m_docks[i]->pos.x = data.GetInt("pos_X");
+					m_docks[i]->pos.y = data.GetInt("pos_Y");
+					m_docks[i]->size.x = data.GetInt("size_X");
+					m_docks[i]->size.y = data.GetInt("size_Y");
+					data.LeaveSection();
 
-					fscanf(fp, "%s %d", str2, &id);
-					fscanf(fp, "%s %s", str2, &lab[0]);
-					fscanf(fp, "%s %f", str2, &m_docks[id]->pos.x);
-					fscanf(fp, "%s %f", str2, &m_docks[id]->pos.y);
-					fscanf(fp, "%s %f", str2, &m_docks[id]->size.x);
-					fscanf(fp, "%s %f", str2, &m_docks[id]->size.y);
-					fscanf(fp, "%s %d", str2, &st);
-					fscanf(fp, "%s %d", str2, &b1);
-					fscanf(fp, "%s %d", str2, &b2);
-					fscanf(fp, "%s %s", str2, &m_docks[id]->location[0]);
-					fscanf(fp, "%s %d", str2, &id1);
-					fscanf(fp, "%s %d", str2, &id2);
-					fscanf(fp, "%s %d", str2, &id3);
-					fscanf(fp, "%s %d", str2, &id4);
-					fscanf(fp, "%s %d", str2, &id5);
-
-					m_docks[id]->label = strdup(lab);
-					m_docks[id]->id = ImHash(m_docks[id]->label, 0);
-
-					m_docks[id]->children[0] = getDockByIndex(id1);
-					m_docks[id]->children[1] = getDockByIndex(id2);
-					m_docks[id]->prev_tab = getDockByIndex(id3);
-					m_docks[id]->next_tab = getDockByIndex(id4);
-					m_docks[id]->parent = getDockByIndex(id5);
-					m_docks[id]->status = (Status_)st;
-					m_docks[id]->active = b1;
-					m_docks[id]->opened = b2;
-
-					tryDockToStoredLocation(*m_docks[id]);
+					//tryDockToStoredLocation(*m_docks[i]);
 				}
-
-				fclose(fp);
 			}
-			printf("done\n"); fflush(stdout);
-
 		}
-};
+
+	};
 
 
 	static DockContext g_dock;

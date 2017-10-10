@@ -24,7 +24,7 @@ ModuleGui::~ModuleGui()
 
 bool ModuleGui::Init() {
 
-	//ImGui::LoadDocks();
+	ImGui::LoadDocks();
 
 	return true;
 }
@@ -337,6 +337,6 @@ bool ModuleGui::CleanUp()
 {
 	delete SliderTest_Int_value;
 	aiDetachAllLogStreams();
-	//ImGui::SaveDocks();
+	ImGui::SaveDocks();
 	return true;
 }

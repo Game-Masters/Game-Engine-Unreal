@@ -9,7 +9,8 @@ void GameObject::Update()
 
 Component * GameObject::AddNewComponent(Component_Type_Enum type)
 {
-	Component* n_component = new Component(type, true);
+	Component* n_component = new Component(type, this, true);
+	Component_Vect.push_back(n_component);
 	return n_component;
 }
 

@@ -37,7 +37,7 @@ bool ModuleAssimp::Start()
 	{
 		LOG("IlInit error!!");
 	}
-	
+
 
 
 	struct aiLogStream stream;
@@ -90,7 +90,7 @@ update_status ModuleAssimp::PostUpdate(float dt)
 
 bool ModuleAssimp::Gui_Engine_Modules(float dt)
 {
-	
+
 	return false;
 }
 
@@ -98,7 +98,7 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 // Called before quitting
 bool ModuleAssimp::CleanUp()
 {
-	
+
 
 	return true;
 }
@@ -107,12 +107,12 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 {
 
 	//----------------ASSIMP
-	
+
 
 	std::string full_path;
 	full_path = fbx;
 	const aiScene* scene = aiImportFile(full_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-	
+
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
@@ -127,7 +127,7 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 			{
 				m->mesh.num_indices = scene->mMeshes[i]->mNumFaces * 3;
 				m->mesh.indices = new uint[m->mesh.num_indices]; // assume each face is a triangle
-				
+
 				for (uint k = 0; k < scene->mMeshes[i]->mNumFaces; ++k)
 				{
 					if (scene->mMeshes[i]->mFaces[k].mNumIndices != 3) {
@@ -144,31 +144,35 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 				memcpy(m->mesh.normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->mesh.num_vertices * 3);
 			}
 
-			// colors
-			/*if (scene->mMeshes[i]->HasVertexColors(0))
-			{
-				m->mesh.colors = new float[m->mesh.num_vertices * 3];
-				memcpy(m->mesh.colors, scene->mMeshes[i]->mColors, sizeof(float) * m->mesh.num_vertices * 3);
-			}*/
+			aiVector3D translation;
+			aiVector3D scaling;
+			aiQuaternion rotation;
 
-			// texture coords (only one texture for now)
+			for (int i = 0; i < scene->mRootNode->mNumChildren; i++) {
+				scene->mRootNode->mChildren[i]->mTransformation.Decompose(scaling, rotation, translation);
+				m->mesh.translation.Set(translation.x, translation.y, translation.z);
+				m->mesh.scaling.Set(scaling.x, scaling.y, scaling.z);
+				m->mesh.rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+			}
+
+
 			if (scene->mMeshes[i]->HasTextureCoords(0))
 			{
 				m->mesh.textures_coord = new float[m->mesh.num_vertices * 2];
 
 				for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
 
-					m->mesh.textures_coord[z*2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
-					m->mesh.textures_coord[z * 2+1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
-					
+					m->mesh.textures_coord[z * 2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
+					m->mesh.textures_coord[z * 2 + 1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
+
 
 				}
-				m->mesh.texture_str = "Baker_house.png";
+				
 			}
-			
+
 			meshes_vec.push_back(m);
-			
-	
+
+
 		}
 		aiReleaseImport(scene);
 	}
@@ -194,7 +198,7 @@ GLuint ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 
 	//Load image
 	ILboolean success = ilLoadImage(theFileName);
-	
+
 	//Image loaded successfully
 	if (success == IL_TRUE)
 	{

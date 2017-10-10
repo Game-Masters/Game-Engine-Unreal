@@ -1,6 +1,6 @@
 #include "Component.h"
 
-Component::Component(Component_Type_Enum type_component, bool active): type_component(type_component), active(active)
+Component::Component(Component_Type_Enum type_component, GameObject* parent, bool active): type_component(type_component), parent(parent), active(active)
 {
 }
 

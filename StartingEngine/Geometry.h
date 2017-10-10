@@ -26,6 +26,9 @@ struct geometry_base {
 	uint id_texture = 0;
 	uint id_image_devil = 0;
 	float* textures_coord = nullptr;
+	float3 translation;
+	float3 scaling;
+	Quat rotation;
 	char* texture_str;
 	
 	~geometry_base() {

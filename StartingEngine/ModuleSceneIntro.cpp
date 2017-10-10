@@ -45,6 +45,8 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 {
 	world_texture->Bind();
 	
+	
+
 
 	return UPDATE_CONTINUE;
 }
@@ -54,6 +56,12 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
+	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+		root_gameobject->Childrens_GameObject_Vect[i]->Update();
+		for (int j = 0; j < root_gameobject->Component_Vect.size(); j++) {
+			root_gameobject->Component_Vect[j]->Update();
+		}
+	}
 	
 	
 	glLineWidth(5.0f);

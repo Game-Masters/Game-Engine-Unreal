@@ -95,17 +95,18 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 		for (int p = 0; p < meshes_vec.size(); p++) {
 			ImGui::Text("");
 			ImGui::Text("Mesh %i", p + 1);
-			aiVector3D t_temp = meshes_vec[p]->mesh.translation;
+			float3 t_temp = meshes_vec[p]->mesh.translation;
 			ImGui::Text("Translation.x %f", t_temp.x);
 			ImGui::Text("Translation.x %f", t_temp.y);
 			ImGui::Text("Translation.x %f", t_temp.z);
-			aiQuaternion q_temp = meshes_vec[p]->mesh.rotation;
+			math::Quat q_temp = meshes_vec[p]->mesh.rotation;
+			float3 eul_ang = q_temp.ToEulerXYZ();
 			ImGui::Text("");
-			ImGui::Text("Rotation.x %f", q_temp.x);
-			ImGui::Text("Rotation.y %f", q_temp.y);
-			ImGui::Text("Rotation.z %f", q_temp.z);
-			ImGui::Text("Rotation.w %f", q_temp.w);
-			aiVector3D s_temp = meshes_vec[p]->mesh.scaling;
+			ImGui::Text("Rotation.x %f", eul_ang.x);
+			ImGui::Text("Rotation.y %f", eul_ang.y);
+			ImGui::Text("Rotation.z %f", eul_ang.z);
+
+			float3 s_temp = meshes_vec[p]->mesh.scaling;
 			ImGui::Text("");
 			ImGui::Text("Scale.x %f", s_temp.x);
 			ImGui::Text("Scale.y %f", s_temp.y);
@@ -168,11 +169,18 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 				memcpy(m->mesh.normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->mesh.num_vertices * 3);
 			}
 		
-		
-			scene->mRootNode->mTransformation.Decompose(m->mesh.scaling, m->mesh.rotation, m->mesh.translation);
-			float3 pos(m->mesh.translation.x, m->mesh.translation.y, m->mesh.translation.z);
-			float3 scale(m->mesh.scaling.x, m->mesh.scaling.y, m->mesh.scaling.z);
-			Quat rot(m->mesh.rotation.x, m->mesh.rotation.y, m->mesh.rotation.z, m->mesh.rotation.w);
+			aiVector3D translation;
+			aiVector3D scaling;
+			aiQuaternion rotation;
+
+			for (int i = 0; i < scene->mRootNode->mNumChildren; i++) {
+				scene->mRootNode->mChildren[i]->mTransformation.Decompose(scaling, rotation, translation);
+				m->mesh.translation.Set(translation.x,translation.y, translation.z);
+				m->mesh.scaling.Set(scaling.x, scaling.y, scaling.z);
+				m->mesh.rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+			}
+
+
 			
 			// texture coords (only one texture for now)
 			if (scene->mMeshes[i]->HasTextureCoords(0))

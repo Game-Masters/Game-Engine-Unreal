@@ -32,10 +32,9 @@ struct geometry_base {
 	float* textures_coord = nullptr;
 	char* texture_str;
 	
-
-	aiVector3D translation;
-	aiVector3D scaling;
-	aiQuaternion rotation;
+	float3 translation;
+	float3 scaling;
+	Quat rotation;
 
 	~geometry_base() {
 		delete[] indices;

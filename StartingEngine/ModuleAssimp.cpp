@@ -155,6 +155,10 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 			m->mesh.vertices = new float[m->mesh.num_vertices * 3];
 			memcpy(m->mesh.vertices, scene->mMeshes[i]->mVertices, sizeof(float) * m->mesh.num_vertices * 3);
 			LOG("New mesh with %d vertices", m->mesh.num_vertices);
+			//Generate bounding bax
+			m->mesh.BoundBox.SetNegativeInfinity();
+			m->mesh.BoundBox.Enclose((float3*)m->mesh.vertices, m->mesh.num_vertices);
+			//
 			// copy faces
 			if (scene->mMeshes[i]->HasFaces())
 			{

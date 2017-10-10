@@ -31,7 +31,7 @@ struct geometry_base {
 	uint id_image_devil = 0;
 	float* textures_coord = nullptr;
 	std::string texture_str;
-	
+	AABB BoundBox;
 	float3 translation;
 	float3 scaling;
 	Quat rotation;

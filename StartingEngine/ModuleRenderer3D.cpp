@@ -102,8 +102,8 @@ bool ModuleRenderer3D::Init()
 
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	
 
+	// *(Window_Color) = 0; *(Window_Color +1) = 0; *(Window_Color +2) = 0;
 	glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	
@@ -479,12 +479,17 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
+bool ModuleRenderer3D::Start()
+{
+	Window_Color = new float(2);
+		
+	return true;
+}
+
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
-	//delete sphere;
-	//delete n_sphere_o;
 	
 	SDL_GL_DeleteContext(context);
 
@@ -494,7 +499,12 @@ bool ModuleRenderer3D::CleanUp()
 bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 {
 	if (ImGui::CollapsingHeader(name.c_str()))
-	{
+	{		
+		if (Window_Color != nullptr) {
+			ImGui::ColorPicker3("Screen Color", Window_Color);
+			glClearColor(*(Window_Color), *(Window_Color + 1), *(Window_Color + 2), 1.f);
+		}
+
 		ImGui::Checkbox("Backface culling", &cullface);
 		ImGui::Checkbox("Point Mode", &points);
 		ImGui::Checkbox("Wireframe Mode", &wireframe);

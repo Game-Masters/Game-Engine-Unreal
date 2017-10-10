@@ -77,10 +77,16 @@ update_status ModuleAssimp::PostUpdate(float dt)
 {
 
 	if (App->input->flie_dropped) {
+
+		for (int p = 0; p < meshes_vec.size(); p++) {
+			delete meshes_vec[p];
+		}
+		meshes_vec.clear();
 		ImportGeometry(App->input->dropped_filedir);
 		for (int p = 0; p < meshes_vec.size(); p++) {
 			meshes_vec[p]->Initialize();
 		}
+
 		App->input->flie_dropped = false;
 	}
 

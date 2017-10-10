@@ -124,14 +124,15 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 			}
 			ImGui::Checkbox("Fullscreen", &fullscreen_bool);
 			if (fullscreen_bool) {
-				//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
+				SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
 				LOG("Fullscreen mode applicated");
 			}
 			ImGui::Checkbox("Fullscreen desktop ", &fullscreen_desktop_bool);
 			if (fullscreen_desktop_bool) {
-				//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 				LOG("Fullscreen Desktop mode applicated");
 			}
+
 
 			int display_count = 0, display_index = 0, mode_index = 0;
 			SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };

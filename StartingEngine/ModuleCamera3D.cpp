@@ -13,7 +13,7 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Y = vec3(0.0f, 1.0f, 0.0f);
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
-	Position = vec3(0.0f, 1.0f, 0.0f);
+	Position = vec3(5.0f, 5.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
 }
 
@@ -25,6 +25,8 @@ bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
+
+
 
 	return ret;
 }
@@ -140,13 +142,6 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	//
 	*/
-
-
-	//vec3 newPos(0,0,0);
-	//float speed = 3.0f * dt;
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 8.0f * dt;
-
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 

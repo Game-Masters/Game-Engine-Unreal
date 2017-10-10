@@ -104,7 +104,7 @@ bool ModuleGui::Start()
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 18);
 
-
+	
 	SliderTest_Int_value = new int();
 	return true;
 }
@@ -309,7 +309,6 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 
 		ImGui::Text("Graphic Card Corporation:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", glGetString(GL_VENDOR));
 		ImGui::Text("Graphic Card:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", glGetString(GL_RENDERER));
-		ImGui::Text("Graphic Card Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", glGetString(GL_VERSION));
 
 		SDL_version sdl_vers;
 		SDL_GetVersion(&sdl_vers);
@@ -318,6 +317,11 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", sdl_vers.major);
 		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", sdl_vers.minor);
 
+		ImGui::Text("Devil Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "1.7.3");
+		ImGui::Text("OpenGL Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s",glGetString(GL_VERSION));
+		ImGui::Text("ImGui Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", IMGUI_VERSION);
+
+		
 		/*
 		SDL_version sdl_vers_ret;
 		SDL_VERSION(&sdl_vers_ret);

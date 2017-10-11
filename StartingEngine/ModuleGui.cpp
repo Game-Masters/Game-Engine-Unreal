@@ -145,8 +145,41 @@ update_status ModuleGui::Update(float dt)
 	}
 	ImGui::EndDock();
 
-	
+	//To print information about the geometry in the scene
+	if (ImGui::BeginDock("Geometry Scene", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+		for (int p = 0; p < App->assimp->meshes_vec.size(); p++) {
 
+			ImGui::Text("");
+			ImGui::Text("Mesh %i", p + 1);
+
+			ImGui::Text("Mesh triangles %i", App->assimp->meshes_vec[p]->mesh.num_tris);
+
+			float3 t_temp = App->assimp->meshes_vec[p]->mesh.translation;
+
+			ImGui::Text("Translation.x %f", t_temp.x);
+			ImGui::Text("Translation.x %f", t_temp.y);
+			ImGui::Text("Translation.x %f", t_temp.z);
+			math::Quat q_temp = App->assimp->meshes_vec[p]->mesh.rotation;
+			float3 eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
+			ImGui::Text("");
+			ImGui::Text("Rotation.x %f", eul_ang.x);
+			ImGui::Text("Rotation.y %f", eul_ang.y);
+			ImGui::Text("Rotation.z %f", eul_ang.z);
+
+			float3 s_temp = App->assimp->meshes_vec[p]->mesh.scaling;
+			ImGui::Text("");
+			ImGui::Text("Scale.x %f", s_temp.x);
+			ImGui::Text("Scale.y %f", s_temp.y);
+			ImGui::Text("Scale.z %f", s_temp.z);
+			ImGui::Text("-------------------------");
+
+			ImGui::Text("Texture Information");
+			ImGui::Text("Path: %s", App->assimp->meshes_vec[p]->mesh.texture_str);
+
+		}
+
+	}
+	ImGui::EndDock();
 	
 	if (ImGui::BeginDock("World", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 		//NANI?
@@ -339,7 +372,7 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 // Called before quitting
 bool ModuleGui::CleanUp()
 {
-	delete SliderTest_Int_value;
+
 	aiDetachAllLogStreams();
 	ImGui::SaveDocks();
 	return true;

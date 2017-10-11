@@ -1,1 +1,1 @@
-{"gui":{},"renderer3D":{},"player":{},"physics":{},"scene intro":{},"audio":{},"input":{},"camera":{},"window":{"height":729,"width":1280,"window title":"paco"},"assimp":{}}
+{"gui":{},"renderer3D":{"Window_Color.r":2,"Window_Color.g":-4.2201683186052844e+37,"Window_Color.b":9.0588066086638719e-05},"player":{},"physics":{},"scene intro":{},"audio":{},"input":{},"camera":{},"window":{"height":729,"width":1280,"window title":"paco","fullscreen_mode":false,"fulscreen_desktop_mode":true},"assimp":{}}

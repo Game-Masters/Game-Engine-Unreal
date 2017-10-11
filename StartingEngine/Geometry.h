@@ -35,7 +35,7 @@ struct geometry_base {
 	float3 translation;
 	float3 scaling;
 	Quat rotation;
-
+	uint num_tris = 0;
 	~geometry_base() {
 		delete[] indices;
 		delete[] vertices;

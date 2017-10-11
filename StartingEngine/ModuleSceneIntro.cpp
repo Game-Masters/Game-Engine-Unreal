@@ -42,7 +42,7 @@ bool ModuleSceneIntro::Start()
 	
 
 	root_gameobject->Childrens_GameObject_Vect.push_back(CreateNewGameObjects("geometry1", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false));
-//	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(0,0,0), float3(0, 0, 0), Quat(1,0,0,0));
+	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(0,0,0), float3(0, 0, 0), Quat(1,0,0,0));
 	
 
 	return ret;
@@ -68,9 +68,6 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
 		root_gameobject->Childrens_GameObject_Vect[i]->Update();
-		for (int j = 0; j < root_gameobject->Component_Vect.size(); j++) {
-			root_gameobject->Component_Vect[j]->Update();
-		}
 	}
 	
 	

@@ -4,7 +4,9 @@
 
 void GameObject::Update()
 {
-
+	for (int j = 0; j < this->Component_Vect.size(); j++) {
+		this->Component_Vect[j]->Update();
+	}
 }
 
 Component * GameObject::AddNewComponent(Component_Type_Enum type)

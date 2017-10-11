@@ -79,17 +79,17 @@ update_status ModuleAssimp::Update(float dt)
 		for (int p = 0; p < meshes_vec.size(); p++) {
 			meshes_vec[p]->Initialize();
 		}
-<<<<<<< HEAD
+
 		if (loaded == true)
 		{
 			App->camera->CameraCenter(&meshes_vec.back()->mesh.BoundBox);
 		}
 		App->input->flie_dropped = false;
-=======
+
 
 			App->input->flie_dropped = false;
 		
->>>>>>> origin/Assigment_1
+
 	}
 
 	return UPDATE_CONTINUE;

@@ -29,7 +29,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
-	void ImportGeometry(char* fbx);
+	bool ImportGeometry(char* fbx);
 
 
 	GLuint LoadImage_devil(const char* theFileName, GLuint *buff);

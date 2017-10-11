@@ -66,15 +66,7 @@ update_status ModuleAssimp::Update(float dt)
 	for (int p = 0; p < meshes_vec.size(); p++) {
 		meshes_vec[p]->Draw();
 	}
-
-
-	return UPDATE_CONTINUE;
-}
-
-
-update_status ModuleAssimp::PostUpdate(float dt)
-{
-
+	
 	if (App->input->flie_dropped) {
 		if (IsTexture(App->input->dropped_filedir) == false) {
 			for (int p = 0; p < meshes_vec.size(); p++) {
@@ -83,13 +75,25 @@ update_status ModuleAssimp::PostUpdate(float dt)
 
 			meshes_vec.clear();
 		}
-		ImportGeometry(App->input->dropped_filedir);
+		bool loaded = ImportGeometry(App->input->dropped_filedir);
 		for (int p = 0; p < meshes_vec.size(); p++) {
 			meshes_vec[p]->Initialize();
 		}
-
+		if (loaded == true)
+		{
+			App->camera->CameraCenter(&meshes_vec.back()->mesh.BoundBox);
+		}
 		App->input->flie_dropped = false;
 	}
+
+	return UPDATE_CONTINUE;
+}
+
+
+update_status ModuleAssimp::PostUpdate(float dt)
+{
+
+	
 
 
 	return UPDATE_CONTINUE;
@@ -136,7 +140,7 @@ bool ModuleAssimp::CleanUp()
 	return true;
 }
 
-void ModuleAssimp::ImportGeometry(char* fbx)
+bool ModuleAssimp::ImportGeometry(char* fbx)
 {
 
 	//----------------ASSIMP
@@ -218,6 +222,7 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 			
 	
 		}
+		return true;
 		aiReleaseImport(scene);
 	}
 	else {
@@ -234,6 +239,7 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 			}
 		}
 		LOG("Error loading scene %s", full_path);
+		return false;
 	}
 	//aiMesh
 

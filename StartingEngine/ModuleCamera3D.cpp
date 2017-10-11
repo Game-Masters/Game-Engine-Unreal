@@ -201,3 +201,23 @@ void ModuleCamera3D::CalculateViewMatrix()
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
 }
+void ModuleCamera3D::CameraCenter(AABB* mesh)
+{
+	if (mesh == nullptr)
+	{
+		Reference = vec3(0.0f, 0.0f, 0.0f);
+	}
+	else
+	{
+		vec centre = mesh->CenterPoint();
+		Reference = vec3(centre.x, centre.y, centre.z);
+		//LastCentreGeometry = meshAABB;
+		Z = normalize(Position - Reference);
+
+		//resize
+		vec difference = mesh->maxPoint - mesh->minPoint;
+		float wide = difference.Length() + 2.0f; //This magic number is just to have some frame around geometry
+		float FOVdistance = (wide * 0.5f) / tan(60.0f * 0.5f * DEGTORAD);
+		Position = Z * FOVdistance;
+	}
+}

@@ -67,7 +67,6 @@ bool ModuleRenderer3D::Init()
 		glClearDepth(1.0f);
 		
 		//Initialize clear color
-		glClearColor(0.f, 0.f, 0.f, 1.f);
 
 		//Check for error
 		error = glGetError();
@@ -79,6 +78,7 @@ bool ModuleRenderer3D::Init()
 		
 		GLfloat LightModelAmbient[] = {0.0f, 0.0f, 0.0f, 1.0f};
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
+		Window_Color = new float(2);
 		/*
 		lights[0].ref = GL_LIGHT0;
 		lights[0].ambient.Set(0.5f, 0.5f, 0.5f, 1.0f);
@@ -99,11 +99,10 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_COLOR_MATERIAL);
 		*/
 	}
-
+	
 	// Projection matrix for
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	// *(Window_Color) = 0; *(Window_Color +1) = 0; *(Window_Color +2) = 0;
 	glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 	
@@ -271,6 +270,10 @@ bool ModuleRenderer3D::Init()
 	glBufferData(GL_ARRAY_BUFFER, vec2.size() * sizeof(float) * 3, &vec2[0], GL_STATIC_DRAW);
 
 	*/
+
+/*if (Window_Color != nullptr) {
+	glClearColor(Window_Color[0], Window_Color[1], Window_Color[2], 1.f);
+}*/
 
 	return ret;
 }
@@ -481,7 +484,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 bool ModuleRenderer3D::Start()
 {
-	Window_Color = new float(2);
+
 		
 	return true;
 }
@@ -579,4 +582,33 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+bool ModuleRenderer3D::LoadConfig(JSON_Object * node)
+{
+	if (json_object_get_value(node, "Window_Color.r") == NULL || 
+		json_object_get_value(node, "Window_Color.g") == NULL ||
+		json_object_get_value(node, "Window_Color.b") == NULL) {
+		json_object_set_value(node, "Window_Color.r", json_value_init_object());
+		json_object_set_value(node, "Window_Color.g", json_value_init_object());
+		json_object_set_value(node, "Window_Color.b", json_value_init_object());
+	}
+	else {
+		if (Window_Color!=nullptr){
+			Window_Color[0] = json_object_get_number(node, "Window_Color.r");
+			Window_Color[1] = json_object_get_number(node, "Window_Color.g");
+			Window_Color[2] = json_object_get_number(node, "Window_Color.b");
+		}
+	}
+
+	return true;
+}
+
+bool ModuleRenderer3D::SaveConfig(JSON_Object * node)
+{
+	
+	json_object_set_number(node, "Window_Color.r", Window_Color[0]);
+	json_object_set_number(node, "Window_Color.g", Window_Color[1]);
+	json_object_set_number(node, "Window_Color.b", Window_Color[2]);
+	return true;
 }

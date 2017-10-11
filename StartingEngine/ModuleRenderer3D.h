@@ -21,6 +21,8 @@ public:
 	bool CleanUp();
 	bool Gui_Engine_Modules(float dt);
 	void OnResize(int width, int height);
+	bool LoadConfig(JSON_Object* node);
+	bool SaveConfig(JSON_Object* node);
 
 	//-----------
 	/*
@@ -59,5 +61,5 @@ public:
 	bool mat = false;
 	bool color = false;
 	bool debugnormals = false;
-	float* Window_Color;
+	float* Window_Color = nullptr;
 };

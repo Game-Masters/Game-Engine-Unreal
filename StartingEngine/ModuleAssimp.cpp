@@ -79,11 +79,17 @@ update_status ModuleAssimp::Update(float dt)
 		for (int p = 0; p < meshes_vec.size(); p++) {
 			meshes_vec[p]->Initialize();
 		}
+<<<<<<< HEAD
 		if (loaded == true)
 		{
 			App->camera->CameraCenter(&meshes_vec.back()->mesh.BoundBox);
 		}
 		App->input->flie_dropped = false;
+=======
+
+			App->input->flie_dropped = false;
+		
+>>>>>>> origin/Assigment_1
 	}
 
 	return UPDATE_CONTINUE;
@@ -101,31 +107,7 @@ update_status ModuleAssimp::PostUpdate(float dt)
 
 bool ModuleAssimp::Gui_Engine_Modules(float dt)
 {
-	if (ImGui::CollapsingHeader(name.c_str()))
-	{
-		for (int p = 0; p < meshes_vec.size(); p++) {
-			ImGui::Text("");
-			ImGui::Text("Mesh %i", p + 1);
-			float3 t_temp = meshes_vec[p]->mesh.translation;
-
-			ImGui::Text("Translation.x %f", t_temp.x);
-			ImGui::Text("Translation.x %f", t_temp.y);
-			ImGui::Text("Translation.x %f", t_temp.z);
-			math::Quat q_temp = meshes_vec[p]->mesh.rotation;
-			float3 eul_ang = q_temp.ToEulerXYZ();
-			ImGui::Text("");
-			ImGui::Text("Rotation.x %f", eul_ang.x);
-			ImGui::Text("Rotation.y %f", eul_ang.y);
-			ImGui::Text("Rotation.z %f", eul_ang.z);
-
-			float3 s_temp = meshes_vec[p]->mesh.scaling;
-			ImGui::Text("");
-			ImGui::Text("Scale.x %f", s_temp.x);
-			ImGui::Text("Scale.y %f", s_temp.y);
-			ImGui::Text("Scale.z %f", s_temp.z);
-			ImGui::Text("-------------------------");
-		}
-	}
+	
 
 
 	return false;
@@ -166,6 +148,7 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 			// copy faces
 			if (scene->mMeshes[i]->HasFaces())
 			{
+				m->mesh.num_tris = scene->mMeshes[i]->mNumFaces;
 				m->mesh.num_indices = scene->mMeshes[i]->mNumFaces * 3;
 				m->mesh.indices = new uint[m->mesh.num_indices]; // assume each face is a triangle
 				
@@ -185,18 +168,29 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 				memcpy(m->mesh.normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->mesh.num_vertices * 3);
 			}
 		
+
+			
+
 			aiVector3D translation;
 			aiVector3D scaling;
 			aiQuaternion rotation;
 
-			for (int i = 0; i < scene->mRootNode->mNumChildren; i++) {
+			/*for (int i = 0; i < scene->mRootNode->mNumChildren; i++) {
 				scene->mRootNode->mChildren[i]->mTransformation.Decompose(scaling, rotation, translation);
 				m->mesh.translation.Set(translation.x,translation.y, translation.z);
 				m->mesh.scaling.Set(scaling.x, scaling.y, scaling.z);
 				m->mesh.rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+			}*/
+			aiNode* nod =Calc_AllGeometry_Childs(scene->mRootNode, i);
+			aiMatrix4x4 temp_trans;
+			while (nod->mParent!=nullptr) {
+				temp_trans*=nod->mTransformation;
+				nod = nod->mParent;
 			}
-
-
+			temp_trans.Decompose(scaling, rotation, translation);
+			m->mesh.translation.Set(translation.x, translation.y, translation.z);
+			m->mesh.scaling.Set(scaling.x, scaling.y, scaling.z);
+			m->mesh.rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
 			
 			// texture coords (only one texture for now)
 			if (scene->mMeshes[i]->HasTextureCoords(0))
@@ -332,7 +326,33 @@ bool ModuleAssimp::IsTexture(char * path)
 	if (success) {
 		ret = true;
 	}
+	ilDeleteImages(1, &imgID);
 
 	return ret;
 }
 
+
+aiNode* ModuleAssimp::Calc_AllGeometry_Childs(aiNode* Parent_node, uint search_mesh) {
+
+	aiNode* temp;
+	if (Parent_node != nullptr) {
+		int i;
+		for (i = 0; i < Parent_node->mNumChildren; i++) {
+			for (int j = 0; j < Parent_node->mChildren[i]->mNumMeshes; j++) {
+				if (Parent_node->mChildren[i]->mMeshes[j] == search_mesh) {
+					return Parent_node->mChildren[i];
+				}
+			}
+			if (Parent_node->mNumChildren > 0) {
+				temp = Calc_AllGeometry_Childs(Parent_node->mChildren[i], search_mesh);
+				if (temp != nullptr)
+					return temp;
+			}
+		}	
+		
+		
+
+	}
+	return nullptr;
+
+}

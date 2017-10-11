@@ -77,16 +77,22 @@ bool Application::Init()
 	json_class->Load();
 
 
-	std::list<Module*>::iterator item = list_modules.begin();
+	/*std::list<Module*>::iterator item = list_modules.begin();
 	while (item != list_modules.end() && ret == true)
 	{
+			ret = (*item)->Init();
+			(*item)->module_timer = new Timer();
+			item++;
 
-		ret = (*item)->Init();
-		(*item)->module_timer = new Timer();
-		item++;
+	}*/
+
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
+		ret = (item)._Ptr->_Myval->Init();
+		(item)._Ptr->_Myval->module_timer = new Timer();
+
 	}
 
-	
+
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->Start();

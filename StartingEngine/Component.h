@@ -1,5 +1,8 @@
 #pragma once
 class GameObject;
+
+
+
 enum Component_Type_Enum {
 	component_null_type,
 	component_transform_type,

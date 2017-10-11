@@ -16,11 +16,20 @@
 
 //#include"Geometry.h"
 #include"Cube_prim.h"
-#include"GameObject.h"
+/*#include"GameObject.h"
+#include"Component.h"
+#include"Mesh.h"
+#include"Transform.h"*/
+
 #define MAX_SNAKE 2
 #define MAX_CUBE 50
 #define MAX_LIGHTS 8
 
+enum Tag_Object_Enum;
+class Transform;
+class Mesh;
+class Component;
+class GameObject;
 struct PhysBody3D;
 struct PhysMotor3D;
 struct btHingeConstraint;

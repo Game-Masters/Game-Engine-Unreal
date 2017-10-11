@@ -1,6 +1,5 @@
 #pragma once
 #include"Application.h"
-#include "Component.h"
 #include"Globals.h"
 #include <vector>
 #include "../StartingEngine/Glew/include/glew.h"
@@ -8,6 +7,8 @@
 #include"MathGeoLib\MathGeoLib.h"
 #include"MathGeoLib\MathBuildConfig.h"
 #include<string>
+#include"Component.h"
+
 
 struct geometry_base_creating {
 	uint id_vertices = 0; // id in VRAM

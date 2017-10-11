@@ -1,7 +1,8 @@
 #pragma once
-#include "Component.h"
+#include"ModuleSceneIntro.h"
 #include"MathGeoLib\MathGeoLib.h"
 #include"MathGeoLib\MathBuildConfig.h"
+#include"Component.h"
 class GameObject;
 class Transform :
 	public Component

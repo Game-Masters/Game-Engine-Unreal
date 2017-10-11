@@ -1,6 +1,10 @@
 ﻿#include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
+#include"GameObject.h"
+#include"Component.h"
+#include"Mesh.h"
+#include"Transform.h"
 
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
@@ -37,6 +41,10 @@ bool ModuleSceneIntro::Start()
 	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
 	
 
+	root_gameobject->Childrens_GameObject_Vect.push_back(CreateNewGameObjects("geometry1", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false));
+//	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(0,0,0), float3(0, 0, 0), Quat(1,0,0,0));
+	
+
 	return ret;
 }
 
@@ -56,6 +64,8 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
+	
+
 	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
 		root_gameobject->Childrens_GameObject_Vect[i]->Update();
 		for (int j = 0; j < root_gameobject->Component_Vect.size(); j++) {

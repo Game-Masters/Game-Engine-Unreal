@@ -10,8 +10,15 @@ void GameObject::Update()
 Component * GameObject::AddNewComponent(Component_Type_Enum type)
 {
 	Component* n_component = new Component(type, this, true);
-	Component_Vect.push_back(n_component);
+	this->Component_Vect.push_back(n_component);
 	return n_component;
+}
+
+Transform * GameObject::AddNewTransform(float3 position, float3 scale, Quat rotations)
+{
+	Transform* n_transform = new Transform(this, position, scale, rotations);
+	this->Component_Vect.push_back(n_transform);
+	return n_transform;
 }
 
 

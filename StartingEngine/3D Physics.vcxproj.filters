@@ -498,7 +498,9 @@
     <ClInclude Include="Transform.h">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Mesh.h">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -711,7 +713,9 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

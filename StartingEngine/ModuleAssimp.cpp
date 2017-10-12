@@ -68,14 +68,14 @@ update_status ModuleAssimp::Update(float dt)
 	}
 	
 	if (App->input->flie_dropped) {
-		if (IsTexture(App->input->dropped_filedir) == false) {
+		if (IsTexture(App->input->dropped_filedir.c_str()) == false) {
 			for (int p = 0; p < meshes_vec.size(); p++) {
 				delete meshes_vec[p];
 			}
 
 			meshes_vec.clear();
 		}
-		bool loaded = ImportGeometry(App->input->dropped_filedir);
+		bool loaded = ImportGeometry(App->input->dropped_filedir.c_str());
 		for (int p = 0; p < meshes_vec.size(); p++) {
 			meshes_vec[p]->Initialize();
 		}
@@ -122,7 +122,7 @@ bool ModuleAssimp::CleanUp()
 	return true;
 }
 
-bool ModuleAssimp::ImportGeometry(char* fbx)
+bool ModuleAssimp::ImportGeometry(const char* fbx)
 {
 
 	//----------------ASSIMP
@@ -349,7 +349,7 @@ bool ModuleAssimp::loadTextureFromPixels32(GLuint * id_pixels, GLuint width_img,
 	return true;
 }
 
-bool ModuleAssimp::IsTexture(char * path)
+bool ModuleAssimp::IsTexture(const char * path)
 {
 	bool ret = false;
 

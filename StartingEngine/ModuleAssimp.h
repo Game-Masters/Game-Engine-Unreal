@@ -29,12 +29,12 @@ public:
 	update_status PostUpdate(float dt);
 	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
-	bool ImportGeometry(char* fbx);
+	bool ImportGeometry(const char* fbx);
 
 	aiNode* Calc_AllGeometry_Childs(aiNode* Parent_node, uint search_mesh);
 	GLuint LoadImage_devil(const char* theFileName, GLuint *buff);
 	bool loadTextureFromPixels32(GLuint * id_pixels, GLuint width, GLuint height, GLuint *buff);
-	bool IsTexture(char *path);
+	bool IsTexture(const char *path);
 public:
 	//GLuint *Lenna_texture = 0;
 	Geometry_Manager* m;

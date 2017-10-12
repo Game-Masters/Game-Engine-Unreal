@@ -208,6 +208,9 @@ bool Application::Gui_Engine_Modules(float dt)
 			item++;
 		}
 	}
+
+	ImGui::InputInt("Fps capped:", &capped_ms, -1, 100);
+
 	ImGui::EndDock();
 	return true;
 }

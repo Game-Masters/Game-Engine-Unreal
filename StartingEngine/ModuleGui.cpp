@@ -59,7 +59,7 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_PopupBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
 	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
-	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.15f, 0.15f, 1.00f);
 	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
 	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
@@ -96,6 +96,7 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 	//IMGUI STYLE END
+
 	//load things
 	App->assimp->LoadImage_devil("Icons/BFC.png",&BFC);
 	App->assimp->LoadImage_devil("Icons/CC.png", &CC);
@@ -136,7 +137,6 @@ update_status ModuleGui::Update(float dt)
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::Begin("PanelEditor", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
 
 
 	ImGui::Separator();
@@ -145,7 +145,7 @@ update_status ModuleGui::Update(float dt)
 
 
 	App->Gui_Engine_Modules(dt);
-	if (ImGui::BeginDock("Information", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+	if (ImGui::BeginDock("Information", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
 		
 			(*item)->Gui_Engine_Modules(dt);
@@ -155,7 +155,7 @@ update_status ModuleGui::Update(float dt)
 	ImGui::EndDock();
 
 	//To print information about the geometry in the scene
-	if (ImGui::BeginDock("Geometry Scene", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+	if (ImGui::BeginDock("Geometry Scene", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 		for (int p = 0; p < App->assimp->meshes_vec.size(); p++) {
 
 			ImGui::Text("");
@@ -190,37 +190,37 @@ update_status ModuleGui::Update(float dt)
 	}
 	ImGui::EndDock();
 	
-	if (ImGui::BeginDock("World", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+	if (ImGui::BeginDock("World", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 		//NANI?
 		ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(),ImVec2(0,1), ImVec2(1,0));
 	}
 	ImGui::EndDock();
-	if (ImGui::BeginDock("Imbuttons", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_NoTitleBar)) {
+	if (ImGui::BeginDock("Render Options", false, false, false/*, App->IsPlaying()*/)) {
 		//POINT
-		ImGui::Image((void*)P, ImVec2(40, 40), ImVec2(0, 0), ImVec2(-1, 1));
+		ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
 		ImGui::SameLine();
-		ImGui::Checkbox("Point Mode", &App->renderer3D->points);
+		ImGui::Checkbox("##1", &App->renderer3D->points);
 		ImGui::SameLine();
 		//WIRE
-		ImGui::Image((void*)WF, ImVec2(30, 30), ImVec2(0, 0), ImVec2(-1, 1));
+		ImGui::Image((void*)WF, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
 		ImGui::SameLine();
-		ImGui::Checkbox("Wireframe Mode", &App->renderer3D->wireframe);
+		ImGui::Checkbox("##2", &App->renderer3D->wireframe);
 		ImGui::SameLine();
 		//BACKFACE
 		ImGui::Image((void*)BFC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
 		ImGui::SameLine();
-		ImGui::Checkbox("Backface culling", &App->renderer3D->cullface);
+		ImGui::Checkbox("##3", &App->renderer3D->cullface);
 		ImGui::SameLine();
 
 		//SHADELESS
-		ImGui::Image((void*)SM, ImVec2(30, 30), ImVec2(0, 0), ImVec2(-1, 1));
+		ImGui::Image((void*)SM, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
 		ImGui::SameLine();
-		ImGui::Checkbox("Shadeless", &App->renderer3D->mat);
+		ImGui::Checkbox("##4", &App->renderer3D->mat);
 		ImGui::SameLine();
 		//NORMAL
-		ImGui::Image((void*)N, ImVec2(30, 30), ImVec2(0, 0), ImVec2(-1, 1));
+		ImGui::Image((void*)N, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
 		ImGui::SameLine();
-		ImGui::Checkbox("Normals UV Debug", &App->renderer3D->debugnormals);
+		ImGui::Checkbox("##5", &App->renderer3D->debugnormals);
 		ImGui::SameLine();
 		//SETMATERIAL
 		ImGui::Checkbox("Set Material", &App->renderer3D->color);
@@ -230,7 +230,7 @@ update_status ModuleGui::Update(float dt)
 	ImGui::EndDock();
 	
 
-	if (ImGui::BeginDock("About", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+	if (ImGui::BeginDock("About", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 		
 		ImGui::Text("GameEngine");
 		ImGui::Text("We are students from the UPC CITM and we are making a game engine for 3D videogames.");

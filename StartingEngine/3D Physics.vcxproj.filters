@@ -46,6 +46,9 @@
     <Filter Include="Sources\Cereal">
       <UniqueIdentifier>{211ec6cf-0bae-4fdc-ae6a-4052779666da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Fluid_MMGR">
+      <UniqueIdentifier>{95c042e2-f49e-4e50-9994-324b6a7cc8af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -504,6 +507,12 @@
     <ClInclude Include="cereal-1.2.2\include\cereal\archives\xml.hpp">
       <Filter>Sources\Cereal</Filter>
     </ClInclude>
+    <ClInclude Include="Fluid_Studios_Memory_Manager\mmgr.h">
+      <Filter>Sources\Modules\Fluid_MMGR</Filter>
+    </ClInclude>
+    <ClInclude Include="Fluid_Studios_Memory_Manager\nommgr.h">
+      <Filter>Sources\Modules\Fluid_MMGR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -709,6 +718,9 @@
     </ClCompile>
     <ClCompile Include="Imgui\Data.cpp">
       <Filter>Sources\Modules\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Fluid_Studios_Memory_Manager\mmgr.cpp">
+      <Filter>Sources\Modules\Fluid_MMGR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

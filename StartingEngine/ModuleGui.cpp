@@ -7,8 +7,10 @@
 #include"Imgui/imgui.h"
 #include"Imgui\imguidock.h"
 #include"ModuleSceneIntro.h"
+#include "Fluid_Studios_Memory_Manager\mmgr.h"
+#include "Fluid_Studios_Memory_Manager\nommgr.h"
 
-
+#define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
 
 
 
@@ -336,23 +338,35 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 {
 	if (ImGui::CollapsingHeader("Hardware"))
 	{
-		ImGui::Text("CPU Cache Line Size:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", SDL_GetCPUCacheLineSize());
-		ImGui::Text("Number of logical CPU cores:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", SDL_GetCPUCount());
-		ImGui::Text("The amount of RAM:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i Gb", SDL_GetSystemRAM() / 1024);
+		ImGui::Text("CPU Cache Line Size:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%i", SDL_GetCPUCacheLineSize());
+		ImGui::Text("Number of logical CPU cores:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%i", SDL_GetCPUCount());
+		ImGui::Text("The amount of RAM:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%i Gb", SDL_GetSystemRAM() / 1024);
 
-		ImGui::Text("Graphic Card Corporation:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", glGetString(GL_VENDOR));
-		ImGui::Text("Graphic Card:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", glGetString(GL_RENDERER));
+		ImGui::Text("Graphic Card Corporation:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%s", glGetString(GL_VENDOR));
+		ImGui::Text("Graphic Card:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%s", glGetString(GL_RENDERER));
 
 		SDL_version sdl_vers;
 		SDL_GetVersion(&sdl_vers);
 
-		ImGui::Text("SDL Version patch:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", sdl_vers.patch);
-		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", sdl_vers.major);
-		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%i", sdl_vers.minor);
+		ImGui::Text("SDL Version patch:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%i", sdl_vers.patch);
+		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%i", sdl_vers.major);
+		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%i", sdl_vers.minor);
 
-		ImGui::Text("Devil Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "1.7.3");
-		ImGui::Text("OpenGL Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s",glGetString(GL_VERSION));
-		ImGui::Text("ImGui Version:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.00f, 0.60f, 0.0f, 1.0f), "%s", IMGUI_VERSION);
+		ImGui::Text("Devil Version:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "1.7.3");
+		ImGui::Text("OpenGL Version:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%s",glGetString(GL_VERSION));
+		ImGui::Text("ImGui Version:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%s", IMGUI_VERSION);
+
+		sMStats Gpu_Vram_Stats = m_getMemoryStatistics();
+
+		ImGui::Text("Total Reported Mem:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.totalReportedMemory);
+		ImGui::Text("Total Actual Mem:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE,  "%u", Gpu_Vram_Stats.totalActualMemory);
+		ImGui::Text("Peak Reported Mem:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.peakReportedMemory);
+		ImGui::Text("Peak Actual Mem:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.peakActualMemory);
+		ImGui::Text("Accumulated Reported Mem:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.accumulatedReportedMemory);
+		ImGui::Text("Accumulated Actual Mem:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.accumulatedActualMemory);
+		ImGui::Text("Accumulated Alloc Unit Count:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.accumulatedAllocUnitCount);
+		ImGui::Text("Total Alloc Unit Count:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.totalAllocUnitCount);
+		ImGui::Text("Peak Alloc Unit Count:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.peakAllocUnitCount);
 
 		
 		/*

@@ -128,6 +128,8 @@
     <ClInclude Include="Devil\include\ilut_config.h" />
     <ClInclude Include="Devil\include\ilu_region.h" />
     <ClInclude Include="Devil\include\il_wrap.h" />
+    <ClInclude Include="Fluid_Studios_Memory_Manager\mmgr.h" />
+    <ClInclude Include="Fluid_Studios_Memory_Manager\nommgr.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Imgui\Data.h" />
@@ -232,6 +234,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Console_ImGui.cpp" />
     <ClCompile Include="Cube_prim.cpp" />
+    <ClCompile Include="Fluid_Studios_Memory_Manager\mmgr.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Imgui\Data.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />

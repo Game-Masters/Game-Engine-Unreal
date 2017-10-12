@@ -17,7 +17,9 @@ public:
 	void LookAt(const vec3 &Spot);
 	void Move(const vec3 &Movement);
 	void CameraCenter(AABB* mesh);
+	void CameraRecenter();
 	float* GetViewMatrix();
+	AABB* LCenter = nullptr;
 
 private:
 

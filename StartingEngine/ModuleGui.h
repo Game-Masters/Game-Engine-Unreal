@@ -43,6 +43,7 @@ public:
 		GLuint SM;
 		GLuint CC;
 		GLuint BFC;
+		GLuint CA;
 	//
 	Console console_imgui;
 	LCG rand_test;

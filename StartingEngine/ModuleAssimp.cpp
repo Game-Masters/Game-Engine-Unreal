@@ -92,7 +92,7 @@ update_status ModuleAssimp::Update(float dt)
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) {
-		App->camera->CameraCenter(&meshes_vec.back()->mesh.BoundBox);
+	//	App->camera->CameraRecenter();
 	}
 
 	return UPDATE_CONTINUE;

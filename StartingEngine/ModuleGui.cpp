@@ -74,9 +74,9 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
 	style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-	style.Colors[ImGuiCol_Button] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
-	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.10f, 0.16f, 0.15f, 1.00f);
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_ButtonActive] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
 	style.Colors[ImGuiCol_Header] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
 	style.Colors[ImGuiCol_HeaderActive] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
@@ -104,6 +104,7 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Icons/P.png", &P);
 	App->assimp->LoadImage_devil("Icons/SM.png", &SM);
 	App->assimp->LoadImage_devil("Icons/WF.png", &WF);
+	App->assimp->LoadImage_devil("Icons/CA.png", &CA);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -196,7 +197,7 @@ update_status ModuleGui::Update(float dt)
 		ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(),ImVec2(0,1), ImVec2(1,0));
 	}
 	ImGui::EndDock();
-	if (ImGui::BeginDock("Render Options", false, false, false/*, App->IsPlaying()*/)) {
+	if (ImGui::BeginDock("Render Options", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_NoTitleBar)) {
 		//POINT
 		ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
 		ImGui::SameLine();
@@ -223,8 +224,27 @@ update_status ModuleGui::Update(float dt)
 		ImGui::SameLine();
 		ImGui::Checkbox("##5", &App->renderer3D->debugnormals);
 		ImGui::SameLine();
+		ImGui::Text("|||");
+		ImGui::SameLine();
+		//Stick to camera
+		bool temp = ImGui::ImageButton((void*)CC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
+		if (temp == true)
+		{
+			App->camera->CameraRecenter();
+		}
+		ImGui::SameLine();
+		bool temp2 = ImGui::ImageButton((void*)CA, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
+		if (temp2 == true)
+		{
+			App->camera->CameraCenter(nullptr);
+		}
+		ImGui::SameLine();
+		ImGui::Text("                                                                                                                     |||");
+		ImGui::SameLine();
 		//SETMATERIAL
 		ImGui::Checkbox("Set Material", &App->renderer3D->color);
+		ImGui::SameLine();
+		
 		
 		
 	}

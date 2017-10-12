@@ -38,7 +38,10 @@ bool ModuleCamera3D::CleanUp()
 
 	return true;
 }
+bool Gui_Engine_Modules(float dt) {
 
+	return true;
+}
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {

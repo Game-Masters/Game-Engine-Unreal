@@ -107,10 +107,16 @@ update_status ModuleAssimp::PostUpdate(float dt)
 
 bool ModuleAssimp::Gui_Engine_Modules(float dt)
 {
-	
+	if (ImGui::CollapsingHeader(name.c_str()))
+	{
+		
+		if (meshes_vec.size() > 0)
+		{
+			ImGui::Image((void*)meshes_vec.front()->mesh.id_texture, ImVec2(100, 100));
+		}
 
-
-	return false;
+	}
+	return true;
 }
 
 

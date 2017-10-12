@@ -134,24 +134,34 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 	
 	if (scene != nullptr && scene->HasMeshes())
 	{
+		
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (int i = 0; i < scene->mNumMeshes; i++) {
+			LOG("Mesh imported %i----------------", i);
 			m = new Geometry_Manager(PrimitiveTypes::Primitive_Mesh);
 			m->mesh.num_vertices = scene->mMeshes[i]->mNumVertices;
+			LOG("New mesh with %d vertices", m->mesh.num_vertices);
 			m->mesh.vertices = new float[m->mesh.num_vertices * 3];
 			memcpy(m->mesh.vertices, scene->mMeshes[i]->mVertices, sizeof(float) * m->mesh.num_vertices * 3);
-			LOG("New mesh with %d vertices", m->mesh.num_vertices);
+			if (m->mesh.vertices==nullptr) {
+				LOG("The new mesh has failed trying to import the vertices");
+			}
+			else {
+				LOG("The new mesh has succed trying to import the vertices");
+			}
 			//Generate bounding bax
 			m->mesh.BoundBox.SetNegativeInfinity();
 			m->mesh.BoundBox.Enclose((float3*)m->mesh.vertices, m->mesh.num_vertices);
+			LOG("A BoundBox has been added to the mesh", m->mesh.num_vertices);
 			//
 			// copy faces
 			if (scene->mMeshes[i]->HasFaces())
 			{
 				m->mesh.num_tris = scene->mMeshes[i]->mNumFaces;
+				LOG("The mesh has %d triangles", m->mesh.num_tris);
 				m->mesh.num_indices = scene->mMeshes[i]->mNumFaces * 3;
+				LOG("The mesh has %d indices", m->mesh.num_indices);
 				m->mesh.indices = new uint[m->mesh.num_indices]; // assume each face is a triangle
-				
 				for (uint k = 0; k < scene->mMeshes[i]->mNumFaces; ++k)
 				{
 					if (scene->mMeshes[i]->mFaces[k].mNumIndices != 3) {
@@ -162,10 +172,26 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 					}
 				}
 			}
+			if (m->mesh.indices == nullptr) {
+				LOG("The new mesh has failed trying to import the indices");
+			}
+			else {
+				LOG("The new mesh has succed trying to import the indices");
+			}
 
 			if (scene->mMeshes[i]->HasNormals()) {
+				LOG("The new mesh has normals");
 				m->mesh.normals = new float[m->mesh.num_vertices * 3];
 				memcpy(m->mesh.normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->mesh.num_vertices * 3);
+				if (m->mesh.normals == nullptr) {
+					LOG("The new mesh has failed trying to import the normals");
+				}
+				else {
+					LOG("The new mesh has succed trying to import the normals");
+				}
+			}
+			else {
+				LOG("The new mesh has not normals so the engine cannot import them");
 			}
 		
 
@@ -174,18 +200,18 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 			aiVector3D translation;
 			aiVector3D scaling;
 			aiQuaternion rotation;
-
-			/*for (int i = 0; i < scene->mRootNode->mNumChildren; i++) {
-				scene->mRootNode->mChildren[i]->mTransformation.Decompose(scaling, rotation, translation);
-				m->mesh.translation.Set(translation.x,translation.y, translation.z);
-				m->mesh.scaling.Set(scaling.x, scaling.y, scaling.z);
-				m->mesh.rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
-			}*/
+			
 			aiNode* nod =Calc_AllGeometry_Childs(scene->mRootNode, i);
 			aiMatrix4x4 temp_trans;
-			while (nod->mParent!=nullptr) {
-				temp_trans*=nod->mTransformation;
-				nod = nod->mParent;
+			if (nod != nullptr) {
+				while (nod->mParent != nullptr) {
+					temp_trans *= nod->mTransformation;
+					nod = nod->mParent;
+				}
+				LOG("The new mesh is imported in the same position as in the original file");
+			}
+			else {
+				LOG("The new mesh has failed trying to import the transformation of the geometry");
 			}
 			temp_trans.Decompose(scaling, rotation, translation);
 			m->mesh.translation.Set(translation.x, translation.y, translation.z);
@@ -195,6 +221,7 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 			// texture coords (only one texture for now)
 			if (scene->mMeshes[i]->HasTextureCoords(0))
 			{
+				LOG("The new mesh has normals");
 				m->mesh.textures_coord = new float[m->mesh.num_vertices * 2];
 
 				for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
@@ -204,8 +231,15 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 					
 
 				}
+				if (m->mesh.textures_coord == nullptr) {
+					LOG("The new mesh has failed trying to import the texture coords");
+				}
 				
 			}
+			else {
+				LOG("The mesh doesn't have texture");
+			}
+			
 
 			aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
 			uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);

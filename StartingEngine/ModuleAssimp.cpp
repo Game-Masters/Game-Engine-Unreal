@@ -115,7 +115,7 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 		
 		if (meshes_vec.size() > 0)
 		{
-			ImGui::Image((void*)meshes_vec.front()->mesh.id_texture, ImVec2(100, 100));
+		
 		}
 
 	}

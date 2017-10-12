@@ -250,8 +250,9 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 			
 	
 		}
-		return true;
+		
 		aiReleaseImport(scene);
+		return true;
 	}
 	else {
 
@@ -267,8 +268,9 @@ bool ModuleAssimp::ImportGeometry(char* fbx)
 			}
 		}
 		LOG("Error loading scene %s", full_path);
-		return false;
+		
 	}
+	return false;
 	//aiMesh
 
 

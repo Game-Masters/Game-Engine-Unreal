@@ -307,15 +307,10 @@ update_status ModuleGui::Update(float dt)
 		}
 		if (n2 == true)
 		{
-
 			ImGui::SameLine(300);
 			ImGui::Text("%.4f", iop2);
 		}
-		
-	
-		
 
-		
 		ImGui::End();
 	}
 		App->scene_intro->world_texture->Unbind();

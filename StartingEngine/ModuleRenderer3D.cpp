@@ -507,66 +507,73 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 			ImGui::ColorPicker3("Screen Color", Window_Color);
 			glClearColor(*(Window_Color), *(Window_Color + 1), *(Window_Color + 2), 1.f);
 		}
-
+		/*
 		ImGui::Checkbox("Backface culling", &cullface);
 		ImGui::Checkbox("Point Mode", &points);
 		ImGui::Checkbox("Wireframe Mode", &wireframe);
 		ImGui::Checkbox("Shadeless", &mat);
 		ImGui::Checkbox("Set Material", &color);
-		ImGui::Checkbox("Normals UV Debug", &debugnormals);
-		if (cullface)
-		{
-			glDisable(GL_CULL_FACE);
-		}
-		else if (wireframe) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		}
-		else if (points)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-
-		}
-		else if (mat)
-		{
-			glDisable(GL_LIGHTING);
-			//glEnable(GL_COLOR_MATERIAL);
-			
-		}
-		else if (color)
-		{	float diffuse_light[] = { 0.0f, 0.0f, 1.0f, 1.0f };
-			float specular_light[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-			glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
-			glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
-			glEnable(GL_COLOR_MATERIAL);
-			glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
-			glColorMaterial(GL_FRONT_AND_BACK, GL_SPECULAR);
-			glEnable(GL_COLOR_MATERIAL);
-			//glColor3f(1.0f, 0.0f, 0.0f);
-
-		}
-		else
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glEnable(GL_CULL_FACE);
-			/*float specular_light[] = { 1.0f, 1.0f, 0.0f, 1.0f };
-			float diffuse_light[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-			glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
-			glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
-			glEnable(GL_COLOR_MATERIAL);
-			glColorMaterial(GL_FRONT, GL_DIFFUSE);
-			glColorMaterial(GL_FRONT, GL_SPECULAR);*/
-			//glEnable(GL_DEPTH_TEST);
-			//glEnable(GL_CULL_FACE);
-			//lights[0].Active(true);
-			//glDisable(GL_LIGHTING);
-			//glDisable(GL_COLOR_MATERIAL);
-			glEnable(GL_LIGHTING);
-			glDisable(GL_COLOR_MATERIAL);
-			//glColor3f(0.0f, 0.0f, 0.0f);
-			
-		}
+		ImGui::Checkbox("Normals UV Debug", &debugnormals);*/
+		
+	}
+	if (cullface)
+	{
+		
+		glDisable(GL_CULL_FACE);
+	}
+	else if (wireframe) {
+		glLineWidth(3.0);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else if (points)
+	{
+		
+		glPointSize(4.0);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 
 	}
+	else if (mat)
+	{
+		glDisable(GL_LIGHTING);
+		//glEnable(GL_COLOR_MATERIAL);
+
+	}
+	else if (color)
+	{
+		float diffuse_light[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+		float specular_light[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
+		glEnable(GL_COLOR_MATERIAL);
+		glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+		glColorMaterial(GL_FRONT_AND_BACK, GL_SPECULAR);
+		glEnable(GL_COLOR_MATERIAL);
+		//glColor3f(1.0f, 0.0f, 0.0f);
+
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glEnable(GL_CULL_FACE);
+		/*float specular_light[] = { 1.0f, 1.0f, 0.0f, 1.0f };
+		float diffuse_light[] = { 0.4f, 0.4f, 0.4f, 1.0f };
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
+		glEnable(GL_COLOR_MATERIAL);
+		glColorMaterial(GL_FRONT, GL_DIFFUSE);
+		glColorMaterial(GL_FRONT, GL_SPECULAR);*/
+		//glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_CULL_FACE);
+		//lights[0].Active(true);
+		//glDisable(GL_LIGHTING);
+		//glDisable(GL_COLOR_MATERIAL);
+		glEnable(GL_LIGHTING);
+		//glDisable(GL_COLOR_MATERIAL);
+		//glColor3f(0.0f, 0.0f, 0.0f);
+
+	}
+
+
 	return false;
 }
 

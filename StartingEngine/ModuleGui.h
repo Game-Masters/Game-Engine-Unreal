@@ -36,7 +36,14 @@ public:
 	bool n2 = false;
 	std::vector<float> frames_on_last_update;
 	ImGuiStyle style_custom;
-
+	//ICONS
+		GLuint P;
+		GLuint WF;
+		GLuint N;
+		GLuint SM;
+		GLuint CC;
+		GLuint BFC;
+	//
 	Console console_imgui;
 	LCG rand_test;
 	int iop;

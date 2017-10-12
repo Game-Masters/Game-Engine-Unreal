@@ -96,6 +96,13 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 	//IMGUI STYLE END
+	//load things
+	App->assimp->LoadImage_devil("Icons/BFC.png",&BFC);
+	App->assimp->LoadImage_devil("Icons/CC.png", &CC);
+	App->assimp->LoadImage_devil("Icons/N.png", &N);
+	App->assimp->LoadImage_devil("Icons/P.png", &P);
+	App->assimp->LoadImage_devil("Icons/SM.png", &SM);
+	App->assimp->LoadImage_devil("Icons/WF.png", &WF);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -188,9 +195,43 @@ update_status ModuleGui::Update(float dt)
 		ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(),ImVec2(0,1), ImVec2(1,0));
 	}
 	ImGui::EndDock();
+	if (ImGui::BeginDock("Imbuttons", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_NoTitleBar)) {
+		//POINT
+		ImGui::Image((void*)P, ImVec2(40, 40), ImVec2(0, 0), ImVec2(-1, 1));
+		ImGui::SameLine();
+		ImGui::Checkbox("Point Mode", &App->renderer3D->points);
+		ImGui::SameLine();
+		//WIRE
+		ImGui::Image((void*)WF, ImVec2(30, 30), ImVec2(0, 0), ImVec2(-1, 1));
+		ImGui::SameLine();
+		ImGui::Checkbox("Wireframe Mode", &App->renderer3D->wireframe);
+		ImGui::SameLine();
+		//BACKFACE
+		ImGui::Image((void*)BFC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+		ImGui::SameLine();
+		ImGui::Checkbox("Backface culling", &App->renderer3D->cullface);
+		ImGui::SameLine();
+
+		//SHADELESS
+		ImGui::Image((void*)SM, ImVec2(30, 30), ImVec2(0, 0), ImVec2(-1, 1));
+		ImGui::SameLine();
+		ImGui::Checkbox("Shadeless", &App->renderer3D->mat);
+		ImGui::SameLine();
+		//NORMAL
+		ImGui::Image((void*)N, ImVec2(30, 30), ImVec2(0, 0), ImVec2(-1, 1));
+		ImGui::SameLine();
+		ImGui::Checkbox("Normals UV Debug", &App->renderer3D->debugnormals);
+		ImGui::SameLine();
+		//SETMATERIAL
+		ImGui::Checkbox("Set Material", &App->renderer3D->color);
+		
+		
+	}
+	ImGui::EndDock();
 	
 
 	if (ImGui::BeginDock("About", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+		
 		ImGui::Text("GameEngine");
 		ImGui::Text("We are students from the UPC CITM and we are making a game engine for 3D videogames.");
 		ImGui::Text("v0.01");

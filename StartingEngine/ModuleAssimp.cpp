@@ -75,7 +75,7 @@ update_status ModuleAssimp::Update(float dt)
 
 			meshes_vec.clear();
 		}
-		bool loaded = ImportGeometry(App->input->dropped_filedir.c_str());
+		loaded = ImportGeometry(App->input->dropped_filedir.c_str());
 		for (int p = 0; p < meshes_vec.size(); p++) {
 			meshes_vec[p]->Initialize();
 		}
@@ -84,12 +84,15 @@ update_status ModuleAssimp::Update(float dt)
 		{
 			App->camera->CameraCenter(&meshes_vec.back()->mesh.BoundBox);
 		}
+
 		App->input->flie_dropped = false;
 
 
 			App->input->flie_dropped = false;
-		
-
+	}
+	
+	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) {
+		App->camera->CameraCenter(&meshes_vec.back()->mesh.BoundBox);
 	}
 
 	return UPDATE_CONTINUE;

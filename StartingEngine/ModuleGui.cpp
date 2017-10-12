@@ -191,6 +191,32 @@ update_status ModuleGui::Update(float dt)
 	
 
 	if (ImGui::BeginDock("About", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+		ImGui::Text("GameEngine");
+		ImGui::Text("We are students from the UPC CITM and we are making a game engine for 3D videogames.");
+		ImGui::Text("v0.01");
+		ImGui::Text("In the first version we added the ImGui Library and if you run it you should press the 'GRAVE' to show the game engine GUI. Also, if you press F1 button you can move ");
+		ImGui::Text("around the 3D world with the mouse.");
+		ImGui::Text("V0.02");
+		ImGui::Text("A window for all the options of every module, such as: wireframe mode, show normal, size of the window,full screen…");
+		ImGui::Text("A window that shows the performance of the engine. You can see the frames average and also the time spend in every module.");
+		ImGui::Text("Console to see the outputs of the Engine.");
+		ImGui::Text("Drag and drop of FBX in the Engine and importing geometry.");
+		ImGui::Text("V0.03 -- WIP -- ");
+		ImGui::Text("The geometry is imported with the same transformation and it can have normals and textures");
+		ImGui::Text("You can move arround the world using WASD and also the wheel mouse to Zoom if yoy press alt you will rotate the camera arround");
+		ImGui::Text("the geometry in the world");
+		ImGui::Text("We also added the system of Dock to make the UI of our Engine better");
+		ImGui::Text("With F1 you can enable or disable the grid of the world");
+		ImGui::Text("Added JSON library to access to XML files");
+
+
+		ImGui::Text("Collaborators Github:");
+		if (ImGui::Button("Daniel Olondriz")) {
+			ShellExecuteA(NULL, "open", "https://github.com/danielolondriz", NULL, NULL, SW_SHOWNORMAL);
+		}
+		if (ImGui::Button("Nicolas Babot")) {
+			ShellExecuteA(NULL, "open", "https://github.com/nicobabot", NULL, NULL, SW_SHOWNORMAL);
+		}
 
 	}
 	ImGui::EndDock();
@@ -207,12 +233,9 @@ update_status ModuleGui::Update(float dt)
 		{
 			if (ImGui::BeginMenu("Menu"))
 			{
-				
-				
 				if (ImGui::MenuItem("Console")) { show_console = !show_console; }
+				if (ImGui::MenuItem("Go to github")) { ShellExecuteA(NULL, "open", "https://github.com/Game-Masters/Game-Engine-Unreal", NULL, NULL, SW_SHOWNORMAL); }
 				if (ImGui::MenuItem("Close App")){button_exit_app = true;}
-
-
 				ImGui::EndMenu();
 			}
 
@@ -307,15 +330,10 @@ update_status ModuleGui::Update(float dt)
 		}
 		if (n2 == true)
 		{
-
 			ImGui::SameLine(300);
 			ImGui::Text("%.4f", iop2);
 		}
-		
-	
-		
 
-		
 		ImGui::End();
 	}
 		App->scene_intro->world_texture->Unbind();

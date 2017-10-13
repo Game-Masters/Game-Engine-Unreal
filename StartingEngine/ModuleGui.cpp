@@ -86,8 +86,8 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
 	style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
-	style.Colors[ImGuiCol_CloseButton] = ImVec4(0.40f, 0.39f, 0.38f, 0.16f);
-	style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.40f, 0.39f, 0.38f, 0.39f);
+	style.Colors[ImGuiCol_CloseButton] = ImVec4(1.0f, 0.49f, 0.00f, 0.3f);
+	style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(1.0f, 0.49f, 0.00f, 0.6);
 	style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.40f, 0.39f, 0.38f, 1.00f);
 	style.Colors[ImGuiCol_PlotLines] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
 	style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
@@ -106,6 +106,7 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Icons/WF.png", &WF);
 	App->assimp->LoadImage_devil("Icons/CA.png", &CA);
 	App->assimp->LoadImage_devil("Icons/Q.png", &Q);
+	App->assimp->LoadImage_devil("Icons/logo.png", &Logo);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -292,6 +293,7 @@ update_status ModuleGui::Update(float dt)
 
 	if (ImGui::BeginDock("About", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 		
+		ImGui::Image((void*)Logo, ImVec2(314, 100), ImVec2(0, 0), ImVec2(1, -1));
 		ImGui::Text("GameEngine");
 		ImGui::Text("We are students from the UPC CITM and we are making a game engine for 3D videogames.");
 		ImGui::Text("v0.01");

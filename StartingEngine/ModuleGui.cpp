@@ -213,11 +213,7 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::EndDock();
-		if (ImGui::BeginDock("Control Help", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar))
-		{
-			bool temp = ImGui::ImageButton((void*)Q, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
-		}
-		ImGui::EndDock();
+		
 		if (ImGui::BeginDock("Render Options", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_NoTitleBar)) {
 			//POINT
 			ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
@@ -314,7 +310,79 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Text("of rendering mode.");
 			ImGui::End();
 		}
+		if (n4 == true)
+		{
+			ImGui::Begin("Controls layout", &n4);
+			ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "CAMERA TYPES");
+			ImGui::Text("When the engine is started, the camera is set to default");
+			ImGui::Text( "press RIGHT CLICK to activate FREE CAMERA MODE \N\N");
+			
+				
+				if (ImGui::CollapsingHeader("Default Camera"))
+				{
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "ALT+LEFT CLICK");
+					ImGui::Text("Click alt+left click to orbit around axis,\n or the center of the object, if there is one");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "SCROLL WHEEL");
+					ImGui::Text("use the scroll wheel to zoom in/ zoom out");
+				}
+				if (ImGui::CollapsingHeader("Free Camera"))
+				{
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "RIGHT CLICK");
+					ImGui::Text("Activates the free camera mode");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "LEFT CLICK");
+					ImGui::Text("rotates freely around the world");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "W A S D");
+					ImGui::Text("use w a s d to move around the world");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "R F");
+					ImGui::Text("use R & F to go up or go down in the Y axis");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "SCROLL WHEEL");
+					ImGui::Text("use the scroll wheel to zoom in/ zoom out");
+				}
+				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "\n TABS");
+				if (ImGui::CollapsingHeader("##6"))
+				{
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), " Right tabs\n");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "\n Geometry scene\n");
+					ImGui::Text("It displays info of the meshes that are loaded in scene, like position, rotation, texture, texture size and others");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "\n Information\n");
+					ImGui::Text("Every important variable of each module is displayed here, like your computer's info, change scene background and others");
 
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "\n Main tabs\n");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "Rendering options");
+					ImGui::Text("Buttons that let you activate different rendering options, check out it's help icon for more...");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "World");
+					ImGui::Text("World is displayed");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "About");
+					ImGui::Text("Info about the engine and its creators");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "Application");
+					ImGui::Text("Performance graphs");
+				}
+				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "\n MENU");
+				if (ImGui::CollapsingHeader("##7"))
+				{
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "Console");
+					ImGui::Text("opens the console");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "Open github");
+					ImGui::Text("opens developer github's page");
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "Close");
+					ImGui::Text("closes the app");
+				}
+				if (ImGui::CollapsingHeader("SPECIAL CONTROLS"))
+				{
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "Z");
+					ImGui::Text("turns on\off the editor");
+					
+				}
+				if (ImGui::CollapsingHeader("HOW TO LOAD FBX AND TEXTURES"))
+				{
+					ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "DRAG AND DROP ");
+					ImGui::Text("drag and drop your files");
+				}
+				
+			
+			
+			ImGui::End();
+		}
 
 		if (ImGui::BeginDock("About", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 
@@ -369,7 +437,11 @@ update_status ModuleGui::Update(float dt)
 				if (ImGui::MenuItem("Close App")){button_exit_app = true;}
 				ImGui::EndMenu();
 			}
-
+			bool temp = ImGui::ImageButton((void*)Q, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (temp == true)
+			{
+				n4 = true;
+			}
 			ImGui::EndMainMenuBar();
 
 		}

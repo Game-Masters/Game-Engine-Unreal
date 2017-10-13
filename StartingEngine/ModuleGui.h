@@ -35,6 +35,7 @@ public:
 	bool n1 = false;
 	bool n2 = false;
 	bool n3 = false;
+	bool n4 = false;
 	std::vector<float> frames_on_last_update;
 	ImGuiStyle style_custom;
 	//ICONS

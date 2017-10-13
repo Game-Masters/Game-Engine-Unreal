@@ -188,7 +188,7 @@ update_status ModuleGui::Update(float dt)
 
 			ImGui::Text("Texture Information");
 			ImGui::Text("Path: %s", App->assimp->meshes_vec[p]->mesh.texture_str);
-			ImGui::Image((void*)App->assimp->meshes_vec[p]->mesh.id_image_devil, ImVec2(100, 100));
+			ImGui::Image((void*)App->assimp->meshes_vec[p]->mesh.id_image_devil, ImVec2(100, 100), ImVec2(00, 00), ImVec2(1, -1));
 		}
 
 	}

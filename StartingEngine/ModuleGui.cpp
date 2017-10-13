@@ -188,6 +188,8 @@ update_status ModuleGui::Update(float dt)
 
 			ImGui::Text("Texture Information");
 			ImGui::Text("Path: %s", App->assimp->meshes_vec[p]->mesh.texture_str);
+			ImGui::Text("Texture Width: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[0]);
+			ImGui::Text("Texture Height: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[1]);
 			ImGui::Image((void*)App->assimp->meshes_vec[p]->mesh.id_image_devil, ImVec2(100, 100));
 		}
 
@@ -507,7 +509,7 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 // Called before quitting
 bool ModuleGui::CleanUp()
 {
-
+	
 	aiDetachAllLogStreams();
 	ImGui::SaveDocks();
 	return true;

@@ -49,7 +49,7 @@ void Geometry_Manager::Initialize()
 	if (mesh.textures_coord != nullptr) {
 
 
-	App->assimp->LoadImage_devil(mesh.texture_str.c_str(), &mesh.id_image_devil);
+		mesh.texture_w_h_geom = App->assimp->LoadImage_devil(mesh.texture_str.c_str(), &mesh.id_image_devil);
 
 	glGenBuffers(1, (GLuint*)&(mesh.id_texture));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);

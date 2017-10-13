@@ -126,7 +126,10 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 // Called before quitting
 bool ModuleAssimp::CleanUp()
 {
-	
+	for (int i = 0; i < meshes_vec.size(); i++) {
+		delete meshes_vec[i];
+	}
+	meshes_vec.clear();
 
 	return true;
 }
@@ -252,6 +255,9 @@ bool ModuleAssimp::ImportGeometry(const char* fbx)
 
 			aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
 			uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
+
+			uint lenght = material->mProperties[i]->mDataLength;
+			
 			aiString path;
 			uint p;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
@@ -287,9 +293,9 @@ bool ModuleAssimp::ImportGeometry(const char* fbx)
 
 }
 
-GLuint ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
+uint* ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 {
-
+	uint* texture_w_h = nullptr;
 	//Texture loading success
 	bool textureLoaded = false;
 
@@ -317,6 +323,8 @@ GLuint ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 		if (success == IL_TRUE)
 		{
 			textureLoaded = loadTextureFromPixels32((GLuint*)ilGetData(), (GLuint)ilGetInteger(IL_IMAGE_WIDTH), (GLuint)ilGetInteger(IL_IMAGE_HEIGHT), buff);
+			texture_w_h = new uint(1);
+			texture_w_h[0]= (uint)ilGetInteger(IL_IMAGE_WIDTH); texture_w_h[1] = (uint)ilGetInteger(IL_IMAGE_HEIGHT);
 			//Create texture from file pixels
 			textureLoaded = true;
 		}
@@ -325,12 +333,7 @@ GLuint ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 		ilDeleteImages(1, &imgID);
 	}
 
-	//Report error
-	if (!textureLoaded)
-	{
-
-	}
-	return textureLoaded;
+	return texture_w_h;
 
 }
 

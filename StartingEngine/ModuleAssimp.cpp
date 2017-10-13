@@ -252,9 +252,12 @@ bool ModuleAssimp::ImportGeometry(const char* fbx)
 				LOG("The mesh doesn't have texture");
 			}
 			
-			LOG("The mesh texture path is saved");
+
 			aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
-			uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);			
+			uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
+
+			uint lenght = material->mProperties[i]->mDataLength;
+			
 			aiString path;
 			uint p;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);

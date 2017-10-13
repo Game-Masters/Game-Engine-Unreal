@@ -206,7 +206,12 @@ bool ModuleWindow::LoadConfig(JSON_Object * node)
 		strcpy(str_p, str_window.c_str());
 	}
 
-
+	if (json_object_get_value(node, "Frames_Capped") == NULL) {
+		json_object_set_value(node, "Frames_Capped", json_value_init_object());
+	}
+	else {
+		App->SetFramesCapped(json_object_get_number(node, "Frames_Capped"));
+	}
 
 	return true;
 }
@@ -217,6 +222,7 @@ bool ModuleWindow::SaveConfig(JSON_Object * node)
 	json_object_set_number(node, "width", win_width);
 	json_object_set_number(node, "height", win_height);
 	json_object_set_string(node, "window title",str_window.c_str());
+	json_object_set_number(node, "Frames_Capped", App->GetFramesCapped());
 
 	return true;
 }

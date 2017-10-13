@@ -122,6 +122,16 @@ void Application::FinishUpdate()
 {
 }
 
+void Application::SetFramesCapped(int cap_temp)
+{
+	capped_ms = cap_temp;
+}
+
+int Application::GetFramesCapped()
+{
+	return capped_ms;
+}
+
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
@@ -167,12 +177,11 @@ update_status Application::Update()
 	frames_on_last_update = prev_last_sec_frame_count;
 
 
-
-	if (capped_ms > 0 && (int)last_frame_ms < capped_ms)
+	if (capped_ms > 0)
 	{
-		j1PerfTimer t;
-		SDL_Delay(capped_ms - last_frame_ms);
-		LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
+		uint cap = 1000 / capped_ms;
+		if (last_frame_ms < cap)
+			SDL_Delay(cap - last_frame_ms);
 	}
 
 	FinishUpdate();
@@ -216,20 +225,16 @@ bool Application::Gui_Engine_Modules(float dt)
 	this->performance_offset = (this->performance_offset + 1) % IM_ARRAYSIZE(this->performance);
 
 	ImGui::PlotHistogram((char*)name, this->performance, IM_ARRAYSIZE(this->performance), 0, name, 0.0f, 150.f, ImVec2(0, 40));
-
-
-
-
-	ImGui::InputInt("Fps capped:", &capped_ms, -1, 100);
-
+	int temp_cap = capped_ms;
+	if (ImGui::InputInt("Fps capped:", &temp_cap, -1, 100, ImGuiInputTextFlags_EnterReturnsTrue)) {
+		capped_ms = temp_cap;
+	}
 	ImGui::EndDock();
 	return true;
 }
 
 void Application::LoadModules()
 {
-
-
 
 }
 

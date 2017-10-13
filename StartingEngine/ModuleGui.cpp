@@ -242,7 +242,7 @@ update_status ModuleGui::Update(float dt)
 		ImGui::Text("                                                                                                                     |||");
 		ImGui::SameLine();
 		//SETMATERIAL
-		ImGui::Checkbox("Set Material", &App->renderer3D->color);
+		ImGui::Checkbox("Set Material (WARNING: This button effects won't turn back until the engine is restarted ", &App->renderer3D->color);
 		ImGui::SameLine();
 		
 		

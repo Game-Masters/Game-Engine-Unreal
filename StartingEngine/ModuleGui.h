@@ -34,6 +34,7 @@ public:
 	bool show_console = false;
 	bool n1 = false;
 	bool n2 = false;
+	bool n3 = false;
 	std::vector<float> frames_on_last_update;
 	ImGuiStyle style_custom;
 	//ICONS
@@ -44,6 +45,7 @@ public:
 		GLuint CC;
 		GLuint BFC;
 		GLuint CA;
+		GLuint Q;
 	//
 	Console console_imgui;
 	LCG rand_test;

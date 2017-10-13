@@ -105,6 +105,7 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Icons/SM.png", &SM);
 	App->assimp->LoadImage_devil("Icons/WF.png", &WF);
 	App->assimp->LoadImage_devil("Icons/CA.png", &CA);
+	App->assimp->LoadImage_devil("Icons/Q.png", &Q);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -239,6 +240,12 @@ update_status ModuleGui::Update(float dt)
 			App->camera->CameraCenter(nullptr);
 		}
 		ImGui::SameLine();
+		bool temp3 = ImGui::ImageButton((void*)Q, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
+		if (temp3 == true)
+		{
+			n3 = true;
+		}
+		ImGui::SameLine();
 		ImGui::Text("                                                                                                                     |||");
 		ImGui::SameLine();
 		//SETMATERIAL
@@ -249,7 +256,39 @@ update_status ModuleGui::Update(float dt)
 		
 	}
 	ImGui::EndDock();
-	
+	if (n3 == true)
+	{
+		ImGui::Begin("Help", &n3);
+		ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+		ImGui::SameLine();
+		ImGui::Text("POINT MODE");
+		ImGui::Image((void*)WF, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+		ImGui::SameLine();
+		ImGui::Text("WIREFRAME MODE");
+		ImGui::Image((void*)BFC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+		ImGui::SameLine();
+		ImGui::Text("BACKFACE CULLING");
+		
+		ImGui::Image((void*)SM, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+		ImGui::SameLine();
+		ImGui::Text("SHADELESS");
+		ImGui::Image((void*)N, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+		ImGui::SameLine();
+		ImGui::Text("NORMALS");
+		ImGui::Image((void*)CC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+		ImGui::SameLine();
+		ImGui::Text("CENTER TO OBJECT");
+		ImGui::Image((void*)CA, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+		ImGui::SameLine();
+		ImGui::Text("CENTER TO AXIS");
+		ImGui::Text("NOTE:");
+		ImGui::Text("If backface culling is activated");
+		ImGui::Text("no other buttons will work");
+		ImGui::Text("so deactivate it before changing ");
+		ImGui::Text("of rendering mode.");
+		ImGui::End();
+	}
+
 
 	if (ImGui::BeginDock("About", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 		
@@ -384,7 +423,7 @@ update_status ModuleGui::Update(float dt)
 			ImGui::SameLine(250);
 			ImGui::Text("%i", iop);
 		}
-		button_rand2 = ImGui::Button("Click here to create random floatie", ImVec2(0, 0));
+		button_rand2 = ImGui::Button("Click here to create random float", ImVec2(0, 0));
 		if (button_rand2 == true)
 		{
 			iop2 = rand_test.Float(0.0, 1.0);

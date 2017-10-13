@@ -110,6 +110,8 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Icons/Q.png", &Q);
 	App->assimp->LoadImage_devil("Icons/logo.png", &Logo);
 	App->assimp->LoadImage_devil("Icons/Icon.png", &Icon);
+	App->assimp->LoadImage_devil("Icons/Daniel.png", &Dani);
+	App->assimp->LoadImage_devil("Icons/Nicolas.png", &Nico);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -262,6 +264,8 @@ update_status ModuleGui::Update(float dt)
 				n3 = true;
 			}
 			ImGui::SameLine();
+			ImGui::Text("Render info");
+			ImGui::SameLine();
 			if (App->camera->Can_Move_Camera == true)
 			{
 				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f),"FREE CAMERA MODE ACTIVATED");
@@ -405,15 +409,25 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Text("With F1 you can enable or disable the grid of the world");
 			ImGui::Text("Added JSON library to access to XML files");
 
-
+		
 			ImGui::Text("Collaborators Github:");
-			if (ImGui::Button("Daniel Olondriz")) {
-				ShellExecuteA(NULL, "open", "https://github.com/danielolondriz", NULL, NULL, SW_SHOWNORMAL);
-			}
+			ImGui::Image((void*)Nico, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Image((void*)Dani, ImVec2(150, 150), ImVec2(0, 0), ImVec2(1, -1));
+			
+			ImGui::Text("        ");
+			ImGui::SameLine();
 			if (ImGui::Button("Nicolas Babot")) {
 				ShellExecuteA(NULL, "open", "https://github.com/nicobabot", NULL, NULL, SW_SHOWNORMAL);
 			}
-
+			ImGui::SameLine();
+			ImGui::Text("                    ");
+			
+			ImGui::SameLine();
+			if (ImGui::Button("Daniel Olondriz")) {
+				ShellExecuteA(NULL, "open", "https://github.com/danielolondriz", NULL, NULL, SW_SHOWNORMAL);
+			}
+			
 		}
 		ImGui::EndDock();
 	}
@@ -442,6 +456,8 @@ update_status ModuleGui::Update(float dt)
 			{
 				n4 = true;
 			}
+			ImGui::SameLine();
+			ImGui::Text("Controls info");
 			ImGui::EndMainMenuBar();
 
 		}

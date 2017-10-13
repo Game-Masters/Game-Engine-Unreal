@@ -49,6 +49,8 @@ public:
 		GLuint Q;
 		GLuint Logo;
 		GLuint Icon;
+		GLuint Dani;
+		GLuint Nico;
 	//
 	Console console_imgui;
 	LCG rand_test;

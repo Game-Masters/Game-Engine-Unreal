@@ -32,7 +32,7 @@ public:
 	bool ImportGeometry(const char* fbx);
 
 	aiNode* Calc_AllGeometry_Childs(aiNode* Parent_node, uint search_mesh);
-	GLuint LoadImage_devil(const char* theFileName, GLuint *buff);
+	uint* LoadImage_devil(const char* theFileName, GLuint *buff);
 	bool loadTextureFromPixels32(GLuint * id_pixels, GLuint width, GLuint height, GLuint *buff);
 	bool IsTexture(const char *path);
 public:

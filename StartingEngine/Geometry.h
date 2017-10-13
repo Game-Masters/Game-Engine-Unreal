@@ -36,6 +36,9 @@ struct geometry_base {
 	float3 scaling;
 	Quat rotation;
 	uint num_tris = 0;
+
+	uint* texture_w_h_geom= nullptr;
+
 	~geometry_base() {
 		delete[] indices;
 		delete[] vertices;

@@ -28,7 +28,7 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
-
+	bool Can_Move_Camera = false;
 private:
 	mat3x3 R;
 	mat4x4 ViewMatrix, ViewMatrixInverse;

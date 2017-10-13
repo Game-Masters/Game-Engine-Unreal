@@ -127,6 +127,7 @@ update_status ModuleGui::PreUpdate(float dt)
 	//ImGui_ImplSdlGL2_NewFrame(App->window->window);
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 
+	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) show_editor = !show_editor;
 	
 	return update_status::UPDATE_CONTINUE;
 }
@@ -134,7 +135,13 @@ update_status ModuleGui::PreUpdate(float dt)
 update_status ModuleGui::Update(float dt)
 {
 
-	
+	if (show_editor == false) {
+		ImGui::Begin("World_Without_Editor", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
+		ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImVec2(App->window->win_width, App->window->win_height), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::End();
+	}
+
+
 	ImVec2 display_size = ImGui::GetIO().DisplaySize;
 	ImGui::SetNextWindowSize(display_size);
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -147,185 +154,185 @@ update_status ModuleGui::Update(float dt)
 
 	ImGui::BeginDockspace();
 
+	if (show_editor == true) {
+		App->Gui_Engine_Modules(dt);
+		if (ImGui::BeginDock("Information", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+			for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
 
-	App->Gui_Engine_Modules(dt);
-	if (ImGui::BeginDock("Information", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-	for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
-		
-			(*item)->Gui_Engine_Modules(dt);
+				(*item)->Gui_Engine_Modules(dt);
+			}
+
 		}
-		
-	}
-	ImGui::EndDock();
+		ImGui::EndDock();
 
-	//To print information about the geometry in the scene
-	if (ImGui::BeginDock("Geometry Scene", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-		for (int p = 0; p < App->assimp->meshes_vec.size(); p++) {
+		//To print information about the geometry in the scene
+		if (ImGui::BeginDock("Geometry Scene", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+			for (int p = 0; p < App->assimp->meshes_vec.size(); p++) {
 
-			ImGui::Text("");
-			ImGui::Text("Mesh %i", p + 1);
+				ImGui::Text("");
+				ImGui::Text("Mesh %i", p + 1);
 
-			ImGui::Text("Mesh triangles %i", App->assimp->meshes_vec[p]->mesh.num_tris);
+				ImGui::Text("Mesh triangles %i", App->assimp->meshes_vec[p]->mesh.num_tris);
 
-			float3 t_temp = App->assimp->meshes_vec[p]->mesh.translation;
+				float3 t_temp = App->assimp->meshes_vec[p]->mesh.translation;
 
-			ImGui::Text("Translation.x %f", t_temp.x);
-			ImGui::Text("Translation.x %f", t_temp.y);
-			ImGui::Text("Translation.x %f", t_temp.z);
-			math::Quat q_temp = App->assimp->meshes_vec[p]->mesh.rotation;
-			float3 eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
-			ImGui::Text("");
-			ImGui::Text("Rotation.x %f", eul_ang.x);
-			ImGui::Text("Rotation.y %f", eul_ang.y);
-			ImGui::Text("Rotation.z %f", eul_ang.z);
+				ImGui::Text("Translation.x %f", t_temp.x);
+				ImGui::Text("Translation.x %f", t_temp.y);
+				ImGui::Text("Translation.x %f", t_temp.z);
+				math::Quat q_temp = App->assimp->meshes_vec[p]->mesh.rotation;
+				float3 eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
+				ImGui::Text("");
+				ImGui::Text("Rotation.x %f", eul_ang.x);
+				ImGui::Text("Rotation.y %f", eul_ang.y);
+				ImGui::Text("Rotation.z %f", eul_ang.z);
 
-			float3 s_temp = App->assimp->meshes_vec[p]->mesh.scaling;
-			ImGui::Text("");
-			ImGui::Text("Scale.x %f", s_temp.x);
-			ImGui::Text("Scale.y %f", s_temp.y);
-			ImGui::Text("Scale.z %f", s_temp.z);
-			ImGui::Text("-------------------------");
+				float3 s_temp = App->assimp->meshes_vec[p]->mesh.scaling;
+				ImGui::Text("");
+				ImGui::Text("Scale.x %f", s_temp.x);
+				ImGui::Text("Scale.y %f", s_temp.y);
+				ImGui::Text("Scale.z %f", s_temp.z);
+				ImGui::Text("-------------------------");
 
-			ImGui::Text("Texture Information");
-			ImGui::Text("Path: %s", App->assimp->meshes_vec[p]->mesh.texture_str);
-			ImGui::Text("Texture Width: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[0]);
-			ImGui::Text("Texture Height: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[1]);
-			ImGui::Image((void*)App->assimp->meshes_vec[p]->mesh.id_image_devil, ImVec2(100, 100));
+				ImGui::Text("Texture Information");
+				ImGui::Text("Path: %s", App->assimp->meshes_vec[p]->mesh.texture_str);
+				ImGui::Text("Texture Width: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[0]);
+				ImGui::Text("Texture Height: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[1]);
+				ImGui::Image((void*)App->assimp->meshes_vec[p]->mesh.id_image_devil, ImVec2(100, 100));
+			}
+
 		}
+		ImGui::EndDock();
 
-	}
-	ImGui::EndDock();
-	
-	if (ImGui::BeginDock("World", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-		//NANI?
-		ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(),ImVec2(0,1), ImVec2(1,0));
-	}
-	ImGui::EndDock();
-	if (ImGui::BeginDock("Render Options", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_NoTitleBar)) {
-		//POINT
-		ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Checkbox("##1", &App->renderer3D->points);
-		ImGui::SameLine();
-		//WIRE
-		ImGui::Image((void*)WF, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Checkbox("##2", &App->renderer3D->wireframe);
-		ImGui::SameLine();
-		//BACKFACE
-		ImGui::Image((void*)BFC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Checkbox("##3", &App->renderer3D->cullface);
-		ImGui::SameLine();
+		if (ImGui::BeginDock("World", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+			//NANI?
+			ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		ImGui::EndDock();
+		if (ImGui::BeginDock("Render Options", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_NoTitleBar)) {
+			//POINT
+			ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Checkbox("##1", &App->renderer3D->points);
+			ImGui::SameLine();
+			//WIRE
+			ImGui::Image((void*)WF, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Checkbox("##2", &App->renderer3D->wireframe);
+			ImGui::SameLine();
+			//BACKFACE
+			ImGui::Image((void*)BFC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Checkbox("##3", &App->renderer3D->cullface);
+			ImGui::SameLine();
 
-		//SHADELESS
-		ImGui::Image((void*)SM, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Checkbox("##4", &App->renderer3D->mat);
-		ImGui::SameLine();
-		//NORMAL
-		ImGui::Image((void*)N, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Checkbox("##5", &App->renderer3D->debugnormals);
-		ImGui::SameLine();
-		ImGui::Text("|||");
-		ImGui::SameLine();
-		//Stick to camera
-		bool temp = ImGui::ImageButton((void*)CC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
-		if (temp == true)
+			//SHADELESS
+			ImGui::Image((void*)SM, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Checkbox("##4", &App->renderer3D->mat);
+			ImGui::SameLine();
+			//NORMAL
+			ImGui::Image((void*)N, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Checkbox("##5", &App->renderer3D->debugnormals);
+			ImGui::SameLine();
+			ImGui::Text("|||");
+			ImGui::SameLine();
+			//Stick to camera
+			bool temp = ImGui::ImageButton((void*)CC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (temp == true)
+			{
+				App->camera->CameraRecenter();
+			}
+			ImGui::SameLine();
+			bool temp2 = ImGui::ImageButton((void*)CA, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (temp2 == true)
+			{
+				App->camera->CameraCenter(nullptr);
+			}
+			ImGui::SameLine();
+			bool temp3 = ImGui::ImageButton((void*)Q, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (temp3 == true)
+			{
+				n3 = true;
+			}
+			ImGui::SameLine();
+			ImGui::Text("                                                                                                                     |||");
+			ImGui::SameLine();
+			//SETMATERIAL
+			ImGui::Checkbox("Set Material (WARNING: This button effects won't turn back until the engine is restarted ", &App->renderer3D->color);
+			ImGui::SameLine();
+
+
+
+		}
+		ImGui::EndDock();
+		if (n3 == true)
 		{
-			App->camera->CameraRecenter();
+			ImGui::Begin("Help", &n3);
+			ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Text("POINT MODE");
+			ImGui::Image((void*)WF, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Text("WIREFRAME MODE");
+			ImGui::Image((void*)BFC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Text("BACKFACE CULLING");
+
+			ImGui::Image((void*)SM, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Text("SHADELESS");
+			ImGui::Image((void*)N, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Text("NORMALS");
+			ImGui::Image((void*)CC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Text("CENTER TO OBJECT");
+			ImGui::Image((void*)CA, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
+			ImGui::Text("CENTER TO AXIS");
+			ImGui::Text("NOTE:");
+			ImGui::Text("If backface culling is activated");
+			ImGui::Text("no other buttons will work");
+			ImGui::Text("so deactivate it before changing ");
+			ImGui::Text("of rendering mode.");
+			ImGui::End();
 		}
-		ImGui::SameLine();
-		bool temp2 = ImGui::ImageButton((void*)CA, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
-		if (temp2 == true)
-		{
-			App->camera->CameraCenter(nullptr);
+
+
+		if (ImGui::BeginDock("About", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+
+			ImGui::Image((void*)Logo, ImVec2(314, 100), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::Text("GameEngine");
+			ImGui::Text("We are students from the UPC CITM and we are making a game engine for 3D videogames.");
+			ImGui::Text("v0.01");
+			ImGui::Text("In the first version we added the ImGui Library and if you run it you should press the 'GRAVE' to show the game engine GUI. Also, if you press F1 button you can move ");
+			ImGui::Text("around the 3D world with the mouse.");
+			ImGui::Text("V0.02");
+			ImGui::Text("A window for all the options of every module, such as: wireframe mode, show normal, size of the window,full screen…");
+			ImGui::Text("A window that shows the performance of the engine. You can see the frames average and also the time spend in every module.");
+			ImGui::Text("Console to see the outputs of the Engine.");
+			ImGui::Text("Drag and drop of FBX in the Engine and importing geometry.");
+			ImGui::Text("V0.03 -- WIP -- ");
+			ImGui::Text("The geometry is imported with the same transformation and it can have normals and textures");
+			ImGui::Text("You can move arround the world using WASD and also the wheel mouse to Zoom if yoy press alt you will rotate the camera arround");
+			ImGui::Text("the geometry in the world");
+			ImGui::Text("We also added the system of Dock to make the UI of our Engine better");
+			ImGui::Text("With F1 you can enable or disable the grid of the world");
+			ImGui::Text("Added JSON library to access to XML files");
+
+
+			ImGui::Text("Collaborators Github:");
+			if (ImGui::Button("Daniel Olondriz")) {
+				ShellExecuteA(NULL, "open", "https://github.com/danielolondriz", NULL, NULL, SW_SHOWNORMAL);
+			}
+			if (ImGui::Button("Nicolas Babot")) {
+				ShellExecuteA(NULL, "open", "https://github.com/nicobabot", NULL, NULL, SW_SHOWNORMAL);
+			}
+
 		}
-		ImGui::SameLine();
-		bool temp3 = ImGui::ImageButton((void*)Q, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
-		if (temp3 == true)
-		{
-			n3 = true;
-		}
-		ImGui::SameLine();
-		ImGui::Text("                                                                                                                     |||");
-		ImGui::SameLine();
-		//SETMATERIAL
-		ImGui::Checkbox("Set Material (WARNING: This button effects won't turn back until the engine is restarted ", &App->renderer3D->color);
-		ImGui::SameLine();
-		
-		
-		
+		ImGui::EndDock();
 	}
-	ImGui::EndDock();
-	if (n3 == true)
-	{
-		ImGui::Begin("Help", &n3);
-		ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Text("POINT MODE");
-		ImGui::Image((void*)WF, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Text("WIREFRAME MODE");
-		ImGui::Image((void*)BFC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Text("BACKFACE CULLING");
-		
-		ImGui::Image((void*)SM, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Text("SHADELESS");
-		ImGui::Image((void*)N, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Text("NORMALS");
-		ImGui::Image((void*)CC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Text("CENTER TO OBJECT");
-		ImGui::Image((void*)CA, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::SameLine();
-		ImGui::Text("CENTER TO AXIS");
-		ImGui::Text("NOTE:");
-		ImGui::Text("If backface culling is activated");
-		ImGui::Text("no other buttons will work");
-		ImGui::Text("so deactivate it before changing ");
-		ImGui::Text("of rendering mode.");
-		ImGui::End();
-	}
-
-
-	if (ImGui::BeginDock("About", false, false,false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-		
-		ImGui::Image((void*)Logo, ImVec2(314, 100), ImVec2(0, 0), ImVec2(1, -1));
-		ImGui::Text("GameEngine");
-		ImGui::Text("We are students from the UPC CITM and we are making a game engine for 3D videogames.");
-		ImGui::Text("v0.01");
-		ImGui::Text("In the first version we added the ImGui Library and if you run it you should press the 'GRAVE' to show the game engine GUI. Also, if you press F1 button you can move ");
-		ImGui::Text("around the 3D world with the mouse.");
-		ImGui::Text("V0.02");
-		ImGui::Text("A window for all the options of every module, such as: wireframe mode, show normal, size of the window,full screen…");
-		ImGui::Text("A window that shows the performance of the engine. You can see the frames average and also the time spend in every module.");
-		ImGui::Text("Console to see the outputs of the Engine.");
-		ImGui::Text("Drag and drop of FBX in the Engine and importing geometry.");
-		ImGui::Text("V0.03 -- WIP -- ");
-		ImGui::Text("The geometry is imported with the same transformation and it can have normals and textures");
-		ImGui::Text("You can move arround the world using WASD and also the wheel mouse to Zoom if yoy press alt you will rotate the camera arround");
-		ImGui::Text("the geometry in the world");
-		ImGui::Text("We also added the system of Dock to make the UI of our Engine better");
-		ImGui::Text("With F1 you can enable or disable the grid of the world");
-		ImGui::Text("Added JSON library to access to XML files");
-
-
-		ImGui::Text("Collaborators Github:");
-		if (ImGui::Button("Daniel Olondriz")) {
-			ShellExecuteA(NULL, "open", "https://github.com/danielolondriz", NULL, NULL, SW_SHOWNORMAL);
-		}
-		if (ImGui::Button("Nicolas Babot")) {
-			ShellExecuteA(NULL, "open", "https://github.com/nicobabot", NULL, NULL, SW_SHOWNORMAL);
-		}
-
-	}
-	ImGui::EndDock();
-
 
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)

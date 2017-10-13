@@ -52,6 +52,7 @@ public:
 	LCG rand_test;
 	int iop;
 	float iop2;
+	bool show_editor = true;
 };
 
 #endif // ModuleGui

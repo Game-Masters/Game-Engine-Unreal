@@ -18,6 +18,8 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool LoadConfig(JSON_Object* node);
+	bool SaveConfig(JSON_Object* node);
 
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);

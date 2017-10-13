@@ -78,7 +78,8 @@ bool ModuleRenderer3D::Init()
 		
 		GLfloat LightModelAmbient[] = {0.0f, 0.0f, 0.0f, 1.0f};
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
-		Window_Color = new float(2);
+	
+		//Window_Color[0] = 0.0f; Window_Color[1] = 0.0f; Window_Color[2] = 0.0f;
 		/*
 		lights[0].ref = GL_LIGHT0;
 		lights[0].ambient.Set(0.5f, 0.5f, 0.5f, 1.0f);
@@ -105,7 +106,8 @@ bool ModuleRenderer3D::Init()
 
 	glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	
+	if(Window_Color!=nullptr)
+	glClearColor(*(Window_Color), *(Window_Color + 1), *(Window_Color + 2), 1.f);
 	//---------------------
 	/*
 	sphere = new Sphere({ 0,0,0 }, 3);
@@ -507,13 +509,6 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 			ImGui::ColorPicker3("Screen Color", Window_Color);
 			glClearColor(*(Window_Color), *(Window_Color + 1), *(Window_Color + 2), 1.f);
 		}
-		/*
-		ImGui::Checkbox("Backface culling", &cullface);
-		ImGui::Checkbox("Point Mode", &points);
-		ImGui::Checkbox("Wireframe Mode", &wireframe);
-		ImGui::Checkbox("Shadeless", &mat);
-		ImGui::Checkbox("Set Material", &color);
-		ImGui::Checkbox("Normals UV Debug", &debugnormals);*/
 		
 	}
 	if (cullface)
@@ -593,6 +588,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 bool ModuleRenderer3D::LoadConfig(JSON_Object * node)
 {
+	Window_Color = new float(2);
 	if (json_object_get_value(node, "Window_Color.r") == NULL || 
 		json_object_get_value(node, "Window_Color.g") == NULL ||
 		json_object_get_value(node, "Window_Color.b") == NULL) {

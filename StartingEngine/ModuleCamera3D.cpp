@@ -4,6 +4,7 @@
 #include "ModuleCamera3D.h"
 #include "ModulePlayer.h"
 
+#define OFF_SET_CAMERA 5;
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
@@ -171,10 +172,12 @@ void ModuleCamera3D::CalculateViewMatrix()
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
 }
+
 void ModuleCamera3D::CameraRecenter()
 {
 	CameraCenter(LCenter);
 }
+
 void ModuleCamera3D::CameraCenter(AABB* mesh)
 {
 	if (mesh == nullptr)
@@ -193,5 +196,8 @@ void ModuleCamera3D::CameraCenter(AABB* mesh)
 		float wide = difference.Length() + 2.0f; //This magic number is just to have some frame around geometry
 		float FOVdistance = (wide * 0.5f) / tan(60.0f * 0.5f * DEGTORAD);
 		Position = Z * Reference;
+		Position.z += OFF_SET_CAMERA;
+		LookAt(Reference);
+
 	}
 }

@@ -253,6 +253,7 @@ bool ModuleAssimp::ImportGeometry(const char* fbx)
 			aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
 			uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
 			aiString path;
+			uint p;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 			m->mesh.texture_str = path.C_Str();
 			meshes_vec.push_back(m);

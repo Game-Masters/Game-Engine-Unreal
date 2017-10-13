@@ -27,7 +27,7 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
-	Position = Reference + zoom * Z;
+	//Position = Reference + zoom * Z;
 
 	return ret;
 }

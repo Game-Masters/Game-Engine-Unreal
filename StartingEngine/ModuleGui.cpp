@@ -9,6 +9,8 @@
 #include"ModuleSceneIntro.h"
 #include "Fluid_Studios_Memory_Manager\mmgr.h"
 #include "Fluid_Studios_Memory_Manager\nommgr.h"
+#include "ModuleCamera3D.h"
+
 
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
 
@@ -61,7 +63,7 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
 	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.15f, 0.15f, 1.00f);
 	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
-	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style.Colors[ImGuiCol_FrameBgActive] =ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
 	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
 	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.47f, 0.47, 0.47f, 0.75f);
 	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
@@ -107,6 +109,7 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Icons/CA.png", &CA);
 	App->assimp->LoadImage_devil("Icons/Q.png", &Q);
 	App->assimp->LoadImage_devil("Icons/logo.png", &Logo);
+	App->assimp->LoadImage_devil("Icons/Icon.png", &Icon);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -197,15 +200,20 @@ update_status ModuleGui::Update(float dt)
 				ImGui::Text("Path: %s", App->assimp->meshes_vec[p]->mesh.texture_str);
 				ImGui::Text("Texture Width: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[0]);
 				ImGui::Text("Texture Height: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[1]);
-				ImGui::Image((void*)App->assimp->meshes_vec[p]->mesh.id_image_devil, ImVec2(100, 100));
+				ImGui::Image((void*)App->assimp->meshes_vec[p]->mesh.id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 			}
 
 		}
 		ImGui::EndDock();
 
 		if (ImGui::BeginDock("World", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-			//NANI?
+			
 			ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
+		}
+		ImGui::EndDock();
+		if (ImGui::BeginDock("Control Help", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar))
+		{
+			bool temp = ImGui::ImageButton((void*)Q, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
 		}
 		ImGui::EndDock();
 		if (ImGui::BeginDock("Render Options", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_NoTitleBar)) {
@@ -256,13 +264,19 @@ update_status ModuleGui::Update(float dt)
 				n3 = true;
 			}
 			ImGui::SameLine();
+			if (App->camera->Can_Move_Camera == true)
+			{
+				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f),"FREE CAMERA MODE ACTIVATED");
+			}
+			/*
+			ImGui::SameLine();
 			ImGui::Text("                                                                                                                     |||");
 			ImGui::SameLine();
 			//SETMATERIAL
 			ImGui::Checkbox("Set Material (WARNING: This button effects won't turn back until the engine is restarted ", &App->renderer3D->color);
 			ImGui::SameLine();
 
-
+			*/
 
 		}
 		ImGui::EndDock();
@@ -343,8 +357,11 @@ update_status ModuleGui::Update(float dt)
 		//------
 		if (ImGui::BeginMainMenuBar())
 		{
+			ImGui::Image((void*)Icon, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1));
+			ImGui::SameLine();
 			if (ImGui::BeginMenu("Menu"))
 			{
+				
 				if (ImGui::MenuItem("Console")) { show_console = !show_console; }
 				if (ImGui::MenuItem("Go to github")) { ShellExecuteA(NULL, "open", "https://github.com/Game-Masters/Game-Engine-Unreal", NULL, NULL, SW_SHOWNORMAL); }
 				if (ImGui::MenuItem("Close App")){button_exit_app = true;}

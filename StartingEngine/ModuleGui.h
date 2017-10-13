@@ -47,6 +47,7 @@ public:
 		GLuint CA;
 		GLuint Q;
 		GLuint Logo;
+		GLuint Icon;
 	//
 	Console console_imgui;
 	LCG rand_test;

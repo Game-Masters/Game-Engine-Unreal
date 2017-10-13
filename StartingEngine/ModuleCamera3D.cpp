@@ -71,7 +71,7 @@ update_status ModuleCamera3D::Update(float dt)
 		Move(newPos);
 	}
 		
-			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT)== KEY_REPEAT)
+			if ((App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT)== KEY_REPEAT) || (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && Can_Move_Camera==true))
 			{
 				int dx = -App->input->GetMouseXMotion();
 				int dy = -App->input->GetMouseYMotion();

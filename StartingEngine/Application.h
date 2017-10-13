@@ -77,7 +77,8 @@ public:
 	void SaveModules();
 
 private:
-
+	float performance[90] = { 0 };
+	int performance_offset = 0;
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();

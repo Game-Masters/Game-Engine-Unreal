@@ -209,6 +209,17 @@ bool Application::Gui_Engine_Modules(float dt)
 		}
 	}
 
+
+	const char* name = "fps";
+
+	this->performance[this->performance_offset] = App->frames_on_last_update;
+	this->performance_offset = (this->performance_offset + 1) % IM_ARRAYSIZE(this->performance);
+
+	ImGui::PlotHistogram((char*)name, this->performance, IM_ARRAYSIZE(this->performance), 0, name, 0.0f, 150.f, ImVec2(0, 40));
+
+
+
+
 	ImGui::InputInt("Fps capped:", &capped_ms, -1, 100);
 
 	ImGui::EndDock();

@@ -399,7 +399,6 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Text("You can move arround the world using WASD and also the wheel mouse to Zoom if yoy press alt you will rotate the camera arround");
 			ImGui::Text("the geometry in the world");
 			ImGui::Text("We also added the system of Dock to make the UI of our Engine better");
-			ImGui::Text("With F1 you can enable or disable the grid of the world");
 			ImGui::Text("Added JSON library to access to XML files");
 
 		

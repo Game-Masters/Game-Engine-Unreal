@@ -100,23 +100,23 @@ bool ModuleGui::Start()
 	//IMGUI STYLE END
 
 	//load things
-	App->assimp->LoadImage_devil("Icons/BFC.png",&BFC);
-	App->assimp->LoadImage_devil("Icons/CC.png", &CC);
-	App->assimp->LoadImage_devil("Icons/N.png", &N);
-	App->assimp->LoadImage_devil("Icons/P.png", &P);
-	App->assimp->LoadImage_devil("Icons/SM.png", &SM);
-	App->assimp->LoadImage_devil("Icons/WF.png", &WF);
-	App->assimp->LoadImage_devil("Icons/CA.png", &CA);
-	App->assimp->LoadImage_devil("Icons/Q.png", &Q);
-	App->assimp->LoadImage_devil("Icons/logo.png", &Logo);
-	App->assimp->LoadImage_devil("Icons/Icon.png", &Icon);
-	App->assimp->LoadImage_devil("Icons/Daniel.png", &Dani);
-	App->assimp->LoadImage_devil("Icons/Nicolas.png", &Nico);
+	App->assimp->LoadImage_devil("Data/Icons/BFC.png",&BFC);
+	App->assimp->LoadImage_devil("Data/Icons/CC.png", &CC);
+	App->assimp->LoadImage_devil("Data/Icons/N.png", &N);
+	App->assimp->LoadImage_devil("Data/Icons/P.png", &P);
+	App->assimp->LoadImage_devil("Data/Icons/SM.png", &SM);
+	App->assimp->LoadImage_devil("Data/Icons/WF.png", &WF);
+	App->assimp->LoadImage_devil("Data/Icons/CA.png", &CA);
+	App->assimp->LoadImage_devil("Data/Icons/Q.png", &Q);
+	App->assimp->LoadImage_devil("Data/Icons/logo.png", &Logo);
+	App->assimp->LoadImage_devil("Data/Icons/Icon.png", &Icon);
+	App->assimp->LoadImage_devil("Data/Icons/Daniel.png", &Dani);
+	App->assimp->LoadImage_devil("Data/Icons/Nicolas.png", &Nico);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
 	
-	io.Fonts->AddFontFromFileTTF("..\\Game\\Fonts\\OpenSans-Regular.ttf", 16);
+	io.Fonts->AddFontFromFileTTF("..\\Game\\Data\\Fonts\\OpenSans-Regular.ttf", 16);
 
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);

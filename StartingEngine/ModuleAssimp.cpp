@@ -259,6 +259,8 @@ bool ModuleAssimp::ImportGeometry(const char* fbx)
 			aiString path;
 			uint p;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+			std::string temp = path.C_Str();
+			path = "Data/" + temp;
 			m->mesh.texture_str = path.C_Str();
 			meshes_vec.push_back(m);
 			

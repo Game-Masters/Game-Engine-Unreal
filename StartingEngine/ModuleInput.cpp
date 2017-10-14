@@ -144,16 +144,6 @@ bool ModuleInput::Gui_Engine_Modules(float dt)
 
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
-	https://msdn.microsoft.com/en-us/library/windows/desktop/ms645597.aspx
-		UINT nDevices;
-		PRAWINPUTDEVICELIST pRawInputDeviceList;
-		GetRawInputDeviceList(NULL, &nDevices, sizeof(RAWINPUTDEVICELIST));
-		pRawInputDeviceList =  new RAWINPUTDEVICELIST();
-		
-		//GetRawInputDeviceInfo(pRawInputDeviceList, RIDI_DEVICENAME, &nDevices, Trying to find what goes here);
-
-		LOG("TRY");
-	
 
 		
 

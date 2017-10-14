@@ -57,14 +57,14 @@ enum PrimitiveTypes
 	Primitive_Mesh
 };
 
-class Geometry_Manager
+class Geometry_Mesh
 {
 
 public:
 
-	Geometry_Manager(PrimitiveTypes _type);
-	Geometry_Manager(const Geometry_Manager& _cpy);
-	virtual ~Geometry_Manager();
+	Geometry_Mesh(PrimitiveTypes _type);
+	Geometry_Mesh(const Geometry_Mesh& _cpy);
+	virtual ~Geometry_Mesh();
 
 public:
 

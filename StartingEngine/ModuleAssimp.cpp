@@ -150,7 +150,7 @@ bool ModuleAssimp::ImportGeometry(const char* fbx)
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (int i = 0; i < scene->mNumMeshes; i++) {
 			LOG("Mesh imported %i----------------", i);
-			m = new Geometry_Manager(PrimitiveTypes::Primitive_Mesh);
+			m = new Geometry_Mesh(PrimitiveTypes::Primitive_Mesh);
 			m->mesh.num_vertices = scene->mMeshes[i]->mNumVertices;
 			LOG("New mesh with %d vertices", m->mesh.num_vertices);
 			m->mesh.vertices = new float[m->mesh.num_vertices * 3];

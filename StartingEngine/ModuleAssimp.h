@@ -37,8 +37,8 @@ public:
 	bool IsTexture(const char *path);
 public:
 	//GLuint *Lenna_texture = 0;
-	Geometry_Manager* m;
-	std::vector<Geometry_Manager*> meshes_vec;
+	Geometry_Mesh* m;
+	std::vector<Geometry_Mesh*> meshes_vec;
 	GLuint * paco;
 	bool loaded = false;
 

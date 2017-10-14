@@ -82,7 +82,7 @@ public:
 	PhysBody3D*PlainGame_Body;
 	Cube_prim * cube_test=nullptr;
 	Cube_prim * plane_test = nullptr;
-	Geometry_Manager *m;
+	Geometry_Mesh *m;
 	Texture_Engine *world_texture;
 
 };

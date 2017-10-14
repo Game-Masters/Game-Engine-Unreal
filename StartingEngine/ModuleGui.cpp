@@ -270,15 +270,6 @@ update_status ModuleGui::Update(float dt)
 			{
 				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f),"FREE CAMERA MODE ACTIVATED");
 			}
-			/*
-			ImGui::SameLine();
-			ImGui::Text("                                                                                                                     |||");
-			ImGui::SameLine();
-			//SETMATERIAL
-			ImGui::Checkbox("Set Material (WARNING: This button effects won't turn back until the engine is restarted ", &App->renderer3D->color);
-			ImGui::SameLine();
-
-			*/
 
 		}
 		ImGui::EndDock();
@@ -604,16 +595,6 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 		ImGui::Text("Accumulated Alloc Unit Count:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.accumulatedAllocUnitCount);
 		ImGui::Text("Total Alloc Unit Count:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.totalAllocUnitCount);
 		ImGui::Text("Peak Alloc Unit Count:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.peakAllocUnitCount);
-
-		
-		/*
-		SDL_version sdl_vers_ret;
-		SDL_VERSION(&sdl_vers_ret);
-
-		ImGui::Text("SDL Version patch:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers_ret.patch);
-		ImGui::Text("SDL Version major:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers_ret.major);
-		ImGui::Text("SDL Version minor:"); ImGui::SameLine(); ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%i", sdl_vers_ret.minor);*/
-
 
 	}
 	return false;

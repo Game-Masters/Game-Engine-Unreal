@@ -77,14 +77,6 @@ bool Application::Init()
 	json_class->Load();
 
 
-	/*std::list<Module*>::iterator item = list_modules.begin();
-	while (item != list_modules.end() && ret == true)
-	{
-			ret = (*item)->Init();
-			(*item)->module_timer = new Timer();
-			item++;
-
-	}*/
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		ret = (item)._Ptr->_Myval->Init();
@@ -112,8 +104,6 @@ void Application::PrepareUpdate()
 	frame_count++;
 	last_sec_frame_count++;
 
-	//IF WE HAVE PROBLEMS UNCOMMENT THIS
-	//dt = frame_time.ReadSec();
 	frame_time.Start();
 }
 

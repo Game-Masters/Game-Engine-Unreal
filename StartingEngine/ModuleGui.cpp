@@ -116,7 +116,9 @@ bool ModuleGui::Start()
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
 	
-	io.Fonts->AddFontFromFileTTF("..\\Game\\Data\\Fonts\\OpenSans-Regular.ttf", 16);
+
+	io.Fonts->AddFontFromFileTTF("Data\\Fonts\\OpenSans-Regular.ttf", 16);
+
 
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);

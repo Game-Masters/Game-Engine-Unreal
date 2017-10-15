@@ -28,7 +28,7 @@ ModuleGui::~ModuleGui()
 
 bool ModuleGui::Init() {
 
-	//ImGui::LoadDocks();
+	
 
 	return true;
 }
@@ -607,6 +607,6 @@ bool ModuleGui::CleanUp()
 {
 	
 	aiDetachAllLogStreams();
-	//ImGui::SaveDocks();
+
 	return true;
 }

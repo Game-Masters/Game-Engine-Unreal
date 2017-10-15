@@ -75,7 +75,7 @@ bool Application::Init()
 	json_class = new Parson_JSON();
 	json_class->Init();
 	json_class->Load();
-
+	ImGui::LoadDocks();
 
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
@@ -185,7 +185,7 @@ bool Application::CleanUp()
 		(*item)->CleanUp();
 	}
 	json_class->Save();
-	
+	ImGui::SaveDocks();
 	return ret;
 }
 

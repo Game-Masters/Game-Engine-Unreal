@@ -501,6 +501,7 @@
     <ClInclude Include="Mesh.h">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleFileSystem_Engine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -716,6 +717,7 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleFileSystem_Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

@@ -16,14 +16,14 @@ Application::Application()
 	player = new ModulePlayer();
 	gui = new ModuleGui();
 	assimp = new ModuleAssimp();
-
+	fs_e = new ModuleFileSystem_Engine();
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
 
 	// Main Modules
 	AddModule(window);
-
+	AddModule(fs_e);
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
@@ -41,6 +41,7 @@ Application::Application()
 
 
 	window->name = "window";
+	fs_e->name = "filesystem";
 	camera->name = "camera";
 	input->name = "input";
 	physics->name = "physics";

@@ -4,8 +4,6 @@
 #include "ModuleCamera3D.h"
 #include "ModulePlayer.h"
 
-#define OFF_SET_CAMERA 5;
-
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
 	CalculateViewMatrix();
@@ -190,8 +188,7 @@ void ModuleCamera3D::CameraCenter(AABB* mesh)
 		vec difference = mesh->maxPoint - mesh->minPoint;
 		float wide = difference.Length() + 2.0f; //This magic number is just to have some frame around geometry
 		float FOVdistance = (wide * 0.5f) / tan(60.0f * 0.5f * DEGTORAD);
-		Position = Z * Reference;
-		Position.z += OFF_SET_CAMERA;
+		Position = Z * FOVdistance;
 	}
 
 	LookAt(Reference);

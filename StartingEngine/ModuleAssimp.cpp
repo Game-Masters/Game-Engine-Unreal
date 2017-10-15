@@ -142,6 +142,9 @@ bool ModuleAssimp::ImportGeometry(const char* fbx)
 
 	std::string full_path;
 	full_path = fbx;
+	std::size_t pos_to_find = full_path.rfind("\\");
+	std::string Imp_Path = full_path.substr(0, pos_to_find + 1);
+
 	const aiScene* scene = aiImportFile(full_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 	
 	if (scene != nullptr && scene->HasMeshes())
@@ -260,7 +263,7 @@ bool ModuleAssimp::ImportGeometry(const char* fbx)
 			uint p;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 			std::string temp = path.C_Str();
-			path = "Data/" + temp;
+			path = Imp_Path + temp;
 			m->mesh.texture_str = path.C_Str();
 			meshes_vec.push_back(m);
 			

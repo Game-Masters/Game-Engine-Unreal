@@ -49,6 +49,12 @@
     <Filter Include="Sources\Modules\GerarchyGameObjects\Components_types">
       <UniqueIdentifier>{e04356a0-c398-46f3-b316-1aac0fcfe9ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Cereal">
+      <UniqueIdentifier>{0f402ae2-91de-4061-885f-4e94155755fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\Fluid_MMGR">
+      <UniqueIdentifier>{e37015ca-5204-4a46-87d9-33b0b59ba756}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -508,6 +514,27 @@
     <ClInclude Include="Imgui\Data.h">
       <Filter>Sources\Modules\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="cereal-1.2.2\include\cereal\archives\adapters.hpp">
+      <Filter>Sources\Cereal</Filter>
+    </ClInclude>
+    <ClInclude Include="cereal-1.2.2\include\cereal\archives\binary.hpp">
+      <Filter>Sources\Cereal</Filter>
+    </ClInclude>
+    <ClInclude Include="cereal-1.2.2\include\cereal\archives\json.hpp">
+      <Filter>Sources\Cereal</Filter>
+    </ClInclude>
+    <ClInclude Include="cereal-1.2.2\include\cereal\archives\portable_binary.hpp">
+      <Filter>Sources\Cereal</Filter>
+    </ClInclude>
+    <ClInclude Include="cereal-1.2.2\include\cereal\archives\xml.hpp">
+      <Filter>Sources\Cereal</Filter>
+    </ClInclude>
+    <ClInclude Include="Fluid_Studios_Memory_Manager\mmgr.h">
+      <Filter>Sources\Modules\Fluid_MMGR</Filter>
+    </ClInclude>
+    <ClInclude Include="Fluid_Studios_Memory_Manager\nommgr.h">
+      <Filter>Sources\Modules\Fluid_MMGR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -729,6 +756,9 @@
     </ClCompile>
     <ClCompile Include="Imgui\Data.cpp">
       <Filter>Sources\Modules\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Fluid_Studios_Memory_Manager\mmgr.cpp">
+      <Filter>Sources\Modules\Fluid_MMGR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

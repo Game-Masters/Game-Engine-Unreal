@@ -314,7 +314,7 @@ namespace ImGui {
 				}
 			}
 
-			
+
 			ImU32 color = GetColorU32(ImGuiCol_PanelLines);
 			ImU32 color_hovered = GetColorU32(ImGuiCol_PanelLinesHovered);
 			ImDrawList* draw_list = GetWindowDrawList();

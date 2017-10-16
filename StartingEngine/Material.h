@@ -27,5 +27,6 @@ public:
 	void Update();
 	~Material();
 	std::vector<material_base_geometry*> GetMaterialVec();
+	const char* GetPathMaterial();
 };
 

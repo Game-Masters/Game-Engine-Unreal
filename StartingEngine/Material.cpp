@@ -10,8 +10,8 @@ Material::Material(const char * path_text, const char* fbx, GameObject * parent)
 {
 	texture_v = App->assimp->ImportGeometry_Texture(fbx);
 	for (int i = 0; i < texture_v.size(); i++) {
-
-		App->assimp->LoadImage_devil(path_text, &texture_v[i]->id_image_devil);
+		path_texture = path_text;
+		App->assimp->LoadImage_devil(path_texture.c_str(), &texture_v[i]->id_image_devil);
 
 		glGenBuffers(1, (GLuint*)&(texture_v[i]->id_texture));
 		glBindBuffer(GL_ARRAY_BUFFER, texture_v[i]->id_texture);
@@ -33,4 +33,9 @@ Material::~Material()
 std::vector<material_base_geometry*> Material::GetMaterialVec()
 {
 	return texture_v;
+}
+
+const char * Material::GetPathMaterial()
+{
+	return path_texture.c_str();
 }

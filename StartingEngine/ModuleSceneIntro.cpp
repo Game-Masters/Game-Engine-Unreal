@@ -40,11 +40,27 @@ bool ModuleSceneIntro::Start()
 	std::string path_temp2 = "..\\Game\\Data\\Baker_house.png";
 	Material* temp = nullptr;
 
+	GameObject* house1 = nullptr;
+	GameObject* house11 = nullptr;
+
+
 	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
-	root_gameobject->Childrens_GameObject_Vect.push_back(CreateNewGameObjects("geometry1", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false));
-	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(10,15,1), float3(0, 0, 0), Quat(1,0,0,0));
-	temp = root_gameobject->Childrens_GameObject_Vect[0]->AddNewMaterial(path_temp2.c_str(),path_temp.c_str());
-	root_gameobject->Childrens_GameObject_Vect[0]->AddNewMesh(path_temp.c_str(), temp);
+	house1=CreateNewGameObjects("House", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false);
+	house1->AddNewTransform(float3(10,15,1), float3(0, 0, 0), Quat(1,0,0,0));
+	temp = house1->AddNewMaterial(path_temp2.c_str(),path_temp.c_str());
+	house1->AddNewMesh(path_temp.c_str(), temp);
+	root_gameobject->Childrens_GameObject_Vect.push_back(house1);
+
+	house11=CreateNewGameObjects("House1.1", true, house1, Tag_Object_Enum::no_obj_tag, false);
+	house11->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));
+	temp = house11->AddNewMaterial(path_temp2.c_str(), path_temp.c_str());
+	house11->AddNewMesh(path_temp.c_str(), temp);
+	house1->Childrens_GameObject_Vect.push_back(house11);
+
+	/*root_gameobject->Childrens_GameObject_Vect.push_back(CreateNewGameObjects("House2", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false));
+	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));
+	temp = root_gameobject->Childrens_GameObject_Vect[0]->AddNewMaterial(path_temp2.c_str(), path_temp.c_str());
+	root_gameobject->Childrens_GameObject_Vect[0]->AddNewMesh(path_temp.c_str(), temp);*/
 
 	return ret;
 }

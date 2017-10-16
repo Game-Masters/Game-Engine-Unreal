@@ -184,12 +184,26 @@ update_status ModuleGui::Update(float dt)
 		}
 		ImGui::EndDock();
 
-
+		GameObject* temp=nullptr;
 		Transform* t_temp = nullptr;
 		Mesh* m_temp = nullptr;
 		Component* Comp_temp = nullptr;
-		if (ImGui::BeginDock("Inspector", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-			for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+		if (ImGui::BeginDock("Scene", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+
+			if (ImGui::TreeNode(App->scene_intro->root_gameobject->name.c_str())) {
+				for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+					temp = App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i];
+					IterateChilds(temp);
+					
+				}
+				ImGui::TreePop();
+			}
+
+		}
+		ImGui::EndDock();
+		//To print information about the geometry in the scene
+		if (ImGui::BeginDock("Geometry Scene", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+			/*for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
 				for (int j = 0; j < App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect.size(); j++) {
 					Comp_temp = App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect[j];
 					switch (Comp_temp->GetComponentType())
@@ -210,48 +224,7 @@ update_status ModuleGui::Update(float dt)
 					}
 				}
 			}
-
-		}
-		ImGui::EndDock();
-
-
-		//To print information about the geometry in the scene
-		if (ImGui::BeginDock("Geometry Scene", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-			/*for (int p = 0; p < App->assimp->meshes_vec.size(); p++) {
-
-				ImGui::Text("");
-				ImGui::Text("Mesh %i", p + 1);
-
-				ImGui::Text("Mesh triangles %i", App->assimp->meshes_vec[p]->mesh.num_tris);
-
-				float3 t_temp = App->assimp->meshes_vec[p]->mesh.translation;
-
-				ImGui::Text("Translation.x %f", t_temp.x);
-				ImGui::Text("Translation.x %f", t_temp.y);
-				ImGui::Text("Translation.x %f", t_temp.z);
-				math::Quat q_temp = App->assimp->meshes_vec[p]->mesh.rotation;
-				float3 eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
-				ImGui::Text("");
-				ImGui::Text("Rotation.x %f", eul_ang.x);
-				ImGui::Text("Rotation.y %f", eul_ang.y);
-				ImGui::Text("Rotation.z %f", eul_ang.z);
-
-				float3 s_temp = App->assimp->meshes_vec[p]->mesh.scaling;
-				ImGui::Text("");
-				ImGui::Text("Scale.x %f", s_temp.x);
-				ImGui::Text("Scale.y %f", s_temp.y);
-				ImGui::Text("Scale.z %f", s_temp.z);
-				ImGui::Text("-------------------------");
-
-				ImGui::Text("Texture Information");
-				ImGui::Text("Path: %s", App->assimp->meshes_vec[p]->mesh.texture_str.c_str());
-				if (App->assimp->meshes_vec[p]->mesh.texture_w_h_geom != nullptr) {
-					ImGui::Text("Texture Width: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[0]);
-					ImGui::Text("Texture Height: %i", App->assimp->meshes_vec[p]->mesh.texture_w_h_geom[1]);
-				}
-				ImGui::Image((void*)App->assimp->meshes_vec[p]->mesh.id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
-			}*/
-
+			*/
 		}
 		ImGui::EndDock();
 
@@ -654,3 +627,51 @@ bool ModuleGui::CleanUp()
 
 	return true;
 }
+
+void ModuleGui::IterateChilds(GameObject * item)
+{
+	GameObject* temp = nullptr;
+	Transform* t_temp = nullptr;
+	Mesh* m_temp = nullptr;
+	Material* mat_temp= nullptr;
+	Component* Comp_temp = nullptr;
+	
+			if (ImGui::TreeNode(item->name.c_str())) {
+				
+				for (int j = 0; j < item->Component_Vect.size(); j++) {
+					Comp_temp = item->Component_Vect[j];
+					switch (Comp_temp->GetComponentType())
+					{
+					case Component_Type_Enum::component_transform_type:
+						t_temp = (Transform*)Comp_temp;
+						ImGui::Text("Pos x: %f", t_temp->GetPosition().x);
+						ImGui::Text("Pos y: %f", t_temp->GetPosition().y);
+						ImGui::Text("Pos z: %f", t_temp->GetPosition().z);
+
+						break;
+					case Component_Type_Enum::component_mesh_type:
+						m_temp = (Mesh*)Comp_temp;
+						ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
+						break;
+
+					case Component_Type_Enum::component_material_type:
+						mat_temp = (Material*)Comp_temp;
+						ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+						break;
+					default:
+						break;
+					}
+
+				}
+				ImGui::TreePop();
+				for (int k = 0; k < item->Childrens_GameObject_Vect.size(); k++)
+					IterateChilds(item->Childrens_GameObject_Vect[k]);
+
+			}
+
+
+
+}
+
+
+

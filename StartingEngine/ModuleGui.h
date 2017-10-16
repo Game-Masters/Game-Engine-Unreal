@@ -57,6 +57,10 @@ public:
 	int iop;
 	float iop2;
 	bool show_editor = true;
+
+	void IterateChilds(GameObject* item);
+
+
 };
 
 #endif // ModuleGui

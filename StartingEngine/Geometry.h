@@ -30,6 +30,7 @@ struct geometry_base {
 	uint id_texture = 0;
 	uint id_image_devil = 0;
 	float* textures_coord = nullptr;
+
 	std::string texture_str;
 	AABB BoundBox;
 	float3 translation;
@@ -38,6 +39,8 @@ struct geometry_base {
 	uint num_tris = 0;
 
 	uint* texture_w_h_geom= nullptr;
+
+	char* texture_str;
 
 	~geometry_base() {
 		delete[] indices;

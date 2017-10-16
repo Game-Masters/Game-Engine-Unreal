@@ -7,9 +7,15 @@
 #include"Imgui/imgui.h"
 #include"Imgui\imguidock.h"
 #include"ModuleSceneIntro.h"
+
 #include "Fluid_Studios_Memory_Manager\mmgr.h"
 #include "Fluid_Studios_Memory_Manager\nommgr.h"
 #include "ModuleCamera3D.h"
+
+
+#include"GameObject.h";
+#include"Transform.h"
+#include"Mesh.h"
 
 
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
@@ -218,6 +224,7 @@ update_status ModuleGui::Update(float dt)
 		}
 		ImGui::EndDock();
 		
+
 		if (ImGui::BeginDock("Render Options", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_NoTitleBar)) {
 			//POINT
 			ImGui::Image((void*)P, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1));
@@ -390,7 +397,7 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Text("In the first version we added the ImGui Library and if you run it you should press the 'GRAVE' to show the game engine GUI. Also, if you press F1 button you can move ");
 			ImGui::Text("around the 3D world with the mouse.");
 			ImGui::Text("V0.02");
-			ImGui::Text("A window for all the options of every module, such as: wireframe mode, show normal, size of the window,full screen…");
+			ImGui::Text("A window for all the options of every module, such as: wireframe mode, show normal, size of the window,full screenï¿½");
 			ImGui::Text("A window that shows the performance of the engine. You can see the frames average and also the time spend in every module.");
 			ImGui::Text("Console to see the outputs of the Engine.");
 			ImGui::Text("Drag and drop of FBX in the Engine and importing geometry.");
@@ -400,6 +407,39 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Text("the geometry in the world");
 			ImGui::Text("We also added the system of Dock to make the UI of our Engine better");
 			ImGui::Text("Added JSON library to access to XML files");
+
+	}
+	ImGui::EndDock();
+	Transform* t_temp = nullptr;
+	Mesh* m_temp = nullptr;
+	Component* Comp_temp = nullptr;
+	if (ImGui::BeginDock("Inspector", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+		for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+			for (int j = 0; j < App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect.size(); j++) {
+				Comp_temp = App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect[j];
+					switch (Comp_temp->GetComponentType())
+					{
+					case Component_Type_Enum::component_transform_type:
+						t_temp = (Transform*)Comp_temp;
+						ImGui::Text("Pos x: %f", t_temp->GetPosition().x);
+						ImGui::Text("Pos y: %f", t_temp->GetPosition().y);
+						ImGui::Text("Pos z: %f", t_temp->GetPosition().z);
+						
+						break;
+					case Component_Type_Enum::component_mesh_type:
+						m_temp = (Mesh*)Comp_temp;
+						ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
+						break;
+					default:
+						break;
+					}
+			}
+		}
+
+	}
+		ImGui::EndDock();
+	
+
 
 		
 			ImGui::Text("Collaborators Github:");

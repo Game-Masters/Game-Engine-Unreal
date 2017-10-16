@@ -1,6 +1,10 @@
 ﻿#include "Globals.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
+#include"GameObject.h"
+#include"Component.h"
+#include"Mesh.h"
+#include"Transform.h"
 
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
@@ -29,9 +33,18 @@ bool ModuleSceneIntro::Start()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
 
+
 	world_texture = new Texture_Engine();
 	world_texture->Create(nullptr, App->window->win_width, App->window->win_height);
+	std::string path_temp = "E:\\CITM\\3ero VJ\\Game-Engine-Unreal\\StartingEngine\\Game\\BakerHouse.fbx";
+	std::string path_temp2 = "E:\\CITM\\3ero VJ\\Game-Engine-Unreal\\StartingEngine\\Game\\Baker_house.png";
+	Material* temp = nullptr;
 
+	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
+	root_gameobject->Childrens_GameObject_Vect.push_back(CreateNewGameObjects("geometry1", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false));
+	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(10,15,1), float3(0, 0, 0), Quat(1,0,0,0));
+	temp = root_gameobject->Childrens_GameObject_Vect[0]->AddNewMaterial(path_temp2.c_str(),path_temp.c_str());
+	root_gameobject->Childrens_GameObject_Vect[0]->AddNewMesh(path_temp.c_str(), temp);
 
 	return ret;
 }
@@ -41,6 +54,8 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 {
 	world_texture->Bind();
 	
+	
+
 
 	return UPDATE_CONTINUE;
 }
@@ -49,7 +64,15 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-		
+
+	
+	
+
+	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+		root_gameobject->Childrens_GameObject_Vect[i]->Update();
+	}
+	
+
 	glLineWidth(5.0f);
 	glBegin(GL_LINES);
 	glColor3f(0, 1, 0);
@@ -111,10 +134,21 @@ bool ModuleSceneIntro::Gui_Engine_Modules(float dt)
 
 bool ModuleSceneIntro::CleanUp()
 {
-	delete cube_test;
-	delete plane_test;
+
 	return true;
 }
+
+GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool active, GameObject* parent, Tag_Object_Enum tag_temp, bool static_s)
+{
+
+	std::string name_f = name;
+
+	GameObject* n_gameobject = new GameObject(name_f, parent, active, tag_temp, static_s);
+
+	return n_gameobject;
+}
+
+
 
 
 

@@ -13,7 +13,8 @@
 
 
 class Application;
-
+struct geometry_base_creating;
+struct material_base_geometry;
 class ModuleAssimp : public Module
 {
 public:
@@ -29,18 +30,31 @@ public:
 	update_status PostUpdate(float dt);
 	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
-	bool ImportGeometry(const char* fbx);
+
+	std::vector<geometry_base_creating*> ImportGeometry(const char* fbx);
+	std::vector<material_base_geometry*> ImportGeometry_Texture(const char* fbx);
+
 
 	aiNode* Calc_AllGeometry_Childs(aiNode* Parent_node, uint search_mesh);
 	uint* LoadImage_devil(const char* theFileName, GLuint *buff);
 	bool loadTextureFromPixels32(GLuint * id_pixels, GLuint width, GLuint height, GLuint *buff);
+
 	bool IsTexture(const char *path);
 public:
 	//GLuint *Lenna_texture = 0;
-	Geometry_Mesh* m;
-	std::vector<Geometry_Mesh*> meshes_vec;
-	GLuint * paco;
+
+	//std::vector<Geometry_Mesh*> meshes_vec;
+
 	bool loaded = false;
+
+	bool IsTexture(char *path);
+public:
+	//GLuint *Lenna_texture = 0;
+	geometry_base_creating* m;
+	material_base_geometry* mat_geom;
+	std::vector<Geometry_Manager*> meshes_vec;
+	GLuint * paco;
+
 
 };
 

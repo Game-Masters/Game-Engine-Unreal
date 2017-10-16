@@ -48,6 +48,11 @@
     </Filter>
     <Filter Include="Sources\Modules\Fluid_MMGR">
       <UniqueIdentifier>{95c042e2-f49e-4e50-9994-324b6a7cc8af}</UniqueIdentifier>
+    <Filter Include="Sources\Modules\GerarchyGameObjects">
+      <UniqueIdentifier>{2fe8301b-53f1-4c1a-ad3e-cb38d8f9b46e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\GerarchyGameObjects\Components_types">
+      <UniqueIdentifier>{e04356a0-c398-46f3-b316-1aac0fcfe9ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -512,6 +517,21 @@
     </ClInclude>
     <ClInclude Include="Fluid_Studios_Memory_Manager\nommgr.h">
       <Filter>Sources\Modules\Fluid_MMGR</Filter>
+    <ClInclude Include="GameObject.h">
+      <Filter>Sources\Modules\GerarchyGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Sources\Modules\GerarchyGameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFileSystem_Engine.h" />
+    <ClInclude Include="Material.h">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -721,6 +741,21 @@
     </ClCompile>
     <ClCompile Include="Fluid_Studios_Memory_Manager\mmgr.cpp">
       <Filter>Sources\Modules\Fluid_MMGR</Filter>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFileSystem_Engine.cpp" />
+    <ClCompile Include="Material.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

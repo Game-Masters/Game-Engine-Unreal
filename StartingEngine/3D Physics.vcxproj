@@ -118,6 +118,7 @@
     <ClInclude Include="cereal-1.2.2\include\cereal\archives\portable_binary.hpp" />
     <ClInclude Include="cereal-1.2.2\include\cereal\archives\xml.hpp" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Console_ImGui.h" />
     <ClInclude Include="Cube_prim.h" />
     <ClInclude Include="Devil\include\config.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Devil\include\il_wrap.h" />
     <ClInclude Include="Fluid_Studios_Memory_Manager\mmgr.h" />
     <ClInclude Include="Fluid_Studios_Memory_Manager\nommgr.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Imgui\Data.h" />
@@ -145,6 +147,7 @@
     <ClInclude Include="j1PerfTimer.h" />
     <ClInclude Include="JSON\parson.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="MathGeoLib\Algorithm\GJK.h" />
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\Algorithm\SAT.h" />
@@ -209,8 +212,10 @@
     <ClInclude Include="MathGeoLib\Math\sse_mathfun.h" />
     <ClInclude Include="MathGeoLib\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\Time\Clock.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModuleAssimp.h" />
     <ClInclude Include="ModuleCamera3D.h" />
+    <ClInclude Include="ModuleFileSystem_Engine.h" />
     <ClInclude Include="ModuleGui.h" />
     <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModulePlayer.h" />
@@ -228,13 +233,16 @@
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Texture_Engine.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console_ImGui.cpp" />
     <ClCompile Include="Cube_prim.cpp" />
     <ClCompile Include="Fluid_Studios_Memory_Manager\mmgr.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Imgui\Data.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
@@ -248,6 +256,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathGeoLib\Algorithm\GJK.cpp" />
     <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\Geometry\AABB.cpp" />
@@ -284,9 +293,11 @@
     <ClCompile Include="MathGeoLib\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\Time\Clock.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModuleAssimp.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
+    <ClCompile Include="ModuleFileSystem_Engine.cpp" />
     <ClCompile Include="ModuleGui.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModulePhysics3D.cpp" />
@@ -299,6 +310,7 @@
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Texture_Engine.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assimp\include\assimp\.editorconfig" />

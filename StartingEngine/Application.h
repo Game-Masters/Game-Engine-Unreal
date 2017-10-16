@@ -16,6 +16,7 @@
 #include "ModuleAssimp.h"
 #include "Parson_JSON.h"
 #include"Parson_JSON.h"
+#include"ModuleFileSystem_Engine.h"
 #include <list>
 #include <vector>
 #include "Geometry.h"
@@ -37,7 +38,7 @@ public:
 	ModulePhysics3D* physics;
 	ModulePlayer* player;
 	ModuleGui* gui;
-
+	ModuleFileSystem_Engine* fs_e;
 	ModuleAssimp* assimp;
 
 	//----

@@ -153,7 +153,7 @@ bool ModuleInput::Gui_Engine_Modules(float dt)
 		
 		//GetRawInputDeviceInfo(pRawInputDeviceList, RIDI_DEVICENAME, &nDevices, Trying to find what goes here);
 
-		LOG("TRY");
+		
 	
 
 		

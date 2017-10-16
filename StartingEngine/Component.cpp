@@ -21,4 +21,11 @@ void Component::Update()
 
 }
 
+const Component_Type_Enum Component::GetComponentType() const
+{
+	return type_component;
+}
+
+
+
 

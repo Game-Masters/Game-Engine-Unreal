@@ -7,8 +7,8 @@
 #include"Imgui\imgui_impl_sdl_gl3.h"
 #include"Imgui/imgui.h"
 #include"ModuleSceneIntro.h"
-
-
+#include"Mesh.h"
+#include"Material.h"
 
 ModuleAssimp::ModuleAssimp(bool start_enabled) : Module(start_enabled)
 {
@@ -103,11 +103,11 @@ bool ModuleAssimp::CleanUp()
 	return true;
 }
 
-void ModuleAssimp::ImportGeometry(char* fbx)
+std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fbx)
 {
 
 	//----------------ASSIMP
-
+	std::vector<geometry_base_creating*> mesh_v_temp;
 
 	std::string full_path;
 	full_path = fbx;
@@ -117,16 +117,16 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 	{
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		for (int i = 0; i < scene->mNumMeshes; i++) {
-			m = new Geometry_Manager(PrimitiveTypes::Primitive_Mesh);
-			m->mesh.num_vertices = scene->mMeshes[i]->mNumVertices;
-			m->mesh.vertices = new float[m->mesh.num_vertices * 3];
-			memcpy(m->mesh.vertices, scene->mMeshes[i]->mVertices, sizeof(float) * m->mesh.num_vertices * 3);
-			LOG("New mesh with %d vertices", m->mesh.num_vertices);
+			m = new geometry_base_creating();
+			m->num_vertices = scene->mMeshes[i]->mNumVertices;
+			m->vertices = new float[m->num_vertices * 3];
+			memcpy(m->vertices, scene->mMeshes[i]->mVertices, sizeof(float) * m->num_vertices * 3);
+			LOG("New mesh with %d vertices", m->num_vertices);
 			// copy faces
 			if (scene->mMeshes[i]->HasFaces())
 			{
-				m->mesh.num_indices = scene->mMeshes[i]->mNumFaces * 3;
-				m->mesh.indices = new uint[m->mesh.num_indices]; // assume each face is a triangle
+				m->num_indices = scene->mMeshes[i]->mNumFaces * 3;
+				m->indices = new uint[m->num_indices]; // assume each face is a triangle
 
 				for (uint k = 0; k < scene->mMeshes[i]->mNumFaces; ++k)
 				{
@@ -134,14 +134,14 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 						LOG("WARNING, geometry face with != 3 indices!");
 					}
 					else {
-						memcpy(&m->mesh.indices[k * 3], scene->mMeshes[i]->mFaces[k].mIndices, 3 * sizeof(uint));
+						memcpy(&m->indices[k * 3], scene->mMeshes[i]->mFaces[k].mIndices, 3 * sizeof(uint));
 					}
 				}
 			}
 
 			if (scene->mMeshes[i]->HasNormals()) {
-				m->mesh.normals = new float[m->mesh.num_vertices * 3];
-				memcpy(m->mesh.normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->mesh.num_vertices * 3);
+				m->normals = new float[m->num_vertices * 3];
+				memcpy(m->normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->num_vertices * 3);
 			}
 
 			aiVector3D translation;
@@ -150,27 +150,27 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 
 			for (int i = 0; i < scene->mRootNode->mNumChildren; i++) {
 				scene->mRootNode->mChildren[i]->mTransformation.Decompose(scaling, rotation, translation);
-				m->mesh.translation.Set(translation.x, translation.y, translation.z);
-				m->mesh.scaling.Set(scaling.x, scaling.y, scaling.z);
-				m->mesh.rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+				m->translation.Set(translation.x, translation.y, translation.z);
+				m->scaling.Set(scaling.x, scaling.y, scaling.z);
+				m->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
 			}
 
 
 			if (scene->mMeshes[i]->HasTextureCoords(0))
 			{
-				m->mesh.textures_coord = new float[m->mesh.num_vertices * 2];
+				m->textures_coord = new float[m->num_vertices * 2];
 
 				for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
 
-					m->mesh.textures_coord[z * 2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
-					m->mesh.textures_coord[z * 2 + 1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
+					m->textures_coord[z * 2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
+					m->textures_coord[z * 2 + 1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
 
 
 				}
 				
 			}
 
-			meshes_vec.push_back(m);
+			mesh_v_temp.push_back(m);
 
 
 		}
@@ -181,9 +181,63 @@ void ModuleAssimp::ImportGeometry(char* fbx)
 	}
 	//aiMesh
 
-
+	return mesh_v_temp;
 
 }
+
+
+
+std::vector<material_base_geometry*> ModuleAssimp::ImportGeometry_Texture(const char* fbx)
+{
+
+	//----------------ASSIMP
+	std::vector<material_base_geometry*> mesh_v_temp;
+
+	std::string full_path;
+	full_path = fbx;
+	const aiScene* scene = aiImportFile(full_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+
+	if (scene != nullptr && scene->HasMeshes())
+	{
+		// Use scene->mNumMeshes to iterate on scene->mMeshes array
+		for (int i = 0; i < scene->mNumMeshes; i++) {
+			mat_geom = new material_base_geometry();
+			mat_geom->num_vertices = scene->mMeshes[i]->mNumVertices;
+			
+			if (scene->mMeshes[i]->HasTextureCoords(0))
+			{
+				mat_geom->textures_coord = new float[mat_geom->num_vertices * 2];
+
+				for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
+
+					mat_geom->textures_coord[z * 2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
+					mat_geom->textures_coord[z * 2 + 1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
+
+
+				}
+
+			}
+
+			mesh_v_temp.push_back(mat_geom);
+
+		}
+		aiReleaseImport(scene);
+	}
+	else {
+		LOG("Error loading scene %s", full_path);
+	}
+	//aiMesh
+
+	return mesh_v_temp;
+
+}
+
+
+
+
+
+
+
 
 GLuint ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 {

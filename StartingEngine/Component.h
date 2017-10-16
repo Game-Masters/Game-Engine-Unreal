@@ -22,6 +22,7 @@ public:
 	~Component();
 	virtual void SetActive(bool state);
 	virtual void Update();
-
+	const Component_Type_Enum GetComponentType()const;
+	
 };
 

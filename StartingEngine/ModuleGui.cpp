@@ -7,7 +7,9 @@
 #include"Imgui/imgui.h"
 #include"Imgui\imguidock.h"
 #include"ModuleSceneIntro.h"
-
+#include"GameObject.h";
+#include"Transform.h"
+#include"Mesh.h"
 
 
 
@@ -136,9 +138,34 @@ update_status ModuleGui::Update(float dt)
 		
 	}
 	ImGui::EndDock();
+	Transform* t_temp = nullptr;
+	Mesh* m_temp = nullptr;
+	Component* Comp_temp = nullptr;
+	if (ImGui::BeginDock("Inspector", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+		for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+			for (int j = 0; j < App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect.size(); j++) {
+				Comp_temp = App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect[j];
+					switch (Comp_temp->GetComponentType())
+					{
+					case Component_Type_Enum::component_transform_type:
+						t_temp = (Transform*)Comp_temp;
+						ImGui::Text("Pos x: %f", t_temp->GetPosition().x);
+						ImGui::Text("Pos y: %f", t_temp->GetPosition().y);
+						ImGui::Text("Pos z: %f", t_temp->GetPosition().z);
+						
+						break;
+					case Component_Type_Enum::component_mesh_type:
+						m_temp = (Mesh*)Comp_temp;
+						ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
+						break;
+					default:
+						break;
+					}
+			}
+		}
 
-	
-
+	}
+		ImGui::EndDock();
 	
 	if (ImGui::BeginDock("World", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 		//NANI?

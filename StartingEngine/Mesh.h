@@ -9,7 +9,7 @@
 #include<string>
 #include"Component.h"
 
-
+class Material;
 struct geometry_base_creating {
 	uint id_vertices = 0; // id in VRAM
 	uint num_indices = 0;
@@ -29,6 +29,10 @@ struct geometry_base_creating {
 	float3 scaling;
 	Quat rotation;
 	std::string texture_str;
+
+	geometry_base_creating() {
+
+	}
 
 	~geometry_base_creating() {
 		delete[] indices;
@@ -53,13 +57,15 @@ class Mesh :
 {
 
 private:
+	Material* texture_mesh;
 	std::string path_fbx;
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
-	geometry_base_creating        mesh;
+	std::vector<geometry_base_creating*> mesh_v;
 public:
 	void Update();
-	Mesh(GameObject* parent, char* str);
+	Mesh(GameObject* parent, const char* str);
 	~Mesh();
 	PrimitiveTypes_Mesh    GetType()const;
+	const char* GetGeometryPath();
 };
 

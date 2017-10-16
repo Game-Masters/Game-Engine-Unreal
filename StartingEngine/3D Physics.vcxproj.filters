@@ -502,6 +502,9 @@
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClInclude>
     <ClInclude Include="ModuleFileSystem_Engine.h" />
+    <ClInclude Include="Material.h">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -718,6 +721,9 @@
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClCompile>
     <ClCompile Include="ModuleFileSystem_Engine.cpp" />
+    <ClCompile Include="Material.cpp">
+      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

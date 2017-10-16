@@ -2,6 +2,18 @@
 
 
 
+bool GameObject::IsComponentType(Component_Type_Enum temp_type)
+{
+
+	for (int i = 0; i < Component_Vect.size(); i++) {
+		if (Component_Vect[i]->GetComponentType()== temp_type) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void GameObject::Update()
 {
 	for (int j = 0; j < this->Component_Vect.size(); j++) {
@@ -21,6 +33,21 @@ Transform * GameObject::AddNewTransform(float3 position, float3 scale, Quat rota
 	Transform* n_transform = new Transform(this, position, scale, rotations);
 	this->Component_Vect.push_back(n_transform);
 	return n_transform;
+}
+
+Mesh * GameObject::AddNewMesh(const char * Path)
+{
+	Mesh* n_mesh = new Mesh(this, Path);
+	this->Component_Vect.push_back(n_mesh);
+	return n_mesh;
+}
+
+Material * GameObject::AddNewMaterial(const char * Path_texture, const char * Path_fbx)
+{
+
+
+
+	return nullptr;
 }
 
 

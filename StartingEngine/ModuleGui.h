@@ -21,7 +21,7 @@ public:
 	update_status Update(float dt);
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
-	bool Gui_Engine_Modules(float dt);
+	//bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
 
 public:

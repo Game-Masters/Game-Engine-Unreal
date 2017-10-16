@@ -52,7 +52,7 @@ public:
 	//GLuint *Lenna_texture = 0;
 	geometry_base_creating* m;
 	material_base_geometry* mat_geom;
-	std::vector<Geometry_Manager*> meshes_vec;
+	//std::vector<Geometry_Manager*> meshes_vec;
 	GLuint * paco;
 
 

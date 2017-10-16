@@ -29,6 +29,8 @@ struct geometry_base_creating {
 	float3 scaling;
 	Quat rotation;
 	std::string texture_str;
+	AABB BoundBox;
+	uint num_tris = 0;
 
 	geometry_base_creating() {
 

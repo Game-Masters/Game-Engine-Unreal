@@ -40,7 +40,7 @@ struct geometry_base {
 
 	uint* texture_w_h_geom= nullptr;
 
-	char* texture_str;
+	
 
 	~geometry_base() {
 		delete[] indices;

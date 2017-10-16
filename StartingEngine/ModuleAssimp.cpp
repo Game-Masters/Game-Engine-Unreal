@@ -45,9 +45,9 @@ bool ModuleAssimp::Start()
 	aiAttachLogStream(&stream);
 
 
-	for (int p = 0; p < meshes_vec.size(); p++) {
+	/*for (int p = 0; p < meshes_vec.size(); p++) {
 		meshes_vec[p]->Initialize();
-	}
+	}*/
 
 	return true;
 }
@@ -63,7 +63,7 @@ update_status ModuleAssimp::PreUpdate(float dt)
 update_status ModuleAssimp::Update(float dt)
 {
 
-	for (int p = 0; p < meshes_vec.size(); p++) {
+	/*for (int p = 0; p < meshes_vec.size(); p++) {
 		meshes_vec[p]->Draw();
 	}
 	
@@ -93,7 +93,7 @@ update_status ModuleAssimp::Update(float dt)
 	
 	if (App->input->GetKey(SDL_SCANCODE_I) == KEY_DOWN) {
 	//	App->camera->CameraRecenter();
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }
@@ -114,10 +114,7 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
 		
-		if (meshes_vec.size() > 0)
-		{
 		
-		}
 
 	}
 	return true;
@@ -129,10 +126,8 @@ bool ModuleAssimp::Gui_Engine_Modules(float dt)
 bool ModuleAssimp::CleanUp()
 {
 
-	for (int i = 0; i < meshes_vec.size(); i++) {
-		delete meshes_vec[i];
-	}
-	meshes_vec.clear();
+	
+
 
 
 	return true;
@@ -164,24 +159,24 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 			m->vertices = new float[m->num_vertices * 3];
         LOG("New mesh with %d vertices", m->num_vertices);
 			memcpy(m->vertices, scene->mMeshes[i]->mVertices, sizeof(float) * m->num_vertices * 3);
-			if (m->mesh.vertices==nullptr) {
+			if (m->vertices==nullptr) {
 				LOG("The new mesh has failed trying to import the vertices");
 			}
 			else {
 				LOG("The new mesh has succed trying to import the vertices");
 			}        
         //Generate bounding bax
-			m->mesh.BoundBox.SetNegativeInfinity();
-			m->mesh.BoundBox.Enclose((float3*)m->mesh.vertices, m->mesh.num_vertices);
-			LOG("A BoundBox has been added to the mesh", m->mesh.num_vertices);
+			m->BoundBox.SetNegativeInfinity();
+			m->BoundBox.Enclose((float3*)m->vertices, m->num_vertices);
+			LOG("A BoundBox has been added to the mesh", m->num_vertices);
 			// copy faces
 			if (scene->mMeshes[i]->HasFaces())
 			{
         m->num_tris = scene->mMeshes[i]->mNumFaces;
 				m->num_indices = scene->mMeshes[i]->mNumFaces * 3;
-        	LOG("The mesh has %d triangles", m->mesh.num_tris);
+        	LOG("The mesh has %d triangles", m->num_tris);
 				m->indices = new uint[m->num_indices]; // assume each face is a triangle
-	    LOG("The mesh has %d indices", m->mesh.num_indices);
+			 LOG("The mesh has %d indices", m->num_indices);
 
 				for (uint k = 0; k < scene->mMeshes[i]->mNumFaces; ++k)
 				{
@@ -193,7 +188,7 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 					}
 				}
 			}
-			if (m->mesh.indices == nullptr) {
+			if (m->indices == nullptr) {
 				LOG("The new mesh has failed trying to import the indices");
 			}
 			else {
@@ -205,7 +200,7 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 				LOG("The new mesh has normals");
 		    m->normals = new float[m->num_vertices * 3];
 				memcpy(m->normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->num_vertices * 3);
-				if (m->mesh.normals == nullptr) {
+				if (m->normals == nullptr) {
 					LOG("The new mesh has failed trying to import the normals");
 				}
 				else {
@@ -233,13 +228,13 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 				LOG("The new mesh has failed trying to import the transformation of the geometry");
 			}
 			temp_trans.Decompose(scaling, rotation, translation);
-			m->mesh.translation.Set(translation.x, translation.y, translation.z);
-			m->mesh.scaling.Set(scaling.x, scaling.y, scaling.z);
-			m->mesh.rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+			m->translation.Set(translation.x, translation.y, translation.z);
+			m->scaling.Set(scaling.x, scaling.y, scaling.z);
+			m->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
 			
 			// texture coords (only one texture for now)
 
-			if (scene->mMeshes[i]->HasTextureCoords(0))
+			/*if (scene->mMeshes[i]->HasTextureCoords(0))
 			{
         LOG("The new mesh has normals");
 				m->textures_coord = new float[m->num_vertices * 2];
@@ -253,7 +248,7 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 
 				}
 
-				if (m->mesh.textures_coord == nullptr) {
+				if (m->textures_coord == nullptr) {
 					LOG("The new mesh has failed trying to import the texture coords");
 				}
 				
@@ -271,9 +266,9 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 			std::string temp = path.C_Str();
 			path = Imp_Path + temp;
-			m->mesh.texture_str = path.C_Str();
+			m->texture_str = path.C_Str();*/
 
-			}
+			
 
 			mesh_v_temp.push_back(m);
 
@@ -282,29 +277,10 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 		}
 		
 		aiReleaseImport(scene);
-		return true;
 	}
-	else {
 
-
-		bool textureLoaded = false;
-
-		//Generate and set current image ID
-		
-		if (IsTexture(fbx))
-		{
-			for (int p = 0; p < meshes_vec.size(); p++) {
-				meshes_vec[p]->mesh.texture_str = fbx;
-			}
-		}
-		LOG("Error loading scene %s", full_path);
-		
-	}
-	return false;
-	//aiMesh
-
-	return mesh_v_temp;
-
+		return mesh_v_temp;
+	
 }
 
 

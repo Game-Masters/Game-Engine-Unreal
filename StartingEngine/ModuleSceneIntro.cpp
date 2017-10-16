@@ -36,8 +36,8 @@ bool ModuleSceneIntro::Start()
 
 	world_texture = new Texture_Engine();
 	world_texture->Create(nullptr, App->window->win_width, App->window->win_height);
-	std::string path_temp = "E:\\CITM\\3ero VJ\\Game-Engine-Unreal\\StartingEngine\\Game\\BakerHouse.fbx";
-	std::string path_temp2 = "E:\\CITM\\3ero VJ\\Game-Engine-Unreal\\StartingEngine\\Game\\Baker_house.png";
+	std::string path_temp = "E:\\CITM\\3ero VJ\\Game-Engine-Unreal\\StartingEngine\\Game\\Data\\BakerHouse.fbx";
+	std::string path_temp2 = "E:\\CITM\\3ero VJ\\Game-Engine-Unreal\\StartingEngine\\Game\\Data\\Baker_house.png";
 	Material* temp = nullptr;
 
 	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);

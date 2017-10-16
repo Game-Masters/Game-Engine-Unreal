@@ -43,11 +43,6 @@
     <Filter Include="Sources\Modules\Devil">
       <UniqueIdentifier>{e96282f8-1dd5-4214-9630-da4195aacec4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Cereal">
-      <UniqueIdentifier>{211ec6cf-0bae-4fdc-ae6a-4052779666da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\Modules\Fluid_MMGR">
-      <UniqueIdentifier>{95c042e2-f49e-4e50-9994-324b6a7cc8af}</UniqueIdentifier>
     <Filter Include="Sources\Modules\GerarchyGameObjects">
       <UniqueIdentifier>{2fe8301b-53f1-4c1a-ad3e-cb38d8f9b46e}</UniqueIdentifier>
     </Filter>
@@ -494,29 +489,6 @@
     <ClInclude Include="Texture_Engine.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Imgui\Data.h">
-      <Filter>Sources\Modules\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="cereal-1.2.2\include\cereal\archives\adapters.hpp">
-      <Filter>Sources\Cereal</Filter>
-    </ClInclude>
-    <ClInclude Include="cereal-1.2.2\include\cereal\archives\binary.hpp">
-      <Filter>Sources\Cereal</Filter>
-    </ClInclude>
-    <ClInclude Include="cereal-1.2.2\include\cereal\archives\json.hpp">
-      <Filter>Sources\Cereal</Filter>
-    </ClInclude>
-    <ClInclude Include="cereal-1.2.2\include\cereal\archives\portable_binary.hpp">
-      <Filter>Sources\Cereal</Filter>
-    </ClInclude>
-    <ClInclude Include="cereal-1.2.2\include\cereal\archives\xml.hpp">
-      <Filter>Sources\Cereal</Filter>
-    </ClInclude>
-    <ClInclude Include="Fluid_Studios_Memory_Manager\mmgr.h">
-      <Filter>Sources\Modules\Fluid_MMGR</Filter>
-    </ClInclude>
-    <ClInclude Include="Fluid_Studios_Memory_Manager\nommgr.h">
-      <Filter>Sources\Modules\Fluid_MMGR</Filter>
     <ClInclude Include="GameObject.h">
       <Filter>Sources\Modules\GerarchyGameObjects</Filter>
     </ClInclude>
@@ -532,6 +504,9 @@
     <ClInclude Include="ModuleFileSystem_Engine.h" />
     <ClInclude Include="Material.h">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\Data.h">
+      <Filter>Sources\Modules\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -736,11 +711,6 @@
     <ClCompile Include="Texture_Engine.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Imgui\Data.cpp">
-      <Filter>Sources\Modules\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Fluid_Studios_Memory_Manager\mmgr.cpp">
-      <Filter>Sources\Modules\Fluid_MMGR</Filter>
     <ClCompile Include="GameObject.cpp">
       <Filter>Sources\Modules\GerarchyGameObjects</Filter>
     </ClCompile>
@@ -756,6 +726,9 @@
     <ClCompile Include="ModuleFileSystem_Engine.cpp" />
     <ClCompile Include="Material.cpp">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\Data.cpp">
+      <Filter>Sources\Modules\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

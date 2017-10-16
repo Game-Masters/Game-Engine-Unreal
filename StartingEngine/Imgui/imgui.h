@@ -102,17 +102,6 @@ struct ImVec2
 #endif
 };
 
-
-struct ImVec3
-{
-	float x, y, z;
-	ImVec3() { x = y = z = 0.0f; }
-	ImVec3(float _x, float _y, float _z, float _w) { x = _x; y = _y; z = _z; }
-#ifdef IM_VEC3_CLASS_EXTRA          // Define constructor and implicit cast operators in imconfig.h to convert back<>forth from your math types and ImVec4.
-	IM_VEC3_CLASS_EXTRA
-#endif
-};
-
 struct ImVec4
 {
     float x, y, z, w;

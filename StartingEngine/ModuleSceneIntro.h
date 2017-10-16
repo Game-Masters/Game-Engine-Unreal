@@ -59,9 +59,7 @@ public:
 
 public:
 
-
 	GameObject* root_gameobject= nullptr;
-
 
 	Texture_Engine *world_texture;
 

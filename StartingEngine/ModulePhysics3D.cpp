@@ -130,9 +130,8 @@ update_status ModulePhysics3D::Update(float dt)
 	if(debug == true)
 	{
 		//world->debugDrawWorld();
-		
+		debug_draw->drawGrid(50);
 	}
-	debug_draw->drawGrid(50);
 	
 	return UPDATE_CONTINUE;
 }

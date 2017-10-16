@@ -49,13 +49,13 @@ bool ModuleSceneIntro::Start()
 	house1->AddNewTransform(float3(10,15,1), float3(0, 0, 0), Quat(1,0,0,0));
 	temp = house1->AddNewMaterial(path_temp2.c_str(),path_temp.c_str());
 	house1->AddNewMesh(path_temp.c_str(), temp);
-	root_gameobject->Childrens_GameObject_Vect.push_back(house1);
+
 
 	house11=CreateNewGameObjects("House1.1", true, house1, Tag_Object_Enum::no_obj_tag, false);
 	house11->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));
 	temp = house11->AddNewMaterial(path_temp2.c_str(), path_temp.c_str());
 	house11->AddNewMesh(path_temp.c_str(), temp);
-	house1->Childrens_GameObject_Vect.push_back(house11);
+
 
 	/*root_gameobject->Childrens_GameObject_Vect.push_back(CreateNewGameObjects("House2", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false));
 	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));
@@ -71,6 +71,9 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 	world_texture->Bind();
 	
 	
+	
+
+
 
 
 	return UPDATE_CONTINUE;
@@ -160,7 +163,8 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 	std::string name_f = name;
 
 	GameObject* n_gameobject = new GameObject(name_f, parent, active, tag_temp, static_s);
-
+	if(parent!=nullptr)
+	parent->Childrens_GameObject_Vect.push_back(n_gameobject);
 	return n_gameobject;
 }
 

@@ -7,6 +7,9 @@ class ModuleFileSystem_Engine :
 {
 public:
 	
+	bool Start();
+	bool CleanUp();
+	void CreateDir(const char* dir);
 
 	ModuleFileSystem_Engine();
 	~ModuleFileSystem_Engine();

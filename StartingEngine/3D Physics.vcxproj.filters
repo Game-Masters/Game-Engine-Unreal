@@ -507,7 +507,6 @@
     <ClInclude Include="Mesh.h">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFileSystem_Engine.h" />
     <ClInclude Include="Material.h">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClInclude>
@@ -534,6 +533,9 @@
     </ClInclude>
     <ClInclude Include="Fluid_Studios_Memory_Manager\nommgr.h">
       <Filter>Sources\Modules\Fluid_MMGR</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFileSystem_Engine.h">
+      <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -750,7 +752,6 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFileSystem_Engine.cpp" />
     <ClCompile Include="Material.cpp">
       <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
     </ClCompile>
@@ -759,6 +760,9 @@
     </ClCompile>
     <ClCompile Include="Fluid_Studios_Memory_Manager\mmgr.cpp">
       <Filter>Sources\Modules\Fluid_MMGR</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFileSystem_Engine.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

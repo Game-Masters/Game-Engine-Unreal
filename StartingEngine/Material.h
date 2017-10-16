@@ -9,6 +9,7 @@ struct material_base_geometry {
 	uint id_texture = 0;
 	uint id_image_devil = 0;
 	uint num_vertices = 0;
+	uint* texture_w_h=nullptr;
 	float* textures_coord = nullptr;
 };
 

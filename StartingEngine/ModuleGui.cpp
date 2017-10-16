@@ -11,7 +11,7 @@
 #include "Fluid_Studios_Memory_Manager\mmgr.h"
 #include "Fluid_Studios_Memory_Manager\nommgr.h"
 #include "ModuleCamera3D.h"
-
+#include"ModuleInput.h"
 
 #include"GameObject.h";
 #include"Transform.h"
@@ -129,8 +129,10 @@ bool ModuleGui::Start()
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 18);
-
-	
+	str_geom_user = new char(100);
+	str_geom_user = "";
+	str_text_user = new char(100);
+	str_text_user = "";
 	SliderTest_Int_value = new int();
 	return true;
 }
@@ -176,8 +178,7 @@ update_status ModuleGui::Update(float dt)
 
 		App->Gui_Engine_Modules(dt);
 		if (ImGui::BeginDock("Information", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-			for (std::list<Module*>::reverse_iterator item = App->list_modules.rbegin(); item != App->list_modules.crend(); ++item) {
-
+			for (std::list<Module*>::iterator item = App->list_modules.begin(); item != App->list_modules.end(); ++item) {
 				(*item)->Gui_Engine_Modules(dt);
 			}
 
@@ -202,31 +203,7 @@ update_status ModuleGui::Update(float dt)
 		}
 		ImGui::EndDock();
 		//To print information about the geometry in the scene
-		if (ImGui::BeginDock("Geometry Scene", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-			/*for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
-				for (int j = 0; j < App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect.size(); j++) {
-					Comp_temp = App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect[j];
-					switch (Comp_temp->GetComponentType())
-					{
-					case Component_Type_Enum::component_transform_type:
-						t_temp = (Transform*)Comp_temp;
-						ImGui::Text("Pos x: %f", t_temp->GetPosition().x);
-						ImGui::Text("Pos y: %f", t_temp->GetPosition().y);
-						ImGui::Text("Pos z: %f", t_temp->GetPosition().z);
-
-						break;
-					case Component_Type_Enum::component_mesh_type:
-						m_temp = (Mesh*)Comp_temp;
-						ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			*/
-		}
-		ImGui::EndDock();
+		
 
 		if (ImGui::BeginDock("World", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 
@@ -466,6 +443,13 @@ update_status ModuleGui::Update(float dt)
 		}
 		ImGui::SameLine();
 		ImGui::Text("Controls info");
+		ImGui::SameLine();
+		if (ImGui::BeginMenu("GameObjects Options"))
+		{
+			if (ImGui::MenuItem("Create a new Gameobject")) { create_empty_gameobject = !create_empty_gameobject; }
+			ImGui::EndMenu();
+		}
+		
 		ImGui::EndMainMenuBar();
 
 	}
@@ -563,6 +547,14 @@ update_status ModuleGui::Update(float dt)
 
 		ImGui::End();
 	}
+
+	if (App->gui->create_empty_gameobject) {
+		ImGui::Begin("Create New GameObject", &App->gui->create_empty_gameobject);
+		CreateAnewGameObject();
+
+		ImGui::End();
+	}
+
 	App->scene_intro->world_texture->Unbind();
 	ImGui::Render();
 
@@ -635,7 +627,9 @@ void ModuleGui::IterateChilds(GameObject * item)
 	Mesh* m_temp = nullptr;
 	Material* mat_temp= nullptr;
 	Component* Comp_temp = nullptr;
-	
+	math::Quat q_temp;
+	float3 eul_ang;
+	std::vector<material_base_geometry*> temp_v;
 			if (ImGui::TreeNode(item->name.c_str())) {
 				
 				for (int j = 0; j < item->Component_Vect.size(); j++) {
@@ -644,9 +638,22 @@ void ModuleGui::IterateChilds(GameObject * item)
 					{
 					case Component_Type_Enum::component_transform_type:
 						t_temp = (Transform*)Comp_temp;
+						ImGui::Text("Position");
 						ImGui::Text("Pos x: %f", t_temp->GetPosition().x);
 						ImGui::Text("Pos y: %f", t_temp->GetPosition().y);
 						ImGui::Text("Pos z: %f", t_temp->GetPosition().z);
+
+						ImGui::Text("Scale");
+						ImGui::Text("Scale x: %f", t_temp->GetScale().x);
+						ImGui::Text("Scale y: %f", t_temp->GetScale().y);
+						ImGui::Text("Scale z: %f", t_temp->GetScale().z);
+
+						q_temp = t_temp->GetRotation();
+						eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
+						ImGui::Text("Rotation");
+						ImGui::Text("Rotation.x %f", eul_ang.x);
+						ImGui::Text("Rotation.y %f", eul_ang.y);
+						ImGui::Text("Rotation.z %f", eul_ang.z);
 
 						break;
 					case Component_Type_Enum::component_mesh_type:
@@ -656,7 +663,12 @@ void ModuleGui::IterateChilds(GameObject * item)
 
 					case Component_Type_Enum::component_material_type:
 						mat_temp = (Material*)Comp_temp;
+						temp_v = mat_temp->GetMaterialVec();
 						ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+						ImGui::Text("Texture width: %i", temp_v[j]->texture_w_h[0]);
+						ImGui::Text("Texture height: %i", temp_v[j]->texture_w_h[1]);
+						
+						ImGui::Image((void*)temp_v[j]->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 						break;
 					default:
 						break;
@@ -673,5 +685,85 @@ void ModuleGui::IterateChilds(GameObject * item)
 
 }
 
+
+void ModuleGui::CreateAnewGameObject()
+{
+	
+	ImGui::InputText("Name:", str_g, 64);
+	if (ImGui::CollapsingHeader("Transform"))
+	{
+		ImGui::InputText("Pos x:", str_x, 64, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::InputText("Pos y:", str_y, 64, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::InputText("Pos z:", str_z, 64, ImGuiInputTextFlags_CharsDecimal);
+
+		ImGui::InputText("Scale x:", str_sc_x, 64, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::InputText("Scale y:", str_sc_y, 64, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::InputText("Scale z:", str_sc_z, 64, ImGuiInputTextFlags_CharsDecimal);
+
+		ImGui::InputText("Rotation x:", str_rot_x, 64, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::InputText("Rotation y:", str_rot_y, 64, ImGuiInputTextFlags_CharsDecimal);
+		ImGui::InputText("Rotation z:", str_rot_z, 64, ImGuiInputTextFlags_CharsDecimal);
+	}
+
+	if (App->input->flie_dropped) {
+		full_path = App->input->dropped_filedir_newGO;
+		std::size_t pos_to_find = full_path.rfind(".");
+		Imp_Path = full_path.substr(pos_to_find, full_path.size());
+		App->input->flie_dropped = false;
+	}
+	
+
+	if (ImGui::CollapsingHeader("Mesh"))
+	{
+		if (Imp_Path == ".FBX") {
+			str_geom_user = App->input->dropped_filedir_newGO;
+		}
+			ImGui::InputText("Mesh Path:", str_geom_user, 100, ImGuiInputTextFlags_CharsDecimal);
+		
+	}
+	if (ImGui::CollapsingHeader("Material"))
+	{
+		if (Imp_Path == ".png") {
+			str_text_user = App->input->dropped_filedir_newGO;
+		}
+			ImGui::InputText("Texture Path:", str_text_user, 100, ImGuiInputTextFlags_CharsDecimal);
+	}
+	if (ImGui::Button("Create GameObject")) {
+		GameObject* temp = App->scene_intro->CreateNewGameObjects(str_g, true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
+		if ((str_x != "\0" && str_y != "\0" && str_z != "\0") 
+			|| (str_sc_x != "\0" && str_sc_y != "\0" && str_sc_z != "\0")
+			|| (str_rot_x != "\0" && str_rot_y != "\0" && str_rot_z != "\0")) {
+			Quat q_temp = Quat::FromEulerXYZ(std::atof(str_rot_x), std::atof(str_rot_y), std::atof(str_rot_z));
+			temp->AddNewTransform(float3(std::atof(str_x), std::atof(str_y), std::atof(str_z)), float3(std::atof(str_sc_x), std::atof(str_sc_y), std::atof(str_sc_z)), q_temp);
+		}
+		if (str_text_user != "\0" && str_geom_user != "\0") {
+			Material* temp_mat=	temp->AddNewMaterial(str_text_user, str_geom_user);
+			temp->AddNewMesh(str_geom_user, temp_mat);
+		}
+		ResetCreateGO();
+	}
+	if (ImGui::Button("Reset")) {
+		ResetCreateGO();
+	}
+
+}
+
+void ModuleGui::ResetCreateGO()
+{
+	str_g[64] = { 0 };
+	str_x[64] = { 0 };
+	str_y[64] = { 0 };
+	str_z[64] = { 0 };
+	str_sc_x[64] = { 0 };
+	str_sc_y[64] = { 0 };
+	str_sc_z[64] = { 0 };
+	str_rot_x[64] = { 0 };
+	str_rot_y[64] = { 0 };
+	str_rot_z[64] = { 0 };
+	str_geom_user = "";
+	str_text_user = "";
+	Imp_Path = "";
+	full_path = "";
+}
 
 

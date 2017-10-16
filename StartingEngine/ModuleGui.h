@@ -59,6 +59,32 @@ public:
 	bool show_editor = true;
 
 	void IterateChilds(GameObject* item);
+	bool create_empty_gameobject = false;
+	void CreateAnewGameObject();
+	//--------testing things
+
+	void ResetCreateGO();
+
+	char str_g[64] = { 0 };
+	char str_x[64] = { 0 };
+	char str_y[64] = { 0 };
+	char str_z[64] = { 0 };
+	char str_sc_x[64] = { 0 };
+	char str_sc_y[64] = { 0 };
+	char str_sc_z[64] = { 0 };
+	char str_rot_x[64] = { 0 };
+	char str_rot_y[64] = { 0 };
+	char str_rot_z[64] = { 0 };
+	char* str_geom_user;
+	char* str_text_user;
+	std::string name_gameobject = "";
+	float3 pos_gameobject = { 0,0,0 };
+	float3 scale_gameobject = { 0,0,0 };
+	Quat rotation_gameobject = { 1,0,0,0 };
+	std::string Imp_Path;
+	std::string full_path;
+
+
 
 
 };

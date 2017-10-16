@@ -111,10 +111,20 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case (SDL_DROPFILE): 
 				// In case if dropped file
-				dropped_filedir = e.drop.file;
+				
+				if (App->gui->create_empty_gameobject) {
+					dropped_filedir_newGO = "";
+					dropped_filedir_newGO= e.drop.file;
+					std::string temp_str = dropped_filedir_newGO;
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", temp_str.c_str(), App->window->window);
+				}
+				else {
+					dropped_filedir = e.drop.file;
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
+				}
 				flie_dropped = true;
 				// Shows directory of dropped file
-				SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
+				
 				break;
 
 			case SDL_WINDOWEVENT:

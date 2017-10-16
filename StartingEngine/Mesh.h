@@ -63,7 +63,7 @@ private:
 	std::vector<geometry_base_creating*> mesh_v;
 public:
 	void Update();
-	Mesh(GameObject* parent, const char* str);
+	Mesh(GameObject* parent, const char* str, Material* m_text=nullptr);
 	~Mesh();
 	PrimitiveTypes_Mesh    GetType()const;
 	const char* GetGeometryPath();

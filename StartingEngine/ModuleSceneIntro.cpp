@@ -44,9 +44,9 @@ bool ModuleSceneIntro::Start()
 	root_gameobject->Childrens_GameObject_Vect.push_back(CreateNewGameObjects("geometry1", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false));
 	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(10,15,1), float3(0, 0, 0), Quat(1,0,0,0));
 	std::string path_temp = "E:\\CITM\\3ero VJ\\Game-Engine-Unreal\\StartingEngine\\Game\\BakerHouse.fbx";
-	root_gameobject->Childrens_GameObject_Vect[0]->AddNewMesh(path_temp.c_str());
-
-
+	std::string path_temp2 = "E:\\CITM\\3ero VJ\\Game-Engine-Unreal\\StartingEngine\\Game\\Baker_house.png";
+	Material* temp = root_gameobject->Childrens_GameObject_Vect[0]->AddNewMaterial(path_temp2.c_str(),path_temp.c_str());
+	root_gameobject->Childrens_GameObject_Vect[0]->AddNewMesh(path_temp.c_str(), temp);
 	return ret;
 }
 

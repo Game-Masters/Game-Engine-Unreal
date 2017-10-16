@@ -35,19 +35,18 @@ Transform * GameObject::AddNewTransform(float3 position, float3 scale, Quat rota
 	return n_transform;
 }
 
-Mesh * GameObject::AddNewMesh(const char * Path)
+Mesh * GameObject::AddNewMesh(const char * Path, Material* t_mat)
 {
-	Mesh* n_mesh = new Mesh(this, Path);
+	Mesh* n_mesh = new Mesh(this, Path, t_mat);
 	this->Component_Vect.push_back(n_mesh);
 	return n_mesh;
 }
 
 Material * GameObject::AddNewMaterial(const char * Path_texture, const char * Path_fbx)
 {
-
-
-
-	return nullptr;
+	Material* n_mesh = new Material(Path_texture,Path_fbx,this);
+	this->Component_Vect.push_back(n_mesh);
+	return n_mesh;
 }
 
 

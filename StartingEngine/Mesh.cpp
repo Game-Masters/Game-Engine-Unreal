@@ -1,10 +1,11 @@
 #include "Mesh.h"
 #include"GameObject.h"
 
-Mesh::Mesh(GameObject* parent, const char* str): Component(Component_Type_Enum::component_mesh_type,
+Mesh::Mesh(GameObject* parent, const char* str, Material* m_text): Component(Component_Type_Enum::component_mesh_type,
 	parent,true)
 {
 	path_fbx = str;
+	texture_mesh = m_text;
 	mesh_v = App->assimp->ImportGeometry(str);
 
 
@@ -31,7 +32,22 @@ void Mesh::Update()
 {
 	for (int i = 0; i < mesh_v.size(); i++) {
 		if (mesh_v[i]->num_indices > 0 && mesh_v[i]->num_vertices > 0) {
-			
+			std::vector<material_base_geometry*> temp_text_vec;
+			temp_text_vec = texture_mesh->GetMaterialVec();
+
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glBindTexture(GL_TEXTURE_2D, (temp_text_vec[i]->id_image_devil));
+
+
+			if (temp_text_vec[i]->textures_coord != nullptr) {
+
+				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, temp_text_vec[i]->id_texture);
+				glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+			}
+
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, mesh_v[i]->id_vertices);
 			glVertexPointer(3, GL_FLOAT, 0, NULL);

@@ -23,11 +23,7 @@ Material::Material(const char * path_text, const char* fbx, GameObject * parent)
 
 void Material::Update()
 {
-	for (int i = 0; i < texture_v.size(); i++) {
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindTexture(GL_TEXTURE_2D, (texture_v[i]->id_image_devil));
-	}
+
 }
 
 Material::~Material()

@@ -76,18 +76,16 @@ bool Application::Init()
 	json_class = new Parson_JSON();
 	json_class->Init();
 	json_class->Load();
+	ImGui::LoadDocks();
 
 
-	std::list<Module*>::iterator item = list_modules.begin();
-	while (item != list_modules.end() && ret == true)
-	{
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
+		ret = (item)._Ptr->_Myval->Init();
+		(item)._Ptr->_Myval->module_timer = new Timer();
 
-		ret = (*item)->Init();
-		(*item)->module_timer = new Timer();
-		item++;
 	}
 
-	
+
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->Start();
@@ -107,14 +105,22 @@ void Application::PrepareUpdate()
 	frame_count++;
 	last_sec_frame_count++;
 
-	//IF WE HAVE PROBLEMS UNCOMMENT THIS
-	//dt = frame_time.ReadSec();
 	frame_time.Start();
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+}
+
+void Application::SetFramesCapped(int cap_temp)
+{
+	capped_ms = cap_temp;
+}
+
+int Application::GetFramesCapped()
+{
+	return capped_ms;
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -162,12 +168,11 @@ update_status Application::Update()
 	frames_on_last_update = prev_last_sec_frame_count;
 
 
-
-	if (capped_ms > 0 && (int)last_frame_ms < capped_ms)
+	if (capped_ms > 0)
 	{
-		j1PerfTimer t;
-		SDL_Delay(capped_ms - last_frame_ms);
-		LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
+		uint cap = 1000 / capped_ms;
+		if (last_frame_ms < cap)
+			SDL_Delay(cap - last_frame_ms);
 	}
 
 	FinishUpdate();
@@ -181,7 +186,7 @@ bool Application::CleanUp()
 		(*item)->CleanUp();
 	}
 	json_class->Save();
-	
+	ImGui::SaveDocks();
 	return ret;
 }
 
@@ -203,14 +208,24 @@ bool Application::Gui_Engine_Modules(float dt)
 			item++;
 		}
 	}
+
+
+	const char* name = "fps";
+
+	this->performance[this->performance_offset] = App->frames_on_last_update;
+	this->performance_offset = (this->performance_offset + 1) % IM_ARRAYSIZE(this->performance);
+
+	ImGui::PlotHistogram((char*)name, this->performance, IM_ARRAYSIZE(this->performance), 0, name, 0.0f, 150.f, ImVec2(0, 40));
+	int temp_cap = capped_ms;
+	if (ImGui::InputInt("Fps capped:", &temp_cap, -1, 100, ImGuiInputTextFlags_EnterReturnsTrue)) {
+		capped_ms = temp_cap;
+	}
 	ImGui::EndDock();
 	return true;
 }
 
 void Application::LoadModules()
 {
-
-
 
 }
 

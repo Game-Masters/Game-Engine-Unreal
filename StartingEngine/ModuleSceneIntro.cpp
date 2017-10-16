@@ -17,6 +17,8 @@ ModuleSceneIntro::~ModuleSceneIntro()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
+	bool ret = true;
+
 	GLfloat LightModelAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, LightModelAmbient);
 	lights[0].ref = GL_LIGHT0;
@@ -30,9 +32,6 @@ bool ModuleSceneIntro::Start()
 	lights[0].Active(true);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
-	//LOG("Loading Intro assets");
-	bool ret = true;
-	
 
 
 	world_texture = new Texture_Engine();
@@ -65,6 +64,7 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+
 	
 	
 
@@ -72,7 +72,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		root_gameobject->Childrens_GameObject_Vect[i]->Update();
 	}
 	
-	
+
 	glLineWidth(5.0f);
 	glBegin(GL_LINES);
 	glColor3f(0, 1, 0);

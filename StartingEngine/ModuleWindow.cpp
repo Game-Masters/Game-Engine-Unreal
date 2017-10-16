@@ -43,12 +43,6 @@ bool ModuleWindow::Init()
 
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-
-		//-----
-		/*SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);*/
 	
 
 		if(WIN_FULLSCREEN == true)
@@ -84,13 +78,6 @@ bool ModuleWindow::Init()
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
-
-
-	//Lock the cursor on screen 
-	//SDL_ShowCursor(SDL_DISABLE);
-	//SDL_SetWindowGrab(window, SDL_TRUE);
-
-
 	
 
 	return ret;
@@ -124,14 +111,15 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 			}
 			ImGui::Checkbox("Fullscreen", &fullscreen_bool);
 			if (fullscreen_bool) {
-				//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
+				SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
 				LOG("Fullscreen mode applicated");
 			}
 			ImGui::Checkbox("Fullscreen desktop ", &fullscreen_desktop_bool);
 			if (fullscreen_desktop_bool) {
-				//SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+				SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 				LOG("Fullscreen Desktop mode applicated");
 			}
+
 
 			int display_count = 0, display_index = 0, mode_index = 0;
 			SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
@@ -160,8 +148,11 @@ bool ModuleWindow::Gui_Engine_Modules(float dt)
 				SDL_SetWindowSize(window, win_width, win_height);
 			}
 
+			
+
 		}
 	
+		
 
 	return true;
 }
@@ -202,7 +193,12 @@ bool ModuleWindow::LoadConfig(JSON_Object * node)
 		strcpy(str_p, str_window.c_str());
 	}
 
-
+	if (json_object_get_value(node, "Frames_Capped") == NULL) {
+		json_object_set_value(node, "Frames_Capped", json_value_init_object());
+	}
+	else {
+		App->SetFramesCapped(json_object_get_number(node, "Frames_Capped"));
+	}
 
 	return true;
 }
@@ -213,6 +209,7 @@ bool ModuleWindow::SaveConfig(JSON_Object * node)
 	json_object_set_number(node, "width", win_width);
 	json_object_set_number(node, "height", win_height);
 	json_object_set_string(node, "window title",str_window.c_str());
+	json_object_set_number(node, "Frames_Capped", App->GetFramesCapped());
 
 	return true;
 }

@@ -114,8 +114,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				dropped_filedir = e.drop.file;
 				flie_dropped = true;
 				// Shows directory of dropped file
-				SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir, App->window->window);
-				SDL_free(dropped_filedir);    // Free dropped_filedir memory
+				SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
 				break;
 
 			case SDL_WINDOWEVENT:
@@ -145,16 +144,6 @@ bool ModuleInput::Gui_Engine_Modules(float dt)
 
 	if (ImGui::CollapsingHeader(name.c_str()))
 	{
-	https://msdn.microsoft.com/en-us/library/windows/desktop/ms645597.aspx
-		UINT nDevices;
-		PRAWINPUTDEVICELIST pRawInputDeviceList;
-		GetRawInputDeviceList(NULL, &nDevices, sizeof(RAWINPUTDEVICELIST));
-		pRawInputDeviceList =  new RAWINPUTDEVICELIST();
-		
-		//GetRawInputDeviceInfo(pRawInputDeviceList, RIDI_DEVICENAME, &nDevices, Trying to find what goes here);
-
-		
-	
 
 		
 

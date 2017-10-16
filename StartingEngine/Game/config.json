@@ -1,1 +1,3 @@
-{"gui":{},"renderer3D":{},"player":{},"physics":{},"scene intro":{},"audio":{},"input":{},"camera":{},"window":{"height":729,"width":1280,"window title":"paco"},"assimp":{},"filesystem":{}}
+
+{"gui":{},"renderer3D":{"Window_Color.r":9.9999999747524271e-07,"Window_Color.g":9.9998999303352321e-07,"Window_Color.b":9.9998999303352321e-07},"player":{},"physics":{},"scene intro":{},"audio":{"Volume":0},"input":{},"camera":{},"window":{"height":1017,"width":1920,"window title":"Z engine","fullscreen_mode":false,"fulscreen_desktop_mode":true,"Frames_Capped":-1},"assimp":{}}
+

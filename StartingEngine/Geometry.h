@@ -8,6 +8,10 @@
 #include "SDL\include\SDL_opengl.h"
 #include"MathGeoLib\MathGeoLib.h"
 #include"MathGeoLib\MathBuildConfig.h"
+#include "../StartingEngine/Assimp/include/assimp/cimport.h"
+#include "../StartingEngine/Assimp/include/assimp/scene.h"
+#include "../StartingEngine/Assimp/include/assimp/postprocess.h"
+#include "../StartingEngine/Assimp/include/assimp/cfileio.h"
 
 
 
@@ -26,11 +30,18 @@ struct geometry_base {
 	uint id_texture = 0;
 	uint id_image_devil = 0;
 	float* textures_coord = nullptr;
+
+	std::string texture_str;
+	AABB BoundBox;
 	float3 translation;
 	float3 scaling;
 	Quat rotation;
+	uint num_tris = 0;
+
+	uint* texture_w_h_geom= nullptr;
+
 	char* texture_str;
-	
+
 	~geometry_base() {
 		delete[] indices;
 		delete[] vertices;
@@ -49,14 +60,14 @@ enum PrimitiveTypes
 	Primitive_Mesh
 };
 
-class Geometry_Manager
+class Geometry_Mesh
 {
 
 public:
 
-	Geometry_Manager(PrimitiveTypes _type);
-	Geometry_Manager(const Geometry_Manager& _cpy);
-	virtual ~Geometry_Manager();
+	Geometry_Mesh(PrimitiveTypes _type);
+	Geometry_Mesh(const Geometry_Mesh& _cpy);
+	virtual ~Geometry_Mesh();
 
 public:
 

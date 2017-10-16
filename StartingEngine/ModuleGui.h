@@ -15,7 +15,8 @@ public:
 
 	// Destructor
 	virtual ~ModuleGui();
-
+	bool Init();
+	
 	bool Start();
 	update_status Update(float dt);
 	update_status PreUpdate(float dt);
@@ -33,13 +34,29 @@ public:
 	bool show_console = false;
 	bool n1 = false;
 	bool n2 = false;
+	bool n3 = false;
+	bool n4 = false;
 	std::vector<float> frames_on_last_update;
 	ImGuiStyle style_custom;
-
+	//ICONS
+		GLuint P;
+		GLuint WF;
+		GLuint N;
+		GLuint SM;
+		GLuint CC;
+		GLuint BFC;
+		GLuint CA;
+		GLuint Q;
+		GLuint Logo;
+		GLuint Icon;
+		GLuint Dani;
+		GLuint Nico;
+	//
 	Console console_imgui;
 	LCG rand_test;
 	int iop;
 	float iop2;
+	bool show_editor = true;
 };
 
 #endif // ModuleGui

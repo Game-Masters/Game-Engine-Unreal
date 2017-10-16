@@ -1,6 +1,6 @@
 #pragma once
 #include"Geometry.h"
-class Cube_prim :public Geometry_Mesh
+class Cube_prim :public Geometry_Manager
 {
 public:
 	Cube_prim();

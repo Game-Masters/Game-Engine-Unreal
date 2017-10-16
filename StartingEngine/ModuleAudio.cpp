@@ -75,7 +75,7 @@ bool ModuleAudio::Gui_Engine_Modules(float dt)
 	{
 
 		ImGui::SliderInt("Volume", &volume, 0, 100);
-		VolumeMusic(volume);
+
 
 	}
 	return false;
@@ -123,6 +123,7 @@ void ModuleAudio::VolumeMusic(int volume)
 {
 	if (music != NULL)
 	{
+		LOG("volume was    : %d\n", Mix_VolumeMusic(MIX_MAX_VOLUME / 2));
 		Mix_VolumeMusic(volume);
 		LOG("volume is now : %d\n", Mix_VolumeMusic(-1));
 	}
@@ -214,22 +215,4 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
-}
-
-bool ModuleAudio::LoadConfig(JSON_Object* node) {
-
-	if (json_object_get_value(node, "Volume") == NULL) {
-		json_object_set_value(node, "Volume", json_value_init_object());
-	}
-	else {
-		volume = json_object_get_number(node, "Volume");
-	}
-
-	return true;
-}
-
-bool ModuleAudio::SaveConfig(JSON_Object* node) {
-
-	json_object_set_number(node, "Volume", volume);
-	return true;
 }

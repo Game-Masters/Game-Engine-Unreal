@@ -76,15 +76,12 @@ public:
 	Uint32				frames_on_last_update = 0;
 	void LoadModules();
 	void SaveModules();
-	void SetFramesCapped(int cap_temp);
-	int GetFramesCapped();
+
 private:
-	float performance[90] = { 0 };
-	int performance_offset = 0;
+
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
-	
 };
 
 extern Application* App;

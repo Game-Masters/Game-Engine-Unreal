@@ -3,7 +3,7 @@
 #include "Globals.h"
 
 #define MAX_MOUSE_BUTTONS 5
-#include<string>
+
 enum KEY_STATE
 {
 	KEY_IDLE = 0,
@@ -58,7 +58,7 @@ public:
 	{
 		return mouse_y_motion;
 	}
-	std::string dropped_filedir;
+	char* dropped_filedir;
 	bool flie_dropped=false;
 private:
 	KEY_STATE* keyboard;

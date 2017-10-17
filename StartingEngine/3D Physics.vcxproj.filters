@@ -46,14 +46,14 @@
     <Filter Include="Sources\Modules\GerarchyGameObjects">
       <UniqueIdentifier>{2fe8301b-53f1-4c1a-ad3e-cb38d8f9b46e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Modules\GerarchyGameObjects\Components_types">
-      <UniqueIdentifier>{e04356a0-c398-46f3-b316-1aac0fcfe9ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Cereal">
       <UniqueIdentifier>{0f402ae2-91de-4061-885f-4e94155755fa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\Modules\Fluid_MMGR">
       <UniqueIdentifier>{e37015ca-5204-4a46-87d9-33b0b59ba756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules\Components_types">
+      <UniqueIdentifier>{e04356a0-c398-46f3-b316-1aac0fcfe9ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -502,13 +502,13 @@
       <Filter>Sources\Modules\GerarchyGameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+      <Filter>Sources\Modules\Components_types</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+      <Filter>Sources\Modules\Components_types</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+      <Filter>Sources\Modules\Components_types</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\Data.h">
       <Filter>Sources\Modules\imgui</Filter>
@@ -535,7 +535,7 @@
       <Filter>Sources\Modules\Fluid_MMGR</Filter>
     </ClInclude>
     <ClInclude Include="ModuleFileSystem_Engine.h">
-      <Filter>Sources</Filter>
+      <Filter>Sources\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -747,13 +747,13 @@
       <Filter>Sources\Modules\GerarchyGameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+      <Filter>Sources\Modules\Components_types</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+      <Filter>Sources\Modules\Components_types</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Sources\Modules\GerarchyGameObjects\Components_types</Filter>
+      <Filter>Sources\Modules\Components_types</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\Data.cpp">
       <Filter>Sources\Modules\imgui</Filter>
@@ -762,7 +762,7 @@
       <Filter>Sources\Modules\Fluid_MMGR</Filter>
     </ClCompile>
     <ClCompile Include="ModuleFileSystem_Engine.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,16 +1,23 @@
 #include "ModuleFileSystem_Engine.h"
-
-
-
+#include<filesystem>
 
 
 
 bool ModuleFileSystem_Engine::Start()
 {
-	return false;
+
+	std::experimental::filesystem::create_directory("Assets");
+
+
+	return true;
 }
 
 bool ModuleFileSystem_Engine::CleanUp()
+{
+	return false;
+}
+
+bool ModuleFileSystem_Engine::LoadFile(const char * path, const char ** buffer)
 {
 	return false;
 }

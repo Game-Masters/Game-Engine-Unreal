@@ -10,7 +10,8 @@ public:
 	bool Start();
 	bool CleanUp();
 	void CreateDir(const char* dir);
-	bool LoadFile(const char* path, const char** buffer);
+	bool LoadFile(const char* path, char** buffer);
+	bool SaveFile(const char* path, char** buffer, uint size);
 	ModuleFileSystem_Engine();
 	~ModuleFileSystem_Engine();
 };

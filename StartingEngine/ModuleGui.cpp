@@ -664,11 +664,15 @@ void ModuleGui::IterateChilds(GameObject * item)
 					case Component_Type_Enum::component_material_type:
 						mat_temp = (Material*)Comp_temp;
 						temp_v = mat_temp->GetMaterialVec();
-						ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-						ImGui::Text("Texture width: %i", temp_v[j]->texture_w_h[0]);
-						ImGui::Text("Texture height: %i", temp_v[j]->texture_w_h[1]);
+						for (int i = 0; i < temp_v.size(); i++) {
+							ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+							if (temp_v[i]->texture_w_h != nullptr) {
+								ImGui::Text("Texture width: %i", temp_v[i]->texture_w_h[0]);
+								ImGui::Text("Texture height: %i", temp_v[i]->texture_w_h[1]);
+							}
+							ImGui::Image((void*)temp_v[i]->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
+						}
 						
-						ImGui::Image((void*)temp_v[j]->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 						break;
 					default:
 						break;

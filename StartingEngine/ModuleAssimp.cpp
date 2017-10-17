@@ -168,6 +168,7 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
         //Generate bounding bax
 			m->BoundBox.SetNegativeInfinity();
 			m->BoundBox.Enclose((float3*)m->vertices, m->num_vertices);
+			App->camera->CameraCenter(&m->BoundBox);
 			LOG("A BoundBox has been added to the mesh", m->num_vertices);
 			// copy faces
 			if (scene->mMeshes[i]->HasFaces())

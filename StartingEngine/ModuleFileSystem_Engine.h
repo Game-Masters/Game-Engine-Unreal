@@ -12,11 +12,11 @@ public:
 	bool CleanUp();
 	Directory_* CreateDir(const char* name, Directory_* parent=nullptr);
 	bool IterateChild_Exsist(Directory_ *temp, const char* name);
-	bool LoadFile(const char* path, char** buffer);
-	bool SaveFile(const char* path, char** buffer, uint size);
+	int LoadFile(const char* path, char** buffer);
+	bool SaveFile(const char* path, char* buffer, uint size, Directory_* parent=nullptr);
 	ModuleFileSystem_Engine();
 	~ModuleFileSystem_Engine();
-	
+	void ChangeFormat_File(const char* path, const char* n_format, std::string *new_path, Directory_ *Parent);
 public:
 	Directory_ *RootDirect=nullptr;
 	Directory_ *Mesh = nullptr;
@@ -35,7 +35,7 @@ public:
 public:
 	Directory_* parent;
 	std::string name;
-	std::string buffer;
+	char** buffer=nullptr;
 
 };
 

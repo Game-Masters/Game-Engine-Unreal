@@ -148,6 +148,7 @@
     <ClInclude Include="JSON\parson.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialImporter.h" />
     <ClInclude Include="MathGeoLib\Algorithm\GJK.h" />
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\Algorithm\SAT.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="MathGeoLib\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\Time\Clock.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshImporter.h" />
     <ClInclude Include="ModuleAssimp.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleFileSystem_Engine.h" />
@@ -257,6 +259,7 @@
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialImporter.cpp" />
     <ClCompile Include="MathGeoLib\Algorithm\GJK.cpp" />
     <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\Geometry\AABB.cpp" />
@@ -294,6 +297,7 @@
     <ClCompile Include="MathGeoLib\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\Time\Clock.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshImporter.cpp" />
     <ClCompile Include="ModuleAssimp.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />

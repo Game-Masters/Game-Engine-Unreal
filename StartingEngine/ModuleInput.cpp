@@ -31,7 +31,7 @@ bool ModuleInput::Init()
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
-
+	imp_mat = new MaterialImporter();
 	return ret;
 }
 
@@ -120,6 +120,13 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 				else {
 					dropped_filedir = e.drop.file;
+					std::string full_path = dropped_filedir;
+					std::size_t pos_to_find_end = full_path.rfind(".");
+					std::string Imp_Path = full_path.substr(pos_to_find_end, full_path.size());
+					if (Imp_Path==".png") {
+						imp_mat->ImportMaterial(dropped_filedir.c_str());
+					}
+
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
 				}
 				flie_dropped = true;

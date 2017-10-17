@@ -46,3 +46,12 @@ enum update_status
 	  x = NULL;              \
 	    }                      \
     }
+
+#define RELEASE_ARRAY( x )\
+	{\
+       if( x != nullptr )\
+       {\
+           delete[] x;\
+	       x = nullptr;\
+		 }\
+	 }

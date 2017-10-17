@@ -537,8 +537,12 @@
     <ClInclude Include="ModuleFileSystem_Engine.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="MeshImporter.h" />
-    <ClInclude Include="MaterialImporter.h" />
+    <ClInclude Include="MeshImporter.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialImporter.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -766,8 +770,12 @@
     <ClCompile Include="ModuleFileSystem_Engine.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="MeshImporter.cpp" />
-    <ClCompile Include="MaterialImporter.cpp" />
+    <ClCompile Include="MaterialImporter.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshImporter.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\Math\float2.inl">

@@ -32,6 +32,7 @@ bool ModuleInput::Init()
 		ret = false;
 	}
 	imp_mat = new MaterialImporter();
+	imp_mesh = new MeshImporter();
 	return ret;
 }
 
@@ -125,6 +126,12 @@ update_status ModuleInput::PreUpdate(float dt)
 					std::string Imp_Path = full_path.substr(pos_to_find_end, full_path.size());
 					if (Imp_Path==".png") {
 						imp_mat->ImportMaterial(dropped_filedir.c_str());
+					}
+					if (Imp_Path == ".fbx") {
+						//Need to calculate first assimp
+						//App->assimp->ImportGeometry(dropped_filedir.c_str());
+						//Then import mesh
+						//imp_mesh->ImportMesh();
 					}
 
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);

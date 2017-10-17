@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include"MaterialImporter.h"
+#include"MeshImporter.h"
 #define MAX_MOUSE_BUTTONS 5
 #include<string>
 enum KEY_STATE
@@ -70,5 +71,6 @@ private:
 	int mouse_x_motion;
 	int mouse_y_motion;
 	MaterialImporter* imp_mat = nullptr;
+	MeshImporter* imp_mesh = nullptr;
 	//int mouse_z_motion;
 };

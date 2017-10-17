@@ -3,24 +3,53 @@
 #include <iostream>
 #include<fstream>
 
-
 bool ModuleFileSystem_Engine::Start()
 {
-
-	std::experimental::filesystem::create_directory("Assets");
-	//Test
-	//char *buffer = new char(9999999);
-	//LoadFile("..\\Game\\Assets\\Test1", &buffer);
-	//buffer =  "1341343242423";
-	//SaveFile("..\\Game\\Assets\\Test1", &buffer, 9999999);
-	//char *buffer2 = new char(9999999);
-	//LoadFile("..\\Game\\Assets\\Test1", &buffer2);
-
+	RootDirect = nullptr;
+	RootDirect = CreateDir("Assets");
+	Mesh = CreateDir("Mesh", RootDirect);
+	Material= CreateDir("Material", RootDirect);
 	return true;
 }
 
 bool ModuleFileSystem_Engine::CleanUp()
 {
+	return true;
+}
+
+Directory_* ModuleFileSystem_Engine::CreateDir(const char * name, Directory_ * parent)
+{
+
+	Directory_ *temp = new Directory_();
+	if (RootDirect == nullptr) {
+		temp->name = name;
+		temp->path = "..//Game//";temp->path += name;
+		temp->parent = nullptr;
+		CreateDirectory(temp->path.c_str(), false);
+	}
+	else {
+		if (IterateChild_Exsist(RootDirect, name)==false && parent!= nullptr) {
+			temp->name = name;
+			temp->parent = parent;
+			std::string path_create = parent->path + "//" + name;
+			CreateDirectory(path_create.c_str(),false);
+			parent->dir_cont_v.push_back(temp);
+		}
+
+	}
+	return temp;
+}
+
+bool  ModuleFileSystem_Engine::IterateChild_Exsist(Directory_ *temp, const char* name) {
+	//bool ret = false;
+	for (int i = 0; i < temp->dir_cont_v.size(); i++) {
+		if (temp->dir_cont_v[i]->name == name) {
+			return true;
+		}
+		bool ret = IterateChild_Exsist(temp->dir_cont_v[i], name);
+		if (ret == true)
+			return true;
+	}
 	return false;
 }
 

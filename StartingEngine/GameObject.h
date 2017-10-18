@@ -31,7 +31,7 @@ public:
 	void Update();
 	Component* AddNewComponent(Component_Type_Enum type);
 	Transform* AddNewTransform(float3 position, float3 scale, Quat rotations);
-	Mesh* AddNewMesh(const char* Path, Material* t_mat=nullptr);
+	Mesh* AddNewMesh(geometry_base_creating* vec_mesh, Material* t_mat=nullptr);
 	Material* AddNewMaterial(const char* Path_texture, const char* Path_fbx);
 	GameObject(const std::string name, GameObject* parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj);
 	~GameObject();

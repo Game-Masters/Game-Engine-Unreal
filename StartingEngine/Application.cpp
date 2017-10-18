@@ -72,7 +72,8 @@ bool Application::Init()
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
 	
-
+	imp_mat = new MaterialImporter();
+	imp_mesh = new MeshImporter();
 	json_class = new Parson_JSON();
 	json_class->Init();
 	json_class->Load();

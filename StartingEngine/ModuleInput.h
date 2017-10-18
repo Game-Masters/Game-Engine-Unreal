@@ -70,7 +70,6 @@ private:
 	int mouse_z;
 	int mouse_x_motion;
 	int mouse_y_motion;
-	MaterialImporter* imp_mat = nullptr;
-	MeshImporter* imp_mesh = nullptr;
+
 	//int mouse_z_motion;
 };

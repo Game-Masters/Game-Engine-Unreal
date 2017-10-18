@@ -629,7 +629,7 @@ void ModuleGui::IterateChilds(GameObject * item)
 	Component* Comp_temp = nullptr;
 	math::Quat q_temp;
 	float3 eul_ang;
-	std::vector<material_base_geometry*> temp_v;
+	material_base_geometry* temp_v;
 			if (ImGui::TreeNode(item->name.c_str())) {
 				
 				for (int j = 0; j < item->Component_Vect.size(); j++) {
@@ -664,14 +664,13 @@ void ModuleGui::IterateChilds(GameObject * item)
 					case Component_Type_Enum::component_material_type:
 						mat_temp = (Material*)Comp_temp;
 						temp_v = mat_temp->GetMaterialVec();
-						for (int i = 0; i < temp_v.size(); i++) {
+				
 							ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-							if (temp_v[i]->texture_w_h != nullptr) {
-								ImGui::Text("Texture width: %i", temp_v[i]->texture_w_h[0]);
-								ImGui::Text("Texture height: %i", temp_v[i]->texture_w_h[1]);
+							if (temp_v->texture_w_h != nullptr) {
+								ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
+								ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
 							}
-							ImGui::Image((void*)temp_v[i]->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
-						}
+							ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 						
 						break;
 					default:
@@ -742,7 +741,7 @@ void ModuleGui::CreateAnewGameObject()
 		}
 		if (str_text_user != "\0" && str_geom_user != "\0") {
 			Material* temp_mat=	temp->AddNewMaterial(str_text_user, str_geom_user);
-			temp->AddNewMesh(str_geom_user, temp_mat);
+//			temp->AddNewMesh(str_geom_user, temp_mat);
 		}
 		ResetCreateGO();
 	}

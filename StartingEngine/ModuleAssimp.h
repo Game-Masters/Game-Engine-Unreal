@@ -31,7 +31,7 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
 
-	std::vector<geometry_base_creating*> ImportGeometry(const char* fbx);
+	void ImportGeometry(const char* fbx);
 	std::vector<material_base_geometry*> ImportGeometry_Texture(const char* fbx);
 
 

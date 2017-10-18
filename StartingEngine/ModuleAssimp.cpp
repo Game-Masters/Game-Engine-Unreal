@@ -134,7 +134,7 @@ bool ModuleAssimp::CleanUp()
 }
 
 
-std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fbx)
+void ModuleAssimp::ImportGeometry(const char* fbx)
 {
 
 	//----------------ASSIMP
@@ -150,8 +150,12 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		
+		App->imp_mesh->ImportMesh(scene, fbx);
+		aiReleaseImport(scene);
+	}
+
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
-		for (int i = 0; i < scene->mNumMeshes; i++) {
+		/*for (int i = 0; i < scene->mNumMeshes; i++) {
 
 			LOG("Mesh imported %i----------------", i);
 			m = new geometry_base_creating();
@@ -233,54 +237,14 @@ std::vector<geometry_base_creating*> ModuleAssimp::ImportGeometry(const char* fb
 			m->scaling.Set(scaling.x, scaling.y, scaling.z);
 			m->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
 			
-			// texture coords (only one texture for now)
-
-			/*if (scene->mMeshes[i]->HasTextureCoords(0))
-			{
-        LOG("The new mesh has normals");
-				m->textures_coord = new float[m->num_vertices * 2];
-
-
-				for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
-
-					m->textures_coord[z * 2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
-					m->textures_coord[z * 2 + 1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
-
-
-				}
-
-				if (m->textures_coord == nullptr) {
-					LOG("The new mesh has failed trying to import the texture coords");
-				}
-				
-			}
-			else {
-				LOG("The mesh doesn't have texture");
-			}
-			
-
-			aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
-			uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
-			
-			aiString path;
-			uint p;
-			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-			std::string temp = path.C_Str();
-			path = Imp_Path + temp;
-			m->texture_str = path.C_Str();*/
-
-			
-
+		
 			mesh_v_temp.push_back(m);
 
 
 
-		}
+		}*/
 		
-		aiReleaseImport(scene);
-	}
 
-		return mesh_v_temp;
 	
 }
 

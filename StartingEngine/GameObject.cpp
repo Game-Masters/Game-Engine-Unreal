@@ -35,9 +35,9 @@ Transform * GameObject::AddNewTransform(float3 position, float3 scale, Quat rota
 	return n_transform;
 }
 
-Mesh * GameObject::AddNewMesh(const char * Path, Material* t_mat)
+Mesh * GameObject::AddNewMesh(geometry_base_creating* vec_mesh, Material* t_mat)
 {
-	Mesh* n_mesh = new Mesh(this, Path, t_mat);
+	Mesh* n_mesh = new Mesh(this, vec_mesh, t_mat);
 	this->Component_Vect.push_back(n_mesh);
 	return n_mesh;
 }

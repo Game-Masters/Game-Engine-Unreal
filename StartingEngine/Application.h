@@ -43,7 +43,8 @@ public:
 
 	//----
 	Parson_JSON* json_class;
-
+	MaterialImporter* imp_mat = nullptr;
+	MeshImporter* imp_mesh = nullptr;
 private:
 
 	Timer	ms_timer;

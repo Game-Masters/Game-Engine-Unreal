@@ -20,14 +20,14 @@ class Material :
 protected:
 	std::string path_texture;
 
-	std::vector<material_base_geometry*> texture_v;
+	material_base_geometry* texture_v;
 
 
 public:
 	Material(const char* path_text, const char* fbx, GameObject* parent);
 	void Update();
 	~Material();
-	std::vector<material_base_geometry*> GetMaterialVec();
+	material_base_geometry* GetMaterialVec();
 	const char* GetPathMaterial();
 };
 

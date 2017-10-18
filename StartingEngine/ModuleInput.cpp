@@ -31,8 +31,6 @@ bool ModuleInput::Init()
 		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
-	imp_mat = new MaterialImporter();
-	imp_mesh = new MeshImporter();
 	dropped_filedir_newGO = "";
 	return ret;
 }
@@ -126,16 +124,20 @@ update_status ModuleInput::PreUpdate(float dt)
 					std::size_t pos_to_find_end = full_path.rfind(".");
 					std::string Imp_Path = full_path.substr(pos_to_find_end, full_path.size());
 					if (Imp_Path==".png") {
-						imp_mat->ImportMaterial(dropped_filedir.c_str());
+						App->imp_mat->ImportMaterial(dropped_filedir.c_str());
 					}
-					if (Imp_Path == ".fbx") {
+					if (Imp_Path == ".fbx" || Imp_Path == ".FBX") {
 						//Need to calculate first assimp
-						//App->assimp->ImportGeometry(dropped_filedir.c_str());
+						App->assimp->ImportGeometry(dropped_filedir.c_str());
+						std::string new_format_mesh_load;
+						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &new_format_mesh_load, App->fs_e->Mesh);
+						App->imp_mesh->LoadMesh(new_format_mesh_load.c_str());
 						//Then import mesh
 						//imp_mesh->ImportMesh();
 					}
-
+					
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
+					dropped_filedir = "";
 				}
 				flie_dropped = true;
 				// Shows directory of dropped file

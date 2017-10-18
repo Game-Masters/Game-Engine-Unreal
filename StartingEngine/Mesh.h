@@ -31,6 +31,7 @@ struct geometry_base_creating {
 	std::string texture_str;
 	AABB BoundBox;
 	uint num_tris = 0;
+	std::string name;
 
 	geometry_base_creating() {
 
@@ -62,10 +63,10 @@ private:
 	Material* texture_mesh;
 	std::string path_fbx;
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
-	std::vector<geometry_base_creating*> mesh_v;
+	geometry_base_creating* mesh_v;
 public:
 	void Update();
-	Mesh(GameObject* parent, const char* str, Material* m_text=nullptr);
+	Mesh(GameObject* parent, geometry_base_creating* vec_mesh, Material* m_text=nullptr);
 	~Mesh();
 	PrimitiveTypes_Mesh    GetType()const;
 	const char* GetGeometryPath();

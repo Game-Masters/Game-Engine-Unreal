@@ -709,7 +709,7 @@ void ModuleGui::CreateAnewGameObject()
 		ImGui::InputText("Rotation z:", str_rot_z, 64, ImGuiInputTextFlags_CharsDecimal);
 	}
 
-	if (App->input->flie_dropped) {
+	if (App->input->flie_dropped && App->input->dropped_filedir_newGO != "") {
 		full_path = App->input->dropped_filedir_newGO;
 		std::size_t pos_to_find = full_path.rfind(".");
 		Imp_Path = full_path.substr(pos_to_find, full_path.size());

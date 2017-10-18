@@ -33,6 +33,7 @@ bool ModuleInput::Init()
 	}
 	imp_mat = new MaterialImporter();
 	imp_mesh = new MeshImporter();
+	dropped_filedir_newGO = "";
 	return ret;
 }
 

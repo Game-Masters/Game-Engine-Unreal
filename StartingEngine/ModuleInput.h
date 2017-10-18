@@ -60,7 +60,7 @@ public:
 		return mouse_y_motion;
 	}
 	std::string dropped_filedir;
-	char* dropped_filedir_newGO;
+	char* dropped_filedir_newGO="";
 	bool flie_dropped=false;
 private:
 	KEY_STATE* keyboard;

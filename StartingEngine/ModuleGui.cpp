@@ -130,6 +130,7 @@ bool ModuleGui::Start()
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 18);
+	inspection_node = nullptr;
 	str_geom_user = new char[100];
 	str_geom_user = "";
 	str_text_user = new char[100];
@@ -636,7 +637,9 @@ void ModuleGui::IterateChilds(GameObject * item)
 	float3 eul_ang;
 	material_base_geometry* temp_v;
 			if (ImGui::TreeNode(item->name.c_str())) {
-				
+				if (ImGui::IsItemClicked()) {
+					inspection_node = item;
+				}
 				for (int j = 0; j < item->Component_Vect.size(); j++) {
 					Comp_temp = item->Component_Vect[j];
 					switch (Comp_temp->GetComponentType())

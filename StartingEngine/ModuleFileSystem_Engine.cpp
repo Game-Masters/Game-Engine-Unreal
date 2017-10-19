@@ -1,6 +1,7 @@
 #include "ModuleFileSystem_Engine.h"
 #include<filesystem>
 #include <iostream>
+#include <experimental/filesystem>
 #include<fstream>
 
 bool ModuleFileSystem_Engine::Start()
@@ -18,6 +19,13 @@ bool ModuleFileSystem_Engine::Start()
 	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine,false);
 
 
+	
+	for (std::experimental::filesystem::recursive_directory_iterator::value_type item : std::experimental::filesystem::recursive_directory_iterator(RootDirect_Engine->path)) {
+		if (std::experimental::filesystem::is_regular_file(item)) {
+			std::string str_path=item.path().string();
+		}
+	}
+
 
 	return true;
 }
@@ -28,7 +36,6 @@ bool ModuleFileSystem_Engine::CleanUp()
 	delete RootDirect_Engine;
 	delete Mesh_User;
 	delete Material_User;
-
 	delete Mesh_Engine;
 	delete Material_Engine;
 

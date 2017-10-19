@@ -83,7 +83,7 @@ public:
 	Quat rotation_gameobject = { 1,0,0,0 };
 	std::string Imp_Path;
 	std::string full_path;
-
+	GameObject* inspection_node = nullptr;
 
 
 

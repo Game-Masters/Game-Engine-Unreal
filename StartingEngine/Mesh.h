@@ -38,6 +38,7 @@ struct geometry_base_creating {
 	}
 
 	~geometry_base_creating() {
+		glDeleteBuffers(1, &id_vertices);
 		delete[] indices;
 		delete[] vertices;
 	}

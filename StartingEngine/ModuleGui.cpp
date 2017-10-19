@@ -129,9 +129,9 @@ bool ModuleGui::Start()
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 18);
-	str_geom_user = new char(100);
+	str_geom_user = new char[100];
 	str_geom_user = "";
-	str_text_user = new char(100);
+	str_text_user = new char[100];
 	str_text_user = "";
 	SliderTest_Int_value = new int();
 	return true;
@@ -614,7 +614,11 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 // Called before quitting
 bool ModuleGui::CleanUp()
 {
-	
+	ResetCreateGO();
+
+	/*delete[] str_geom_user;
+	delete[] str_text_user;*/
+
 	aiDetachAllLogStreams();
 
 	return true;

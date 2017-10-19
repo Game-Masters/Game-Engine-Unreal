@@ -94,7 +94,7 @@ void MeshImporter::ImportMesh(const aiScene* scene, const char* path)
 		geometry_base_creating* temp_m = mesh_v[i];
 		uint ranges[2] = { temp_m->num_indices, temp_m->num_vertices };
 		total_size += sizeof(ranges) + sizeof(uint)*temp_m->num_indices + sizeof(float)*temp_m->num_vertices*3 + sizeof(float)*temp_m->num_vertices* 2 +
-			sizeof(float)*temp_m->num_vertices *3 + sizeof(uint);
+			sizeof(float)*temp_m->num_vertices *3 + sizeof(uint) + sizeof(char)*temp_m->name.size();
 	}
 
 	char* buffer_total = new char[total_size];
@@ -130,14 +130,14 @@ void MeshImporter::ImportMesh(const aiScene* scene, const char* path)
 		size = sizeof(float)*temp_m->num_vertices * 3;
 		memcpy(cursor, temp_m->normals, size);
 
-		/*cursor += size;
+		cursor += size;
 		uint size_name = temp_m->name.size();
 		size = sizeof(uint);
 		memcpy(cursor, &size_name, size);
 
 		cursor += size;
 		size = sizeof(char)*temp_m->name.size();
-		memcpy(cursor, temp_m->name.c_str(), size);*/
+		memcpy(cursor, temp_m->name.c_str(), size);
 		
 	}
 	std::string path_n = path;
@@ -145,6 +145,7 @@ void MeshImporter::ImportMesh(const aiScene* scene, const char* path)
 	App->fs_e->ChangeFormat_File(path_n.c_str(), "ric", &path_new_format, App->fs_e->Mesh_Engine);
 	App->fs_e->SaveFile(path_new_format.data(), buffer_total, total_size);
 	path_new_format = "";
+
 }
 
 bool MeshImporter::LoadMesh(const char * path)
@@ -194,15 +195,16 @@ bool MeshImporter::LoadMesh(const char * path)
 			n_temp_mesh->normals = new float[n_temp_mesh->num_vertices * 3];
 			memcpy(n_temp_mesh->normals, cursor, size_mesh);
 
-			/*cursor += size_mesh;
+			cursor += size_mesh;
 			size_mesh = sizeof(uint);
 			uint* name_lenght = new uint();
 			memcpy(name_lenght, cursor, size_mesh);
 
 			cursor += size_mesh;
-			size_mesh = sizeof(char)*name_lenght[0];
-			char* name = new char[name_lenght[0]];
-			memcpy(name, cursor, size_mesh);*/
+			size_mesh = sizeof(char)*(*name_lenght);
+			char* name = new char[(*name_lenght)];
+			memcpy(name, cursor, size_mesh);
+			n_temp_mesh->name = name;
 		
 			GameObject* child_gameobj = App->scene_intro->CreateNewGameObjects(n_temp_mesh->name.c_str(), true, parent_go, Tag_Object_Enum::no_obj_tag, false);
 			child_gameobj->AddNewMesh(n_temp_mesh);
@@ -246,14 +248,18 @@ bool MeshImporter::LoadMesh(const char * path)
 		size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 3;
 		n_temp_mesh->normals = new float[n_temp_mesh->num_vertices * 3];
 		memcpy(n_temp_mesh->normals, cursor, size_mesh);
-		/*	cursor += size_mesh;
+
+
+		cursor += size_mesh;
 		size_mesh = sizeof(uint);
 		uint* name_lenght = new uint();
 		memcpy(name_lenght, cursor, size_mesh);
 
 		cursor += size_mesh;
-		char* name = new char[name_lenght[0]];
-		memcpy(name, cursor, size_mesh);*/
+		size_mesh = sizeof(char)*(*name_lenght);
+		char* name = new char[(*name_lenght)];
+		memcpy(name, cursor, size_mesh);
+		n_temp_mesh->name = name;
 
 		GameObject* parent_go = App->scene_intro->CreateNewGameObjects(n_temp_mesh->name.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
 		parent_go->AddNewMesh(n_temp_mesh);

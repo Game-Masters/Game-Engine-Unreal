@@ -57,4 +57,6 @@ GameObject::GameObject(const std::string name, GameObject * parent, const bool a
 
 GameObject::~GameObject()
 {
+
+	
 }

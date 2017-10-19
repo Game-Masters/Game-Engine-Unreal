@@ -24,6 +24,14 @@ bool ModuleFileSystem_Engine::Start()
 
 bool ModuleFileSystem_Engine::CleanUp()
 {
+	delete RootDirect_User;
+	delete RootDirect_Engine;
+	delete Mesh_User;
+	delete Material_User;
+
+	delete Mesh_Engine;
+	delete Material_Engine;
+
 	return true;
 }
 

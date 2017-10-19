@@ -60,7 +60,6 @@ public:
 public:
 
 	void IterateChildGameObjects(GameObject* item);
-
 	GameObject* root_gameobject= nullptr;
 
 

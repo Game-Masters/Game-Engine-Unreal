@@ -183,11 +183,19 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
+
+	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
+		delete (item)._Ptr->_Myval->module_timer;
+	}
+
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->CleanUp();
 	}
 	json_class->Save();
 	ImGui::SaveDocks();
+	delete imp_mat;
+	delete imp_mesh;
+	delete json_class;
 	return ret;
 }
 

@@ -154,6 +154,15 @@ bool ModuleSceneIntro::Gui_Engine_Modules(float dt)
 bool ModuleSceneIntro::CleanUp()
 {
 
+	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+		delete root_gameobject->Childrens_GameObject_Vect[i];
+		for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect.size(); i++) {
+			delete root_gameobject->Childrens_GameObject_Vect[i]->Component_Vect[i];
+		}
+	}
+	root_gameobject->Childrens_GameObject_Vect.clear();
+	root_gameobject->Component_Vect.clear();
+	delete world_texture;
 	return true;
 }
 
@@ -186,6 +195,8 @@ void ModuleSceneIntro::IterateChildGameObjects(GameObject* item)
 
 
 }
+
+
 
 
 

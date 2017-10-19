@@ -21,6 +21,12 @@ Parson_JSON::~Parson_JSON()
 {
 }
 
+bool Parson_JSON::CleanUp() {
+	free(root_value);
+	free(root_object);
+	return true;
+}
+
 bool Parson_JSON::Init()
 {
 	
@@ -68,6 +74,7 @@ bool Parson_JSON::Load()
 		node = json_object_get_object(root_object, (*item)->name.c_str());
 		(*item)->LoadConfig(node);
 	}
+	free(serialized_string);
 	return true;
 }
 
@@ -83,6 +90,7 @@ bool Parson_JSON::Save()
 	char* serialized_string = json_serialize_to_string_pretty(root_value);
 	json_serialize_to_file(root_value, file_name.c_str());
 
+	free(node);
 	return true;
 }
 

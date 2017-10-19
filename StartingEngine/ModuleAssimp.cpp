@@ -298,7 +298,7 @@ std::vector<material_base_geometry*> ModuleAssimp::ImportGeometry_Texture(const 
 
 uint* ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 {
-	uint* texture_w_h = nullptr;
+	uint texture_w_h [2];
 	//Texture loading success
 	bool textureLoaded = false;
 
@@ -326,7 +326,6 @@ uint* ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 		if (success == IL_TRUE)
 		{
 			textureLoaded = loadTextureFromPixels32((GLuint*)ilGetData(), (GLuint)ilGetInteger(IL_IMAGE_WIDTH), (GLuint)ilGetInteger(IL_IMAGE_HEIGHT), buff);
-			texture_w_h = new uint(1);
 			texture_w_h[0]= (uint)ilGetInteger(IL_IMAGE_WIDTH); texture_w_h[1] = (uint)ilGetInteger(IL_IMAGE_HEIGHT);
 			//Create texture from file pixels
 			textureLoaded = true;

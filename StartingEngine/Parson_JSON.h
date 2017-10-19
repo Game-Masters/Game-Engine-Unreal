@@ -12,7 +12,7 @@ public:
 	bool Init();
 	bool Load();
 	bool Save();
-
+	bool CleanUp();
 public:
 	JSON_Value *root_value = nullptr;
 	JSON_Object *root_object= nullptr;

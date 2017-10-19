@@ -159,64 +159,24 @@ bool MeshImporter::LoadMesh(const char * path)
 	uint size_mesh = sizeof(uint);
 	memcpy(num_meshes, cursor, size_mesh);
 
-	if (num_meshes[0] > 1) {
+	LoadMesh_variables(cursor, num_meshes[0], size_mesh);
 
+	RELEASE_ARRAY(buffer);
+	return false;
+}
+
+void MeshImporter::LoadMesh_variables(char * cursor, uint num_meshes, uint size_mesh)
+{
+	GameObject* parent_go = nullptr;
+	uint* ind = nullptr;
+	uint* name_lenght = nullptr;
+	if (num_meshes>1) {
 		GameObject* parent_go = App->scene_intro->CreateNewGameObjects("Mesh_Import", true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
-
-		for (int i = 0; i < num_meshes[0]; i++) {
-			geometry_base_creating* n_temp_mesh = new geometry_base_creating();
-
-			cursor += size_mesh;
-			uint ranges[2];
-			size_mesh = sizeof(ranges);
-			memcpy(ranges, cursor, size_mesh);
-			n_temp_mesh->num_indices = ranges[0];
-			n_temp_mesh->num_vertices = ranges[1];
-
-			cursor += size_mesh;
-			size_mesh = sizeof(uint)*n_temp_mesh->num_indices;
-			uint* ind = new uint[n_temp_mesh->num_indices];
-			memcpy(ind, cursor, size_mesh);
-			n_temp_mesh->indices = ind;
-
-			cursor += size_mesh;
-			size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 3;
-			n_temp_mesh->vertices = new float[n_temp_mesh->num_vertices*3];
-			memcpy(n_temp_mesh->vertices, cursor, size_mesh);
-
-			cursor += size_mesh;
-			size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 2;
-			n_temp_mesh->textures_coord = new float[n_temp_mesh->num_vertices * 2];
-			memcpy(n_temp_mesh->textures_coord, cursor, size_mesh);
-
-
-			cursor += size_mesh;
-			size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 3;
-			n_temp_mesh->normals = new float[n_temp_mesh->num_vertices * 3];
-			memcpy(n_temp_mesh->normals, cursor, size_mesh);
-
-			cursor += size_mesh;
-			size_mesh = sizeof(uint);
-			uint* name_lenght = new uint();
-			memcpy(name_lenght, cursor, size_mesh);
-
-			cursor += size_mesh;
-			size_mesh = sizeof(char)*(*name_lenght);
-			char* name = new char[(*name_lenght)];
-			memcpy(name, cursor, size_mesh);
-			n_temp_mesh->name = name;
-		
-			GameObject* child_gameobj = App->scene_intro->CreateNewGameObjects(n_temp_mesh->name.c_str(), true, parent_go, Tag_Object_Enum::no_obj_tag, false);
-			child_gameobj->AddNewMesh(n_temp_mesh);
-
-		}
-
-
-
-
 	}
-	else if(num_meshes[0] == 1){
-
+	else {
+		parent_go = App->scene_intro->root_gameobject;
+	}
+	for (int i = 0; i <num_meshes; i++) {
 		geometry_base_creating* n_temp_mesh = new geometry_base_creating();
 
 		cursor += size_mesh;
@@ -228,7 +188,7 @@ bool MeshImporter::LoadMesh(const char * path)
 
 		cursor += size_mesh;
 		size_mesh = sizeof(uint)*n_temp_mesh->num_indices;
-		uint* ind = new uint[n_temp_mesh->num_indices];
+		ind = new uint[n_temp_mesh->num_indices];
 		memcpy(ind, cursor, size_mesh);
 		n_temp_mesh->indices = ind;
 
@@ -239,7 +199,6 @@ bool MeshImporter::LoadMesh(const char * path)
 
 		cursor += size_mesh;
 		size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 2;
-		//In the second iteration this crashes
 		n_temp_mesh->textures_coord = new float[n_temp_mesh->num_vertices * 2];
 		memcpy(n_temp_mesh->textures_coord, cursor, size_mesh);
 
@@ -249,10 +208,9 @@ bool MeshImporter::LoadMesh(const char * path)
 		n_temp_mesh->normals = new float[n_temp_mesh->num_vertices * 3];
 		memcpy(n_temp_mesh->normals, cursor, size_mesh);
 
-
 		cursor += size_mesh;
 		size_mesh = sizeof(uint);
-		uint* name_lenght = new uint();
+		name_lenght = new uint();
 		memcpy(name_lenght, cursor, size_mesh);
 
 		cursor += size_mesh;
@@ -261,13 +219,14 @@ bool MeshImporter::LoadMesh(const char * path)
 		memcpy(name, cursor, size_mesh);
 		n_temp_mesh->name = name;
 
-		GameObject* parent_go = App->scene_intro->CreateNewGameObjects(n_temp_mesh->name.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
-		parent_go->AddNewMesh(n_temp_mesh);
+	
+		GameObject* child_gameobj = App->scene_intro->CreateNewGameObjects(n_temp_mesh->name.c_str(), true, parent_go, Tag_Object_Enum::no_obj_tag, false);
+		child_gameobj->AddNewMesh(n_temp_mesh);
 
 	}
 
-	RELEASE_ARRAY(buffer);
-	return false;
+	delete[] ind;
+	delete name_lenght;
 }
 
 MeshImporter::MeshImporter()

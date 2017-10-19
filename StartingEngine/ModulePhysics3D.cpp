@@ -35,6 +35,7 @@ ModulePhysics3D::~ModulePhysics3D()
 	delete broad_phase;
 	delete dispatcher;
 	delete collision_conf;
+	
 }
 
 // Render not available yet----------------------------------
@@ -65,6 +66,7 @@ bool ModulePhysics3D::Start()
 
 		btRigidBody* body = new btRigidBody(rbInfo);
 		world->addRigidBody(body);
+		delete myMotionState;
 	}
 
 	return true;

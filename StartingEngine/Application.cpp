@@ -192,9 +192,11 @@ bool Application::CleanUp()
 		(*item)->CleanUp();
 	}
 	json_class->Save();
+	json_class->CleanUp();
 	ImGui::SaveDocks();
 	delete imp_mat;
 	delete imp_mesh;
+
 	delete json_class;
 	return ret;
 }

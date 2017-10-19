@@ -106,6 +106,7 @@ bool ModuleGui::Start()
 	//IMGUI STYLE END
 
 	//load things
+
 	App->assimp->LoadImage_devil("Data/Icons/BFC.png",&BFC);
 	App->assimp->LoadImage_devil("Data/Icons/CC.png", &CC);
 	App->assimp->LoadImage_devil("Data/Icons/N.png", &N);

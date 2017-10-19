@@ -39,8 +39,16 @@ struct geometry_base_creating {
 
 	~geometry_base_creating() {
 		glDeleteBuffers(1, &id_vertices);
+		glDeleteBuffers(1, &id_indices);
+		glDeleteBuffers(1, &id_colors);
+		glDeleteBuffers(1, &id_texture);
+		glDeleteBuffers(1, &id_image_devil);
+
 		delete[] indices;
 		delete[] vertices;
+		delete[] colors;
+		delete[] textures_coord;
+		delete[] normals;
 	}
 };
 

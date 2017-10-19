@@ -20,11 +20,7 @@ bool ModuleFileSystem_Engine::Start()
 
 
 	
-	for (std::experimental::filesystem::recursive_directory_iterator::value_type item : std::experimental::filesystem::recursive_directory_iterator(RootDirect_Engine->path)) {
-		if (std::experimental::filesystem::is_regular_file(item)) {
-			std::string str_path=item.path().string();
-		}
-	}
+	
 
 
 	return true;
@@ -57,7 +53,7 @@ Directory_* ModuleFileSystem_Engine::CreateDir(const char * name, Directory_Type
 	Directory_ *temp = new Directory_();
 	if (Root_node_temp == nullptr) {
 		temp->name = name;
-		temp->path = "..//Game//";temp->path += name;
+		temp->path = "..\\Game\\";temp->path += name;
 		temp->parent = nullptr;
 		CreateDirectory(temp->path.c_str(), false);
 		if (visible == false) {
@@ -68,7 +64,7 @@ Directory_* ModuleFileSystem_Engine::CreateDir(const char * name, Directory_Type
 		if (IterateChild_Exsist(Root_node_temp, name)==false && parent!= nullptr) {
 			temp->name = name;
 			temp->parent = parent;
-			std::string path_create = parent->path + "//" + name;
+			std::string path_create = parent->path + "\\" + name;
 			temp->path = path_create;
 			CreateDirectory(path_create.c_str(),false);
 			if (visible == false) {
@@ -164,6 +160,30 @@ ModuleFileSystem_Engine::~ModuleFileSystem_Engine()
 {
 }
 
+bool ModuleFileSystem_Engine::SerchInDirectorySistem(const char * path, File_type type)
+{
+	std::string n_path;
+	size_t s_str = 0;
+	switch (type) {
+	case File_type::fbx_type:
+		ChangeFormat_File(path, "ric", &n_path, Mesh_Engine);
+			break;
+
+	case File_type::png_type:
+		ChangeFormat_File(path, "dds", &n_path, Material_Engine);
+		break;
+	}
+
+	for (std::experimental::filesystem::recursive_directory_iterator::value_type item : std::experimental::filesystem::recursive_directory_iterator(RootDirect_Engine->path)) {
+		std::string str_path = item.path().string().c_str();
+			if (n_path==str_path) {
+				return true;
+			}
+	}
+	n_path.clear();
+	return false;
+}
+
 void ModuleFileSystem_Engine::ChangeFormat_File(const char * path, const char * n_format, std::string *new_path, Directory_ *Parent)
 {
 	std::string full_path_complete = path;
@@ -174,7 +194,7 @@ void ModuleFileSystem_Engine::ChangeFormat_File(const char * path, const char * 
 	std::string Imp_Path = full_path_complete.substr(pos_to_find, diff);
 
 	std::string parent_path = Parent->path;
-	std::string final_path = parent_path + "//" + Imp_Path;
+	std::string final_path = parent_path + "\\" + Imp_Path;
 	std::string n_form_std = n_format;
 	final_path += "." + n_form_std;
 	*new_path = final_path.c_str();

@@ -86,15 +86,40 @@ void MeshImporter::ImportMesh(const aiScene* scene, const char* path)
 			}
 
 		}
+
+		aiVector3D translation;
+		aiVector3D scaling;
+		aiQuaternion rotation;
+
+		aiNode* nod = App->assimp->Calc_AllGeometry_Childs(scene->mRootNode, i);
+		aiMatrix4x4 temp_trans;
+		if (nod != nullptr) {
+			while (nod->mParent != nullptr) {
+				temp_trans *= nod->mTransformation;
+				nod = nod->mParent;
+			}
+			LOG("The new mesh is imported in the same position as in the original file");
+		}
+		else {
+			LOG("The new mesh has failed trying to import the transformation of the geometry");
+		}
+		temp_trans.Decompose(scaling, rotation, translation);
+		m->translation.Set(translation.x, translation.y, translation.z);
+		m->scaling.Set(scaling.x, scaling.y, scaling.z);
+		m->rotation.Set(rotation.x, rotation.y, rotation.z, rotation.w);
+
 		mesh_v.push_back(m);
 
 	}
 
+	
+
 	for (int i = 0; i < mesh_v.size(); i++) {
 		geometry_base_creating* temp_m = mesh_v[i];
 		uint ranges[2] = { temp_m->num_indices, temp_m->num_vertices };
-		total_size += sizeof(ranges) + sizeof(uint)*temp_m->num_indices + sizeof(float)*temp_m->num_vertices*3 + sizeof(float)*temp_m->num_vertices* 2 +
-			sizeof(float)*temp_m->num_vertices *3 + sizeof(uint) + sizeof(char)*temp_m->name.size();
+		total_size += sizeof(ranges) + sizeof(uint)*temp_m->num_indices + sizeof(float)*temp_m->num_vertices*3 
+			+ sizeof(float)*temp_m->num_vertices* 2 +sizeof(float)*temp_m->num_vertices *3 
+			+ sizeof(uint)+ sizeof(char)*temp_m->name.size()+ sizeof(float3) + sizeof(float3)+ sizeof(Quat);
 	}
 
 	char* buffer_total = new char[total_size];
@@ -138,6 +163,18 @@ void MeshImporter::ImportMesh(const aiScene* scene, const char* path)
 		cursor += size;
 		size = sizeof(char)*temp_m->name.size();
 		memcpy(cursor, temp_m->name.c_str(), size);
+
+		cursor += size;
+		size = sizeof(float3);
+		memcpy(cursor, &m->translation, size);
+
+		cursor += size;
+		size = sizeof(float3);
+		memcpy(cursor, &m->scaling, size);
+
+		cursor += size;
+		size = sizeof(Quat);
+		memcpy(cursor, &m->rotation, size);
 		
 	}
 	std::string path_n = path;
@@ -169,9 +206,9 @@ void MeshImporter::LoadMesh_variables(char * cursor, uint num_meshes, uint size_
 {
 	GameObject* parent_go = nullptr;
 	uint* ind = nullptr;
-	uint* name_lenght = nullptr;
+	uint name_lenght;
 	if (num_meshes>1) {
-		GameObject* parent_go = App->scene_intro->CreateNewGameObjects("Mesh_Import", true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
+		parent_go = App->scene_intro->CreateNewGameObjects("Mesh_Import", true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
 	}
 	else {
 		parent_go = App->scene_intro->root_gameobject;
@@ -210,23 +247,34 @@ void MeshImporter::LoadMesh_variables(char * cursor, uint num_meshes, uint size_
 
 		cursor += size_mesh;
 		size_mesh = sizeof(uint);
-		name_lenght = new uint();
-		memcpy(name_lenght, cursor, size_mesh);
+		//name_lenght = new uint();
+		memcpy(&name_lenght, cursor, size_mesh);
 
 		cursor += size_mesh;
-		size_mesh = sizeof(char)*(*name_lenght);
-		char* name = new char[(*name_lenght)];
+		size_mesh = sizeof(char)*(name_lenght);
+		char* name = new char[name_lenght];
 		memcpy(name, cursor, size_mesh);
 		n_temp_mesh->name = name;
+
+		cursor += size_mesh;
+		size_mesh = sizeof(float3);
+		memcpy(&n_temp_mesh->translation, cursor, size_mesh);
+
+		cursor += size_mesh;
+		size_mesh = sizeof(float3);
+		memcpy(&n_temp_mesh->scaling, cursor, size_mesh);
+
+		cursor += size_mesh;
+		size_mesh = sizeof(Quat);
+		memcpy(&n_temp_mesh->rotation, cursor, size_mesh);
 
 	
 		GameObject* child_gameobj = App->scene_intro->CreateNewGameObjects(n_temp_mesh->name.c_str(), true, parent_go, Tag_Object_Enum::no_obj_tag, false);
 		child_gameobj->AddNewMesh(n_temp_mesh);
-
+		child_gameobj->AddNewTransform(n_temp_mesh->translation, n_temp_mesh->scaling, n_temp_mesh->rotation);
 	}
 
 	delete[] ind;
-	delete name_lenght;
 }
 
 MeshImporter::MeshImporter()

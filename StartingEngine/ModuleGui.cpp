@@ -187,10 +187,70 @@ update_status ModuleGui::Update(float dt)
 		}
 		ImGui::EndDock();
 
-		GameObject* temp=nullptr;
 		Transform* t_temp = nullptr;
 		Mesh* m_temp = nullptr;
+		Material* mat_temp = nullptr;
 		Component* Comp_temp = nullptr;
+		math::Quat q_temp;
+		float3 eul_ang;
+		material_base_geometry* temp_v;
+
+		if (ImGui::BeginDock("Inspector", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+			if (inspection_node != nullptr) {
+
+				ImGui::Text("Name: %s", inspection_node->name);
+				for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
+					Comp_temp = inspection_node->Component_Vect[j];
+					switch (Comp_temp->GetComponentType())
+					{
+					case Component_Type_Enum::component_transform_type:
+						t_temp = (Transform*)Comp_temp;
+						ImGui::Text("Position");
+						ImGui::Text("Pos x: %f", t_temp->GetPosition().x);
+						ImGui::Text("Pos y: %f", t_temp->GetPosition().y);
+						ImGui::Text("Pos z: %f", t_temp->GetPosition().z);
+
+						ImGui::Text("Scale");
+						ImGui::Text("Scale x: %f", t_temp->GetScale().x);
+						ImGui::Text("Scale y: %f", t_temp->GetScale().y);
+						ImGui::Text("Scale z: %f", t_temp->GetScale().z);
+
+						q_temp = t_temp->GetRotation();
+						eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
+						ImGui::Text("Rotation");
+						ImGui::Text("Rotation.x %f", eul_ang.x);
+						ImGui::Text("Rotation.y %f", eul_ang.y);
+						ImGui::Text("Rotation.z %f", eul_ang.z);
+
+						break;
+					case Component_Type_Enum::component_mesh_type:
+						m_temp = (Mesh*)Comp_temp;
+						ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
+						break;
+
+					case Component_Type_Enum::component_material_type:
+						mat_temp = (Material*)Comp_temp;
+						temp_v = mat_temp->GetMaterialVec();
+
+						ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+						if (temp_v->texture_w_h != nullptr) {
+							ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
+							ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
+						}
+						ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
+
+						break;
+					default:
+						break;
+					}
+
+				}
+			}
+		}
+		ImGui::EndDock();
+
+		GameObject* temp=nullptr;
+	
 		if (ImGui::BeginDock("Scene", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 
 			if (ImGui::TreeNode(App->scene_intro->root_gameobject->name.c_str())) {
@@ -639,52 +699,6 @@ void ModuleGui::IterateChilds(GameObject * item)
 			if (ImGui::TreeNode(item->name.c_str())) {
 				if (ImGui::IsItemClicked()) {
 					inspection_node = item;
-				}
-				for (int j = 0; j < item->Component_Vect.size(); j++) {
-					Comp_temp = item->Component_Vect[j];
-					switch (Comp_temp->GetComponentType())
-					{
-					case Component_Type_Enum::component_transform_type:
-						t_temp = (Transform*)Comp_temp;
-						ImGui::Text("Position");
-						ImGui::Text("Pos x: %f", t_temp->GetPosition().x);
-						ImGui::Text("Pos y: %f", t_temp->GetPosition().y);
-						ImGui::Text("Pos z: %f", t_temp->GetPosition().z);
-
-						ImGui::Text("Scale");
-						ImGui::Text("Scale x: %f", t_temp->GetScale().x);
-						ImGui::Text("Scale y: %f", t_temp->GetScale().y);
-						ImGui::Text("Scale z: %f", t_temp->GetScale().z);
-
-						q_temp = t_temp->GetRotation();
-						eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
-						ImGui::Text("Rotation");
-						ImGui::Text("Rotation.x %f", eul_ang.x);
-						ImGui::Text("Rotation.y %f", eul_ang.y);
-						ImGui::Text("Rotation.z %f", eul_ang.z);
-
-						break;
-					case Component_Type_Enum::component_mesh_type:
-						m_temp = (Mesh*)Comp_temp;
-						ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
-						break;
-
-					case Component_Type_Enum::component_material_type:
-						mat_temp = (Material*)Comp_temp;
-						temp_v = mat_temp->GetMaterialVec();
-				
-							ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-							if (temp_v->texture_w_h != nullptr) {
-								ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
-								ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
-							}
-							ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
-						
-						break;
-					default:
-						break;
-					}
-
 				}
 				ImGui::TreePop();
 				for (int k = 0; k < item->Childrens_GameObject_Vect.size(); k++)

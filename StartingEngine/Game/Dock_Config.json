@@ -1,5 +1,5 @@
 {
-    "Docks_Count": "9",
+    "Docks_Count": "10",
     "Dock_0": {
         "label": "Application",
         "pos_X": "176",
@@ -23,13 +23,13 @@
         "size_X": "233",
         "size_Y": "871",
         "status": "0",
-        "active": "1",
+        "active": "0",
         "opened": "1",
         "location": "03",
         "child0": "-1",
         "child1": "-1",
         "prev_tab": "-1",
-        "next_tab": "-1",
+        "next_tab": "9",
         "parent": "7"
     },
     "Dock_2": {
@@ -141,6 +141,22 @@
         "child0": "2",
         "child1": "0",
         "prev_tab": "-1",
+        "next_tab": "-1",
+        "parent": "7"
+    },
+    "Dock_9": {
+        "label": "Inspector",
+        "pos_X": "1437",
+        "pos_Y": "101",
+        "size_X": "233",
+        "size_Y": "871",
+        "status": "0",
+        "active": "1",
+        "opened": "1",
+        "location": "03",
+        "child0": "-1",
+        "child1": "-1",
+        "prev_tab": "1",
         "next_tab": "-1",
         "parent": "7"
     }

@@ -4,6 +4,12 @@
 #include<string>
 class Directory_;
 
+enum File_type {
+	fbx_type,
+	png_type,
+	other_type
+};
+
 enum Directory_Type {
 	user_directory_type,
 	engine_directory_type
@@ -21,6 +27,7 @@ public:
 	bool SaveFile(const char* path, char* buffer, uint size, Directory_* parent=nullptr);
 	ModuleFileSystem_Engine();
 	~ModuleFileSystem_Engine();
+	bool SerchInDirectorySistem(const char* path, File_type type);
 	void ChangeFormat_File(const char* path, const char* n_format, std::string *new_path, Directory_ *Parent);
 public:
 	Directory_ *RootDirect_User=nullptr;

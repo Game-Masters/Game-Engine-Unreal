@@ -32,7 +32,7 @@ void MaterialImporter::ImportMaterial(const char * path)
 				data = new ILubyte[size]; // allocate data buffer
 				if (ilSaveL(IL_DDS, data, size) > 0) {// Save to buffer with the ilSaveIL function
 					std::string final_path;
-					App->fs_e->ChangeFormat_File(path, "dds", &final_path,App->fs_e->Material);
+					App->fs_e->ChangeFormat_File(path, "dds", &final_path,App->fs_e->Material_Engine);
 					App->fs_e->SaveFile(final_path.c_str(), (char*)data, size);
 				}
 				//ret = App->fs_e->SaveFile(output_file, data, size, LIBRARY_TEXTURES_FOLDER, "texture", "dds");

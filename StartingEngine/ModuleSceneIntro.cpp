@@ -88,6 +88,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
 		root_gameobject->Childrens_GameObject_Vect[i]->Update();
+		IterateChildGameObjects(root_gameobject->Childrens_GameObject_Vect[i]);
 	}
 	
 
@@ -165,6 +166,25 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 	if(parent!=nullptr)
 	parent->Childrens_GameObject_Vect.push_back(n_gameobject);
 	return n_gameobject;
+}
+
+void ModuleSceneIntro::IterateChildGameObjects(GameObject* item)
+{
+	
+	for (int i = 0; i < item->Childrens_GameObject_Vect.size(); i++) {
+
+		GameObject* child_temp = item->Childrens_GameObject_Vect[i];
+		child_temp->Update();		
+
+			for (int i = 0; i < child_temp->Childrens_GameObject_Vect.size(); i++) {
+				IterateChildGameObjects(child_temp->Childrens_GameObject_Vect[i]);
+			}
+
+
+	}
+
+
+
 }
 
 

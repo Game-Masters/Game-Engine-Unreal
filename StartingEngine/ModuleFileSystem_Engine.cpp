@@ -5,10 +5,20 @@
 
 bool ModuleFileSystem_Engine::Start()
 {
-	RootDirect = nullptr;
-	RootDirect = CreateDir("Assets");
-	Mesh = CreateDir("Mesh", RootDirect);
-	Material= CreateDir("Material", RootDirect);
+	RootDirect_User = nullptr;
+	RootDirect_User = CreateDir("Assets", Directory_Type::user_directory_type);
+	Mesh_User = CreateDir("Mesh", Directory_Type::user_directory_type, RootDirect_User);
+	Material_User = CreateDir("Material", Directory_Type::user_directory_type, RootDirect_User);
+
+
+
+	RootDirect_Engine = nullptr;
+	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr,false);
+	Mesh_Engine = CreateDir("Mesh", Directory_Type::engine_directory_type, RootDirect_Engine,false);
+	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine,false);
+
+
+
 	return true;
 }
 
@@ -17,27 +27,43 @@ bool ModuleFileSystem_Engine::CleanUp()
 	return true;
 }
 
-Directory_* ModuleFileSystem_Engine::CreateDir(const char * name, Directory_ * parent)
+Directory_* ModuleFileSystem_Engine::CreateDir(const char * name, Directory_Type type, Directory_ * parent, bool visible)
 {
 
+	Directory_ *Root_node_temp = nullptr;
+
+	if (type== Directory_Type::engine_directory_type) {
+		Root_node_temp = RootDirect_Engine;
+	}
+	else if(type == Directory_Type::user_directory_type) {
+		Root_node_temp = RootDirect_User;
+	}
+
 	Directory_ *temp = new Directory_();
-	if (RootDirect == nullptr) {
+	if (Root_node_temp == nullptr) {
 		temp->name = name;
 		temp->path = "..//Game//";temp->path += name;
 		temp->parent = nullptr;
 		CreateDirectory(temp->path.c_str(), false);
+		if (visible == false) {
+			SetFileAttributes(temp->path.c_str(), FILE_ATTRIBUTE_HIDDEN);
+		}
 	}
 	else {
-		if (IterateChild_Exsist(RootDirect, name)==false && parent!= nullptr) {
+		if (IterateChild_Exsist(Root_node_temp, name)==false && parent!= nullptr) {
 			temp->name = name;
 			temp->parent = parent;
 			std::string path_create = parent->path + "//" + name;
 			temp->path = path_create;
 			CreateDirectory(path_create.c_str(),false);
+			if (visible == false) {
+				SetFileAttributes(temp->path.c_str(), FILE_ATTRIBUTE_HIDDEN);
+			}
 			parent->dir_cont_v.push_back(temp);
 		}
 
 	}
+
 	return temp;
 }
 

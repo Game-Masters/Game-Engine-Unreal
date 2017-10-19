@@ -130,7 +130,7 @@ update_status ModuleInput::PreUpdate(float dt)
 						//Need to calculate first assimp
 						App->assimp->ImportGeometry(dropped_filedir.c_str());
 						std::string new_format_mesh_load;
-						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &new_format_mesh_load, App->fs_e->Mesh);
+						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &new_format_mesh_load, App->fs_e->Mesh_Engine);
 						App->imp_mesh->LoadMesh(new_format_mesh_load.c_str());
 						//Then import mesh
 						//imp_mesh->ImportMesh();

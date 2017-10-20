@@ -162,10 +162,6 @@ update_status ModuleGui::Update(float dt)
 
 
 
-
-
-
-
 	ImVec2 display_size = ImGui::GetIO().DisplaySize;
 	ImGui::SetNextWindowSize(display_size);
 	ImGui::SetNextWindowPos(ImVec2(0, 0));

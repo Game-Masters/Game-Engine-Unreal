@@ -127,12 +127,12 @@ update_status ModuleInput::PreUpdate(float dt)
 						App->imp_mat->ImportMaterial(dropped_filedir.c_str());
 					}
 					if (Imp_Path == ".fbx" || Imp_Path == ".FBX") {
-						if (App->fs_e->SerchInDirectorySistem(dropped_filedir.c_str(), File_type::fbx_type)==false) {
+						
 							App->assimp->ImportGeometry(dropped_filedir.c_str());
-						}
+	
 						std::string new_format_mesh_load;
-						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &new_format_mesh_load, App->fs_e->Mesh_Engine);
-						App->imp_mesh->LoadMesh(new_format_mesh_load.c_str());
+						//App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &new_format_mesh_load, App->fs_e->Mesh_Engine);
+						//App->imp_mesh->LoadMesh(new_format_mesh_load.c_str());
 					}
 					
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);

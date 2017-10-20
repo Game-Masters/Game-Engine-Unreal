@@ -142,15 +142,14 @@ void ModuleAssimp::ImportGeometry(const char* fbx)
 
 	std::string full_path;
 	full_path = fbx;
-	std::size_t pos_to_find = full_path.rfind("\\");
-	std::string Imp_Path = full_path.substr(0, pos_to_find + 1);
+
 
 	const aiScene* scene = aiImportFile(full_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		
-		App->imp_mesh->ImportMesh(scene, fbx);
+		App->imp_mesh->CalculateMeshAssimp_Values(scene, fbx);
 		aiReleaseImport(scene);
 	}
 

@@ -32,7 +32,7 @@ struct geometry_base_creating {
 	AABB BoundBox;
 	uint num_tris = 0;
 	std::string name;
-
+	uint Know_if_m_have[4]{ 0,0,0,0 };
 	geometry_base_creating() {
 
 	}

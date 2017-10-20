@@ -12,11 +12,11 @@ bool ModuleFileSystem_Engine::Start()
 	Material_User = CreateDir("Material", Directory_Type::user_directory_type, RootDirect_User);
 
 
-
+	
 	RootDirect_Engine = nullptr;
-	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr,false);
-	Mesh_Engine = CreateDir("Mesh", Directory_Type::engine_directory_type, RootDirect_Engine,false);
-	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine,false);
+	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr,true);
+	Mesh_Engine = CreateDir("Mesh", Directory_Type::engine_directory_type, RootDirect_Engine, true);
+	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine, true);
 
 
 	
@@ -56,9 +56,6 @@ Directory_* ModuleFileSystem_Engine::CreateDir(const char * name, Directory_Type
 		temp->path = "..\\Game\\";temp->path += name;
 		temp->parent = nullptr;
 		CreateDirectory(temp->path.c_str(), false);
-		if (visible == false) {
-			SetFileAttributes(temp->path.c_str(), FILE_ATTRIBUTE_HIDDEN);
-		}
 	}
 	else {
 		if (IterateChild_Exsist(Root_node_temp, name)==false && parent!= nullptr) {
@@ -67,12 +64,16 @@ Directory_* ModuleFileSystem_Engine::CreateDir(const char * name, Directory_Type
 			std::string path_create = parent->path + "\\" + name;
 			temp->path = path_create;
 			CreateDirectory(path_create.c_str(),false);
-			if (visible == false) {
-				SetFileAttributes(temp->path.c_str(), FILE_ATTRIBUTE_HIDDEN);
-			}
 			parent->dir_cont_v.push_back(temp);
 		}
 
+	}
+
+	if (visible == false) {
+		SetFileAttributes(temp->path.c_str(), FILE_ATTRIBUTE_HIDDEN);
+	}
+	else {
+		SetFileAttributes(temp->path.c_str(), FILE_ATTRIBUTE_READONLY);
 	}
 
 	return temp;

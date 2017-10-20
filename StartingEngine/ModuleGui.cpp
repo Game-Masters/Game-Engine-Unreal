@@ -130,6 +130,8 @@ bool ModuleGui::Start()
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 18);
+	
+	//px = 0;
 	inspection_node = nullptr;
 	str_geom_user = new char[100];
 	str_geom_user = "";
@@ -194,10 +196,12 @@ update_status ModuleGui::Update(float dt)
 		math::Quat q_temp;
 		float3 eul_ang;
 		material_base_geometry* temp_v;
-
+		math::float3 trans;
+		math::float3 scale;
+		Quat result_rot;
 		if (ImGui::BeginDock("Inspector", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 			if (inspection_node != nullptr) {
-
+				
 				ImGui::Text("Name: %s", inspection_node->name);
 				for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
 					Comp_temp = inspection_node->Component_Vect[j];
@@ -205,22 +209,40 @@ update_status ModuleGui::Update(float dt)
 					{
 					case Component_Type_Enum::component_transform_type:
 						t_temp = (Transform*)Comp_temp;
-						ImGui::Text("Position");
-						ImGui::Text("Pos x: %f", t_temp->GetPosition().x);
-						ImGui::Text("Pos y: %f", t_temp->GetPosition().y);
-						ImGui::Text("Pos z: %f", t_temp->GetPosition().z);
+						trans =t_temp->GetPosition();
+						ImGui::Text("                                Position");
+						ImGui::Text("Pos x:"); ImGui::SameLine();
+						ImGui::DragFloat("##6", &trans.x, 0.1f, -500.0f, 500.0f);
+						ImGui::Text("Pos y:"); ImGui::SameLine();
+						ImGui::DragFloat("##7", &trans.y, 0.1f, -500.0f, 500.0f);
+						ImGui::Text("Pos z:"); ImGui::SameLine();
+						ImGui::DragFloat("##8", &trans.z, 0.1f, -500.0f, 500.0f);
+						t_temp->SetPosition(trans);
 
-						ImGui::Text("Scale");
-						ImGui::Text("Scale x: %f", t_temp->GetScale().x);
-						ImGui::Text("Scale y: %f", t_temp->GetScale().y);
-						ImGui::Text("Scale z: %f", t_temp->GetScale().z);
+						scale = t_temp->GetScale();
+						ImGui::Text("                                Scale");
+						ImGui::Text("Scale x:"); ImGui::SameLine();
+						ImGui::DragFloat("##9", &scale.x, 0.1f, -500.0f, 500.0f);
+						ImGui::Text("Scale y:"); ImGui::SameLine();
+						ImGui::DragFloat("##10", &scale.y, 0.1f, -500.0f, 500.0f);
+						ImGui::Text("Scale z:"); ImGui::SameLine();
+						ImGui::DragFloat("##11", &scale.z, 0.1f, -500.0f, 500.0f);
+						t_temp->SetScale(scale);
+
 
 						q_temp = t_temp->GetRotation();
 						eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
-						ImGui::Text("Rotation");
-						ImGui::Text("Rotation.x %f", eul_ang.x);
-						ImGui::Text("Rotation.y %f", eul_ang.y);
-						ImGui::Text("Rotation.z %f", eul_ang.z);
+						ImGui::Text("                                Rotation");
+						ImGui::Text("Rotation x:"); ImGui::SameLine();
+						ImGui::DragFloat("##12", &eul_ang.x, 0.1f, -500.0f, 500.0f);
+						ImGui::Text("Rotation y:"); ImGui::SameLine();
+						ImGui::DragFloat("##13", &eul_ang.y, 0.1f, -500.0f, 500.0f);
+						ImGui::Text("Rotation z:"); ImGui::SameLine();
+						ImGui::DragFloat("##14", &eul_ang.z, 0.1f, -500.0f, 500.0f);
+						//Not really working
+						result_rot=q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
+						t_temp->SetRotation(result_rot);
+
 
 						break;
 					case Component_Type_Enum::component_mesh_type:

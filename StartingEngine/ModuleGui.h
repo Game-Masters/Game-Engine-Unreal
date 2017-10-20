@@ -86,7 +86,6 @@ public:
 	GameObject* inspection_node = nullptr;
 
 
-
 };
 
 #endif // ModuleGui

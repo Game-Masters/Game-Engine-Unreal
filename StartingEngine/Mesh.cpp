@@ -9,7 +9,7 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, Material* m_tex
 
 	mesh_v = vec_mesh;
 
-
+	if (mesh_v->vertices != nullptr && mesh_v->indices!=nullptr) {
 		glGenBuffers(1, (GLuint*)&(mesh_v->id_vertices));
 		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh_v->num_vertices * 3, &mesh_v->vertices[0], GL_STATIC_DRAW);
@@ -18,8 +18,8 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, Material* m_tex
 		glGenBuffers(1, (GLuint*)&(mesh_v->id_indices));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh_v->num_indices, &mesh_v->indices[0], GL_STATIC_DRAW);
-
 	}
+}
 
 
 Mesh::~Mesh()
@@ -65,13 +65,15 @@ void Mesh::Update()
 				}
 			}
 			
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
-			glVertexPointer(3, GL_FLOAT, 0, NULL);
+			if (mesh_v->vertices != nullptr && mesh_v->indices != nullptr) {
+				glEnableClientState(GL_VERTEX_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
+				glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
-			glDrawElements(GL_TRIANGLES, mesh_v->num_indices, GL_UNSIGNED_INT, NULL);
+				glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
+				glDrawElements(GL_TRIANGLES, mesh_v->num_indices, GL_UNSIGNED_INT, NULL);
+			}
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 			

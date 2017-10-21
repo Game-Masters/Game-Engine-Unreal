@@ -22,7 +22,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 
 
 	geometry_base_creating* m = nullptr;
-	std::vector<geometry_base_creating*> mesh_v;
+	//std::vector<geometry_base_creating*> mesh_v;
 	for (int i = 0; i < scene->mNumMeshes; i++) {
 
 		LOG("Mesh imported %i----------------", i);
@@ -54,7 +54,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 			m->num_tris = scene->mMeshes[i]->mNumFaces;
 			m->num_indices = scene->mMeshes[i]->mNumFaces *3;
 			LOG("The mesh has %d triangles", m->num_tris);
-			m->indices = new uint[m->num_indices]; // assume each face is a triangle
+			m->indices = new uint[scene->mMeshes[i]->mNumFaces * 3]; // assume each face is a triangle
 			LOG("The mesh has %d indices", m->num_indices);
 
 			for (uint k = 0; k < scene->mMeshes[i]->mNumFaces; ++k)
@@ -78,13 +78,13 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 		if (scene->mMeshes[i]->HasNormals()) {
 
 			LOG("The new mesh has normals");
-			m->normals = new float[m->num_vertices * 3];
+			m->normals = new float[scene->mMeshes[i]->mNumVertices * 3];
 			memcpy(m->normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->num_vertices * 3);
 			if (m->normals == nullptr) {
 				LOG("The new mesh has failed trying to import the normals");
 			}
 			else {
-				m->Know_if_m_have[2] = 1;
+				//m->Know_if_m_have[2] = 1;
 				LOG("The new mesh has succed trying to import the normals");
 			}
 		}
@@ -94,8 +94,8 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 
 		if (scene->mMeshes[i]->HasTextureCoords(0))
 		{
-			m->Know_if_m_have[3] = 1;
-			m->textures_coord = new float[m->num_vertices * 2];
+			//m->Know_if_m_have[3] = 1;
+			m->textures_coord = new float[scene->mMeshes[i]->mNumVertices * 2];
 
 			for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
 
@@ -109,7 +109,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 
 		ImportMesh(m, path);
 
-		mesh_v.push_back(m);
+	//	mesh_v.push_back(m);
 
 	}
 
@@ -125,7 +125,7 @@ void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
 		uint ranges[2] = { temp_m->num_indices, temp_m->num_vertices };
 		total_size += sizeof(ranges) + sizeof(uint) * 4;
 		if (temp_m->Know_if_m_have[0] == 1 && temp_m->Know_if_m_have[1] == 1)
-			total_size += sizeof(uint)*temp_m->num_indices * 3 + sizeof(float)*temp_m->num_vertices * 3;
+			total_size += sizeof(uint)*temp_m->num_indices + sizeof(float)*temp_m->num_vertices * 3;
 		if (temp_m->Know_if_m_have[3] == 1)
 			total_size += sizeof(float)*temp_m->num_vertices * 2;
 		if (temp_m->Know_if_m_have[2] == 1)
@@ -136,37 +136,39 @@ void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
 	char* cursor = buffer_total;
 
 		
-		//cursor += size;
 		uint size = sizeof(ranges);
 		memcpy(cursor, ranges, size);
-
 		cursor += size;
+
 		size = sizeof(uint)*4;
 		memcpy(cursor, temp_m->Know_if_m_have, size);
+		cursor += size;
 
 		if (temp_m->Know_if_m_have[1] == 1) {
-			cursor += size;
 			size = sizeof(uint)*temp_m->num_indices;
 			memcpy(cursor, temp_m->indices, temp_m->num_indices * sizeof(uint));
+			cursor += size;
 		}
 
 		//store vertex
 		if (temp_m->Know_if_m_have[0] == 1) {
-			cursor += size;
 			size = sizeof(float)*temp_m->num_vertices * 3;
 			memcpy(cursor, temp_m->vertices, size);
+			cursor += size;
 		}
 
 		if (temp_m->Know_if_m_have[3] == 1) {
-			cursor += size;
+			
 			size = sizeof(float)*temp_m->num_vertices * 2;
 			memcpy(cursor, temp_m->textures_coord, size);
+			cursor += size;
 		}
 
 		if (temp_m->Know_if_m_have[2] == 1) {
-			cursor += size;
+			
 			size = sizeof(float)*temp_m->num_vertices * 3;
 			memcpy(cursor, temp_m->normals, size);
+			cursor += size;
 		}
 
 
@@ -311,9 +313,9 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 				cursor_Mesh += size_mesh;
 			}
 
-			/*		n_temp_mesh->BoundBox.SetNegativeInfinity();
+					n_temp_mesh->BoundBox.SetNegativeInfinity();
 					n_temp_mesh->BoundBox.Enclose((float3*)n_temp_mesh->vertices, n_temp_mesh->num_vertices);
-					App->camera->CameraCenter(&n_temp_mesh->BoundBox);*/
+					App->camera->CameraCenter(&n_temp_mesh->BoundBox);
 		}
 
 		if (parent == nullptr) {

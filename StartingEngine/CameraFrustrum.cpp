@@ -46,8 +46,8 @@ void CameraComponent::Update()
 		if (ParentHasTransform(position, scale, rotation)!= false)
 		{
 			//float4x4 matrix = *transform->GetMatrix();
-			float4x4 transform_mesh = float4x4::FromTRS(position, rotation, scale);
-
+			float4x4 transform_mesh = float4x4::identity;
+			//float4x4 trans
 			bool frustum_changed = false;
 			float3 prev_pos = frustum.pos;
 			frustum.pos = transform_mesh.Row3(3);
@@ -71,7 +71,7 @@ void CameraComponent::Update()
 
 		if ((DebugDrawFrustum_id_vertices != 0))
 		{
-			glColor3f(1.0f, 0.0f, 0.0f);
+			glColor3f(1.0f, 0.43f, 0.0f);
 			glLineWidth(2.0f);
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, DebugDrawFrustum_id_vertices);

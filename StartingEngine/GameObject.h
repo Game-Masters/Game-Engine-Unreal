@@ -2,7 +2,7 @@
 
 #include<string>
 #include<vector>
-#include"MathGeoLib\MathGeoLib.h"
+
 #include"MathGeoLib\MathBuildConfig.h"
 #include"Component.h"
 #include"Mesh.h"

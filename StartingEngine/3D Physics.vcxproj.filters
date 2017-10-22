@@ -543,6 +543,9 @@
     <ClInclude Include="MaterialImporter.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="CameraFrustrum.h">
+      <Filter>Sources\Modules\Components_types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -775,6 +778,9 @@
     </ClCompile>
     <ClCompile Include="MeshImporter.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraFrustrum.cpp">
+      <Filter>Sources\Modules\Components_types</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -112,6 +112,7 @@
     <ClInclude Include="Assimp\include\assimp\vector2.h" />
     <ClInclude Include="Assimp\include\assimp\vector3.h" />
     <ClInclude Include="Assimp\include\assimp\version.h" />
+    <ClInclude Include="CameraFrustrum.h" />
     <ClInclude Include="cereal-1.2.2\include\cereal\archives\adapters.hpp" />
     <ClInclude Include="cereal-1.2.2\include\cereal\archives\binary.hpp" />
     <ClInclude Include="cereal-1.2.2\include\cereal\archives\json.hpp" />
@@ -239,6 +240,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="CameraFrustrum.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Console_ImGui.cpp" />

@@ -8,6 +8,7 @@
 #include"Mesh.h"
 #include"Transform.h"
 #include"Material.h"
+#include"CameraFrustrum.h"
 
 
 enum Tag_Object_Enum {
@@ -33,6 +34,7 @@ public:
 	Transform* AddNewTransform(float3 position, float3 scale, Quat rotations);
 	Mesh* AddNewMesh(geometry_base_creating* vec_mesh, Material* t_mat=nullptr);
 	Material* AddNewMaterial(const char* Path_texture, const char* Path_fbx);
+	CameraComponent* AddNewFrustum();
 	GameObject(const std::string name, GameObject* parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj);
 	~GameObject();
 };

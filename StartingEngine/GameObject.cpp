@@ -49,11 +49,16 @@ Mesh * GameObject::AddNewMesh(geometry_base_creating* vec_mesh, Material* t_mat)
 
 Material * GameObject::AddNewMaterial(const char * Path_texture, const char * Path_fbx)
 {
-	Material* n_mesh = new Material(Path_texture,Path_fbx,this);
-	this->Component_Vect.push_back(n_mesh);
-	return n_mesh;
+	Material* n_mat = new Material(Path_texture,Path_fbx,this);
+	this->Component_Vect.push_back(n_mat);
+	return n_mat;
 }
-
+CameraComponent* GameObject::AddNewFrustum()
+{
+	CameraComponent* n_camera = new CameraComponent(this,true);
+	this->Component_Vect.push_back(n_camera);
+	return n_camera;
+}
 
 
 GameObject::GameObject(const std::string name, GameObject * parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj): name(name), parent(parent), active(active), object_tag_s(tag_temp), static_obj(static_obj)

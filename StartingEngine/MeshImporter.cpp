@@ -19,6 +19,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 	std::string path_new_format;
 	App->fs_e->ChangeFormat_File(path_n.c_str(), "ric", &path_new_format, App->fs_e->Mesh_Engine);
 	App->fs_e->SaveFile(path_new_format.data(), buffer_total_gen, size_buffer_gen);
+	RELEASE_ARRAY(buffer_total_gen);
 
 
 	geometry_base_creating* m = nullptr;
@@ -84,7 +85,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 				LOG("The new mesh has failed trying to import the normals");
 			}
 			else {
-				//m->Know_if_m_have[2] = 1;
+				m->Know_if_m_have[2] = 1;
 				LOG("The new mesh has succed trying to import the normals");
 			}
 		}
@@ -94,7 +95,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 
 		if (scene->mMeshes[i]->HasTextureCoords(0))
 		{
-			//m->Know_if_m_have[3] = 1;
+			m->Know_if_m_have[3] = 1;
 			m->textures_coord = new float[scene->mMeshes[i]->mNumVertices * 2];
 
 			for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
@@ -108,13 +109,13 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 		}
 
 		ImportMesh(m, path);
-
+		
 	//	mesh_v.push_back(m);
 
 	}
 
 
-
+	delete m;
 }
 
 void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
@@ -341,13 +342,17 @@ uint MeshImporter::RecursiveSizeScene(aiNode * node, const aiScene * scene)
 {
 	uint size = 0;
 	aiMesh* temp_mesh=nullptr;
-	
-	size += sizeof(aiVector3D) * 2 + sizeof(aiQuaternion) + sizeof(char)*MAXRANGCHAR + sizeof(uint);
+	uint n_meshes = 0;
+	do {
 
-	for (int i = 0; i < node->mNumChildren; i++) {
-		size += RecursiveSizeScene(node->mChildren[i], scene);
-	}
+		size += sizeof(aiVector3D) * 2 + sizeof(aiQuaternion) + sizeof(char)*MAXRANGCHAR + sizeof(uint);
 
+		for (int i = 0; i < node->mNumChildren; i++) {
+			size += RecursiveSizeScene(node->mChildren[i], scene);
+		}
+		n_meshes++;
+	} while (n_meshes < node->mNumMeshes);
+	size += sizeof(uint);
 	return size;
 }
 
@@ -357,7 +362,7 @@ uint MeshImporter::GetSceneSize(const aiScene * scene)
 	aiNode* root_node = scene->mRootNode;
 
 	uint size = RecursiveSizeScene(root_node, scene);
-	size += scene->mNumMeshes * sizeof(uint);
+
 
 	return size;
 

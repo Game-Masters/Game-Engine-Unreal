@@ -45,14 +45,12 @@ bool ModuleSceneIntro::Start()
 
 
 	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
-	house1=CreateNewGameObjects("House", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false);
+	/*house1=CreateNewGameObjects("House", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false);
 	house1->AddNewTransform(float3(10,15,1), float3(0, 0, 0), Quat(1,0,0,0));
 
 
-
-
 	house11=CreateNewGameObjects("House1.1", true, house1, Tag_Object_Enum::no_obj_tag, false);
-	house11->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));
+	house11->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));*/
 
 
 
@@ -85,11 +83,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	
 	
-
-	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
-		root_gameobject->Childrens_GameObject_Vect[i]->Update();
-		IterateChildGameObjects(root_gameobject->Childrens_GameObject_Vect[i]);
-	}
+	root_gameobject->Update();
 	
 
 	glLineWidth(5.0f);
@@ -177,7 +171,7 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 	return n_gameobject;
 }
 
-void ModuleSceneIntro::IterateChildGameObjects(GameObject* item)
+/*void ModuleSceneIntro::IterateChildGameObjects(GameObject* item)
 {
 	
 	for (int i = 0; i < item->Childrens_GameObject_Vect.size(); i++) {
@@ -194,7 +188,7 @@ void ModuleSceneIntro::IterateChildGameObjects(GameObject* item)
 
 
 
-}
+}*/
 
 
 

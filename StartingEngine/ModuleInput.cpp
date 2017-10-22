@@ -136,6 +136,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					}
 					
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
+					App->imp_mesh->change_nameimporter = 0;
 					dropped_filedir = "";
 				}
 				flie_dropped = true;

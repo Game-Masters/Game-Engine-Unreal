@@ -19,5 +19,6 @@ public:
 	void General_Bin_Mesh(char ** cursor, const aiScene* scene, aiNode* node, const char* path);
 	MeshImporter();
 	~MeshImporter();
+	int change_nameimporter = 0;
 	};
 

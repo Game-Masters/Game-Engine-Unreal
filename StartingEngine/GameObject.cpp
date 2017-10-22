@@ -16,6 +16,11 @@ bool GameObject::IsComponentType(Component_Type_Enum temp_type)
 
 void GameObject::Update()
 {
+
+	for (int i = 0; i<this->Childrens_GameObject_Vect.size(); i++) {
+		this->Childrens_GameObject_Vect[i]->Update();
+	}
+
 	for (int j = 0; j < this->Component_Vect.size(); j++) {
 		this->Component_Vect[j]->Update();
 	}

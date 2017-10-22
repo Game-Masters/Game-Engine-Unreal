@@ -204,12 +204,12 @@ bool MeshImporter::LoadMesh(const char * path)
 void MeshImporter::LoadRecursive(char ** cursor, GameObject* Parent, const char* path) {
 
 	int child_num = 0;
+	
 	Parent = LoadMesh_variables(&cursor[0], Parent, &child_num, path);
 
 	for (int i = 0; i < child_num; i++) {
 		LoadRecursive(&cursor[0], Parent, path);
 	}
-
 
 }
 
@@ -374,7 +374,7 @@ void MeshImporter::Recursive_childs_general_bin(char **cursor, const aiScene * s
 	if (scene != nullptr && cursor[0] != nullptr && node != nullptr) {
 
 		General_Bin_Mesh(&cursor[0], scene, node, path);
-
+		change_nameimporter++;
 		for (int i = 0; i < node->mNumChildren; i++) {
 			Recursive_childs_general_bin(&cursor[0], scene, node->mChildren[i], path);
 		}
@@ -407,8 +407,9 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 			size_t temp_uint = str_parent.rfind("\\") + 1;
 			size_t temp_uint_2 = str_parent.rfind(".");
 			uint diff = temp_uint_2 - temp_uint;
+			std::string num_added_change_name_Str = std::to_string(change_nameimporter);
 			std::string str_parent_substracted = str_parent.substr(temp_uint, diff);
-			name_mesh = str_parent_substracted;
+			name_mesh = str_parent_substracted + "n"+ num_added_change_name_Str;
 			if (node->mNumMeshes > 0 && scene->mRootNode!= node) {
 				mesh_temp = scene->mMeshes[node->mMeshes[num_child_iterator]];
 				node->mTransformation.Decompose(scaling, rotation, translation);

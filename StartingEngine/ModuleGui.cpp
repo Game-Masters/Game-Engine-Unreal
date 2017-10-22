@@ -780,7 +780,7 @@ void ModuleGui::CreateAnewGameObject()
 			temp->AddNewTransform(float3(std::atof(str_x), std::atof(str_y), std::atof(str_z)), float3(std::atof(str_sc_x), std::atof(str_sc_y), std::atof(str_sc_z)), q_temp);
 		}
 		if (str_text_user != "\0" && str_geom_user != "\0") {
-			Material* temp_mat=	temp->AddNewMaterial(str_text_user, str_geom_user);
+			//Material* temp_mat=	temp->AddNewMaterial(str_text_user, str_geom_user);
 //			temp->AddNewMesh(str_geom_user, temp_mat);
 		}
 		ResetCreateGO();

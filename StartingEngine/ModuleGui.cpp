@@ -195,6 +195,7 @@ update_status ModuleGui::Update(float dt)
 		math::float3 trans;
 		math::float3 scale;
 		Quat result_rot;
+		float3 temp_transf;
 		if (ImGui::BeginDock("Inspector", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 			if (inspection_node != nullptr) {
 				
@@ -206,6 +207,7 @@ update_status ModuleGui::Update(float dt)
 					case Component_Type_Enum::component_transform_type:
 						t_temp = (Transform*)Comp_temp;
 						trans =t_temp->GetPosition();
+						temp_transf = trans;
 						ImGui::Text("                                Position");
 						ImGui::Text("Pos x:"); ImGui::SameLine();
 						ImGui::DragFloat("##6", &trans.x, 0.1f, -500.0f, 500.0f);
@@ -213,9 +215,12 @@ update_status ModuleGui::Update(float dt)
 						ImGui::DragFloat("##7", &trans.y, 0.1f, -500.0f, 500.0f);
 						ImGui::Text("Pos z:"); ImGui::SameLine();
 						ImGui::DragFloat("##8", &trans.z, 0.1f, -500.0f, 500.0f);
-						t_temp->SetPosition(trans);
+						if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z ) {
+							t_temp->SetPosition(trans);
+						}
 
 						scale = t_temp->GetScale();
+						temp_transf = scale;
 						ImGui::Text("                                Scale");
 						ImGui::Text("Scale x:"); ImGui::SameLine();
 						ImGui::DragFloat("##9", &scale.x, 0.1f, -500.0f, 500.0f);
@@ -223,11 +228,13 @@ update_status ModuleGui::Update(float dt)
 						ImGui::DragFloat("##10", &scale.y, 0.1f, -500.0f, 500.0f);
 						ImGui::Text("Scale z:"); ImGui::SameLine();
 						ImGui::DragFloat("##11", &scale.z, 0.1f, -500.0f, 500.0f);
-						t_temp->SetScale(scale);
-
+						if (scale.x != temp_transf.x || scale.y != temp_transf.y || scale.z != temp_transf.z) {
+							t_temp->SetScale(scale);
+						}
 
 						q_temp = t_temp->GetRotation();
 						eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
+						temp_transf = eul_ang;
 						ImGui::Text("                                Rotation");
 						ImGui::Text("Rotation x:"); ImGui::SameLine();
 						ImGui::DragFloat("##12", &eul_ang.x, 0.1f, -500.0f, 500.0f);
@@ -236,8 +243,10 @@ update_status ModuleGui::Update(float dt)
 						ImGui::Text("Rotation z:"); ImGui::SameLine();
 						ImGui::DragFloat("##14", &eul_ang.z, 0.1f, -500.0f, 500.0f);
 						//Not really working
-						result_rot=q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
-						t_temp->SetRotation(result_rot);
+						if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
+							result_rot = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
+							t_temp->SetRotation(result_rot);
+						}
 
 
 						break;

@@ -73,11 +73,43 @@ Mesh::~Mesh()
 }
 
 
+void Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & rotation)
+{
+
+	if (this->parent!=nullptr) {
+
+		for (int i = 0; i < parent->Component_Vect.size(); i++) {
+
+			if (parent->Component_Vect[i]->GetComponentType()== Component_Type_Enum::component_transform_type) {
+				position = ((Transform*)parent->Component_Vect[i])->GetPosition();
+				scaling = ((Transform*)parent->Component_Vect[i])->GetScale();
+				rotation = ((Transform*)parent->Component_Vect[i])->GetRotation();
+			}
+		}
+	}
+
+}
+
 void Mesh::Update()
 {
 
 
 	if (App->gui->inspection_node == this->parent) {
+		glPushMatrix();
+		float3 position;
+		float3 scale;
+		Quat rotation;
+		ParentHasTransform(position, scale, rotation);
+		float4x4 transform_mesh = float4x4::FromTRS(position, rotation, scale);
+		transform_mesh.Transpose();
+		GLfloat trans_point[16] = {
+			transform_mesh[0][0],transform_mesh[0][1],transform_mesh[0][2],transform_mesh[0][3],
+			transform_mesh[1][0],transform_mesh[1][1],transform_mesh[1][2],transform_mesh[1][3],
+			transform_mesh[2][0],transform_mesh[2][1],transform_mesh[2][2],transform_mesh[2][3],
+			transform_mesh[3][0],transform_mesh[3][1],transform_mesh[3][2],transform_mesh[3][3]
+		};
+		//glLoadMatrixf(trans_point);
+		glMultMatrixf(trans_point);
 		glLineWidth(2.0f);
 		glColor3f(0.0f, 1.0f, 0.0f);
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -88,6 +120,7 @@ void Mesh::Update()
 		glDrawElements(GL_LINES, 8 * 3, GL_UNSIGNED_INT, NULL);
 		glLineWidth(1.0f);
 		glColor3f(1.0f, 1.0f, 1.0f);
+		glPopMatrix();
 	}
 
 
@@ -127,6 +160,22 @@ void Mesh::Update()
 				}
 			}
 			
+			
+			glPushMatrix();
+			float3 position;
+			float3 scale;
+			Quat rotation;
+			ParentHasTransform(position, scale, rotation);
+			float4x4 transform_mesh = float4x4::FromTRS(position, rotation, scale);
+			transform_mesh.Transpose();
+			GLfloat trans_point[16] = {
+				transform_mesh[0][0],transform_mesh[0][1],transform_mesh[0][2],transform_mesh[0][3],
+				transform_mesh[1][0],transform_mesh[1][1],transform_mesh[1][2],transform_mesh[1][3],
+				transform_mesh[2][0],transform_mesh[2][1],transform_mesh[2][2],transform_mesh[2][3],
+				transform_mesh[3][0],transform_mesh[3][1],transform_mesh[3][2],transform_mesh[3][3]
+			};			
+			//glLoadMatrixf(trans_point);
+			glMultMatrixf(trans_point);
 			if (mesh_v->vertices != nullptr && mesh_v->indices != nullptr) {
 				glEnableClientState(GL_VERTEX_ARRAY);
 				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
@@ -136,8 +185,9 @@ void Mesh::Update()
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
 				glDrawElements(GL_TRIANGLES, mesh_v->num_indices, GL_UNSIGNED_INT, NULL);
 			}
+			glPopMatrix();
 			glBindTexture(GL_TEXTURE_2D, 0);
-
+			
 			
 
 		}

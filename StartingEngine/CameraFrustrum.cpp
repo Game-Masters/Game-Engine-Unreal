@@ -69,7 +69,7 @@ void CameraComponent::Update()
 		}
 
 
-		if (DebugDrawFrustum && (DebugDrawFrustum_id_vertices != 0))
+		if ((DebugDrawFrustum_id_vertices != 0))
 		{
 			glColor3f(1.0f, 0.0f, 0.0f);
 			glLineWidth(2.0f);
@@ -163,7 +163,7 @@ bool CameraComponent::ParentHasTransform(float3 & position, float3 & scaling, Qu
 				rotation = ((Transform*)parent->Component_Vect[i])->GetRotation();
 			}
 		}
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }

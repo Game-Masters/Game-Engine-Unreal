@@ -8,7 +8,7 @@
 #include"Mesh.h"
 #include"Transform.h"
 #include"Material.h"
-#include"CameraFrustrum.h"
+class CameraComponent;
 
 
 enum Tag_Object_Enum {

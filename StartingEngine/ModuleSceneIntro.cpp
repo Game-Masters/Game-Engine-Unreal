@@ -40,15 +40,19 @@ bool ModuleSceneIntro::Start()
 	std::string path_temp2 = "..\\Game\\Data\\Baker_house.png";
 	Material* temp = nullptr;
 
-	GameObject* house1 = nullptr;
-	GameObject* house11 = nullptr;
+	GameObject* frustrumtest = nullptr;
+
 
 
 	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
-	/*house1=CreateNewGameObjects("House", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false);
-	house1->AddNewTransform(float3(10,15,1), float3(0, 0, 0), Quat(1,0,0,0));
 
 
+	frustrumtest =CreateNewGameObjects("Frustrum test", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false);
+	frustrumtest->AddNewTransform(float3(0,0,0), float3(0, 0, 0), Quat(1,0,0,0));
+	frustrumtest->AddNewFrustum();
+
+
+	/*
 	house11=CreateNewGameObjects("House1.1", true, house1, Tag_Object_Enum::no_obj_tag, false);
 	house11->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));*/
 

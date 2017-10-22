@@ -198,7 +198,7 @@ update_status ModuleGui::Update(float dt)
 		float3 temp_transf;
 		if (ImGui::BeginDock("Inspector", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 			if (inspection_node != nullptr) {
-				
+				ImGui::Checkbox("##100", &inspection_node->active); ImGui::SameLine();
 				ImGui::Text("Name: %s", inspection_node->name);
 				for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
 					Comp_temp = inspection_node->Component_Vect[j];
@@ -257,15 +257,16 @@ update_status ModuleGui::Update(float dt)
 
 					case Component_Type_Enum::component_material_type:
 						mat_temp = (Material*)Comp_temp;
-						temp_v = mat_temp->GetMaterialVec();
+						if (mat_temp != nullptr) {
+							temp_v = mat_temp->GetMaterialVec();
 
-						ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-						if (temp_v->texture_w_h != nullptr) {
-							ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
-							ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
+							ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+							if (temp_v->texture_w_h != nullptr) {
+								ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
+								ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
+							}
+							ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 						}
-						ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
-
 						break;
 					default:
 						break;

@@ -40,14 +40,14 @@ void CameraComponent::Update()
 		float3 position;
 		float3 scale;
 		Quat rotation;
-		
+		float4x4 transform_mesh;
 		
 		//Transform* transform = parent->;
 		if (ParentHasTransform(position, scale, rotation)!= false)
 		{
-			//float4x4 matrix = *transform->GetMatrix();
-			float4x4 transform_mesh = float4x4::identity;
-			//float4x4 trans
+		
+			//transform_mesh = float4x4::FromTRS(position, rotation, scale);
+			transform_mesh = float4x4::FromTRS(position, rotation, scale);
 			bool frustum_changed = false;
 			float3 prev_pos = frustum.pos;
 			frustum.pos = transform_mesh.Row3(3);

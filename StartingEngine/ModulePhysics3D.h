@@ -34,6 +34,7 @@ public:
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB);
 	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisS, const vec3& axisB, bool disable_collision = false);
 	void DestroyBody(PhysBody3D& bodyA);
+	DebugDrawer*						debug_draw;
 private:
 
 	bool debug;
@@ -44,7 +45,7 @@ private:
 	btSequentialImpulseConstraintSolver* solver;
 	btDiscreteDynamicsWorld*			world;
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
-	DebugDrawer*						debug_draw;
+	
 
 	std::list<btCollisionShape*> shapes;
 	std::list<PhysBody3D*> bodies;

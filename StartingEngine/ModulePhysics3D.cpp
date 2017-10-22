@@ -252,10 +252,10 @@ void DebugDrawer::drawLines(const vec3 from, const vec3 to, const vec3 color)
 {
 	glLineWidth(2.0f);
 	glBegin(GL_LINES);
-	glColor3f(1, 1, 1);
+	glColor3f(color.x,color.y,color.z);
 	glVertex3f(from.x, from.y, from.z);
 	glVertex3f(to.x, to.y, to.z);
-
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glEnd();
 }
 

@@ -30,6 +30,10 @@ struct geometry_base_creating {
 	Quat rotation;
 	std::string texture_str;
 	AABB BoundBox;
+	uint id_aabb=0;
+	float* vertex_aabb;
+	uint id_index_aabb=0;
+	uint* index_aabb;
 	uint num_tris = 0;
 	std::string name;
 	uint Know_if_m_have[4]{ 0,0,0,0 };

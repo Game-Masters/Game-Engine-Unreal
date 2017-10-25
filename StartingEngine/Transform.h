@@ -14,6 +14,7 @@ private:
 
 
 public:
+	float4x4 matrix;
 	Transform(GameObject *parent, float3 position, float3 scale, Quat rotations);
 	~Transform();
 	void SetPosition(float3 n_pos);
@@ -23,5 +24,6 @@ public:
 	float3 GetPosition();
 	Quat GetRotation();
 	float3 GetScale();
+	float4x4 GetMatrix();
 };
 

@@ -20,7 +20,7 @@ class Material :
 protected:
 	std::string path_texture;
 
-	material_base_geometry* texture_v;
+	material_base_geometry* texture_v=nullptr;
 
 
 public:

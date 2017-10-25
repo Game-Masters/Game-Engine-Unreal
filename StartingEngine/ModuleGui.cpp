@@ -191,7 +191,7 @@ update_status ModuleGui::Update(float dt)
 		Component* Comp_temp = nullptr;
 		math::Quat q_temp;
 		float3 eul_ang;
-		material_base_geometry* temp_v;
+		material_base_geometry* temp_v=nullptr;
 		math::float3 trans;
 		math::float3 scale;
 		Quat result_rot;
@@ -244,8 +244,9 @@ update_status ModuleGui::Update(float dt)
 						ImGui::DragFloat("##14", &eul_ang.z, 0.1f, -500.0f, 500.0f);
 						//Not really working
 						if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
-							result_rot = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
-							t_temp->SetRotation(result_rot);
+							eul_ang *= DEGTORAD;
+							math::Quat q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
+							t_temp->SetRotation(q_temp);
 						}
 
 
@@ -259,14 +260,17 @@ update_status ModuleGui::Update(float dt)
 						mat_temp = (Material*)Comp_temp;
 						if (mat_temp != nullptr) {
 							temp_v = mat_temp->GetMaterialVec();
-
-							ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-							if (temp_v->texture_w_h != nullptr) {
-								ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
-								ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
+							if (temp_v != nullptr) {
+								ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+								if (temp_v->texture_w_h != nullptr) {
+									ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
+									ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
+								}
+								ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 							}
-							ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 						}
+						break;
+					case Component_Type_Enum::component_null_type:
 						break;
 					default:
 						break;

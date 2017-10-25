@@ -7,6 +7,7 @@ enum Component_Type_Enum {
 	component_null_type,
 	component_transform_type,
 	component_mesh_type,
+	component_camera,
 	component_material_type
 };
 

@@ -4,6 +4,7 @@
 Transform::Transform(GameObject *parent, float3 position, float3 scale, Quat rotations ):Component(
 	Component_Type_Enum::component_transform_type, parent, true), position(position),scale(scale), rotation(rotations)
 {
+
 }
 
 Transform::~Transform()
@@ -44,3 +45,5 @@ float3 Transform::GetScale()
 {
 	return this->scale;
 }
+
+

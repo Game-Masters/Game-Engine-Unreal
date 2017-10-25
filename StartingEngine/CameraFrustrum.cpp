@@ -1,7 +1,7 @@
 #include "CameraFrustrum.h"
 
 
-CameraComponent::CameraComponent(GameObject* parent, bool Active) :Component(Component_Type_Enum::component_material_type, parent, Active)
+CameraComponent::CameraComponent(GameObject* parent, bool Active) :Component(Component_Type_Enum::component_camera, parent, Active)
 {
 	if (Active) Enable();
 	frustum.type = FrustumType::PerspectiveFrustum;

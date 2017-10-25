@@ -61,6 +61,19 @@ CameraComponent* GameObject::AddNewFrustum()
 	return n_camera;
 }
 
+float4x4 GameObject::GetMatrix_GO()
+{
+
+	for (int i = 0; i < this->Component_Vect.size(); i++) {
+		if (Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_transform_type) {
+			Transform* temp = (Transform*)Component_Vect[i];
+			//temp->matrix= float4x4::FromTRS(temp->GetPosition(), temp->GetRotation(), temp->SetScale());
+		}
+	}
+
+	return float4x4::zero;
+}
+
 
 GameObject::GameObject(const std::string name, GameObject * parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj): name(name), parent(parent), active(active), object_tag_s(tag_temp), static_obj(static_obj)
 {

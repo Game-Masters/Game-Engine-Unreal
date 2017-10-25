@@ -11,6 +11,7 @@ Material::Material(const char * path_text, const char* fbx, GameObject * parent)
 	//texture_v = App->assimp->ImportGeometry_Texture(fbx);
 
 		path_texture = path_text;
+		texture_v = nullptr;
 		texture_v->texture_w_h = App->assimp->LoadImage_devil(path_texture.c_str(), &texture_v->id_image_devil);
 
 		glGenBuffers(1, (GLuint*)&(texture_v->id_texture));

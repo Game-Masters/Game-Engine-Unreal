@@ -66,10 +66,10 @@ float4x4 GameObject::GetMatrix_GO()
 	float4x4 matrix = float4x4::zero;
 	if (this->parent != nullptr) {
 
-		for (int i = 0; i < parent->Component_Vect.size(); i++) {
+		for (int i = 0; i < Component_Vect.size(); i++) {
 
-			if (parent->Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_transform_type) {
-				matrix = ((Transform*)parent->Component_Vect[i])->GetMatrix();
+			if (Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_transform_type) {
+				matrix = ((Transform*)Component_Vect[i])->GetMatrix();
 			}
 		}
 	}

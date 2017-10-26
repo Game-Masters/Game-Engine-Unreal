@@ -6,7 +6,7 @@ Transform::Transform(GameObject *parent, float3 position, float3 scale, Quat rot
 {
 	if (parent->parent != nullptr) {
 		//Need to fix why son has matrix before than the parent
-		matrix = float4x4::FromTRS(position, rotation, scale);
+		this->matrix = float4x4::FromTRS(position, rotation, scale);
 		if (parent->parent->name != "root") {
 			float4x4 matrix_parent = parent->parent->GetMatrix_GO();
 			matrix = matrix*matrix_parent;
@@ -21,7 +21,10 @@ Transform::~Transform()
 
 void Transform::Update()
 {
-
+	this->matrix = float4x4::FromTRS(position, rotation, scale);
+	if (parent->parent->name != "root") {
+		this->matrix = float4x4::FromTRS(position, rotation, scale)*parent->parent->GetMatrix_GO();
+	}
 }
 
 void Transform::SetPosition(float3 n_pos)

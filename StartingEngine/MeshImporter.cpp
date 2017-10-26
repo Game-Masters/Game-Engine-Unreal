@@ -223,9 +223,9 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 	uint size_mesh = 0;
 
 	std::string name_mesh;
-	float3 translation;
-	float3 scaling;
-	Quat rotation;
+	float3 translation= { 0, 0, 0 };
+	float3 scaling = { 1, 1, 1 };
+	Quat rotation = { 0, 0, 0, 1 };
 	geometry_base_creating* n_temp_mesh = nullptr;
 	//need to fix
 
@@ -392,9 +392,9 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 		uint num_child_iterator = 0;
 		std::string name_mesh;
 		uint size = 0;
-		aiVector3D translation;
-		aiVector3D scaling;
-		aiQuaternion rotation;
+		aiVector3D translation = { 0,0,0 };
+		aiVector3D scaling = { 1,1,1 };
+		aiQuaternion rotation = { 0,0,0,1 };
 		
 		size = sizeof(uint);
 		uint num_mesh = node->mNumMeshes;
@@ -410,9 +410,9 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 			std::string num_added_change_name_Str = std::to_string(change_nameimporter);
 			std::string str_parent_substracted = str_parent.substr(temp_uint, diff);
 			name_mesh = str_parent_substracted + "n"+ num_added_change_name_Str;
+			node->mTransformation.Decompose(scaling, rotation, translation);
 			if (node->mNumMeshes > 0 && scene->mRootNode!= node) {
 				mesh_temp = scene->mMeshes[node->mMeshes[num_child_iterator]];
-				node->mTransformation.Decompose(scaling, rotation, translation);
 				std::string str_n_i = std::to_string(node->mMeshes[num_child_iterator]);
 				name_mesh = str_parent_substracted + " " + str_n_i;
 			}

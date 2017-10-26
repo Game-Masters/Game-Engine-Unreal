@@ -73,9 +73,9 @@ Mesh::~Mesh()
 }
 
 
-void Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & rotation)
+float4x4 Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & rotation)
 {
-
+	float4x4 matrix;
 	if (this->parent!=nullptr) {
 
 		for (int i = 0; i < parent->Component_Vect.size(); i++) {
@@ -84,10 +84,12 @@ void Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & rotati
 				position = ((Transform*)parent->Component_Vect[i])->GetPosition();
 				scaling = ((Transform*)parent->Component_Vect[i])->GetScale();
 				rotation = ((Transform*)parent->Component_Vect[i])->GetRotation();
+				matrix = ((Transform*)parent->Component_Vect[i])->GetMatrix();
 			}
 		}
 	}
-
+	
+	return matrix;
 }
 
 void Mesh::Update()
@@ -99,8 +101,7 @@ void Mesh::Update()
 		float3 position;
 		float3 scale;
 		Quat rotation;
-		ParentHasTransform(position, scale, rotation);
-		float4x4 transform_mesh = float4x4::FromTRS(position, rotation, scale);
+		float4x4 transform_mesh = ParentHasTransform(position, scale, rotation);
 		transform_mesh.Transpose();
 		GLfloat trans_point[16] = {
 			transform_mesh[0][0],transform_mesh[0][1],transform_mesh[0][2],transform_mesh[0][3],
@@ -165,9 +166,9 @@ void Mesh::Update()
 			float3 position;
 			float3 scale;
 			Quat rotation;
-			ParentHasTransform(position, scale, rotation);
-			float4x4 transform_mesh = float4x4::FromTRS(position, rotation, scale);
+			float4x4 transform_mesh = ParentHasTransform(position, scale, rotation);
 			transform_mesh.Transpose();
+
 			GLfloat trans_point[16] = {
 				transform_mesh[0][0],transform_mesh[0][1],transform_mesh[0][2],transform_mesh[0][3],
 				transform_mesh[1][0],transform_mesh[1][1],transform_mesh[1][2],transform_mesh[1][3],

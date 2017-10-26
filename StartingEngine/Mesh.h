@@ -78,7 +78,7 @@ private:
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
 	geometry_base_creating* mesh_v;
 
-	void ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
+	float4x4 ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
 public:
 	void Update();
 	Mesh(GameObject* parent, geometry_base_creating* vec_mesh, Material* m_text=nullptr);

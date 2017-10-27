@@ -260,6 +260,8 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		memcpy(&rotation, cursor[0], size);
 		cursor[0] += size;
 
+		Quat Final_quat = { rotation.x,rotation.y,rotation.z, rotation.w };
+
 
 			if (num_meshes > 0) {
 			std::string final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name_mesh + ".ric";
@@ -328,7 +330,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		if (n_temp_mesh!=nullptr) {
 			child_gameobj->AddNewMesh(n_temp_mesh);
 		}
-			child_gameobj->AddNewTransform(translation, scaling, rotation);
+			child_gameobj->AddNewTransform(translation, scaling, Final_quat);
 		
 		num_mesh_iterator_count++;
 	} while (num_mesh_iterator_count < num_meshes);
@@ -394,7 +396,7 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 		uint size = 0;
 		aiVector3D translation = { 0,0,0 };
 		aiVector3D scaling = { 1,1,1 };
-		aiQuaternion rotation = { 0,0,0,1 };
+		aiQuaternion rotation = { 0, 0, 0, 1 };
 		
 		size = sizeof(uint);
 		uint num_mesh = node->mNumMeshes;
@@ -419,9 +421,6 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 				
 
 				
-			
-
-				
 			size = sizeof(char)* MAXRANGCHAR;
 			memcpy(cursor[0], name_mesh.data(), size);
 			cursor[0] += size;
@@ -438,8 +437,10 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 			memcpy(cursor[0], &translation, size);
 			cursor[0] += size;
 
+			Quat Final_quat = { rotation.x,rotation.y,rotation.z, rotation.w };
+
 			size = sizeof(aiQuaternion);
-			memcpy(cursor[0], &rotation, size);
+			memcpy(cursor[0], &Final_quat, size);
 			cursor[0] += size;
 			num_child_iterator++;
 		} while (num_child_iterator < node->mNumMeshes);

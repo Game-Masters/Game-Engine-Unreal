@@ -6,10 +6,18 @@ Transform::Transform(GameObject *parent, float3 position, float3 scale, Quat rot
 {
 	if (parent->parent != nullptr) {
 		//Need to fix why son has matrix before than the parent
-		this->matrix = float4x4::FromTRS(position, rotation, scale);
+		this->matrix = float4x4::FromTRS(position, rotations, scale);
 		if (parent->parent->name != "root") {
 			float4x4 matrix_parent = parent->parent->GetMatrix_GO();
-			matrix = matrix*matrix_parent;
+			this->matrix = this->matrix*matrix_parent;
+			math::float3 position_t;
+			math::float3 scaling_t;
+			math::Quat rot_t;
+			matrix.Decompose(position_t, rot_t, scaling_t);
+			this->position = position_t;
+			this->scale = scaling_t;
+			this->rotation = rot_t;
+
 		}
 		//matrix = float4x4::FromTRS(position, rotation, scale);
 	}

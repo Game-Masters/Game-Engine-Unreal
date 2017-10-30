@@ -51,17 +51,8 @@ bool ModuleSceneIntro::Start()
 	frustrumtest->AddNewTransform(float3(0,0,0), float3(1, 1, 1), Quat(0,0,0,1));
 	frustrumtest->AddNewFrustum();
 
+	App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "Scene1");
 
-	/*
-	house11=CreateNewGameObjects("House1.1", true, house1, Tag_Object_Enum::no_obj_tag, false);
-	house11->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));*/
-
-
-
-	/*root_gameobject->Childrens_GameObject_Vect.push_back(CreateNewGameObjects("House2", true, root_gameobject, Tag_Object_Enum::no_obj_tag, false));
-	root_gameobject->Childrens_GameObject_Vect[0]->AddNewTransform(float3(10, 15, 1), float3(0, 0, 0), Quat(1, 0, 0, 0));
-	temp = root_gameobject->Childrens_GameObject_Vect[0]->AddNewMaterial(path_temp2.c_str(), path_temp.c_str());
-	root_gameobject->Childrens_GameObject_Vect[0]->AddNewMesh(path_temp.c_str(), temp);*/
 
 	return ret;
 }
@@ -71,11 +62,6 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 {
 	world_texture->Bind();
 	
-	
-	
-
-
-
 
 	return UPDATE_CONTINUE;
 }
@@ -151,6 +137,9 @@ bool ModuleSceneIntro::Gui_Engine_Modules(float dt)
 
 bool ModuleSceneIntro::CleanUp()
 {
+	root_gameobject->Save(root_object_scene);
+	char* serialized_string = json_serialize_to_string_pretty(root_value_scene);
+	json_serialize_to_file(root_value_scene, "Scene1");
 
 	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
 		delete root_gameobject->Childrens_GameObject_Vect[i];

@@ -77,9 +77,9 @@ private:
 	std::string path_fbx;
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
 	geometry_base_creating* mesh_v;
-
-	float4x4 ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
 public:
+	float4x4 ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
+
 	void Update();
 	Mesh(GameObject* parent, geometry_base_creating* vec_mesh, Material* m_text=nullptr);
 	~Mesh();

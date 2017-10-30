@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-
+#include"Mesh.h"
+#include"Material.h"
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -185,6 +186,111 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 	return false;
 }
 
+void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Material* texture_mesh) {
+
+	if (App->gui->inspection_node == m->Get_Parent()) {
+
+		glPushMatrix();
+		float3 position;
+		float3 scale;
+		Quat rotation;
+		float4x4 transform_mesh = m->ParentHasTransform(position, scale, rotation);
+		transform_mesh.Transpose();
+		GLfloat trans_point[16] = {
+			transform_mesh[0][0],transform_mesh[0][1],transform_mesh[0][2],transform_mesh[0][3],
+			transform_mesh[1][0],transform_mesh[1][1],transform_mesh[1][2],transform_mesh[1][3],
+			transform_mesh[2][0],transform_mesh[2][1],transform_mesh[2][2],transform_mesh[2][3],
+			transform_mesh[3][0],transform_mesh[3][1],transform_mesh[3][2],transform_mesh[3][3]
+		};
+		//glLoadMatrixf(trans_point);
+		glMultMatrixf(trans_point);
+		glLineWidth(2.0f);
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_aabb);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_index_aabb);
+		glDrawElements(GL_LINES, 8 * 3, GL_UNSIGNED_INT, NULL);
+		glLineWidth(1.0f);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glPopMatrix();
+	}
+
+
+
+	if (mesh_v->num_indices > 0 && mesh_v->num_vertices > 0) {
+		if (texture_mesh != nullptr) {
+			material_base_geometry* temp_text_vec;
+			temp_text_vec = texture_mesh->GetMaterialVec();
+			if (temp_text_vec != nullptr) {
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, 0);
+				glBindTexture(GL_TEXTURE_2D, (temp_text_vec->id_image_devil));
+
+				if (temp_text_vec->textures_coord != nullptr) {
+
+					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+					glBindBuffer(GL_ARRAY_BUFFER, temp_text_vec->id_texture);
+					glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+				}
+			}
+		}
+
+		if (App->renderer3D->debugnormals == true && mesh_v->normals != nullptr) {
+			for (uint k = 0; k < mesh_v->num_vertices * 3; k += 3)
+			{
+				glLineWidth(2.0f);
+				glColor3f(1.0f, 0.0f, 0.0f);
+
+				glBegin(GL_LINES);
+				glVertex3f(mesh_v->vertices[k], mesh_v->vertices[k + 1], mesh_v->vertices[k + 2]);
+				glVertex3f(mesh_v->vertices[k] + mesh_v->normals[k], mesh_v->vertices[k + 1] + mesh_v->normals[k + 1], mesh_v->vertices[k + 2] + mesh_v->normals[k + 2]);
+				glEnd();
+
+				glLineWidth(1.0f);
+				glColor3f(1.0f, 1.0f, 1.0f);
+			}
+		}
+
+
+		glPushMatrix();
+		float3 position;
+		float3 scale;
+		Quat rotation;
+		float4x4 transform_mesh = m->ParentHasTransform(position, scale, rotation);
+		transform_mesh.Transpose();
+
+		GLfloat trans_point[16] = {
+			transform_mesh[0][0],transform_mesh[0][1],transform_mesh[0][2],transform_mesh[0][3],
+			transform_mesh[1][0],transform_mesh[1][1],transform_mesh[1][2],transform_mesh[1][3],
+			transform_mesh[2][0],transform_mesh[2][1],transform_mesh[2][2],transform_mesh[2][3],
+			transform_mesh[3][0],transform_mesh[3][1],transform_mesh[3][2],transform_mesh[3][3]
+		};
+		//glLoadMatrixf(trans_point);
+		glMultMatrixf(trans_point);
+		if (mesh_v->vertices != nullptr && mesh_v->indices != nullptr) {
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
+			glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
+			glDrawElements(GL_TRIANGLES, mesh_v->num_indices, GL_UNSIGNED_INT, NULL);
+		}
+		glPopMatrix();
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
+	}
+	else {
+		LOG("Impossible to draw the mesh");
+	}
+
+
+}
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {

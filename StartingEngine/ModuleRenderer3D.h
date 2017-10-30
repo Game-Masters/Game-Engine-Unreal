@@ -8,6 +8,8 @@
 
 #define MAX_LIGHTS 8
 
+class Material;
+
 class ModuleRenderer3D : public Module
 {
 public:
@@ -23,7 +25,7 @@ public:
 	void OnResize(int width, int height);
 	bool LoadConfig(JSON_Object* node);
 	bool SaveConfig(JSON_Object* node);
-
+	void Render_3D(Mesh* m ,geometry_base_creating* mesh_v, Material* texture_mesh= nullptr);
 	//-----------
 	/*
 	Sphere* sphere;

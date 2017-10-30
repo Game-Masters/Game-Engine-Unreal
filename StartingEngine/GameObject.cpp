@@ -80,10 +80,46 @@ float4x4 GameObject::GetMatrix_GO()
 
 GameObject::GameObject(const std::string name, GameObject * parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj): name(name), parent(parent), active(active), object_tag_s(tag_temp), static_obj(static_obj)
 {
+	LCG UUID_temp;
+	this->UUID = UUID_temp.Int();
+	if (parent != nullptr) {
+		this->UUID_parent = parent->UUID;
+	}
 }
 
 GameObject::~GameObject()
 {
 
 	
+}
+
+const int GameObject::Get_UUID()
+{
+	return this->UUID;
+}
+
+void GameObject::Save(JSON_Object *root_object_scene)
+{
+	JSON_Object* node;
+	json_object_set_value(root_object_scene, this->name.c_str(), json_value_init_object());
+	node=json_object_get_object(root_object_scene, this->name.c_str());
+	json_object_set_number(node, "UUID", this->UUID);
+	if (parent != nullptr) {
+		json_object_set_number(node, "UUID_parent", this->UUID_parent);
+	}
+
+	for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+		this->Childrens_GameObject_Vect[i]->Save(node);
+	}
+	if (this->name != "root" && this->Component_Vect.size() > 0) {
+		for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+			//Call components load
+			//this->Childrens_GameObject_Vect[i]->Save(node);
+		}
+	}
+
+}
+
+void GameObject::Load(JSON_Object *root_object_scene)
+{
 }

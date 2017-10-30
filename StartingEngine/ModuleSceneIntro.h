@@ -54,14 +54,15 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	
-
+	
 	GameObject* CreateNewGameObjects(const char* name, bool active, GameObject* parent, Tag_Object_Enum tag_temp, bool static_s);
 
 public:
 
 	void IterateChildGameObjects(GameObject* item);
 	GameObject* root_gameobject= nullptr;
-
+	JSON_Value *root_value_scene = nullptr;
+	JSON_Object *root_object_scene = nullptr;
 
 	Texture_Engine *world_texture;
 

@@ -38,5 +38,11 @@ public:
 	float4x4 GetMatrix_GO();
 	GameObject(const std::string name, GameObject* parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj);
 	~GameObject();
+	const int Get_UUID();
+	void Save(JSON_Object *root_object_scene);
+	void Load(JSON_Object *root_object_scene);
+private:
+	int UUID=0;
+	int UUID_parent = 0;
 };
 

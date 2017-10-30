@@ -13,6 +13,7 @@ public:
 	bool Load();
 	bool Save();
 	bool CleanUp();
+	void Create_JSON_DOC(JSON_Value **root_value_scene, JSON_Object **root_object_scene, const char* namefile);
 public:
 	JSON_Value *root_value = nullptr;
 	JSON_Object *root_object= nullptr;

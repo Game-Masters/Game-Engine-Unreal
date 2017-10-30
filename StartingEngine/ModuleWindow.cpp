@@ -205,7 +205,6 @@ bool ModuleWindow::LoadConfig(JSON_Object * node)
 
 bool ModuleWindow::SaveConfig(JSON_Object * node)
 {
-
 	json_object_set_number(node, "width", win_width);
 	json_object_set_number(node, "height", win_height);
 	json_object_set_string(node, "window title",str_window.c_str());

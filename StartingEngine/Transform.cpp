@@ -80,10 +80,31 @@ void Transform::Save(JSON_Object * root_object_scene)
 		json_object_set_number(node, "UUID_parent", this->UUID_parent_GO);
 	}
 
-	//Need to find how to save an array of values
-	json_object_set_number(node, "pos x", this->position.x);
-	json_object_set_number(node, "pos y", this->position.y);
-	json_object_set_number(node, "pos z", this->position.z);
+
+	JSON_Value* va = json_value_init_array();
+	JSON_Array* array = nullptr;
+	array = json_value_get_array(va);
+	json_object_set_value(node, "Position", va);
+	json_array_append_number(array, this->position.x);
+	json_array_append_number(array, this->position.y);
+	json_array_append_number(array, this->position.z);
+
+	va = json_value_init_array();
+	array = json_value_get_array(va);
+	json_object_set_value(node, "Scale", va);
+	json_array_append_number(array, this->scale.x);
+	json_array_append_number(array, this->scale.y);
+	json_array_append_number(array, this->scale.z);
+
+
+	va = json_value_init_array();
+	array = json_value_get_array(va);
+	json_object_set_value(node, "Rotation", va);
+	json_array_append_number(array, this->rotation.x);
+	json_array_append_number(array, this->rotation.y);
+	json_array_append_number(array, this->rotation.z);
+	json_array_append_number(array, this->rotation.w);
+
 }
 
 void Transform::Load(JSON_Object * root_object_scene)

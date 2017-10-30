@@ -41,9 +41,9 @@ Transform * GameObject::AddNewTransform(float3 position, float3 scale, Quat rota
 	return n_transform;
 }
 
-Mesh * GameObject::AddNewMesh(geometry_base_creating* vec_mesh, Material* t_mat)
+Mesh * GameObject::AddNewMesh(geometry_base_creating* vec_mesh, const char* path,Material* t_mat)
 {
-	Mesh* n_mesh = new Mesh(this, vec_mesh, t_mat);
+	Mesh* n_mesh = new Mesh(this, vec_mesh, path, t_mat);
 	this->Component_Vect.push_back(n_mesh);
 	return n_mesh;
 }
@@ -107,16 +107,16 @@ void GameObject::Save(JSON_Object *root_object_scene)
 	if (parent != nullptr) {
 		json_object_set_number(node, "UUID_parent", this->UUID_parent);
 	}
-
-	for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
-		this->Childrens_GameObject_Vect[i]->Save(node);
-	}
 	if (this->name != "root" && this->Component_Vect.size() > 0) {
 		for (int i = 0; i < this->Component_Vect.size(); i++) {
-			//Call components load
 			this->Component_Vect[i]->Save(node);
 		}
 	}
+
+	for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+		this->Childrens_GameObject_Vect[i]->Save(root_object_scene);
+	}
+	
 
 }
 

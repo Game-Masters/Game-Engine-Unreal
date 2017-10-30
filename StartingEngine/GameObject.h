@@ -32,7 +32,7 @@ public:
 	void Update();
 	Component* AddNewComponent(Component_Type_Enum type);
 	Transform* AddNewTransform(float3 position, float3 scale, Quat rotations);
-	Mesh* AddNewMesh(geometry_base_creating* vec_mesh, Material* t_mat=nullptr);
+	Mesh* AddNewMesh(geometry_base_creating* vec_mesh, const char* path, Material* t_mat=nullptr);
 	Material* AddNewMaterial(const char* Path_texture, const char* Path_fbx);
 	CameraComponent* AddNewFrustum();
 	float4x4 GetMatrix_GO();

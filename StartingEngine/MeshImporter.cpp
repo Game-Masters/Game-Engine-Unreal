@@ -228,7 +228,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 	Quat rotation = { 0, 0, 0, 1 };
 	geometry_base_creating* n_temp_mesh = nullptr;
 	//need to fix
-
+	std::string final_path_mesh;
 	GameObject* child_gameobj = nullptr;
 	size = sizeof(uint);
 	memcpy(&num_meshes, cursor[0], size);
@@ -264,7 +264,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 
 
 			if (num_meshes > 0) {
-			std::string final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name_mesh + ".ric";
+			final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name_mesh + ".ric";
 			char* buffer_Mesh;
 			App->fs_e->LoadFile(final_path_mesh.c_str(), &buffer_Mesh);
 			char* cursor_Mesh = buffer_Mesh;
@@ -328,7 +328,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, parent, Tag_Object_Enum::no_obj_tag, false);
 		}
 		if (n_temp_mesh!=nullptr) {
-			child_gameobj->AddNewMesh(n_temp_mesh);
+			child_gameobj->AddNewMesh(n_temp_mesh, final_path_mesh.c_str());
 		}
 			child_gameobj->AddNewTransform(translation, scaling, Final_quat);
 		

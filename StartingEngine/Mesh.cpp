@@ -1,10 +1,10 @@
 #include "Mesh.h"
 #include"GameObject.h"
 
-Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, Material* m_text): Component(Component_Type_Enum::component_mesh_type,
+Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* path, Material* m_text): Component(Component_Type_Enum::component_mesh_type,
 	parent,true)
 {
-	
+	path_fbx = path;
 	texture_mesh = m_text;
 
 	mesh_v = vec_mesh;
@@ -113,6 +113,15 @@ const char * Mesh::GetGeometryPath()
 
 void Mesh::Save(JSON_Object * root_object_scene)
 {
+	JSON_Object* node;
+	json_object_set_value(root_object_scene, "Mesh", json_value_init_object());
+	node = json_object_get_object(root_object_scene, "Mesh");
+	json_object_set_number(node, "UUID", this->UUID_comp);
+	if (parent != nullptr) {
+		json_object_set_number(node, "UUID_parent", this->UUID_parent_GO);
+	}
+	json_object_set_string(node, "Path FBX", this->path_fbx.c_str());
+
 }
 
 void Mesh::Load(JSON_Object * root_object_scene)

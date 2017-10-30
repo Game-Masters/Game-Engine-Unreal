@@ -1,4 +1,5 @@
 #pragma once
+#include"JSON\parson.h"
 class GameObject;
 
 
@@ -26,5 +27,8 @@ public:
 	virtual void Update();
 	const Component_Type_Enum GetComponentType()const;
 	const GameObject* Get_Parent();
+	virtual void Save(JSON_Object *root_object_scene);
+	virtual void Load(JSON_Object *root_object_scene);
+
 };
 

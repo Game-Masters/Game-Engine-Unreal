@@ -110,3 +110,11 @@ const char * Mesh::GetGeometryPath()
 {
 	return path_fbx.c_str();
 }
+
+void Mesh::Save(JSON_Object * root_object_scene)
+{
+}
+
+void Mesh::Load(JSON_Object * root_object_scene)
+{
+}

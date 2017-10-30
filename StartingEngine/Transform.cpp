@@ -70,4 +70,24 @@ float4x4 Transform::GetMatrix()
 	return matrix;
 }
 
+void Transform::Save(JSON_Object * root_object_scene)
+{
+	JSON_Object* node;
+	json_object_set_value(root_object_scene, "Transform", json_value_init_object());
+	node = json_object_get_object(root_object_scene, "Transform");
+	json_object_set_number(node, "UUID", this->UUID_comp);
+	if (parent != nullptr) {
+		json_object_set_number(node, "UUID_parent", this->UUID_parent_GO);
+	}
+
+	//Need to find how to save an array of values
+	json_object_set_number(node, "pos x", this->position.x);
+	json_object_set_number(node, "pos y", this->position.y);
+	json_object_set_number(node, "pos z", this->position.z);
+}
+
+void Transform::Load(JSON_Object * root_object_scene)
+{
+}
+
 

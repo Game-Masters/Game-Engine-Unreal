@@ -41,4 +41,12 @@ const char * Material::GetPathMaterial()
 	return path_texture.c_str();
 }
 
+void Material::Save(JSON_Object * root_object_scene)
+{
+}
+
+void Material::Load(JSON_Object * root_object_scene)
+{
+}
+
 

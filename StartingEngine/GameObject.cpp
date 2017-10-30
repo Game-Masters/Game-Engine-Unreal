@@ -112,9 +112,9 @@ void GameObject::Save(JSON_Object *root_object_scene)
 		this->Childrens_GameObject_Vect[i]->Save(node);
 	}
 	if (this->name != "root" && this->Component_Vect.size() > 0) {
-		for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+		for (int i = 0; i < this->Component_Vect.size(); i++) {
 			//Call components load
-			//this->Childrens_GameObject_Vect[i]->Save(node);
+			this->Component_Vect[i]->Save(node);
 		}
 	}
 

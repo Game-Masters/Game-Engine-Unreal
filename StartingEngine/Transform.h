@@ -25,5 +25,8 @@ public:
 	Quat GetRotation();
 	float3 GetScale();
 	float4x4 GetMatrix();
+	virtual void Save(JSON_Object *root_object_scene);
+	virtual void Load(JSON_Object *root_object_scene);
+
 };
 

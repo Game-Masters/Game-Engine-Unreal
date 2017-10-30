@@ -35,6 +35,16 @@ const GameObject * Component::Get_Parent()
 	return parent;
 }
 
+void Component::Save(JSON_Object * root_object_scene)
+{
+
+}
+
+void Component::Load(JSON_Object * root_object_scene)
+{
+
+}
+
 
 
 

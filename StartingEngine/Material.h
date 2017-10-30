@@ -29,5 +29,8 @@ public:
 	~Material();
 	material_base_geometry* GetMaterialVec();
 	const char* GetPathMaterial();
+	virtual void Save(JSON_Object *root_object_scene);
+	virtual void Load(JSON_Object *root_object_scene);
+
 };
 

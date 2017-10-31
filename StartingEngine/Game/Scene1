@@ -1,1 +1,60 @@
-{"GameObject1":{"Name":"root","UUID":133900851},"GameObject2":{"Name":"Frustrum test","UUID":138147732,"UUID_parent":133900851,"Transform":{"UUID":149635197,"UUID_parent":138147732,"Position":[0,0,0],"Scale":[1,1,1],"Rotation":[0,0,0,1]}}}
+{
+  "GameObject1": {
+    "Name": "Frustrum test",
+    "UUID": 1679668753,
+    "UUID_parent": 1673611726,
+    "Transform": {
+      "UUID": 1683428287,
+      "UUID_parent": 1679668753,
+      "Position": [ 0, 0, 0 ],
+      "Scale": [ 1, 1, 1 ],
+      "Rotation": [ 0, 0, 0, 1 ]
+    }
+  },
+  "GameObject2": {
+    "Name": "BakerHousen0",
+    "UUID": 637378959,
+    "UUID_parent": 1673611726,
+    "Transform": {
+      "UUID": 646220826,
+      "UUID_parent": 637378959,
+      "Position": [ 0, 0, 0 ],
+      "Scale": [ 1, 1, 1 ],
+      "Rotation": [ 0, 0, 0, 1 ]
+    }
+  },
+  "GameObject3": {
+    "Name": "BakerHouse 0",
+    "UUID": 793121136,
+    "UUID_parent": 637378959,
+    "Mesh": {
+      "UUID": 796602186,
+      "UUID_parent": 793121136,
+      "Path FBX": "..\\Game\\Library\\Mesh\\BakerHouse 0.ric"
+    },
+    "Transform": {
+      "UUID": 827305047,
+      "UUID_parent": 793121136,
+      "Position": [ 0, 0, 0 ],
+      "Scale": [ 100, 99.999992370605469, 99.999992370605469 ],
+      "Rotation": [ -0.7071068286895752, 0, 0, 0.70710670948028564 ]
+    }
+  },
+  "GameObject4": {
+    "Name": "BakerHouse 1",
+    "UUID": 1277892159,
+    "UUID_parent": 637378959,
+    "Mesh": {
+      "UUID": 1290980907,
+      "UUID_parent": 1277892159,
+      "Path FBX": "..\\Game\\Library\\Mesh\\BakerHouse 1.ric"
+    },
+    "Transform": {
+      "UUID": 1322101494,
+      "UUID_parent": 1277892159,
+      "Position": [ 0, 0, 0 ],
+      "Scale": [ 100, 99.999992370605469, 99.999992370605469 ],
+      "Rotation": [ -0.7071068286895752, 0, 0, 0.70710670948028564 ]
+    }
+  }
+}

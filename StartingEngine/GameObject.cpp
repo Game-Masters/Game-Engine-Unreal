@@ -100,25 +100,30 @@ const int GameObject::Get_UUID()
 
 void GameObject::Save(JSON_Object *root_object_scene)
 {
-	App->scene_intro->num_GO++;
-	std::string go_name = "GameObject"+ std::to_string(App->scene_intro->num_GO);
 	JSON_Object* node;
-	json_object_set_value(root_object_scene, go_name.c_str(), json_value_init_object());
-	node=json_object_get_object(root_object_scene, go_name.c_str());
-	json_object_set_string(node, "Name", this->name.c_str());
-	json_object_set_number(node, "UUID", this->UUID);
-	if (parent != nullptr) {
-		json_object_set_number(node, "UUID_parent", this->UUID_parent);
-	}
-	if (this->name != "root" && this->Component_Vect.size() > 0) {
-		for (int i = 0; i < this->Component_Vect.size(); i++) {
-			this->Component_Vect[i]->Save(node);
+	if (this->name != "root") {
+		App->scene_intro->num_GO++;
+		std::string go_name = "GameObject" + std::to_string(App->scene_intro->num_GO);
+		
+		json_object_set_value(root_object_scene, go_name.c_str(), json_value_init_object());
+		node = json_object_get_object(root_object_scene, go_name.c_str());
+		json_object_set_string(node, "Name", this->name.c_str());
+		json_object_set_number(node, "UUID", this->UUID);
+
+		if (parent != nullptr) {
+			json_object_set_number(node, "UUID_parent", this->UUID_parent);
+		}
+
+		if (this->Component_Vect.size() > 0) {
+			for (int i = 0; i < this->Component_Vect.size(); i++) {
+				this->Component_Vect[i]->Save(node);
+			}
 		}
 	}
 
-	for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
-		this->Childrens_GameObject_Vect[i]->Save(root_object_scene);
-	}
+		for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+			this->Childrens_GameObject_Vect[i]->Save(root_object_scene);
+		}
 	
 
 }

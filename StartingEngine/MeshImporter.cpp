@@ -227,6 +227,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 	float3 scaling = { 1, 1, 1 };
 	Quat rotation = { 0, 0, 0, 1 };
 	geometry_base_creating* n_temp_mesh = nullptr;
+	
 	//need to fix
 	std::string final_path_mesh;
 	GameObject* child_gameobj = nullptr;
@@ -264,62 +265,8 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 
 
 		if (num_meshes > 0) {
-			final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name_mesh + ".ric";
-			char* buffer_Mesh;
-			App->fs_e->LoadFile(final_path_mesh.c_str(), &buffer_Mesh);
-			char* cursor_Mesh = buffer_Mesh;
-
-			uint ranges[4]{ 0,0,0,0 };
-			n_temp_mesh = new geometry_base_creating();
-			uint ranges_num[2];
-
-			size_mesh = sizeof(ranges_num);
-			memcpy(ranges_num, cursor_Mesh, size_mesh);
-			n_temp_mesh->num_indices = ranges_num[0];
-			n_temp_mesh->num_vertices = ranges_num[1];
-			cursor_Mesh += size_mesh;
-
-			size_mesh = sizeof(uint) * 4;
-			memcpy(ranges, cursor_Mesh, size_mesh);
-			cursor_Mesh += size_mesh;
-
-			if (ranges[1] == 1) {
-
-				size_mesh = sizeof(uint)*n_temp_mesh->num_indices;
-				ind = new uint[n_temp_mesh->num_indices];
-				memcpy(ind, cursor_Mesh, size_mesh);
-				n_temp_mesh->indices = ind;
-				cursor_Mesh += size_mesh;
-			}
-
-			if (ranges[0] == 1) {
-
-				size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 3;
-				n_temp_mesh->vertices = new float[n_temp_mesh->num_vertices * 3];
-				memcpy(n_temp_mesh->vertices, cursor_Mesh, size_mesh);
-				cursor_Mesh += size_mesh;
-			}
-
-			if (ranges[3] == 1) {
-
-				size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 2;
-				n_temp_mesh->textures_coord = new float[n_temp_mesh->num_vertices * 2];
-				memcpy(n_temp_mesh->textures_coord, cursor_Mesh, size_mesh);
-				cursor_Mesh += size_mesh;
-			}
-
-			if (ranges[2] == 1) {
-
-				size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 3;
-				n_temp_mesh->normals = new float[n_temp_mesh->num_vertices * 3];
-				memcpy(n_temp_mesh->normals, cursor_Mesh, size_mesh);
-				cursor_Mesh += size_mesh;
-			}
-
-			n_temp_mesh->BoundBox.SetNegativeInfinity();
-			n_temp_mesh->BoundBox.Enclose((float3*)n_temp_mesh->vertices, n_temp_mesh->num_vertices);
-			App->camera->CameraCenter(&n_temp_mesh->BoundBox);
-
+			final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name + ".ric";
+			n_temp_mesh = Create_Base_Geometry(path, name_mesh.c_str(), final_path_mesh.c_str());
 		}
 
 		if (parent == nullptr) {
@@ -342,7 +289,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 }
 
 
-geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path) {
+geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, const char* name, const char* final_path) {
 	//need fix
 	uint* ind = nullptr;
 	uint name_lenght;
@@ -358,9 +305,8 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path) {
 	geometry_base_creating* n_temp_mesh = nullptr;
 	std::string final_path_mesh;
 
-	final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name_mesh + ".ric";
 	char* buffer_Mesh;
-	App->fs_e->LoadFile(final_path_mesh.c_str(), &buffer_Mesh);
+	App->fs_e->LoadFile(final_path, &buffer_Mesh);
 	char* cursor_Mesh = buffer_Mesh;
 
 	uint ranges[4]{ 0,0,0,0 };

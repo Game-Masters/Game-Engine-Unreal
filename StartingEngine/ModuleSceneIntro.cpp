@@ -52,7 +52,7 @@ bool ModuleSceneIntro::Start()
 	frustrumtest->AddNewFrustum();
 
 	App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "Scene1");
-
+	//Load_Scene();
 
 	
 
@@ -116,10 +116,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	lights[i].Render();
 	
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
 		Load_Scene();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
 		root_gameobject->Save(root_object_scene);
 		char* serialized_string = json_serialize_to_string_pretty(root_value_scene);
 		json_serialize_to_file(root_value_scene, "Scene1");
@@ -176,44 +176,57 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 
 void ModuleSceneIntro::Load_Scene()
 {
-
-	for (int i = 0; i < num_GO; i++) {
+	GameObject* temp_go = nullptr;
+	int i = 0;
+	std::string g_temp = "GameObject" + std::to_string(i + 1);
+	JSON_Object* node;
+	node = json_object_get_object(root_object_scene, g_temp.c_str());
+	while(node!=nullptr){
 		std::string g_temp = "GameObject" + std::to_string(i + 1);
 		JSON_Object* node;
 		node = json_object_get_object(root_object_scene, g_temp.c_str());
-		int UUID = json_object_get_number(node, "UUID");
-		std::string name_go = json_object_get_string(node, "Name");
-
-		GameObject* temp_go = CreateNewGameObjects(name_go.c_str(), true, nullptr, Tag_Object_Enum::no_obj_tag, false);
-		game_objects_load.push_back(temp_go);
-		node = json_object_get_object(node, "Transform");
 		if (node != nullptr) {
-			math::float3 pos;
-			JSON_Array* array = json_object_get_array(node, "Position");
-			pos.x = json_array_get_number(array, 0);
-			pos.y = json_array_get_number(array, 1);
-			pos.z = json_array_get_number(array, 2);
+			int UUID = json_object_get_number(node, "UUID");
+			std::string name_go = json_object_get_string(node, "Name");
+			temp_go = CreateNewGameObjects(name_go.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
+			game_objects_load.push_back(temp_go);
+			JSON_Object* node_trans;
+			node_trans = json_object_get_object(node, "Transform");
+			if (node != nullptr) {
+				JSON_Array* array_t = json_object_get_array(node_trans, "Position");
+				math::float3 pos;
+				pos.x = (float)json_value_get_number(json_array_get_value(array_t, 0));
+				pos.y = (float)json_value_get_number(json_array_get_value(array_t, 1));
+				pos.z = (float)json_value_get_number(json_array_get_value(array_t, 2));
 
-			math::float3 scale;
-			array = json_object_get_array(node, "Scale");
-			scale.x = json_array_get_number(array, 0);
-			scale.y = json_array_get_number(array, 1);
-			scale.z = json_array_get_number(array, 2);
+				array_t = json_object_get_array(node_trans, "Scale");
+				math::float3 scale;
+				scale.x = (float)json_value_get_number(json_array_get_value(array_t, 0));
+				scale.y = (float)json_value_get_number(json_array_get_value(array_t, 1));
+				scale.z = (float)json_value_get_number(json_array_get_value(array_t, 2));
 
-			math::Quat quat;
-			array = json_object_get_array(node, "Rotation");
-			quat.x = json_array_get_number(array, 0);
-			quat.y = json_array_get_number(array, 1);
-			quat.z = json_array_get_number(array, 2);
-			quat.w = json_array_get_number(array, 3);
-			temp_go->AddNewTransform(pos, scale, quat);
+				array_t = json_object_get_array(node_trans, "Rotation");
+				math::Quat quat;
+				quat.x = (float)json_value_get_number(json_array_get_value(array_t, 0));
+				quat.y = (float)json_value_get_number(json_array_get_value(array_t, 1));
+				quat.z = (float)json_value_get_number(json_array_get_value(array_t, 2));
+				quat.w = (float)json_value_get_number(json_array_get_value(array_t, 3));
+				temp_go->AddNewTransform(pos, scale, quat);
+			}
+			JSON_Object* node_mesh;
+			node_mesh = json_object_get_object(node, "Mesh");
+			if (node_mesh != nullptr) {
+				std::string fbx_path = json_object_get_string(node_mesh, "Path FBX");
+				geometry_base_creating* temp_geom = App->imp_mesh->Create_Base_Geometry(fbx_path.c_str(), name_go.c_str(), fbx_path.c_str());
+				temp_go->AddNewMesh(temp_geom, fbx_path.c_str());
+			}
+			
+
 		}
-		node = json_object_get_object(node, "Mesh");
-		if (node != nullptr) {
-			std::string fbx_path = json_object_get_string(node, "Path FBX");
-			geometry_base_creating* temp_geom = App->imp_mesh->Create_Base_Geometry(fbx_path.c_str());
-			temp_go->AddNewMesh(temp_geom, fbx_path.c_str());
+		else {
+			break;
 		}
+		i++;
 
 	}
 }

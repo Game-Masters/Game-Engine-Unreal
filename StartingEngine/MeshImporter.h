@@ -17,7 +17,7 @@ public:
 	void Recursive_childs_general_bin(char ** cursor, const aiScene* scene, aiNode* node, const char* path);
 	void Load_Mesh_Childs_Recursive(char ** cursor, GameObject* Parent);
 	void General_Bin_Mesh(char ** cursor, const aiScene* scene, aiNode* node, const char* path);
-	geometry_base_creating * Create_Base_Geometry(const char* path);
+	geometry_base_creating * Create_Base_Geometry(const char* path, const char* name, const char* final_path);
 
 	MeshImporter();
 	~MeshImporter();

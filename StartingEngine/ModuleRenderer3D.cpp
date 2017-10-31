@@ -281,9 +281,6 @@ void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Materi
 		}
 		glPopMatrix();
 		glBindTexture(GL_TEXTURE_2D, 0);
-
-
-
 	}
 	else {
 		LOG("Impossible to draw the mesh");

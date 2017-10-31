@@ -1,5 +1,6 @@
 #include "CameraFrustrum.h"
-
+#include "GameObject.h"
+#include "Component.h"
 
 CameraComponent::CameraComponent(GameObject* parent, bool Active) :Component(Component_Type_Enum::component_camera, parent, Active)
 {
@@ -82,6 +83,10 @@ void CameraComponent::Update()
 			glLineWidth(1.0f);
 		}
 	}
+}
+void CameraComponent::CheckInFrustum()
+{
+
 }
 void CameraComponent::GenerateFrustumDraw()
 {

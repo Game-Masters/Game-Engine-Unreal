@@ -199,7 +199,7 @@ update_status ModuleGui::Update(float dt)
 		if (ImGui::BeginDock("Inspector", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 			if (inspection_node != nullptr) {
 				ImGui::Checkbox("##100", &inspection_node->active); ImGui::SameLine();
-				ImGui::Text("Name: %s", inspection_node->name);
+				ImGui::Text("Name: %s", inspection_node->name.c_str());
 				for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
 					Comp_temp = inspection_node->Component_Vect[j];
 					switch (Comp_temp->GetComponentType())

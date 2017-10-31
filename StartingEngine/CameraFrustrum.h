@@ -15,6 +15,7 @@ public:
 	bool Disable();
 	const float4x4* GetViewProjMatrix() const;
 	bool ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
+	void CheckInFrustum();
 private:
 	void GenerateFrustumDraw();
 	void CleanFrustumDraw();

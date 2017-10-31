@@ -19,6 +19,7 @@ void GameObject::Update()
 	if (active) {
 		for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
 			this->Childrens_GameObject_Vect[i]->Update();
+			
 		}
 
 		for (int j = 0; j < this->Component_Vect.size(); j++) {
@@ -117,6 +118,7 @@ void GameObject::Save(JSON_Object *root_object_scene)
 		if (this->Component_Vect.size() > 0) {
 			for (int i = 0; i < this->Component_Vect.size(); i++) {
 				this->Component_Vect[i]->Save(node);
+				
 			}
 		}
 	}

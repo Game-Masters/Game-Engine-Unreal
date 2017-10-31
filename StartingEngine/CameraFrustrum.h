@@ -10,12 +10,15 @@ class CameraComponent : public Component
 public:
 	CameraComponent(GameObject* parent, bool Active);
 	~CameraComponent();
+	void Preupdate();
+	
 	void Update();
 	bool Enable();
 	bool Disable();
 	const float4x4* GetViewProjMatrix() const;
 	bool ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
-	void CheckInFrustum();
+	void CheckInFrustum(GameObject*);
+	
 private:
 	void GenerateFrustumDraw();
 	void CleanFrustumDraw();

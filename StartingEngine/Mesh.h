@@ -85,6 +85,7 @@ public:
 	~Mesh();
 	PrimitiveTypes_Mesh    GetType()const;
 	const char* GetGeometryPath();
+	geometry_base_creating* GetGeometryBaseMesh();
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
 

@@ -1,6 +1,7 @@
 #include "CameraFrustrum.h"
 #include "GameObject.h"
 #include "Component.h"
+#include "Mesh.h"
 
 CameraComponent::CameraComponent(GameObject* parent, bool Active) :Component(Component_Type_Enum::component_camera, parent, Active)
 {
@@ -19,6 +20,7 @@ CameraComponent::~CameraComponent()
 {
 
 }
+
 bool CameraComponent::Enable()
 {
 	return true;
@@ -28,7 +30,32 @@ bool CameraComponent::Disable()
 	return false;
 }
 
+void CameraComponent::Preupdate()
+{
+	GameObject* temp = App->scene_intro->root_gameobject;
+	CheckInFrustum(temp);
+}
+void CameraComponent::CheckInFrustum(GameObject* temp)
+{
+	for (int j = 0; j < temp->Component_Vect.size(); j++) {
+		if (temp->Component_Vect[j]->GetComponentType() == component_mesh_type)
+		{
+			AABB* temp2 = &((Mesh*)temp->Component_Vect[j])->GetGeometryBaseMesh()->BoundBox;
+			//DO THE CULLING FUNCTION
+			frustum.Contains(*temp2);
 
+
+			//
+		}
+		if (temp->Childrens_GameObject_Vect.size() != 0)
+		{
+			for (int i = 0; i < temp->Childrens_GameObject_Vect.size(); i++) {
+				CheckInFrustum(temp);
+
+			}
+		}
+	}
+}
 void CameraComponent::Update()
 {
 	if (first_time)
@@ -82,12 +109,10 @@ void CameraComponent::Update()
 			glColor3f(1.0f, 1.0f, 1.0f);
 			glLineWidth(1.0f);
 		}
+
 	}
 }
-void CameraComponent::CheckInFrustum()
-{
 
-}
 void CameraComponent::GenerateFrustumDraw()
 {
 	//Clean if there is another frustum allocated

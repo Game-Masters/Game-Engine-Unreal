@@ -24,6 +24,7 @@ public:
 	Component(Component_Type_Enum type_component, GameObject* parent, bool active);
 	~Component();
 	virtual void SetActive(bool state);
+	virtual void PreUpdate();
 	virtual void Update();
 	const Component_Type_Enum GetComponentType()const;
 	const GameObject* Get_Parent();

@@ -29,6 +29,7 @@ public:
 	bool static_obj = false;
 	Tag_Object_Enum object_tag_s = Tag_Object_Enum::no_obj_tag;
 	bool IsComponentType(Component_Type_Enum temp_type);
+	void PreUpdate();
 	void Update();
 	Component* AddNewComponent(Component_Type_Enum type);
 	Transform* AddNewTransform(float3 position, float3 scale, Quat rotations);

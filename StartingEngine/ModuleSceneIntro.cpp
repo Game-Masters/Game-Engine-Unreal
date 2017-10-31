@@ -66,6 +66,7 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 {
 	world_texture->Bind();
 	//world_texture->Resize()
+	root_gameobject->PreUpdate();
 
 	return UPDATE_CONTINUE;
 }

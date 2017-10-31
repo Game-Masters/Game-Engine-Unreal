@@ -111,6 +111,12 @@ const char * Mesh::GetGeometryPath()
 	return path_fbx.c_str();
 }
 
+geometry_base_creating * Mesh::GetGeometryBaseMesh()
+{
+	return mesh_v;
+	
+}
+
 void Mesh::Save(JSON_Object * root_object_scene)
 {
 	JSON_Object* node;

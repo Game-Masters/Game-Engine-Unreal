@@ -18,6 +18,10 @@ void Component::SetActive(bool state)
 	active = state;
 }
 
+void Component::PreUpdate()
+{
+}
+
 void Component::Update()
 {
 

@@ -100,9 +100,12 @@ const int GameObject::Get_UUID()
 
 void GameObject::Save(JSON_Object *root_object_scene)
 {
+	App->scene_intro->num_GO++;
+	std::string go_name = "GameObject"+ std::to_string(App->scene_intro->num_GO);
 	JSON_Object* node;
-	json_object_set_value(root_object_scene, this->name.c_str(), json_value_init_object());
-	node=json_object_get_object(root_object_scene, this->name.c_str());
+	json_object_set_value(root_object_scene, go_name.c_str(), json_value_init_object());
+	node=json_object_get_object(root_object_scene, go_name.c_str());
+	json_object_set_string(node, "Name", this->name.c_str());
 	json_object_set_number(node, "UUID", this->UUID);
 	if (parent != nullptr) {
 		json_object_set_number(node, "UUID_parent", this->UUID_parent);

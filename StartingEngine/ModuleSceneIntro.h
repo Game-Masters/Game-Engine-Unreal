@@ -63,7 +63,8 @@ public:
 	GameObject* root_gameobject= nullptr;
 	JSON_Value *root_value_scene = nullptr;
 	JSON_Object *root_object_scene = nullptr;
-
+	int num_GO=0;
+	std::vector<GameObject*> game_objects_load;
 	Texture_Engine *world_texture;
-
+	void Load_Scene();
 };

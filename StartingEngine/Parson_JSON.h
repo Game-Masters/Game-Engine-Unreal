@@ -19,6 +19,7 @@ public:
 	JSON_Object *root_object= nullptr;
 	char *serialized_string = NULL;
 	std::string file_name;
+	
 
 };
 #endif

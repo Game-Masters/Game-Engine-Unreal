@@ -54,6 +54,10 @@ bool ModuleSceneIntro::Start()
 	App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "Scene1");
 
 
+	
+
+
+
 	return ret;
 }
 
@@ -112,9 +116,17 @@ update_status ModuleSceneIntro::Update(float dt)
 	lights[i].Render();
 	
 
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT) {
+		Load_Scene();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_REPEAT) {
+		root_gameobject->Save(root_object_scene);
+		char* serialized_string = json_serialize_to_string_pretty(root_value_scene);
+		json_serialize_to_file(root_value_scene, "Scene1");
+
+	}
 	
 
-	
 	
 	return UPDATE_CONTINUE;
 }
@@ -137,9 +149,7 @@ bool ModuleSceneIntro::Gui_Engine_Modules(float dt)
 
 bool ModuleSceneIntro::CleanUp()
 {
-	root_gameobject->Save(root_object_scene);
-	char* serialized_string = json_serialize_to_string_pretty(root_value_scene);
-	json_serialize_to_file(root_value_scene, "Scene1");
+
 
 	for (int i = 0; i < root_gameobject->Childrens_GameObject_Vect.size(); i++) {
 		delete root_gameobject->Childrens_GameObject_Vect[i];
@@ -162,6 +172,50 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 	if(parent!=nullptr)
 	parent->Childrens_GameObject_Vect.push_back(n_gameobject);
 	return n_gameobject;
+}
+
+void ModuleSceneIntro::Load_Scene()
+{
+
+	for (int i = 0; i < num_GO; i++) {
+		std::string g_temp = "GameObject" + std::to_string(i + 1);
+		JSON_Object* node;
+		node = json_object_get_object(root_object_scene, g_temp.c_str());
+		int UUID = json_object_get_number(node, "UUID");
+		std::string name_go = json_object_get_string(node, "Name");
+
+		GameObject* temp_go = CreateNewGameObjects(name_go.c_str(), true, nullptr, Tag_Object_Enum::no_obj_tag, false);
+		game_objects_load.push_back(temp_go);
+		node = json_object_get_object(node, "Transform");
+		if (node != nullptr) {
+			math::float3 pos;
+			JSON_Array* array = json_object_get_array(node, "Position");
+			pos.x = json_array_get_number(array, 0);
+			pos.y = json_array_get_number(array, 1);
+			pos.z = json_array_get_number(array, 2);
+
+			math::float3 scale;
+			array = json_object_get_array(node, "Scale");
+			scale.x = json_array_get_number(array, 0);
+			scale.y = json_array_get_number(array, 1);
+			scale.z = json_array_get_number(array, 2);
+
+			math::Quat quat;
+			array = json_object_get_array(node, "Rotation");
+			quat.x = json_array_get_number(array, 0);
+			quat.y = json_array_get_number(array, 1);
+			quat.z = json_array_get_number(array, 2);
+			quat.w = json_array_get_number(array, 3);
+			temp_go->AddNewTransform(pos, scale, quat);
+		}
+		node = json_object_get_object(node, "Mesh");
+		if (node != nullptr) {
+			std::string fbx_path = json_object_get_string(node, "Path FBX");
+			geometry_base_creating* temp_geom = App->imp_mesh->Create_Base_Geometry(fbx_path.c_str());
+			temp_go->AddNewMesh(temp_geom, fbx_path.c_str());
+		}
+
+	}
 }
 
 /*void ModuleSceneIntro::IterateChildGameObjects(GameObject* item)

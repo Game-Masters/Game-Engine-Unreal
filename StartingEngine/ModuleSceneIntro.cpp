@@ -65,7 +65,7 @@ bool ModuleSceneIntro::Start()
 update_status ModuleSceneIntro::PreUpdate(float dt)
 {
 	world_texture->Bind();
-	
+	//world_texture->Resize()
 
 	return UPDATE_CONTINUE;
 }
@@ -187,9 +187,14 @@ void ModuleSceneIntro::Load_Scene()
 		node = json_object_get_object(root_object_scene, g_temp.c_str());
 		if (node != nullptr) {
 			int UUID = json_object_get_number(node, "UUID");
+			int UUID_parent = json_object_get_number(node, "UUID_parent");
 			std::string name_go = json_object_get_string(node, "Name");
+
 			temp_go = CreateNewGameObjects(name_go.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
 			game_objects_load.push_back(temp_go);
+			temp_go->Set_UUID(UUID);
+			temp_go->Set_UUID_parent(UUID_parent);
+
 			JSON_Object* node_trans;
 			node_trans = json_object_get_object(node, "Transform");
 			if (node != nullptr) {
@@ -229,26 +234,12 @@ void ModuleSceneIntro::Load_Scene()
 		i++;
 
 	}
+
+	//I need to connect the gerarchy of UUID
+
+
+
 }
-
-/*void ModuleSceneIntro::IterateChildGameObjects(GameObject* item)
-{
-	
-	for (int i = 0; i < item->Childrens_GameObject_Vect.size(); i++) {
-
-		GameObject* child_temp = item->Childrens_GameObject_Vect[i];
-		child_temp->Update();		
-
-			for (int i = 0; i < child_temp->Childrens_GameObject_Vect.size(); i++) {
-				IterateChildGameObjects(child_temp->Childrens_GameObject_Vect[i]);
-			}
-
-
-	}
-
-
-
-}*/
 
 
 

@@ -39,6 +39,8 @@ public:
 	GameObject(const std::string name, GameObject* parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj);
 	~GameObject();
 	const int Get_UUID();
+	void Set_UUID(int UUID);
+	void Set_UUID_parent(int UUID);
 	void Save(JSON_Object *root_object_scene);
 	void Load(JSON_Object *root_object_scene);
 private:

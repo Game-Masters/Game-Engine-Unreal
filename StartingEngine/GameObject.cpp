@@ -128,6 +128,15 @@ void GameObject::Save(JSON_Object *root_object_scene)
 
 }
 
+
+void GameObject::Set_UUID(int UUID) {
+	this->UUID = UUID;
+}
+
+void GameObject::Set_UUID_parent(int UUID) {
+	this->UUID_parent = UUID;
+}
+
 void GameObject::Load(JSON_Object *root_object_scene)
 {
 }

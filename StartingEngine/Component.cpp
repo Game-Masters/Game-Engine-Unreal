@@ -5,7 +5,11 @@ Component::Component(Component_Type_Enum type_component, GameObject* parent, boo
 {
 	LCG UUID_temp;
 	this->UUID_comp = UUID_temp.Int();
-	this->UUID_parent_GO=parent->Get_UUID();
+	if (parent != nullptr)
+	{
+		this->UUID_parent_GO = parent->Get_UUID();
+	}
+	
 
 }
 

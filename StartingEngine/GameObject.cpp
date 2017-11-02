@@ -85,7 +85,10 @@ float4x4 GameObject::GetMatrix_GO()
 		for (int i = 0; i < Component_Vect.size(); i++) {
 
 			if (Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_transform_type) {
+				
+				//float4x4 temp  = float4x4::FromTRS(((Transform*)Component_Vect[i])->GetPosition(), ((Transform*)Component_Vect[i])->GetRotation(), ((Transform*)Component_Vect[i])->GetScale());
 				matrix = ((Transform*)Component_Vect[i])->GetMatrix();
+				//NEED TO MULTYPLY WITH PARENT
 			}
 		}
 	}

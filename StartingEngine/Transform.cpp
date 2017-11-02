@@ -9,7 +9,7 @@ Transform::Transform(GameObject *parent, float3 position, float3 scale, Quat rot
 		this->matrix = float4x4::FromTRS(position, rotations, scale);
 		if (parent->parent->name != "root") {
 			float4x4 matrix_parent = parent->parent->GetMatrix_GO();
-			this->matrix = this->matrix*matrix_parent;
+			this->matrix = matrix_parent*this->matrix;
 			math::float3 position_t;
 			math::float3 scaling_t;
 			math::Quat rot_t;
@@ -19,7 +19,6 @@ Transform::Transform(GameObject *parent, float3 position, float3 scale, Quat rot
 			this->rotation = rot_t;
 
 		}
-		//matrix = float4x4::FromTRS(position, rotation, scale);
 	}
 }
 
@@ -29,10 +28,7 @@ Transform::~Transform()
 
 void Transform::Update()
 {
-	this->matrix = float4x4::FromTRS(position, rotation, scale);
-	if (parent->parent->name != "root") {
-		this->matrix = float4x4::FromTRS(position, rotation, scale)*parent->parent->GetMatrix_GO();
-	}
+	this->matrix.Decompose(this->position, this->rotation, this->scale);
 }
 
 void Transform::SetPosition(float3 n_pos)
@@ -67,7 +63,9 @@ float3 Transform::GetScale()
 
 float4x4 Transform::GetMatrix()
 {
-	return matrix;
+	
+	return  matrix;
+
 }
 
 void Transform::Save(JSON_Object * root_object_scene)

@@ -223,9 +223,12 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 	uint size_mesh = 0;
 
 	std::string name_mesh;
-	float3 translation= { 0, 0, 0 };
-	float3 scaling = { 1, 1, 1 };
-	Quat rotation = { 0, 0, 0, 1 };
+	aiVector3D translation = { 0,0,0 };
+	aiVector3D scaling = { 1,1,1 };
+	aiQuaternion rotation = { 0, 0, 0, 1 };
+	float3 translation_f;
+	float3 scale_f;
+	Quat Final_quat;
 	geometry_base_creating* n_temp_mesh = nullptr;
 	
 	//need to fix
@@ -248,20 +251,21 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		memcpy(num_childs, cursor[0], size);
 		cursor[0] += size;
 		
-		size = sizeof(float3);
+		size = sizeof(aiVector3D);
 		memcpy(&scaling, cursor[0], size);
 		cursor[0] += size;
+		scale_f.Set(scaling.x, scaling.y, scaling.z);
 		
-		size = sizeof(float3);
+		size = sizeof(aiVector3D);
 		memcpy(&translation, cursor[0], size);
 		cursor[0] += size;
+		translation_f.Set(translation.x, translation.y, translation.z);
 
-
-		size = sizeof(Quat);
+		size = sizeof(aiQuaternion);
 		memcpy(&rotation, cursor[0], size);
 		cursor[0] += size;
 
-		Quat Final_quat = { rotation.x,rotation.y,rotation.z, rotation.w };
+		Final_quat = { rotation.w ,rotation.x,rotation.y,rotation.z};
 
 
 		if (num_meshes > 0) {
@@ -278,7 +282,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		if (n_temp_mesh!=nullptr) {
 			child_gameobj->AddNewMesh(n_temp_mesh, final_path_mesh.c_str());
 		}
-			child_gameobj->AddNewTransform(translation, scaling, Final_quat);
+			child_gameobj->AddNewTransform(translation_f, scale_f, Final_quat);
 		
 		num_mesh_iterator_count++;
 	} while (num_mesh_iterator_count < num_meshes);
@@ -299,9 +303,7 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 	uint size_mesh = 0;
 
 	std::string name_mesh;
-	float3 translation = { 0, 0, 0 };
-	float3 scaling = { 1, 1, 1 };
-	Quat rotation = { 0, 0, 0, 1 };
+
 	geometry_base_creating* n_temp_mesh = nullptr;
 	std::string final_path_mesh;
 

@@ -26,6 +26,13 @@
 #include "../StartingEngine/Assimp/include/assimp/cfileio.h"
 
 #pragma comment (lib, "../StartingEngine/Assimp/include/libx86/assimp.lib")
+
+enum TimeState
+{
+	play,
+	pause,
+	stop
+};
 class Application
 {
 public:
@@ -79,6 +86,10 @@ public:
 	void SaveModules();
 	void SetFramesCapped(int cap_temp);
 	int GetFramesCapped();
+	void Play();
+	void Pause();
+	void Stop();
+	TimeState timeStatus = TimeState::stop;
 private:
 	float performance[90] = { 0 };
 	int performance_offset = 0;

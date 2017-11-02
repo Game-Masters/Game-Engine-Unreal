@@ -124,6 +124,21 @@ int Application::GetFramesCapped()
 	return capped_ms;
 }
 
+void Application::Play()
+{
+	timeStatus = play;
+}
+
+void Application::Pause()
+{
+	timeStatus = pause;
+}
+
+void Application::Stop()
+{
+	timeStatus = stop;
+}
+
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {

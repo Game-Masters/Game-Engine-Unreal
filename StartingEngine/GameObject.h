@@ -46,7 +46,8 @@ public:
 	void Save(JSON_Object *root_object_scene);
 	void Load(JSON_Object *root_object_scene);
 	Transform* GetTransform();
-	
+	int Get_UUID_Parent() const;
+	GameObject* FindUUID(int GO_Load_uuid);
 private:
 	int UUID=0;
 	int UUID_parent = 0;

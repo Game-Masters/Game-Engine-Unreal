@@ -201,16 +201,11 @@ void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Materi
 		float3 position;
 		float3 scale;
 		Quat rotation;
-		float4x4 transform_mesh = m->ParentHasTransform(position, scale, rotation);
+		float4x4 transform_mesh = m->Get_Parent()->GetMatrix_Trans();
 		transform_mesh.Transpose();
-		GLfloat trans_point[16] = {
-			transform_mesh[0][0],transform_mesh[0][1],transform_mesh[0][2],transform_mesh[0][3],
-			transform_mesh[1][0],transform_mesh[1][1],transform_mesh[1][2],transform_mesh[1][3],
-			transform_mesh[2][0],transform_mesh[2][1],transform_mesh[2][2],transform_mesh[2][3],
-			transform_mesh[3][0],transform_mesh[3][1],transform_mesh[3][2],transform_mesh[3][3]
-		};
+
 		//glLoadMatrixf(trans_point);
-		glMultMatrixf(trans_point);
+		glMultMatrixf(transform_mesh.ptr());
 		glLineWidth(2.0f);
 		glColor3f(0.0f, 1.0f, 0.0f);
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -269,14 +264,8 @@ void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Materi
 		float4x4 transform_mesh = m->Get_Parent()->GetMatrix_Trans();
 		transform_mesh.Transpose();
 
-		GLfloat trans_point[16] = {
-			transform_mesh[0][0],transform_mesh[0][1],transform_mesh[0][2],transform_mesh[0][3],
-			transform_mesh[1][0],transform_mesh[1][1],transform_mesh[1][2],transform_mesh[1][3],
-			transform_mesh[2][0],transform_mesh[2][1],transform_mesh[2][2],transform_mesh[2][3],
-			transform_mesh[3][0],transform_mesh[3][1],transform_mesh[3][2],transform_mesh[3][3]
-		};
 		//glLoadMatrixf(trans_point);
-		glMultMatrixf(trans_point);
+		glMultMatrixf(transform_mesh.ptr());
 		if (mesh_v->vertices != nullptr && mesh_v->indices != nullptr) {
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);

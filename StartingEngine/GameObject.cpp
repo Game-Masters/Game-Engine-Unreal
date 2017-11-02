@@ -86,7 +86,7 @@ float4x4 GameObject::GetMatrix_Trans()
 	
 	if (this->parent != nullptr) {
 		if(this->parent->GetTransform()!=nullptr)
-		matrix= this->parent->GetTransform()->GetMatrix()*matrix;
+		matrix= this->parent->GetMatrix_Trans()*matrix;
 
 	}
 	return matrix;
@@ -97,11 +97,35 @@ float4x4 GameObject::GetMatrix_Trans()
 GameObject::GameObject(const std::string name, GameObject * parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj): name(name), parent(parent), active(active), object_tag_s(tag_temp), static_obj(static_obj)
 {
 	LCG UUID_temp;
-	this->UUID = UUID_temp.Int();
-	if (parent != nullptr) {
-		this->UUID_parent = parent->UUID;
+	if (name == "root") {
+		this->UUID = 0;
 	}
+	else {
+		this->UUID = UUID_temp.Int();
+		if (parent != nullptr) {
+			this->UUID_parent = parent->UUID;
+		}
+	}
+
 }
+
+GameObject* GameObject::FindUUID(int GO_Load) {
+
+	if (this->Get_UUID() == GO_Load) {
+		return this;
+	}
+	else {
+		for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+			GameObject* temp = this->Childrens_GameObject_Vect[i]->FindUUID(GO_Load);
+			if (temp!=nullptr) {
+				return temp;
+			}
+
+		}
+	}
+	return nullptr;
+}
+
 
 GameObject::~GameObject()
 {
@@ -166,4 +190,9 @@ Transform * GameObject::GetTransform()
 		}
 	}
 	return nullptr;
+}
+
+int GameObject::Get_UUID_Parent() const
+{
+	return this->UUID_parent;
 }

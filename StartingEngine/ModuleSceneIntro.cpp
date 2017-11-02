@@ -117,13 +117,15 @@ update_status ModuleSceneIntro::Update(float dt)
 	lights[i].Render();
 	
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
+	if (load_scene) {
 		Load_Scene();
+		load_scene = false;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+	if (save_scene) {
 		root_gameobject->Save(root_object_scene);
 		char* serialized_string = json_serialize_to_string_pretty(root_value_scene);
 		json_serialize_to_file(root_value_scene, "Scene1");
+		save_scene = false;
 
 	}
 	
@@ -177,6 +179,7 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 
 void ModuleSceneIntro::Load_Scene()
 {
+	std::vector<GameObject*> GO_Load;
 	GameObject* temp_go = nullptr;
 	int i = 0;
 	std::string g_temp = "GameObject" + std::to_string(i + 1);
@@ -190,9 +193,13 @@ void ModuleSceneIntro::Load_Scene()
 			int UUID = json_object_get_number(node, "UUID");
 			int UUID_parent = json_object_get_number(node, "UUID_parent");
 			std::string name_go = json_object_get_string(node, "Name");
-
-			temp_go = CreateNewGameObjects(name_go.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
-			game_objects_load.push_back(temp_go);
+			if (UUID_parent==0) {
+				temp_go = CreateNewGameObjects(name_go.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
+			}
+			else {
+				temp_go = CreateNewGameObjects(name_go.c_str(), true, nullptr, Tag_Object_Enum::no_obj_tag, false);
+			}
+			
 			temp_go->Set_UUID(UUID);
 			temp_go->Set_UUID_parent(UUID_parent);
 
@@ -226,7 +233,7 @@ void ModuleSceneIntro::Load_Scene()
 				geometry_base_creating* temp_geom = App->imp_mesh->Create_Base_Geometry(fbx_path.c_str(), name_go.c_str(), fbx_path.c_str());
 				temp_go->AddNewMesh(temp_geom, fbx_path.c_str());
 			}
-			
+			GO_Load.push_back(temp_go);
 
 		}
 		else {
@@ -237,11 +244,30 @@ void ModuleSceneIntro::Load_Scene()
 	}
 
 	//I need to connect the gerarchy of UUID
+	Connect_Load_Gerarchy(GO_Load);
+}
 
+void ModuleSceneIntro::Connect_Load_Gerarchy(std::vector<GameObject*>GO_Load)
+{
 
+	for (int i = 0; i <GO_Load.size(); i++) {
+		GameObject *temp_comp = GO_Load[i];
+		if (temp_comp->Get_UUID_Parent() != 0) {
+			GameObject *parent_t = Find_UUID_Root(temp_comp->Get_UUID_Parent());
+			if (parent_t != nullptr) {
+				temp_comp->parent = parent_t;
+				parent_t->Childrens_GameObject_Vect.push_back(temp_comp);
+			}
+		}
+
+	}
 
 }
 
+GameObject * ModuleSceneIntro::Find_UUID_Root(int uuid)
+{
+	return this->root_gameobject->FindUUID(uuid);
+}
 
 
 

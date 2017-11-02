@@ -58,12 +58,15 @@ public:
 	GameObject* CreateNewGameObjects(const char* name, bool active, GameObject* parent, Tag_Object_Enum tag_temp, bool static_s);
 
 public:
-
+	bool load_scene=false;
+	bool save_scene=false;
 	void IterateChildGameObjects(GameObject* item);
 	GameObject* root_gameobject= nullptr;
 	JSON_Value *root_value_scene = nullptr;
 	JSON_Object *root_object_scene = nullptr;
+	void Connect_Load_Gerarchy(std::vector<GameObject*>GO_Load);
 	int num_GO=0;
+	GameObject* Find_UUID_Root(int uuid);
 	std::vector<GameObject*> game_objects_load;
 	Texture_Engine *world_texture;
 	void Load_Scene();

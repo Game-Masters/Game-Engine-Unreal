@@ -194,6 +194,7 @@ update_status ModuleGui::Update(float dt)
 		material_base_geometry* temp_v=nullptr;
 		math::float3 trans;
 		math::float3 scale;
+		
 		Quat result_rot;
 		float3 temp_transf;
 		if (ImGui::BeginDock("Inspector", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
@@ -201,10 +202,12 @@ update_status ModuleGui::Update(float dt)
 				ImGui::Checkbox("##100", &inspection_node->active); ImGui::SameLine();
 				ImGui::Text("Name: %s", inspection_node->name.c_str());
 				for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
+					bool modify = false;
 					Comp_temp = inspection_node->Component_Vect[j];
 					switch (Comp_temp->GetComponentType())
 					{
 					case Component_Type_Enum::component_transform_type:
+						modify = false;
 						t_temp = (Transform*)Comp_temp;
 						trans =t_temp->GetPosition();
 						temp_transf = trans;
@@ -216,20 +219,22 @@ update_status ModuleGui::Update(float dt)
 						ImGui::Text("Pos z:"); ImGui::SameLine();
 						ImGui::DragFloat("##8", &trans.z, 0.1f, -500.0f, 500.0f);
 						if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z ) {
-							t_temp->SetPosition(trans);
+							//t_temp->SetPosition(trans);
+							modify = true;
 						}
 
 						scale = t_temp->GetScale();
 						temp_transf = scale;
 						ImGui::Text("                                Scale");
 						ImGui::Text("Scale x:"); ImGui::SameLine();
-						ImGui::DragFloat("##9", &scale.x, 0.1f, -500.0f, 500.0f);
+						ImGui::DragFloat("##9", &scale.x, 0.1f, 1.0f, 500.0f);
 						ImGui::Text("Scale y:"); ImGui::SameLine();
-						ImGui::DragFloat("##10", &scale.y, 0.1f, -500.0f, 500.0f);
+						ImGui::DragFloat("##10", &scale.y, 0.1f, 1.0f, 500.0f);
 						ImGui::Text("Scale z:"); ImGui::SameLine();
-						ImGui::DragFloat("##11", &scale.z, 0.1f, -500.0f, 500.0f);
+						ImGui::DragFloat("##11", &scale.z, 0.1f, 1.0f, 500.0f);
 						if (scale.x != temp_transf.x || scale.y != temp_transf.y || scale.z != temp_transf.z) {
-							t_temp->SetScale(scale);
+							//t_temp->SetScale(scale);
+							modify = true;
 						}
 
 						q_temp = t_temp->GetRotation();
@@ -237,19 +242,19 @@ update_status ModuleGui::Update(float dt)
 						temp_transf = eul_ang;
 						ImGui::Text("                                Rotation");
 						ImGui::Text("Rotation x:"); ImGui::SameLine();
-						ImGui::DragFloat("##12", &eul_ang.x, 0.1f, -500.0f, 500.0f);
+						ImGui::DragFloat("##12", &eul_ang.x, 0.1f, -180.0f, 180.0f);
 						ImGui::Text("Rotation y:"); ImGui::SameLine();
-						ImGui::DragFloat("##13", &eul_ang.y, 0.1f, -500.0f, 500.0f);
+						ImGui::DragFloat("##13", &eul_ang.y, 0.1f, -180.0f, 180.0f);
 						ImGui::Text("Rotation z:"); ImGui::SameLine();
-						ImGui::DragFloat("##14", &eul_ang.z, 0.1f, -500.0f, 500.0f);
+						ImGui::DragFloat("##14", &eul_ang.z, 0.1f, -180.0f, 180.0f);
 						//Not really working
 						if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
 							eul_ang *= DEGTORAD;
-							math::Quat q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
-							t_temp->SetRotation(q_temp);
+							q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
+							modify = true;
 						}
 
-						if(inspection_node->GetTransform()!=nullptr)
+						if(inspection_node->GetTransform()!=nullptr && modify == true)
 						inspection_node->GetTransform()->SetMatrix(float4x4::FromTRS(trans, q_temp, scale));
 
 						break;
@@ -526,7 +531,8 @@ update_status ModuleGui::Update(float dt)
 		ImGui::SameLine();
 		if (ImGui::BeginMenu("Menu"))
 		{
-
+			if (ImGui::MenuItem("Save")) { App->scene_intro->save_scene = !App->scene_intro->save_scene; }
+			if (ImGui::MenuItem("Load")) { App->scene_intro->load_scene = !App->scene_intro->load_scene; }
 			if (ImGui::MenuItem("Console")) { show_console = !show_console; }
 			if (ImGui::MenuItem("Go to github")) { ShellExecuteA(NULL, "open", "https://github.com/Game-Masters/Game-Engine-Unreal", NULL, NULL, SW_SHOWNORMAL); }
 			if (ImGui::MenuItem("Close App")) { button_exit_app = true; }
@@ -552,6 +558,7 @@ update_status ModuleGui::Update(float dt)
 	if (show_console) {
 		console_imgui.Enable_Console_Imgui(show_console);
 	}
+
 	ImGui::EndDockspace();
 	ImGui::End();
 

@@ -29,12 +29,12 @@ void Component::Update()
 
 }
 
-const Component_Type_Enum Component::GetComponentType() const
+Component_Type_Enum Component::GetComponentType() const
 {
 	return type_component;
 }
 
-const GameObject * Component::Get_Parent()
+GameObject * Component::Get_Parent() const
 {
 	return parent;
 }

@@ -3,6 +3,7 @@
 #include "ModuleRenderer3D.h"
 #include"Mesh.h"
 #include"Material.h"
+#include"GameObject.h";
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -259,7 +260,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Materi
 		float3 position;
 		float3 scale;
 		Quat rotation;
-		float4x4 transform_mesh = m->ParentHasTransform(position, scale, rotation);
+		float4x4 transform_mesh = m->Get_Parent()->GetMatrix_Trans();
 		transform_mesh.Transpose();
 
 		GLfloat trans_point[16] = {

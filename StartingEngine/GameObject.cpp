@@ -77,20 +77,17 @@ CameraComponent* GameObject::AddNewFrustum()
 	return n_camera;
 }
 
-float4x4 GameObject::GetMatrix_GO()
+float4x4 GameObject::GetMatrix_Trans()
 {
-	float4x4 matrix = float4x4::zero;
+	float4x4 matrix = float4x4::identity;
+	if (GetTransform() != nullptr) {
+		matrix = GetTransform()->GetMatrix();
+	}
+	
 	if (this->parent != nullptr) {
+		if(this->parent->GetTransform()!=nullptr)
+		matrix= this->parent->GetTransform()->GetMatrix()*matrix;
 
-		for (int i = 0; i < Component_Vect.size(); i++) {
-
-			if (Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_transform_type) {
-				
-				//float4x4 temp  = float4x4::FromTRS(((Transform*)Component_Vect[i])->GetPosition(), ((Transform*)Component_Vect[i])->GetRotation(), ((Transform*)Component_Vect[i])->GetScale());
-				matrix = ((Transform*)Component_Vect[i])->GetMatrix();
-				//NEED TO MULTYPLY WITH PARENT
-			}
-		}
 	}
 	return matrix;
 }
@@ -159,4 +156,14 @@ void GameObject::Set_UUID_parent(int UUID) {
 
 void GameObject::Load(JSON_Object *root_object_scene)
 {
+}
+
+Transform * GameObject::GetTransform()
+{
+	for (int i = 0; i < Component_Vect.size(); i++) {
+		if (Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_transform_type) {
+			return((Transform*)Component_Vect[i]);
+		}
+	}
+	return nullptr;
 }

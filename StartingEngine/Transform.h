@@ -11,7 +11,7 @@ private:
 	float3 position;
 	float3 scale;
 	Quat rotation;
-	float4x4 matrix;
+	float4x4 matrix= float4x4::identity;
 
 public:
 
@@ -25,6 +25,7 @@ public:
 	Quat GetRotation();
 	float3 GetScale();
 	float4x4 GetMatrix();
+	float4x4 SetMatrix(float4x4 temp);
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
 

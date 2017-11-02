@@ -36,7 +36,7 @@ public:
 	Mesh* AddNewMesh(geometry_base_creating* vec_mesh, const char* path, Material* t_mat=nullptr);
 	Material* AddNewMaterial(const char* Path_texture, const char* Path_fbx);
 	CameraComponent* AddNewFrustum();
-	float4x4 GetMatrix_GO();
+	float4x4 GetMatrix_Trans();
 	GameObject(const std::string name, GameObject* parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj);
 	~GameObject();
 	const int Get_UUID();
@@ -44,6 +44,7 @@ public:
 	void Set_UUID_parent(int UUID);
 	void Save(JSON_Object *root_object_scene);
 	void Load(JSON_Object *root_object_scene);
+	Transform* GetTransform();
 	
 private:
 	int UUID=0;

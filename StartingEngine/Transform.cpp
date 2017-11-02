@@ -4,22 +4,8 @@
 Transform::Transform(GameObject *parent, float3 position, float3 scale, Quat rotations ):Component(
 	Component_Type_Enum::component_transform_type, parent, true), position(position),scale(scale), rotation(rotations)
 {
-	if (parent->parent != nullptr) {
-		//Need to fix why son has matrix before than the parent
-		this->matrix = float4x4::FromTRS(position, rotations, scale);
-		if (parent->parent->name != "root") {
-			float4x4 matrix_parent = parent->parent->GetMatrix_GO();
-			this->matrix = matrix_parent*this->matrix;
-			math::float3 position_t;
-			math::float3 scaling_t;
-			math::Quat rot_t;
-			matrix.Decompose(position_t, rot_t, scaling_t);
-			this->position = position_t;
-			this->scale = scaling_t;
-			this->rotation = rot_t;
+	this->matrix = float4x4::FromTRS(position, rotations, scale);
 
-		}
-	}
 }
 
 Transform::~Transform()
@@ -64,8 +50,13 @@ float3 Transform::GetScale()
 float4x4 Transform::GetMatrix()
 {
 	
-	return  matrix;
+	return  float4x4::FromTRS(position, rotation, scale);
 
+}
+
+float4x4 Transform::SetMatrix(float4x4 temp)
+{
+	return this->matrix=temp;
 }
 
 void Transform::Save(JSON_Object * root_object_scene)

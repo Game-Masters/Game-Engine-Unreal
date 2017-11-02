@@ -1,10 +1,10 @@
 #pragma once
-#include "GameObject.h"
 #include "Component.h"
 #include"MathGeoLib\MathGeoLib.h"
 #include"Application.h"
 #include"Globals.h"
 #include "Transform.h"
+
 class CameraComponent : public Component
 {
 public:

@@ -2,6 +2,9 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "GameObject.h"
+#include"Component.h"
+class CameraComponent;
 
 class ModuleCamera3D : public Module
 {
@@ -20,7 +23,7 @@ public:
 	void CameraRecenter();
 	float* GetViewMatrix();
 	AABB* LCenter = nullptr;
-
+	CameraComponent* CamComp;
 private:
 
 	void CalculateViewMatrix();

@@ -3,6 +3,7 @@
 #include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
 #include "ModulePlayer.h"
+#include "CameraFrustrum.h"
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
@@ -24,7 +25,7 @@ bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
-
+	CamComp = new CameraComponent(App->scene_intro->root_gameobject,true);
 	//Position = Reference + zoom * Z;
 
 	return ret;

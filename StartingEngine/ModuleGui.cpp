@@ -17,7 +17,7 @@
 #include"Transform.h"
 #include"Mesh.h"
 
-#define COLOR_ENGINE ImVec4(0.80f, 0.32f, 0.0f, 1.0f)
+#define COLOR_ENGINE ImVec4(0.878, 0.262, 0, 1.0f)
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
 
 
@@ -48,32 +48,32 @@ bool ModuleGui::Start()
 
 
 	
-	style.WindowPadding = ImVec2(10, 15);
+	style.WindowPadding = ImVec2(12,15);
 	style.WindowRounding = 0.0f;
-	style.FramePadding = ImVec2(5, 5);
+	style.FramePadding = ImVec2(15, 5);
 	style.FrameRounding = 0.0f;
-	style.ItemSpacing = ImVec2(4,4);
-	style.ItemInnerSpacing = ImVec2(4, 4);
+	style.ItemSpacing = ImVec2(5,4);
+	style.ItemInnerSpacing = ImVec2(14, 14);
 	style.IndentSpacing = 25.0f;
 	style.ScrollbarSize = 15.0f;
 	style.ScrollbarRounding = 0.0f;
 	style.GrabMinSize = 5.0f;
 	style.GrabRounding = 0.0f;
 	
-	style.Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+	style.Colors[ImGuiCol_Text] = ImVec4(0.90f, 0.90f, 0.90f, 1.00f);
 	style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
-	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
-	style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
+	style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
 	style.Colors[ImGuiCol_PopupBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
-	style.Colors[ImGuiCol_Border] = COLOR_ENGINE;
+	style.Colors[ImGuiCol_Border] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
 	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.15f, 0.15f, 1.00f);
 	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
-	style.Colors[ImGuiCol_FrameBgActive] =COLOR_ENGINE;
+	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.878, 0.262, 0, 1.00f);
 	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
 	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.47f, 0.47, 0.47f, 0.75f);
 	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
-	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.35f, 0.35f, 0.35f, 1.00f);
+	style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.1f, 0.1f, 0.1f, 1.00f);
 	style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
 	style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 	style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
@@ -124,7 +124,7 @@ bool ModuleGui::Start()
 	ImGuiIO& io{ ImGui::GetIO() };
 	
 
-	io.Fonts->AddFontFromFileTTF("Data\\Fonts\\OpenSans-Regular.ttf", 16);
+	io.Fonts->AddFontFromFileTTF("Data\\Fonts\\Product Sans Bold.ttf", 15);
 
 
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);

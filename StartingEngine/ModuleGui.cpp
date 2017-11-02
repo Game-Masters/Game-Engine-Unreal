@@ -17,7 +17,7 @@
 #include"Transform.h"
 #include"Mesh.h"
 
-
+#define COLOR_ENGINE ImVec4(0.80f, 0.32f, 0.0f, 1.0f)
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
 
 
@@ -49,27 +49,27 @@ bool ModuleGui::Start()
 
 	
 	style.WindowPadding = ImVec2(10, 15);
-	style.WindowRounding = 2.0f;
+	style.WindowRounding = 0.0f;
 	style.FramePadding = ImVec2(5, 5);
-	style.FrameRounding = 2.0f;
+	style.FrameRounding = 0.0f;
 	style.ItemSpacing = ImVec2(4,4);
 	style.ItemInnerSpacing = ImVec2(4, 4);
 	style.IndentSpacing = 25.0f;
 	style.ScrollbarSize = 15.0f;
-	style.ScrollbarRounding = 2.0f;
+	style.ScrollbarRounding = 0.0f;
 	style.GrabMinSize = 5.0f;
-	style.GrabRounding = 2.0f;
+	style.GrabRounding = 0.0f;
 	
 	style.Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
 	style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
 	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
 	style.Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_PopupBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
-	style.Colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
-	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
+	style.Colors[ImGuiCol_Border] = COLOR_ENGINE;
+	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
 	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.15f, 0.15f, 1.00f);
 	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
-	style.Colors[ImGuiCol_FrameBgActive] =ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	style.Colors[ImGuiCol_FrameBgActive] =COLOR_ENGINE;
 	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
 	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.47f, 0.47, 0.47f, 0.75f);
 	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
@@ -79,15 +79,15 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_ComboBg] = ImVec4(0.19f, 0.18f, 0.21f, 1.00f);
-	style.Colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	style.Colors[ImGuiCol_CheckMark] = COLOR_ENGINE;
 	style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
 	style.Colors[ImGuiCol_Button] = ImVec4(0.10f, 0.16f, 0.15f, 1.00f);
 	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
-	style.Colors[ImGuiCol_ButtonActive] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	style.Colors[ImGuiCol_ButtonActive] = COLOR_ENGINE;
 	style.Colors[ImGuiCol_Header] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
-	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
-	style.Colors[ImGuiCol_HeaderActive] = ImVec4(1.00f, 0.46f, 0.0f, 1.00f);
+	style.Colors[ImGuiCol_HeaderHovered] = COLOR_ENGINE;
+	style.Colors[ImGuiCol_HeaderActive] = COLOR_ENGINE;
 	style.Colors[ImGuiCol_Column] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
 	style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
@@ -364,7 +364,7 @@ update_status ModuleGui::Update(float dt)
 			ImGui::SameLine();
 			if (App->camera->Can_Move_Camera == true)
 			{
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "FREE CAMERA MODE ACTIVATED");
+				ImGui::TextColored(COLOR_ENGINE, "FREE CAMERA MODE ACTIVATED");
 			}
 
 		}
@@ -404,41 +404,41 @@ update_status ModuleGui::Update(float dt)
 		if (n4 == true)
 		{
 			ImGui::Begin("Controls layout", &n4);
-			ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "CAMERA TYPES");
+			ImGui::TextColored(COLOR_ENGINE, "CAMERA TYPES");
 			ImGui::Text("When the engine is started, the camera is set to default");
 			ImGui::Text("press RIGHT CLICK to activate FREE CAMERA MODE \N\N");
 
 
 			if (ImGui::CollapsingHeader("Default Camera"))
 			{
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "ALT+LEFT CLICK");
+				ImGui::TextColored(COLOR_ENGINE, "ALT+LEFT CLICK");
 				ImGui::Text("Click alt+left click to orbit around axis,\n or the center of the object, if there is one");
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "SCROLL WHEEL");
+				ImGui::TextColored(COLOR_ENGINE, "SCROLL WHEEL");
 				ImGui::Text("use the scroll wheel to zoom in/ zoom out");
 			}
 			if (ImGui::CollapsingHeader("Free Camera"))
 			{
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "RIGHT CLICK");
+				ImGui::TextColored(COLOR_ENGINE, "RIGHT CLICK");
 				ImGui::Text("Activates the free camera mode");
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "LEFT CLICK");
+				ImGui::TextColored(COLOR_ENGINE, "LEFT CLICK");
 				ImGui::Text("rotates freely around the world");
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "W A S D");
+				ImGui::TextColored(COLOR_ENGINE, "W A S D");
 				ImGui::Text("use w a s d to move around the world");
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "R F");
+				ImGui::TextColored(COLOR_ENGINE, "R F");
 				ImGui::Text("use R & F to go up or go down in the Y axis");
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "SCROLL WHEEL");
+				ImGui::TextColored(COLOR_ENGINE, "SCROLL WHEEL");
 				ImGui::Text("use the scroll wheel to zoom in/ zoom out");
 			}
-			ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "\n TABS");
+			ImGui::TextColored(COLOR_ENGINE, "\n TABS");
 			if (ImGui::CollapsingHeader("##6"))
 			{
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), " Right tabs\n");
+				ImGui::TextColored(COLOR_ENGINE, " Right tabs\n");
 				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "\n Geometry scene\n");
 				ImGui::Text("It displays info of the meshes that are loaded in scene, like position, rotation, texture, texture size and others");
 				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "\n Information\n");
 				ImGui::Text("Every important variable of each module is displayed here, like your computer's info, change scene background and others");
 
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "\n Main tabs\n");
+				ImGui::TextColored(COLOR_ENGINE, "\n Main tabs\n");
 				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "Rendering options");
 				ImGui::Text("Buttons that let you activate different rendering options, check out it's help icon for more...");
 				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "World");
@@ -448,25 +448,25 @@ update_status ModuleGui::Update(float dt)
 				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 0.70f), "Application");
 				ImGui::Text("Performance graphs");
 			}
-			ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "\n MENU");
+			ImGui::TextColored(COLOR_ENGINE, "\n MENU");
 			if (ImGui::CollapsingHeader("##7"))
 			{
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "Console");
+				ImGui::TextColored(COLOR_ENGINE, "Console");
 				ImGui::Text("opens the console");
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "Open github");
+				ImGui::TextColored(COLOR_ENGINE, "Open github");
 				ImGui::Text("opens developer github's page");
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "Close");
+				ImGui::TextColored(COLOR_ENGINE, "Close");
 				ImGui::Text("closes the app");
 			}
 			if (ImGui::CollapsingHeader("SPECIAL CONTROLS"))
 			{
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "Z");
+				ImGui::TextColored(COLOR_ENGINE, "Z");
 				ImGui::Text("turns on\off the editor");
 
 			}
 			if (ImGui::CollapsingHeader("HOW TO LOAD FBX AND TEXTURES"))
 			{
-				ImGui::TextColored(ImVec4(1.00f, 0.46f, 0.0f, 1.00f), "DRAG AND DROP ");
+				ImGui::TextColored(COLOR_ENGINE, "DRAG AND DROP ");
 				ImGui::Text("drag and drop your files");
 			}
 

@@ -245,7 +245,7 @@ update_status ModuleGui::Update(float dt)
 						//Not really working
 						if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
 							eul_ang *= DEGTORAD;
-							math::Quat q_t	emp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
+							math::Quat q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
 							t_temp->SetRotation(q_temp);
 						}
 

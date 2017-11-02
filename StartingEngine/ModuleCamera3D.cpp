@@ -108,7 +108,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 
 	// Recalculate matrix -------------
-	CalculateViewMatrix();
+	//CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;
 }
@@ -129,7 +129,7 @@ void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool Rota
 		this->Position += Z * 0.05f;
 	}
 
-	//CalculateViewMatrix();
+	CalculateViewMatrix();
 }
 
 // -----------------------------------------------------------------

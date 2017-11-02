@@ -4,6 +4,8 @@
 #include"Mesh.h"
 #include"Material.h"
 #include"GameObject.h";
+#include "CameraFrustrum.h"
+
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -102,7 +104,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	glLoadMatrixf(App->camera->CamComp->GetViewProjMatrix()->ptr());
 
 	if (cullface)
 	{

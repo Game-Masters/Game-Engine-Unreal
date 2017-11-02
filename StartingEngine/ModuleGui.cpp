@@ -305,6 +305,7 @@ update_status ModuleGui::Update(float dt)
 		ImGui::EndDock();
 		//To print information about the geometry in the scene
 		
+		
 
 		if (ImGui::BeginDock("World", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 
@@ -559,8 +560,14 @@ update_status ModuleGui::Update(float dt)
 		console_imgui.Enable_Console_Imgui(show_console);
 	}
 
+	
+
 	ImGui::EndDockspace();
 	ImGui::End();
+
+	App->fs_e->IterateAllDirect();
+
+
 
 	if (show_performance)
 	{

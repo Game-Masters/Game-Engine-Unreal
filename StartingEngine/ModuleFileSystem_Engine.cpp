@@ -3,6 +3,7 @@
 #include <iostream>
 #include <experimental/filesystem>
 #include<fstream>
+#include"Imgui\imgui.h"
 
 bool ModuleFileSystem_Engine::Start()
 {
@@ -11,7 +12,9 @@ bool ModuleFileSystem_Engine::Start()
 	Mesh_User = CreateDir("Mesh", Directory_Type::user_directory_type, RootDirect_User);
 	Material_User = CreateDir("Material", Directory_Type::user_directory_type, RootDirect_User);
 
-
+	Directories_User_V.push_back(RootDirect_User);
+	Directories_User_V.push_back(Mesh_User);
+	Directories_User_V.push_back(Material_User);
 	
 	RootDirect_Engine = nullptr;
 	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr,true);
@@ -19,7 +22,6 @@ bool ModuleFileSystem_Engine::Start()
 	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine, true);
 
 
-	
 	
 
 
@@ -199,4 +201,21 @@ void ModuleFileSystem_Engine::ChangeFormat_File(const char * path, const char * 
 	std::string n_form_std = n_format;
 	final_path += "." + n_form_std;
 	*new_path = final_path.c_str();
+}
+
+void ModuleFileSystem_Engine::IterateAllDirect() {
+
+	ImGui::Begin("Directory:");
+	for (std::experimental::filesystem::recursive_directory_iterator::value_type item : std::experimental::filesystem::recursive_directory_iterator(RootDirect_Engine->path)) {
+		std::string str_path = item.path().string().c_str();
+		str_path += "asda";
+	/*	ImGui::TreeNode(str_path.c_str());
+	if(item.status().type()== std::experimental::filesystem::file_type::directory)
+			ImGui::TreePop();*/
+		
+
+
+	}
+	ImGui::End();
+
 }

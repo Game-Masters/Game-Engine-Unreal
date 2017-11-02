@@ -51,7 +51,7 @@ bool ModuleSceneIntro::Start()
 	frustrumtest->AddNewTransform(float3(0,0,0), float3(1, 1, 1), Quat(0,0,0,1));
 	frustrumtest->AddNewFrustum();
 
-	App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "Scene1");
+	
 	//Load_Scene();
 
 	
@@ -122,6 +122,8 @@ update_status ModuleSceneIntro::Update(float dt)
 		load_scene = false;
 	}
 	if (save_scene) {
+		App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "Scene1");
+		json_object_clear(root_object_scene);
 		root_gameobject->Save(root_object_scene);
 		char* serialized_string = json_serialize_to_string_pretty(root_value_scene);
 		json_serialize_to_file(root_value_scene, "Scene1");

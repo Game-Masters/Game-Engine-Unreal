@@ -565,7 +565,7 @@ update_status ModuleGui::Update(float dt)
 	ImGui::EndDockspace();
 	ImGui::End();
 
-	App->fs_e->IterateAllDirect();
+	App->fs_e->IterateAllDirect(App->fs_e->RootDirect_User->path.c_str());
 
 
 

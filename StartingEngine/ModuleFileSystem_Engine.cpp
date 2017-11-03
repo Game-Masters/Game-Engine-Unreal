@@ -203,15 +203,28 @@ void ModuleFileSystem_Engine::ChangeFormat_File(const char * path, const char * 
 	*new_path = final_path.c_str();
 }
 
-void ModuleFileSystem_Engine::IterateAllDirect() {
+void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir) {
 
 	ImGui::Begin("Directory:");
-	for (std::experimental::filesystem::recursive_directory_iterator::value_type item : std::experimental::filesystem::recursive_directory_iterator(RootDirect_Engine->path)) {
+	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path_dir)) {
 		std::string str_path = item.path().string().c_str();
-		str_path += "asda";
-	/*	ImGui::TreeNode(str_path.c_str());
-	if(item.status().type()== std::experimental::filesystem::file_type::directory)
-			ImGui::TreePop();*/
+		bool is_dir = false;
+		if(ImGui::TreeNode(str_path.c_str()))
+		{
+			/*if (item.status().type() == std::experimental::filesystem::file_type::regular) {
+				if (ImGui::TreeNode(str_path.c_str())) {
+					ImGui::TreePop();
+				}
+			}*/
+			
+			if (item.status().type() == std::experimental::filesystem::file_type::directory) {
+				IterateAllDirect(str_path.c_str());
+			}
+			ImGui::TreePop();
+		}
+
+	
+
 		
 
 

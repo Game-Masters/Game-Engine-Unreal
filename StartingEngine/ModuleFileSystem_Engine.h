@@ -29,7 +29,7 @@ public:
 	~ModuleFileSystem_Engine();
 	bool SerchInDirectorySistem(const char* path, File_type type);
 	void ChangeFormat_File(const char* path, const char* n_format, std::string *new_path, Directory_ *Parent);
-	void IterateAllDirect();
+	void IterateAllDirect(const char* path_dir);
 public:
 	Directory_ *RootDirect_User=nullptr;
 	Directory_ *Mesh_User = nullptr;

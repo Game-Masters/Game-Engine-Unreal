@@ -70,6 +70,7 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* pat
 
 Mesh::~Mesh()
 {
+	delete mesh_v;
 }
 
 
@@ -104,6 +105,11 @@ void Mesh::Update()
 PrimitiveTypes_Mesh Mesh::GetType() const
 {
 	return type;
+}
+
+void Mesh::CleanUp()
+{
+	delete this;
 }
 
 const char * Mesh::GetGeometryPath()

@@ -30,6 +30,6 @@ public:
 	GameObject* Get_Parent()const;
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
-
+	virtual void CleanUp();
 };
 

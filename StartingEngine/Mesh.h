@@ -84,6 +84,7 @@ public:
 	Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* path, Material* m_text=nullptr);
 	~Mesh();
 	PrimitiveTypes_Mesh    GetType()const;
+	void CleanUp();
 	const char* GetGeometryPath();
 	geometry_base_creating* GetGeometryBaseMesh();
 	virtual void Save(JSON_Object *root_object_scene);

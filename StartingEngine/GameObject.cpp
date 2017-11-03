@@ -182,6 +182,33 @@ void GameObject::Load(JSON_Object *root_object_scene)
 {
 }
 
+void GameObject::CleanUp()
+{
+
+	for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+		this->Childrens_GameObject_Vect[i]->CleanUp();
+	}
+
+
+	for (int i = 0; i < this->Component_Vect.size(); i++) {
+		switch (this->Component_Vect[i]->GetComponentType()) {
+		case Component_Type_Enum::component_mesh_type:
+			((Mesh*)this->Component_Vect[i])->CleanUp();
+			break;
+
+		case Component_Type_Enum::component_material_type:
+			((Material*)this->Component_Vect[i])->CleanUp();
+			break;
+
+		}
+	}
+	this->Component_Vect.clear();
+	for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+		delete this->Childrens_GameObject_Vect[i];
+	}
+	this->Childrens_GameObject_Vect.clear();
+}
+
 Transform * GameObject::GetTransform()
 {
 	for (int i = 0; i < Component_Vect.size(); i++) {

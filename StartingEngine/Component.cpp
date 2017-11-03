@@ -53,6 +53,10 @@ void Component::Load(JSON_Object * root_object_scene)
 
 }
 
+void Component::CleanUp()
+{
+}
+
 
 
 

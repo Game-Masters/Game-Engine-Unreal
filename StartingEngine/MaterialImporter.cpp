@@ -41,6 +41,6 @@ void MaterialImporter::ImportMaterial(const char * path)
 			ilDeleteImages(1, &imgID);
 		}
 	}
-
+	RELEASE_ARRAY(buffer);
 
 }

@@ -49,4 +49,9 @@ void Material::Load(JSON_Object * root_object_scene)
 {
 }
 
+void Material::CleanUp()
+{
+	delete this;
+}
+
 

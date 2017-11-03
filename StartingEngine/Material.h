@@ -11,6 +11,11 @@ struct material_base_geometry {
 	uint num_vertices = 0;
 	uint* texture_w_h=nullptr;
 	float* textures_coord = nullptr;
+
+	~material_base_geometry() {
+		glDeleteBuffers(1, &id_texture);
+		glDeleteBuffers(1, &id_image_devil);
+	}
 };
 
 
@@ -31,6 +36,6 @@ public:
 	const char* GetPathMaterial();
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
-
+	void CleanUp();
 };
 

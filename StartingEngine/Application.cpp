@@ -163,10 +163,18 @@ void Application::DtSwitch()
 void Application::ReStartScene()
 {
 
+	App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene,"..\\Game\\Library\\TempPlay");
+	App->scene_intro->Load_Scene(App->scene_intro->root_object_scene);
 }
 
 void Application::StartPlayingScene()
 {
+
+	App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, "..\\Game\\Library\\TempPlay");
+	json_object_clear(App->scene_intro->root_object_scene);
+	App->scene_intro->root_gameobject->Save(App->scene_intro->root_object_scene);
+	char* serialized_string = json_serialize_to_string_pretty(App->scene_intro->root_value_scene);
+	json_serialize_to_file(App->scene_intro->root_value_scene, "..\\Game\\Library\\TempPlay");
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

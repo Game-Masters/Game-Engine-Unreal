@@ -370,13 +370,25 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Text("                             ");
 			ImGui::SameLine();
 			//ImGui::Begin("##15", NULL, ImVec2(App->window->win_width / 2, 0), 1.0f, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
-			ImGui::ImageButton((void*)Play, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (ImGui::ImageButton((void*)Play, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0))
+			{
+				App->Play();
+			}
 			ImGui::SameLine();
-			ImGui::ImageButton((void*)Pause, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (ImGui::ImageButton((void*)Pause, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0))
+			{
+				App->Pause();
+			}
 			ImGui::SameLine();
-			ImGui::ImageButton((void*)Stop, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (ImGui::ImageButton((void*)Stop, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0))
+			{
+				App->Stop();
+			}
 			ImGui::SameLine();
-			ImGui::ImageButton((void*)NextFrame, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if(ImGui::ImageButton((void*)NextFrame, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0))
+			{
+				App->NextFrame = true;
+			}
 
 			//ImGui::End();
 			ImGui::SameLine();

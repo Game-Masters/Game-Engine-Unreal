@@ -178,6 +178,11 @@ update_status Application::Update()
 	
 	//change dt time
 	float tempdt = dt * dtvariation;
+	if (NextFrame)
+	{
+		tempdt = dt;
+		NextFrame = false;
+	}
 	//
 
 

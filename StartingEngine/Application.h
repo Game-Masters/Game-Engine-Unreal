@@ -52,11 +52,13 @@ public:
 	Parson_JSON* json_class;
 	MaterialImporter* imp_mat = nullptr;
 	MeshImporter* imp_mesh = nullptr;
+	bool NextFrame = false;
 private:
 
 	Timer	ms_timer;
 	float	dt;
 	float	dtvariation;
+	
 	//p2List<Module*> list_modules;
 	j1PerfTimer			ptimer;
 	unsigned int long	frame_count = 0;

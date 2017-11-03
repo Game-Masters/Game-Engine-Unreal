@@ -147,15 +147,26 @@ void Application::DtSwitch()
 	if (timeStatus == play)
 	{
 		dtvariation = 1.0f;
+		StartPlayingScene();
 	}
 	if (timeStatus == pause)
 	{
-
+		dtvariation = 0.0f;
 	}
 	if (timeStatus == stop)
 	{
 		dtvariation = 0.0f;
+		ReStartScene();
 	}
+}
+
+void Application::ReStartScene()
+{
+
+}
+
+void Application::StartPlayingScene()
+{
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -168,6 +179,7 @@ update_status Application::Update()
 	//change dt time
 	float tempdt = dt * dtvariation;
 	//
+
 
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {

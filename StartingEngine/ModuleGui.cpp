@@ -47,7 +47,8 @@ bool ModuleGui::Start()
 	ImGuiStyle& style = ImGui::GetStyle();
 
 
-	
+	style.AntiAliasedLines = true;
+	style.AntiAliasedShapes = true;
 	style.WindowPadding = ImVec2(12,15);
 	style.WindowRounding = 0.0f;
 	style.FramePadding = ImVec2(15, 5);
@@ -119,6 +120,10 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Data/Icons/Icon.png", &Icon);
 	App->assimp->LoadImage_devil("Data/Icons/Daniel.png", &Dani);
 	App->assimp->LoadImage_devil("Data/Icons/Nicolas.png", &Nico);
+	App->assimp->LoadImage_devil("Data/Icons/Play.png", &Play);
+	App->assimp->LoadImage_devil("Data/Icons/Pause.png", &Pause);
+	App->assimp->LoadImage_devil("Data/Icons/Stop.png", &Stop);
+	App->assimp->LoadImage_devil("Data/Icons/NextFrame.png", &NextFrame);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -171,8 +176,9 @@ update_status ModuleGui::Update(float dt)
 
 
 	ImGui::Separator();
-
+	
 	ImGui::BeginDockspace();
+	
 
 	if (show_editor == true) {
 
@@ -361,13 +367,26 @@ update_status ModuleGui::Update(float dt)
 				n3 = true;
 			}
 			ImGui::SameLine();
-			ImGui::Text("Render info");
+			ImGui::Text("                             ");
 			ImGui::SameLine();
+			//ImGui::Begin("##15", NULL, ImVec2(App->window->win_width / 2, 0), 1.0f, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+			ImGui::ImageButton((void*)Play, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0);
+			ImGui::SameLine();
+			ImGui::ImageButton((void*)Pause, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0);
+			ImGui::SameLine();
+			ImGui::ImageButton((void*)Stop, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0);
+			ImGui::SameLine();
+			ImGui::ImageButton((void*)NextFrame, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0);
+
+			//ImGui::End();
+			ImGui::SameLine();
+
+			
 			if (App->camera->Can_Move_Camera == true)
 			{
 				ImGui::TextColored(COLOR_ENGINE, "FREE CAMERA MODE ACTIVATED");
 			}
-
+			//ImGui::End();
 		}
 		ImGui::EndDock();
 		if (n3 == true)
@@ -400,6 +419,7 @@ update_status ModuleGui::Update(float dt)
 			ImGui::Text("no other buttons will work");
 			ImGui::Text("so deactivate it before changing ");
 			ImGui::Text("of rendering mode.");
+			
 			ImGui::End();
 		}
 		if (n4 == true)
@@ -671,7 +691,7 @@ update_status ModuleGui::Update(float dt)
 
 		ImGui::End();
 	}
-
+	
 	App->scene_intro->world_texture->Unbind();
 	ImGui::Render();
 

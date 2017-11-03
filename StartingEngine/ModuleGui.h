@@ -51,6 +51,10 @@ public:
 		GLuint Icon;
 		GLuint Dani;
 		GLuint Nico;
+		GLuint Play;
+		GLuint Pause;
+		GLuint NextFrame;
+		GLuint Stop;
 	//
 	Console console_imgui;
 	LCG rand_test;

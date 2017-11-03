@@ -91,6 +91,8 @@ public:
 	void Pause();
 	void Stop();
 	void DtSwitch();
+	void ReStartScene();
+	void StartPlayingScene();
 	TimeState timeStatus = TimeState::stop;
 private:
 	float performance[90] = { 0 };

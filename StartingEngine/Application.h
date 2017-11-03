@@ -56,6 +56,7 @@ private:
 
 	Timer	ms_timer;
 	float	dt;
+	float	dtvariation;
 	//p2List<Module*> list_modules;
 	j1PerfTimer			ptimer;
 	unsigned int long	frame_count = 0;
@@ -89,6 +90,7 @@ public:
 	void Play();
 	void Pause();
 	void Stop();
+	void DtSwitch();
 	TimeState timeStatus = TimeState::stop;
 private:
 	float performance[90] = { 0 };

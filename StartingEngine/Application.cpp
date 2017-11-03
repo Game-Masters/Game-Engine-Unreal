@@ -127,16 +127,35 @@ int Application::GetFramesCapped()
 void Application::Play()
 {
 	timeStatus = play;
+	DtSwitch();
 }
 
 void Application::Pause()
 {
 	timeStatus = pause;
+	DtSwitch();
 }
 
 void Application::Stop()
 {
 	timeStatus = stop;
+	DtSwitch();
+}
+
+void Application::DtSwitch()
+{
+	if (timeStatus == play)
+	{
+		dtvariation = 1.0f;
+	}
+	if (timeStatus == pause)
+	{
+
+	}
+	if (timeStatus == stop)
+	{
+		dtvariation = 0.0f;
+	}
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -146,12 +165,14 @@ update_status Application::Update()
 	
 	PrepareUpdate();
 	
-	
+	//change dt time
+	float tempdt = dt * dtvariation;
+	//
 
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->StartTimer();
-		(*item)->PreUpdate(dt);
+		(*item)->PreUpdate(tempdt);
 		(*item)->PauseTimer();
 	}
 	//LOG("%f", 1/dt);
@@ -159,13 +180,13 @@ update_status Application::Update()
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->ResumeTimer();
-		(*item)->Update(dt);
+		(*item)->Update(tempdt);
 		(*item)->PauseTimer();
 	}
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->ResumeTimer();
-		ret = (*item)->PostUpdate(dt);
+		ret = (*item)->PostUpdate(tempdt);
 		(*item)->StopTimer();
 		if (ret == update_status::UPDATE_ERROR || ret == update_status::UPDATE_STOP)
 			break;

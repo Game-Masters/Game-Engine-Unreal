@@ -565,8 +565,15 @@ update_status ModuleGui::Update(float dt)
 	ImGui::EndDockspace();
 	ImGui::End();
 
-	App->fs_e->IterateAllDirect(App->fs_e->RootDirect_User->path.c_str());
 
+	ImGui::Begin("Directory:", &App->scene_intro->load_scene);
+	const char* path_to_load="-1";
+	App->fs_e->IterateAllDirect(App->fs_e->RootDirect_User->path.c_str(), &path_to_load);
+	if (path_to_load != "-1") {
+		App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, path_to_load);
+		App->scene_intro->Load_Scene();
+	}
+	ImGui::End();
 
 
 	if (show_performance)

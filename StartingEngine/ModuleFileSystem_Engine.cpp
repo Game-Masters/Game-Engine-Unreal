@@ -203,32 +203,24 @@ void ModuleFileSystem_Engine::ChangeFormat_File(const char * path, const char * 
 	*new_path = final_path.c_str();
 }
 
-void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir) {
+void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir, const char** dir_selected) {
 
-	ImGui::Begin("Directory:");
+	*dir_selected = "-1";
+
 	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path_dir)) {
 		std::string str_path = item.path().string().c_str();
 		bool is_dir = false;
 		if(ImGui::TreeNode(str_path.c_str()))
-		{
-			/*if (item.status().type() == std::experimental::filesystem::file_type::regular) {
-				if (ImGui::TreeNode(str_path.c_str())) {
-					ImGui::TreePop();
-				}
-			}*/
-			
+		{		
+			if (ImGui::IsItemClicked()) {
+				*dir_selected= str_path.c_str();
+			}
 			if (item.status().type() == std::experimental::filesystem::file_type::directory) {
-				IterateAllDirect(str_path.c_str());
+				IterateAllDirect(str_path.c_str(), dir_selected);
 			}
 			ImGui::TreePop();
 		}
-
-	
-
-		
-
-
+		//ImGui::TreePop();
 	}
-	ImGui::End();
 
 }

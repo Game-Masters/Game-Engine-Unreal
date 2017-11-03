@@ -117,7 +117,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	lights[i].Render();
 	
 
-	if (load_scene) {
+	/*if (load_scene) {
+		App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "Scene1");
 		Load_Scene();
 		load_scene = false;
 	}
@@ -129,7 +130,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		json_serialize_to_file(root_value_scene, "Scene1");
 		save_scene = false;
 
-	}
+	}*/
 	
 
 	

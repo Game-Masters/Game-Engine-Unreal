@@ -69,5 +69,5 @@ public:
 	GameObject* Find_UUID_Root(int uuid);
 	std::vector<GameObject*> game_objects_load;
 	Texture_Engine *world_texture;
-	void Load_Scene();
+	void Load_Scene(JSON_Object* root_object_scene);
 };

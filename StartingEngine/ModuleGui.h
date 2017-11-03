@@ -79,6 +79,7 @@ public:
 	char str_rot_x[64] = { 0 };
 	char str_rot_y[64] = { 0 };
 	char str_rot_z[64] = { 0 };
+	char filename_save[64] = { 0 };
 	char* str_geom_user;
 	char* str_text_user;
 	std::string name_gameobject = "";
@@ -88,7 +89,7 @@ public:
 	std::string Imp_Path;
 	std::string full_path;
 	GameObject* inspection_node = nullptr;
-
+	std::string path_to_load = "-1";
 
 };
 

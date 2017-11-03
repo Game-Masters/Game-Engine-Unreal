@@ -598,14 +598,39 @@ update_status ModuleGui::Update(float dt)
 	ImGui::End();
 
 
-	ImGui::Begin("Directory:", &App->scene_intro->load_scene);
-	const char* path_to_load="-1";
-	App->fs_e->IterateAllDirect(App->fs_e->RootDirect_User->path.c_str(), &path_to_load);
-	if (path_to_load != "-1") {
-		App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, path_to_load);
-		App->scene_intro->Load_Scene();
+	if (App->scene_intro->load_scene) {
+		ImGui::Begin("Load Directory:", &App->scene_intro->load_scene);
+
+		App->fs_e->IterateAllDirect(App->fs_e->RootDirect_User->path.c_str(), &path_to_load);
+		if (path_to_load != "-1") {
+			App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, path_to_load.c_str());
+			App->scene_intro->Load_Scene(App->scene_intro->root_object_scene);
+			path_to_load = "-1";
+			App->scene_intro->load_scene = false;
+		}
+		ImGui::End();
 	}
-	ImGui::End();
+
+	if (App->scene_intro->save_scene) {
+		ImGui::Begin("Save Directory:", &App->scene_intro->save_scene);
+		std::string filename_last = "-1";
+		App->fs_e->IterateAllDirect_To_Save(App->fs_e->RootDirect_User->path.c_str(), &path_to_load);
+		if (ImGui::InputText("Filename:", filename_save, 64, ImGuiInputTextFlags_EnterReturnsTrue)) {
+			filename_last = path_to_load + "\\" + filename_save;
+		}
+
+		if (filename_last != "-1") {
+
+			App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, filename_last.c_str());
+			json_object_clear(App->scene_intro->root_object_scene);
+			App->scene_intro->root_gameobject->Save(App->scene_intro->root_object_scene);
+			char* serialized_string = json_serialize_to_string_pretty(App->scene_intro->root_value_scene);
+			json_serialize_to_file(App->scene_intro->root_value_scene, filename_last.c_str());
+			App->scene_intro->save_scene = false;
+		}
+		ImGui::End();
+	}
+
 
 
 	if (show_performance)

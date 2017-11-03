@@ -73,6 +73,7 @@ void Parson_JSON::Create_JSON_DOC(JSON_Value **root_value_scene, JSON_Object **r
 	if (*root_value_scene == NULL) {
 		*root_value_scene = json_value_init_object();
 		json_serialize_to_file(*root_value_scene, namefile);
+		*root_object_scene = json_value_get_object(*root_value_scene);
 	}
 	else {
 		*root_object_scene = json_value_get_object(*root_value_scene);

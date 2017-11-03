@@ -118,16 +118,17 @@ update_status ModuleSceneIntro::Update(float dt)
 	
 
 	/*if (load_scene) {
-		App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "Scene1");
-		Load_Scene();
+		App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "..//Game//Assets//Scenes//Scene1");
+		Load_Scene(root_object_scene);
 		load_scene = false;
-	}
-	if (save_scene) {
-		App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "Scene1");
+	}*/
+
+	/*if (save_scene) {
+		App->json_class->Create_JSON_DOC(&root_value_scene, &root_object_scene, "..//Game//Assets//Scenes//Scene1");
 		json_object_clear(root_object_scene);
 		root_gameobject->Save(root_object_scene);
 		char* serialized_string = json_serialize_to_string_pretty(root_value_scene);
-		json_serialize_to_file(root_value_scene, "Scene1");
+		json_serialize_to_file(root_value_scene, "..//Game//Assets//Scenes//Scene1");
 		save_scene = false;
 
 	}*/
@@ -180,7 +181,7 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 	return n_gameobject;
 }
 
-void ModuleSceneIntro::Load_Scene()
+void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 {
 	std::vector<GameObject*> GO_Load;
 	GameObject* temp_go = nullptr;

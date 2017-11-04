@@ -57,7 +57,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 
 	float3 newPos(0, 0, 0);
-	//newPos = Position;
 	float speed = 4.0f * dt;
 	float wheel_direction = (float)App->input->GetMouseZ();
 
@@ -77,7 +76,8 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
 
-		Move(newPos);
+			
+
 	}
 	float3x3 cam_rot_mouse;
 			if ((App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT)== KEY_REPEAT && App->gui->n4 == false) || (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && Can_Move_Camera==true))
@@ -93,7 +93,6 @@ update_status ModuleCamera3D::Update(float dt)
 				{
 					float DeltaX = (float)dx * Sensitivity;
 					cam_rot_mouse = float3x3::RotateAxisAngle(Y, DeltaX * DEGTORAD);
-				
 
 					X = cam_rot_mouse*X;
 					Y = cam_rot_mouse*Y;
@@ -102,7 +101,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 				if (dy != 0)
 				{
-					float DeltaY = (float)dx * Sensitivity;
+					float DeltaY = (float)dy * Sensitivity;
 					cam_rot_mouse = float3x3::RotateAxisAngle(X, DeltaY * DEGTORAD);
 				
 

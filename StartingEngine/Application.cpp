@@ -197,6 +197,10 @@ update_status Application::Update()
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->StartTimer();
+		if ((*item) == camera)
+		{
+			(*item)->PreUpdate(dt);
+		}
 		(*item)->PreUpdate(tempdt);
 		(*item)->PauseTimer();
 	}
@@ -205,12 +209,20 @@ update_status Application::Update()
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->ResumeTimer();
+		if ((*item) == camera)
+		{
+			(*item)->Update(dt);
+		}
 		(*item)->Update(tempdt);
 		(*item)->PauseTimer();
 	}
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->ResumeTimer();
+		if ((*item) == camera)
+		{
+			ret = (*item)->PostUpdate(dt);
+		}
 		ret = (*item)->PostUpdate(tempdt);
 		(*item)->StopTimer();
 		if (ret == update_status::UPDATE_ERROR || ret == update_status::UPDATE_STOP)

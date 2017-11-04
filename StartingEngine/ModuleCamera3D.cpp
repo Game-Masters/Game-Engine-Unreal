@@ -5,13 +5,18 @@
 #include "ModulePlayer.h"
 #include "CameraFrustrum.h"
 
+#define X_AXIS float3(1.0f, 0.0f, 0.0f)
+#define Y_AXIS float3(0.0f, 1.0f, 0.0f)
+#define Z_AXIS float3(0.0f, 0.0f, 1.0f)
+
+
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 {
 	
 	zoom = 50;
-	X = float3(1.0f, 0.0f, 0.0f);
-	Y = float3(0.0f, 1.0f, 0.0f);
-	Z = float3(0.0f, 0.0f, 1.0f);
+	X = X_AXIS;
+	Y = Y_AXIS;
+	Z = Z_AXIS;
 
 	Position = float3(2.0f, 2.0f, 2.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
@@ -76,10 +81,11 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
 
-			
+		Move(newPos);
 
 	}
-	float3x3 cam_rot_mouse;
+	float3x3 cam_rot_mouse_x;
+	float3x3 cam_rot_mouse_y;
 			if ((App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT)== KEY_REPEAT && App->gui->n4 == false) || (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && Can_Move_Camera==true))
 			{
 				int dx = -App->input->GetMouseXMotion();
@@ -87,26 +93,26 @@ update_status ModuleCamera3D::Update(float dt)
 
 				float Sensitivity = 0.25f;
 
-				Position -= Reference;
+				//Position -= Reference;
 
 				if (dx != 0)
 				{
 					float DeltaX = (float)dx * Sensitivity;
-					cam_rot_mouse = float3x3::RotateAxisAngle(Y, DeltaX * DEGTORAD);
+					cam_rot_mouse_x = float3x3::RotateAxisAngle(Y_AXIS, DeltaX * DEGTORAD);
 
-					X = cam_rot_mouse*X;
-					Y = cam_rot_mouse*Y;
-					Z = cam_rot_mouse*Z;
+					X = cam_rot_mouse_x*X;
+					Y = cam_rot_mouse_x*Y;
+					Z = cam_rot_mouse_x*Z;
 				}
 
 				if (dy != 0)
 				{
 					float DeltaY = (float)dy * Sensitivity;
-					cam_rot_mouse = float3x3::RotateAxisAngle(X, DeltaY * DEGTORAD);
+					cam_rot_mouse_y = float3x3::RotateAxisAngle(X, DeltaY * DEGTORAD);
 				
 
-					Y = cam_rot_mouse*Y;
-					Z = cam_rot_mouse*Z;
+					Y = cam_rot_mouse_y*Y;
+					Z = cam_rot_mouse_y*Z;
 
 					if (Y.y < 0.0f)
 					{

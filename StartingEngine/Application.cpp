@@ -201,7 +201,9 @@ update_status Application::Update()
 		{
 			(*item)->PreUpdate(dt);
 		}
-		(*item)->PreUpdate(tempdt);
+		else {
+			(*item)->PreUpdate(tempdt);
+		}
 		(*item)->PauseTimer();
 	}
 	//LOG("%f", 1/dt);
@@ -213,7 +215,9 @@ update_status Application::Update()
 		{
 			(*item)->Update(dt);
 		}
-		(*item)->Update(tempdt);
+		else {
+			(*item)->Update(tempdt);
+		}
 		(*item)->PauseTimer();
 	}
 
@@ -223,7 +227,9 @@ update_status Application::Update()
 		{
 			ret = (*item)->PostUpdate(dt);
 		}
-		ret = (*item)->PostUpdate(tempdt);
+		else {
+			ret = (*item)->PostUpdate(tempdt);
+		}
 		(*item)->StopTimer();
 		if (ret == update_status::UPDATE_ERROR || ret == update_status::UPDATE_STOP)
 			break;

@@ -48,8 +48,8 @@ struct geometry_base_creating {
 		glDeleteBuffers(1, &id_texture);
 		glDeleteBuffers(1, &id_image_devil);
 
-		delete[] vertex_aabb;
-		delete[] index_aabb;
+		/*delete[] vertex_aabb;
+		delete[] index_aabb;*/
 		delete[] indices;
 		delete[] vertices;
 		delete[] colors;

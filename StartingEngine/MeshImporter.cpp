@@ -272,7 +272,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name + ".ric";
 			n_temp_mesh = Create_Base_Geometry(path, name_mesh.c_str(), final_path_mesh.c_str());
 		}
-		delete name;
+		//delete name;
 		if (parent == nullptr) {
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
 		}

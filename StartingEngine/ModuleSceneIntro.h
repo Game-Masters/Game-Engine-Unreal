@@ -58,6 +58,7 @@ public:
 	GameObject* CreateNewGameObjects(const char* name, bool active, GameObject* parent, Tag_Object_Enum tag_temp, bool static_s);
 
 public:
+	GameObject* frustrumtest = nullptr;
 	bool load_scene=false;
 	bool save_scene=false;
 	void IterateChildGameObjects(GameObject* item);

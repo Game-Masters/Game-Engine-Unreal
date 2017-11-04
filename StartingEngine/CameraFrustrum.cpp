@@ -14,7 +14,8 @@ CameraComponent::CameraComponent(GameObject* parent, bool Active) :Component(Com
 	frustum.pos = Pos;
 	frustum.up = Up;
 	frustum.front = Front;
-	
+	float4x4 p=	frustum.ViewProjMatrix();
+
 }
 CameraComponent::~CameraComponent() 
 {
@@ -35,6 +36,7 @@ void CameraComponent::Preupdate()
 	GameObject* temp = App->scene_intro->root_gameobject;
 	CheckInFrustum(temp);
 }
+
 void CameraComponent::CheckInFrustum(GameObject* temp)
 {
 	for (int j = 0; j < temp->Component_Vect.size(); j++) {
@@ -56,8 +58,10 @@ void CameraComponent::CheckInFrustum(GameObject* temp)
 		}
 	}
 }
+
 void CameraComponent::Update()
 {
+
 	if (first_time)
 	{
 		GenerateFrustumDraw();
@@ -162,6 +166,14 @@ void CameraComponent::GenerateFrustumDraw()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * 24, DebugDrawFrustum_indices, GL_STATIC_DRAW);
 }
 
+void CameraComponent::SetNewFrame(const float3 pos, const float3 front, const float3 up) {
+	
+
+	frustum.front= front;
+	frustum.pos = pos;
+	frustum.up = up;
+
+}
 
 void CameraComponent::CleanFrustumDraw()
 {
@@ -176,10 +188,13 @@ void CameraComponent::CleanFrustumDraw()
 		RELEASE_ARRAY(DebugDrawFrustum_indices);
 	}
 }
-const float4x4* CameraComponent::GetViewProjMatrix() const
+
+float* CameraComponent::GetViewProjMatrix()const
 {
-	return &frustum.ViewProjMatrix();
+	return frustum.ViewProjMatrix().Transposed().ptr();
 }
+
+
 bool CameraComponent::ParentHasTransform(float3 & position, float3 & scaling, Quat & rotation)
 {
 

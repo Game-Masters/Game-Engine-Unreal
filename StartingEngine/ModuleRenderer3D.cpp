@@ -101,11 +101,14 @@ bool ModuleRenderer3D::Init()
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-
+	const GLfloat* temp_rot = App->camera->GetViewMatrix();
+	glLoadMatrixf(temp_rot);
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
-
+	glLoadIdentity();
 
 	//ACTIVATE WHEN FINISHED
 	//glLoadMatrixf(App->camera->CamComp->GetViewProjMatrix()->ptr());

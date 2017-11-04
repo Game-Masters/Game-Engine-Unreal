@@ -93,7 +93,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 				float Sensitivity = 0.25f;
 
-				//Position -= Reference;
+				Position -= Reference;
 
 				if (dx != 0)
 				{

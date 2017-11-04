@@ -615,6 +615,14 @@ update_status ModuleGui::Update(float dt)
 		ImGui::Begin("Save Directory:", &App->scene_intro->save_scene);
 		std::string filename_last = "-1";
 		App->fs_e->IterateAllDirect_To_Save(App->fs_e->RootDirect_User->path.c_str(), &path_to_load);
+		ImGui::Text("Directory Selected:"); 
+		ImGui::SameLine();
+		if (path_to_load!="-1") {
+			ImGui::Text(path_to_load.c_str());
+		}
+		else{
+			ImGui::Text("");
+		}
 		if (ImGui::InputText("Filename:", filename_save, 64, ImGuiInputTextFlags_EnterReturnsTrue)) {
 			filename_last = path_to_load + "\\" + filename_save;
 		}

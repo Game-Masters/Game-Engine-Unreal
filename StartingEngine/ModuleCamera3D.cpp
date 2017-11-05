@@ -134,7 +134,7 @@ update_status ModuleCamera3D::Update(float dt)
 		
 
 		if (ray_cast_pressed) {
-			const Frustum temp_t = CamComp->GetFurustum();
+			const Frustum temp_t = CamComp->Get_Frustum();
 			float2 mouse_pos(App->input->GetMouseX(), App->input->GetMouseY());
 			mouse_pos.x = (mouse_pos.x / (App->window->win_width / 2)) - 1;
 			mouse_pos.y = (mouse_pos.y / (App->window->win_height / 2)) - 1;

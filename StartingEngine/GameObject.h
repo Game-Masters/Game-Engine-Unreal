@@ -46,6 +46,8 @@ public:
 	void Save(JSON_Object *root_object_scene);
 	void Load(JSON_Object *root_object_scene);
 	void CleanUp();
+	Mesh* Get_GO_Mesh()const;
+
 	Transform* GetTransform();
 	int Get_UUID_Parent() const;
 	GameObject* FindUUID(int GO_Load_uuid);

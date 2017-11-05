@@ -26,37 +26,15 @@ public:
 	bool LoadConfig(JSON_Object* node);
 	bool SaveConfig(JSON_Object* node);
 	void Render_3D(Mesh* m ,geometry_base_creating* mesh_v, Material* texture_mesh= nullptr);
-	//-----------
-	/*
-	Sphere* sphere;
-	std::vector<vec> vect_v;
-	std::vector<vec> norm_v;
 
 
-	std::vector<unsigned int> index;
-	std::vector<unsigned int> planeindex;
-	GLuint my_indices = 0;
-	GLuint plane_indices = 0;
-	std::vector<GLfloat> cube_vert;
-	std::vector<GLfloat> plane_vert;
-	GLuint my_vertex;
-	GLuint plane_vertex;
-	GLuint vertexbuffer;
-	GLuint normalbuffer;
-	Sphere *n_sphere_o = nullptr;
-	std::vector<vec> vec1;
-	std::vector<vec> vec2;
-	GLuint vertexbuffer1;
-
-	std::vector<GLfloat> g_vertex_buffer_data;
-	*/
 
 public:
 	
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	mat3x3 NormalMatrix;
-	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	//mat3x3 NormalMatrix;
+	mat4x4 ProjectionMatrix;
 	bool wireframe = false;
 	bool points = false;
 	bool cullface = false;

@@ -159,6 +159,8 @@ update_status ModuleGui::PreUpdate(float dt)
 update_status ModuleGui::Update(float dt)
 {
 
+
+
 	if (show_editor == false) {
 		ImGui::Begin("World_Without_Editor", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
 		ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImVec2(App->window->win_width, App->window->win_height), ImVec2(0, 1), ImVec2(1, 0));
@@ -314,7 +316,6 @@ update_status ModuleGui::Update(float dt)
 		
 
 		if (ImGui::BeginDock("World", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-
 			ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::EndDock();
@@ -730,12 +731,7 @@ update_status ModuleGui::Update(float dt)
 		ImGui::End();
 	}
 
-	if (App->gui->create_empty_gameobject) {
-		ImGui::Begin("Create New GameObject", &App->gui->create_empty_gameobject);
-		CreateAnewGameObject();
 
-		ImGui::End();
-	}
 	
 	App->scene_intro->world_texture->Unbind();
 	ImGui::Render();
@@ -796,10 +792,6 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 // Called before quitting
 bool ModuleGui::CleanUp()
 {
-	ResetCreateGO();
-
-	/*delete[] str_geom_user;
-	delete[] str_text_user;*/
 
 	aiDetachAllLogStreams();
 
@@ -831,84 +823,6 @@ void ModuleGui::IterateChilds(GameObject * item)
 }
 
 
-void ModuleGui::CreateAnewGameObject()
-{
-	
-	ImGui::InputText("Name:", str_g, 64);
-	if (ImGui::CollapsingHeader("Transform"))
-	{
-		ImGui::InputText("Pos x:", str_x, 64, ImGuiInputTextFlags_CharsDecimal);
-		ImGui::InputText("Pos y:", str_y, 64, ImGuiInputTextFlags_CharsDecimal);
-		ImGui::InputText("Pos z:", str_z, 64, ImGuiInputTextFlags_CharsDecimal);
 
-		ImGui::InputText("Scale x:", str_sc_x, 64, ImGuiInputTextFlags_CharsDecimal);
-		ImGui::InputText("Scale y:", str_sc_y, 64, ImGuiInputTextFlags_CharsDecimal);
-		ImGui::InputText("Scale z:", str_sc_z, 64, ImGuiInputTextFlags_CharsDecimal);
-
-		ImGui::InputText("Rotation x:", str_rot_x, 64, ImGuiInputTextFlags_CharsDecimal);
-		ImGui::InputText("Rotation y:", str_rot_y, 64, ImGuiInputTextFlags_CharsDecimal);
-		ImGui::InputText("Rotation z:", str_rot_z, 64, ImGuiInputTextFlags_CharsDecimal);
-	}
-
-	if (App->input->flie_dropped && App->input->dropped_filedir_newGO != "") {
-		full_path = App->input->dropped_filedir_newGO;
-		std::size_t pos_to_find = full_path.rfind(".");
-		Imp_Path = full_path.substr(pos_to_find, full_path.size());
-		App->input->flie_dropped = false;
-	}
-	
-
-	if (ImGui::CollapsingHeader("Mesh"))
-	{
-		if (Imp_Path == ".FBX") {
-			str_geom_user = App->input->dropped_filedir_newGO;
-		}
-			ImGui::InputText("Mesh Path:", str_geom_user, 100, ImGuiInputTextFlags_CharsDecimal);
-		
-	}
-	if (ImGui::CollapsingHeader("Material"))
-	{
-		if (Imp_Path == ".png") {
-			str_text_user = App->input->dropped_filedir_newGO;
-		}
-			ImGui::InputText("Texture Path:", str_text_user, 100, ImGuiInputTextFlags_CharsDecimal);
-	}
-	if (ImGui::Button("Create GameObject")) {
-		GameObject* temp = App->scene_intro->CreateNewGameObjects(str_g, true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
-		if ((str_x != "\0" && str_y != "\0" && str_z != "\0") 
-			|| (str_sc_x != "\0" && str_sc_y != "\0" && str_sc_z != "\0")
-			|| (str_rot_x != "\0" && str_rot_y != "\0" && str_rot_z != "\0")) {
-			Quat q_temp = Quat::FromEulerXYZ(std::atof(str_rot_x), std::atof(str_rot_y), std::atof(str_rot_z));
-			temp->AddNewTransform(float3(std::atof(str_x), std::atof(str_y), std::atof(str_z)), float3(std::atof(str_sc_x), std::atof(str_sc_y), std::atof(str_sc_z)), q_temp);
-		}
-		if (str_text_user != "\0" && str_geom_user != "\0") {
-			//Material* temp_mat=	temp->AddNewMaterial(str_text_user, str_geom_user);
-//			temp->AddNewMesh(str_geom_user, temp_mat);
-		}
-		ResetCreateGO();
-	}
-	if (ImGui::Button("Reset")) {
-		ResetCreateGO();
-	}
-
-}
-
-void ModuleGui::ResetCreateGO()
-{
-	str_g[64] = { 0 };
-	str_x[64] = { 0 };
-	str_y[64] = { 0 };
-	str_z[64] = { 0 };
-	str_sc_x[64] = { 0 };
-	str_sc_y[64] = { 0 };
-	str_sc_z[64] = { 0 };
-	str_rot_x[64] = { 0 };
-	str_rot_y[64] = { 0 };
-	str_rot_z[64] = { 0 };
-	str_geom_user = "";
-	str_text_user = "";
-	Imp_Path = "";
-	full_path = "";
-}
 
 

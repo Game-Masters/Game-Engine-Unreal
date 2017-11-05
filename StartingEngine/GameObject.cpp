@@ -209,6 +209,17 @@ void GameObject::CleanUp()
 	this->Childrens_GameObject_Vect.clear();
 }
 
+Mesh* GameObject::Get_GO_Mesh() const
+{
+	for (int i = 0; i < Component_Vect.size(); i++) {
+		if (Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_mesh_type) {
+			return ((Mesh*)Component_Vect[i]);
+		}
+	}
+	
+	return nullptr;
+}
+
 Transform * GameObject::GetTransform()
 {
 	for (int i = 0; i < Component_Vect.size(); i++) {

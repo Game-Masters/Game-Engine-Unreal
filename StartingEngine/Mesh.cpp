@@ -19,19 +19,37 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* pat
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh_v->num_indices, &mesh_v->indices[0], GL_STATIC_DRAW);
 	}
+	Copy_aabb = mesh_v->BoundBox;
+	Update_AABB();
+	
+}
 
+
+Mesh::~Mesh()
+{
+	delete mesh_v;
+}
+
+void Mesh::Update_AABB() {
+
+	if (mesh_v->id_aabb != 0) {
+		glDeleteBuffers(1, &mesh_v->id_aabb);
+	}
+	if (mesh_v->id_index_aabb != 0) {
+		glDeleteBuffers(1, &mesh_v->id_index_aabb);
+	}
 
 	this->mesh_v->vertex_aabb = new float[8 * 3];
-	
+
 	float vertex_Aabb[] = {
-		this->mesh_v->BoundBox.CornerPoint(0).x,this->mesh_v->BoundBox.CornerPoint(0).y,this->mesh_v->BoundBox.CornerPoint(0).z,
-		this->mesh_v->BoundBox.CornerPoint(1).x,this->mesh_v->BoundBox.CornerPoint(1).y,this->mesh_v->BoundBox.CornerPoint(1).z,
-		this->mesh_v->BoundBox.CornerPoint(2).x,this->mesh_v->BoundBox.CornerPoint(2).y,this->mesh_v->BoundBox.CornerPoint(2).z,
-		this->mesh_v->BoundBox.CornerPoint(3).x,this->mesh_v->BoundBox.CornerPoint(3).y,this->mesh_v->BoundBox.CornerPoint(3).z,
-		this->mesh_v->BoundBox.CornerPoint(4).x,this->mesh_v->BoundBox.CornerPoint(4).y,this->mesh_v->BoundBox.CornerPoint(4).z,
-		this->mesh_v->BoundBox.CornerPoint(5).x,this->mesh_v->BoundBox.CornerPoint(5).y,this->mesh_v->BoundBox.CornerPoint(5).z,
-		this->mesh_v->BoundBox.CornerPoint(6).x,this->mesh_v->BoundBox.CornerPoint(6).y,this->mesh_v->BoundBox.CornerPoint(6).z,
-		this->mesh_v->BoundBox.CornerPoint(7).x,this->mesh_v->BoundBox.CornerPoint(7).y,this->mesh_v->BoundBox.CornerPoint(7).z
+		Copy_aabb.CornerPoint(0).x,Copy_aabb.CornerPoint(0).y,Copy_aabb.CornerPoint(0).z,
+		Copy_aabb.CornerPoint(1).x,Copy_aabb.CornerPoint(1).y,Copy_aabb.CornerPoint(1).z,
+		Copy_aabb.CornerPoint(2).x,Copy_aabb.CornerPoint(2).y,Copy_aabb.CornerPoint(2).z,
+		Copy_aabb.CornerPoint(3).x,Copy_aabb.CornerPoint(3).y,Copy_aabb.CornerPoint(3).z,
+		Copy_aabb.CornerPoint(4).x,Copy_aabb.CornerPoint(4).y,Copy_aabb.CornerPoint(4).z,
+		Copy_aabb.CornerPoint(5).x,Copy_aabb.CornerPoint(5).y,Copy_aabb.CornerPoint(5).z,
+		Copy_aabb.CornerPoint(6).x,Copy_aabb.CornerPoint(6).y,Copy_aabb.CornerPoint(6).z,
+		Copy_aabb.CornerPoint(7).x,Copy_aabb.CornerPoint(7).y,Copy_aabb.CornerPoint(7).z
 	};
 	memcpy(this->mesh_v->vertex_aabb, vertex_Aabb, sizeof(float) * 24);
 
@@ -54,25 +72,16 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* pat
 	};
 	memcpy(this->mesh_v->index_aabb, indices, sizeof(uint) * 24);
 
-		glGenBuffers(1, (GLuint*)&(mesh_v->id_aabb));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_aabb);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *8 * 3, &this->mesh_v->vertex_aabb[0], GL_STATIC_DRAW);
-
-		glGenBuffers(1, (GLuint*)&(mesh_v->id_index_aabb));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_index_aabb);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * 8 * 3, &mesh_v->index_aabb[0], GL_STATIC_DRAW);
-		
 
 
+	glGenBuffers(1, (GLuint*)&(mesh_v->id_aabb));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_aabb);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, &this->mesh_v->vertex_aabb[0], GL_STATIC_DRAW);
 
+	glGenBuffers(1, (GLuint*)&(mesh_v->id_index_aabb));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_index_aabb);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * 8 * 3, &mesh_v->index_aabb[0], GL_STATIC_DRAW);
 }
-
-
-Mesh::~Mesh()
-{
-	delete mesh_v;
-}
-
 
 float4x4 Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & rotation)
 {
@@ -95,7 +104,13 @@ float4x4 Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & ro
 
 void Mesh::Update()
 {
-		App->renderer3D->Render_3D(this, mesh_v, texture_mesh);	
+
+	App->renderer3D->Render_3D(this, mesh_v, texture_mesh);	
+	float4x4 p = parent->GetMatrix_Trans();
+	Copy_aabb= mesh_v->BoundBox;
+	Copy_aabb.TransformAsAABB(p);
+
+	Update_AABB();
 }
 	
 
@@ -121,6 +136,11 @@ geometry_base_creating * Mesh::GetGeometryBaseMesh()
 {
 	return mesh_v;
 	
+}
+
+AABB Mesh::GetAABB() const
+{
+	return this->Copy_aabb;
 }
 
 void Mesh::Save(JSON_Object * root_object_scene)

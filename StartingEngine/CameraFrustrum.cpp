@@ -95,7 +95,12 @@ const CamCulling CameraComponent::InsideFrustrum(const AABB * aabb)
 	if (iTotalIn == 6)
 		return(CULL_INSIDE);
 	// we must be partly in then otherwise
-	return(CULL_INTERSECT);
+	return(CULL_INTERSECT);
+
+}
+Frustum CameraComponent::Get_Frustum() const
+{
+	return frustum;
 }
 void CameraComponent::Update()
 {

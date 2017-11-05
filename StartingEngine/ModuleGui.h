@@ -64,21 +64,7 @@ public:
 
 	void IterateChilds(GameObject* item);
 	bool create_empty_gameobject = false;
-	void CreateAnewGameObject();
-	//--------testing things
 
-	void ResetCreateGO();
-
-	char str_g[64] = { 0 };
-	char str_x[64] = { 0 };
-	char str_y[64] = { 0 };
-	char str_z[64] = { 0 };
-	char str_sc_x[64] = { 0 };
-	char str_sc_y[64] = { 0 };
-	char str_sc_z[64] = { 0 };
-	char str_rot_x[64] = { 0 };
-	char str_rot_y[64] = { 0 };
-	char str_rot_z[64] = { 0 };
 	char filename_save[64] = { 0 };
 	char* str_geom_user;
 	char* str_text_user;

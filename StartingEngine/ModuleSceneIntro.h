@@ -58,6 +58,7 @@ public:
 	GameObject* CreateNewGameObjects(const char* name, bool active, GameObject* parent, Tag_Object_Enum tag_temp, bool static_s);
 
 public:
+	ImVec2 tx_vec;
 	GameObject* frustrumtest = nullptr;
 	bool load_scene=false;
 	bool save_scene=false;

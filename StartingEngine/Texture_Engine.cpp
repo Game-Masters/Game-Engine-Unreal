@@ -1,6 +1,7 @@
 #include "Texture_Engine.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include"Imgui\imguidock.h"
 
 Texture_Engine::Texture_Engine()
 {
@@ -74,14 +75,18 @@ void Texture_Engine::Resize(uint new_width, uint new_height)
 
 void Texture_Engine::Bind()
 {
+	ImVec2 n_size = ImGui::GetSizeDock(3);
+	Resize(n_size.x, n_size.y);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, n_size.x, n_size.y);
 }
 
 void Texture_Engine::Unbind()
 {
+	ImVec2 n_size = ImGui::GetSizeDock(3);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, App->window->win_width, App->window->win_height);
+	glViewport(0, 0, n_size.x, n_size.y);
 }
 
 void Texture_Engine::Destroy()

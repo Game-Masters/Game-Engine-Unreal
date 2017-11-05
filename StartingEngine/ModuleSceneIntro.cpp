@@ -5,7 +5,8 @@
 #include"Component.h"
 #include"Mesh.h"
 #include"Transform.h"
-
+#include"Imgui\Data.h"
+#include"Imgui\imguidock.h"
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 {
@@ -33,9 +34,9 @@ bool ModuleSceneIntro::Start()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
 
-
+	tx_vec=ImGui::GetSizeDock(3);
 	world_texture = new Texture_Engine();
-	world_texture->Create(nullptr, App->window->win_width, App->window->win_height);
+	world_texture->Create(nullptr, tx_vec.x, tx_vec.y);
 	std::string path_temp = "..\\Game\\Data\\BakerHouse.fbx";
 	std::string path_temp2 = "..\\Game\\Data\\Baker_house.png";
 	Material* temp = nullptr;

@@ -79,6 +79,7 @@ private:
 	std::string path_fbx;
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
 	geometry_base_creating* mesh_v;
+	AABB Copy_aabb;
 public:
 	float4x4 ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
 
@@ -89,8 +90,9 @@ public:
 	void CleanUp();
 	const char* GetGeometryPath();
 	geometry_base_creating* GetGeometryBaseMesh();
+	AABB GetAABB()const;
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
-
+	void Update_AABB();
 };
 

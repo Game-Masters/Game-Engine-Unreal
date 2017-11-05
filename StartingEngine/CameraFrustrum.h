@@ -33,7 +33,7 @@ private:
 private:
 	Frustum frustum;
 	float NearPlaneDistance = 0.1f;
-	float FarPlaneDistance = 350.0f;
+	float FarPlaneDistance = 1000.0f;
 	float FOVVertical = 60.0f;
 	float AspectRatio = 1280.0f / 720.0f;
 	float3 Pos = { 0.0f, 0.0f, 0.0f };

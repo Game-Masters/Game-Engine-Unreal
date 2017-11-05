@@ -31,8 +31,9 @@ public:
 	CameraComponent* CamComp=nullptr;
 	bool ray_cast_pressed = false;
 	math::LineSegment r_cast_segm;
+	math::LineSegment temp_ray;
 	void Recursive_Ray_Distance(GameObject* root);
-	std::map<GameObject*, float> mymap;
+	std::map<float, GameObject*> mymap;
 private:
 
 	void CalculateViewMatrix();

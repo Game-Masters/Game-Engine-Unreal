@@ -361,6 +361,7 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 
 	n_temp_mesh->BoundBox.SetNegativeInfinity();
 	n_temp_mesh->BoundBox.Enclose((float3*)n_temp_mesh->vertices, n_temp_mesh->num_vertices);
+
 	App->camera->CameraCenter(&n_temp_mesh->BoundBox);
 	RELEASE_ARRAY(buffer_Mesh);
 	return n_temp_mesh;

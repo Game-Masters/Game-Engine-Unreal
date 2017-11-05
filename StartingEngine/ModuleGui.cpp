@@ -159,6 +159,8 @@ update_status ModuleGui::PreUpdate(float dt)
 update_status ModuleGui::Update(float dt)
 {
 
+
+
 	if (show_editor == false) {
 		ImGui::Begin("World_Without_Editor", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove);
 		ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImVec2(App->window->win_width, App->window->win_height), ImVec2(0, 1), ImVec2(1, 0));
@@ -314,7 +316,6 @@ update_status ModuleGui::Update(float dt)
 		
 
 		if (ImGui::BeginDock("World", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
-
 			ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::EndDock();

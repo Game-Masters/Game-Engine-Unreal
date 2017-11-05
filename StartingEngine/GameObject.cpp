@@ -209,16 +209,15 @@ void GameObject::CleanUp()
 	this->Childrens_GameObject_Vect.clear();
 }
 
-AABB GameObject::Get_AABB_Mesh() const
+Mesh* GameObject::Get_GO_Mesh() const
 {
 	for (int i = 0; i < Component_Vect.size(); i++) {
 		if (Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_mesh_type) {
-			return ((Mesh*)Component_Vect[i])->GetAABB();
+			return ((Mesh*)Component_Vect[i]);
 		}
 	}
-	AABB p;
-	p.minPoint = float3::zero;	p.maxPoint = float3::zero;
-	return p;
+	
+	return nullptr;
 }
 
 Transform * GameObject::GetTransform()

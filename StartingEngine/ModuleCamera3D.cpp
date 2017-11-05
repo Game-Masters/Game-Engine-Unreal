@@ -4,7 +4,7 @@
 #include "ModuleCamera3D.h"
 #include "ModulePlayer.h"
 #include "CameraFrustrum.h"
-
+#include"Imgui\ImGuizmo.h"
 
 
 
@@ -35,7 +35,8 @@ bool ModuleCamera3D::Start()
 	CalculateViewMatrix();
 	r_cast_segm.a = float3(0, 0, 0);
 	r_cast_segm.b = float3(0, 0, 0);
-
+	temp_ray.a = float3(0, 0, 0);
+	temp_ray.b = float3(0, 0, 0);
 
 	//Position = Reference + zoom * Z;
 
@@ -126,33 +127,77 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Raycast calc-------------
 
-	
+		ImGuizmo::BeginFrame();
 
-		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && App->gui->n4 == false) {
 			ray_cast_pressed = true;
 		}
 		
 
+		
+		GameObject* Closest_Ray_GO=nullptr;
+		float dist_min_ray_go = 9999;
+
 		if (ray_cast_pressed) {
 			const Frustum temp_t = CamComp->Get_Frustum();
 			float2 mouse_pos(App->input->GetMouseX(), App->input->GetMouseY());
-			mouse_pos.x = (mouse_pos.x / (App->window->win_width / 2)) - 1;
-			mouse_pos.y = (mouse_pos.y / (App->window->win_height / 2)) - 1;
+			mouse_pos.x = -(1-((mouse_pos.x- 232) / (App->scene_intro->tx_vec.x / 2)));
+			mouse_pos.y = 1-((mouse_pos.y- 141) / (App->scene_intro->tx_vec.y / 2));
 			r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
 
 			Recursive_Ray_Distance(App->scene_intro->root_gameobject);
-			mymap;
-
-			//r_cast_segm.Intersects();
 
 
+			//Time to see if intersects with triangles
 
 
+			for (std::map<float, GameObject*>::iterator it = mymap.begin(); it != mymap.end(); ++it) {
+				temp_ray = r_cast_segm;
+				GameObject* temp = it->second;
+				float dist_to_cam = it->first;
+				float4x4 mat_trans = temp->GetMatrix_Trans().Inverted();
+				temp_ray.Transform(mat_trans);
+				geometry_base_creating* temp_mesh_base = temp->Get_GO_Mesh()->GetGeometryBaseMesh();
+				//iterate the index to iterate the tris in order
+				float distance = 0;
+				float3 hit_point = float3::zero;
+				int i = 0;
+				int temp_comp = temp_mesh_base->num_indices - 9;
+				//if (temp_comp >= 9 ) {
+					while (i < temp_mesh_base->num_indices - 9) {
+						Triangle tri;
+
+						tri.a = float3(temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]]);
+
+						tri.b = float3(temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]]);
 
 
+						tri.c = float3(temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]]);
 
+
+						if (temp_ray.Intersects(tri, &distance, &hit_point) && dist_to_cam < dist_min_ray_go) {
+							Closest_Ray_GO = temp;
+							dist_min_ray_go = dist_to_cam;
+						}
+				}
+
+			}
 			ray_cast_pressed = false;
 		}
+
+		if (Closest_Ray_GO!=nullptr) {
+			App->gui->inspection_node = Closest_Ray_GO;
+
+
+		}
+		
+		
 
 		glLineWidth(5.0f);
 		glBegin(GL_LINES);
@@ -160,9 +205,13 @@ update_status ModuleCamera3D::Update(float dt)
 		glVertex3f(r_cast_segm.a.x, r_cast_segm.a.y, r_cast_segm.a.z);
 		glVertex3f(r_cast_segm.b.x, r_cast_segm.b.y, r_cast_segm.b.z);
 
+		glColor3f(0, 1, 0);
+		glVertex3f(temp_ray.a.x, temp_ray.a.y, temp_ray.a.z);
+		glVertex3f(temp_ray.b.x, temp_ray.b.y, temp_ray.b.z);
+
 		glEnd();
 		glColor3f(1, 1, 1);
-
+		mymap.clear();
 	return UPDATE_CONTINUE;
 }
 
@@ -172,12 +221,14 @@ void ModuleCamera3D::Recursive_Ray_Distance(GameObject* root) {
 	if (root->name != "root") {
 		float distance_n=0;
 		float distance_f=0;
-		AABB go_test = root->Get_AABB_Mesh();
-		if (r_cast_segm.Intersects(go_test, distance_n, distance_f)) {
-			std::pair<GameObject*, float> p;
-			p.first = root;
-			p.second = distance_n;
-			mymap.insert(p);
+		Mesh* go_test = root->Get_GO_Mesh();
+		if (go_test != nullptr) {
+			if (r_cast_segm.Intersects(go_test->GetAABB(), distance_n, distance_f)) {
+				std::pair<float ,GameObject*> p;
+				p.first = distance_n;
+				p.second = root;
+				mymap.insert(p);
+			}
 		}
 	}
 

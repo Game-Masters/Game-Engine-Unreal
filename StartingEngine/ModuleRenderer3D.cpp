@@ -198,15 +198,11 @@ void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Materi
 
 	if (App->gui->inspection_node == m->Get_Parent()) {
 
-		glPushMatrix();
+
 		float3 position;
 		float3 scale;
 		Quat rotation;
-		float4x4 transform_mesh = m->Get_Parent()->GetMatrix_Trans();
-		transform_mesh.Transpose();
-
-		//glLoadMatrixf(trans_point);
-		glMultMatrixf(transform_mesh.ptr());
+		
 		glLineWidth(2.0f);
 		glColor3f(0.0f, 1.0f, 0.0f);
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -217,7 +213,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Materi
 		glDrawElements(GL_LINES, 8 * 3, GL_UNSIGNED_INT, NULL);
 		glLineWidth(1.0f);
 		glColor3f(1.0f, 1.0f, 1.0f);
-		glPopMatrix();
+
 	}
 
 

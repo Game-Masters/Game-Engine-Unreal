@@ -231,6 +231,7 @@
     <ClInclude Include="Parson_JSON.h" />
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Texture_Engine.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="Parson_JSON.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Texture_Engine.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />

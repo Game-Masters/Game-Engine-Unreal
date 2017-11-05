@@ -105,13 +105,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	const GLfloat* temp_rot = App->camera->GetViewMatrix();
-	glLoadMatrixf(temp_rot);
+
+	glLoadMatrixf(App->camera->GetViewMatrix());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	//ACTIVATE WHEN FINISHED
-	//glLoadMatrixf(App->camera->CamComp->GetViewProjMatrix()->ptr());
 
 	if (cullface)
 	{

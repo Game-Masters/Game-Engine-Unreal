@@ -123,6 +123,11 @@ geometry_base_creating * Mesh::GetGeometryBaseMesh()
 	
 }
 
+AABB Mesh::GetAABB() const
+{
+	return mesh_v->BoundBox;
+}
+
 void Mesh::Save(JSON_Object * root_object_scene)
 {
 	JSON_Object* node;

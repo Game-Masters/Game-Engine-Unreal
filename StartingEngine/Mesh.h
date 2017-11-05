@@ -89,6 +89,7 @@ public:
 	void CleanUp();
 	const char* GetGeometryPath();
 	geometry_base_creating* GetGeometryBaseMesh();
+	AABB GetAABB()const;
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
 

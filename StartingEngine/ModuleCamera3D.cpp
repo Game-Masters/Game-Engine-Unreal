@@ -5,9 +5,7 @@
 #include "ModulePlayer.h"
 #include "CameraFrustrum.h"
 
-#define X_AXIS float3(1.0f, 0.0f, 0.0f)
-#define Y_AXIS float3(0.0f, 1.0f, 0.0f)
-#define Z_AXIS float3(0.0f, 0.0f, 1.0f)
+
 
 
 ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
@@ -18,7 +16,7 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Y = Y_AXIS;
 	Z = Z_AXIS;
 
-	Position = float3(2.0f, 2.0f, 2.0f);
+	Position = float3(2.0f, 10.0f, 2.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
 
 
@@ -35,9 +33,10 @@ bool ModuleCamera3D::Start()
 	bool ret = true;
 	CamComp = new CameraComponent(App->scene_intro->root_gameobject,true);
 	CalculateViewMatrix();
+	r_cast_segm.a = float3(0, 0, 0);
+	r_cast_segm.b = float3(0, 0, 0);
 
 
-	//CamComp = App->scene_intro->frustrumtest->;
 	//Position = Reference + zoom * Z;
 
 	return ret;
@@ -59,7 +58,6 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-
 
 	float3 newPos(0, 0, 0);
 	float speed = 4.0f * dt;
@@ -84,8 +82,8 @@ update_status ModuleCamera3D::Update(float dt)
 		Move(newPos);
 
 	}
-	float3x3 cam_rot_mouse_x;
-	float3x3 cam_rot_mouse_y;
+	float3x3 cam_rot_mouse_x= float3x3::identity;
+	float3x3 cam_rot_mouse_y= float3x3::identity;
 			if ((App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT)== KEY_REPEAT && App->gui->n4 == false) || (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && Can_Move_Camera==true))
 			{
 				int dx = -App->input->GetMouseXMotion();
@@ -126,11 +124,73 @@ update_status ModuleCamera3D::Update(float dt)
 	
 			CalculateViewMatrix();
 
-	// Recalculate matrix -------------
+	// Raycast calc-------------
 
 	
 
+		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+			ray_cast_pressed = true;
+		}
+		
+
+		if (ray_cast_pressed) {
+			const Frustum temp_t = CamComp->GetFurustum();
+			float2 mouse_pos(App->input->GetMouseX(), App->input->GetMouseY());
+			mouse_pos.x = (mouse_pos.x / (App->window->win_width / 2)) - 1;
+			mouse_pos.y = (mouse_pos.y / (App->window->win_height / 2)) - 1;
+			r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
+
+			Recursive_Ray_Distance(App->scene_intro->root_gameobject);
+			mymap;
+
+			//r_cast_segm.Intersects();
+
+
+
+
+
+
+
+			ray_cast_pressed = false;
+		}
+
+		glLineWidth(5.0f);
+		glBegin(GL_LINES);
+		glColor3f(1, 0, 0);
+		glVertex3f(r_cast_segm.a.x, r_cast_segm.a.y, r_cast_segm.a.z);
+		glVertex3f(r_cast_segm.b.x, r_cast_segm.b.y, r_cast_segm.b.z);
+
+		glEnd();
+		glColor3f(1, 1, 1);
+
 	return UPDATE_CONTINUE;
+}
+
+void ModuleCamera3D::Recursive_Ray_Distance(GameObject* root) {
+
+
+	if (root->name != "root") {
+		float distance_n=0;
+		float distance_f=0;
+		AABB go_test = root->Get_AABB_Mesh();
+		if (r_cast_segm.Intersects(go_test, distance_n, distance_f)) {
+			std::pair<GameObject*, float> p;
+			p.first = root;
+			p.second = distance_n;
+			mymap.insert(p);
+		}
+	}
+
+	for (int i = 0; i<root->Childrens_GameObject_Vect.size(); i++) {
+		GameObject* temp = root->Childrens_GameObject_Vect[i];
+		Recursive_Ray_Distance(temp);
+	}
+
+	//
+
+
+
+
 }
 
 // -----------------------------------------------------------------
@@ -177,8 +237,7 @@ void ModuleCamera3D::Move(const float3 &Movement)
 // -----------------------------------------------------------------
 const float* ModuleCamera3D::GetViewMatrix()
 {
-	const float* temp_t = CamComp->GetViewProjMatrix();
-	return temp_t;
+	return CamComp->GetViewProjMatrix();
 }
 
 // -----------------------------------------------------------------

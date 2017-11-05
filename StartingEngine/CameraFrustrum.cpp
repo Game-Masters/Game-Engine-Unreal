@@ -44,7 +44,14 @@ void CameraComponent::CheckInFrustum(GameObject* temp)
 		{
 			AABB* temp2 = &((Mesh*)temp->Component_Vect[j])->GetGeometryBaseMesh()->BoundBox;
 			//DO THE CULLING FUNCTION
-			frustum.Contains(*temp2);
+			if (InsideFrustrum(temp2) == CULL_OUTSIDE)
+			{
+				temp->active = false;
+			}
+			else
+			{
+				temp->active = true;
+			}
 
 
 			//
@@ -58,7 +65,38 @@ void CameraComponent::CheckInFrustum(GameObject* temp)
 		}
 	}
 }
-
+const CamCulling CameraComponent::InsideFrustrum(const AABB * aabb)
+{
+	float3 vCorner[8];
+	int iTotalIn = 0;
+	aabb->GetCornerPoints(vCorner);
+	 // get the corners of the box into the vCorner array
+								 // test all 8 corners against the 6 sides
+								 // if all points are behind 1 specific plane, we are out
+								 // if we are in with all points, then we are fully in
+	for (int p = 0; p < 6; p++) {
+		int iInCount = 8;
+		int iPtIn = 1;
+		for (int i = 0; i < 8; i++) {
+			// test this point against the planes
+			if (frustum.GetPlane(p).IsOnPositiveSide(vCorner[i]))
+			{
+				iPtIn = 0;
+				iInCount--;
+			}
+		}
+		// were all the points outside of plane p?
+		if(iInCount == 0)
+			return(CULL_OUTSIDE);
+		// check if they were all on the right side of the plane
+		iTotalIn += iPtIn;
+	}
+	// so if iTotalIn is 6, then all are inside the view
+	if (iTotalIn == 6)
+		return(CULL_INSIDE);
+	// we must be partly in then otherwise
+	return(CULL_INTERSECT);
+}
 void CameraComponent::Update()
 {
 
@@ -174,6 +212,8 @@ void CameraComponent::SetNewFrame(const float3 pos, const float3 front, const fl
 	frustum.up = up;
 
 }
+
+
 
 void CameraComponent::CleanFrustumDraw()
 {

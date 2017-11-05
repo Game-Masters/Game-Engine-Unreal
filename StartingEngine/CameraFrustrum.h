@@ -4,7 +4,12 @@
 #include"Application.h"
 #include"Globals.h"
 #include "Transform.h"
-
+enum CamCulling
+{
+	CULL_INSIDE,
+	CULL_OUTSIDE,
+	CULL_INTERSECT
+};
 class CameraComponent : public Component
 {
 public:
@@ -19,6 +24,7 @@ public:
 	bool ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
 	void CheckInFrustum(GameObject*);
 	void SetNewFrame(const float3 pos, const float3 front, const float3 up);
+	const CamCulling InsideFrustrum(const AABB* aabb);
 private:
 	void GenerateFrustumDraw();
 	void CleanFrustumDraw();

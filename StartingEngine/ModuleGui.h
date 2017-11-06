@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "SDL/include/SDL.h"
 #include"Console_ImGui.h"
+#include "Fluid_Studios_Memory_Manager\mmgr.h"
+#include "Fluid_Studios_Memory_Manager\nommgr.h"
 #define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 class Application;
 
@@ -25,6 +27,7 @@ public:
 	bool CleanUp();
 
 public:
+	sMStats Gpu_Vram_Stats;
 	bool button_exit_app = false;
 	bool button_rand = false;
 	bool button_rand2 = false;

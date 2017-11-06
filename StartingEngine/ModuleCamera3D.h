@@ -34,6 +34,8 @@ public:
 	math::LineSegment temp_ray;
 	void Recursive_Ray_Distance(GameObject* root);
 	std::map<float, GameObject*> mymap;
+	GameObject* Closest_Ray_GO = nullptr;
+	float2 mouse_pos = float2(0, 0);
 private:
 
 	void CalculateViewMatrix();

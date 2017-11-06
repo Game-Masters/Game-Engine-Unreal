@@ -7,9 +7,6 @@
 #include"Imgui/imgui.h"
 #include"Imgui\imguidock.h"
 #include"ModuleSceneIntro.h"
-
-#include "Fluid_Studios_Memory_Manager\mmgr.h"
-#include "Fluid_Studios_Memory_Manager\nommgr.h"
 #include "ModuleCamera3D.h"
 #include"ModuleInput.h"
 
@@ -42,7 +39,7 @@ bool ModuleGui::Init() {
 bool ModuleGui::Start()
 {
 
-	
+	Gpu_Vram_Stats = m_getMemoryStatistics();
 	//IMGUI STYLE START
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -773,7 +770,7 @@ bool ModuleGui::Gui_Engine_Modules(float dt)
 		ImGui::Text("OpenGL Version:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%s", glGetString(GL_VERSION));
 		ImGui::Text("ImGui Version:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%s", IMGUI_VERSION);
 
-		sMStats Gpu_Vram_Stats = m_getMemoryStatistics();
+
 
 		ImGui::Text("Total Reported Mem:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.totalReportedMemory);
 		ImGui::Text("Total Actual Mem:"); ImGui::SameLine(); ImGui::TextColored(MAIN_COLOUR_HARDWARE, "%u", Gpu_Vram_Stats.totalActualMemory);

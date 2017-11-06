@@ -25,14 +25,15 @@ class Material :
 protected:
 	std::string path_texture;
 
-	material_base_geometry* texture_v=nullptr;
+	
 
 
 public:
-	Material(const char* path_text, const char* fbx, GameObject* parent);
+	geometry_base_creating* texture_v = nullptr;
+	Material(const char* path_text, const char* fbx, geometry_base_creating* base_text, GameObject* parent);
 	void Update();
 	~Material();
-	material_base_geometry* GetMaterialVec();
+	//material_base_geometry* GetMaterialVec();
 	const char* GetPathMaterial();
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);

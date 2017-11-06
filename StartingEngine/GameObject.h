@@ -35,7 +35,7 @@ public:
 	Component* AddNewComponent(Component_Type_Enum type);
 	Transform* AddNewTransform(float3 position, float3 scale, Quat rotations);
 	Mesh* AddNewMesh(geometry_base_creating* vec_mesh, const char* path, Material* t_mat=nullptr);
-	Material* AddNewMaterial(const char* Path_texture, const char* Path_fbx);
+	Material* AddNewMaterial(const char* Path_texture, const char* Path_fbx, geometry_base_creating* vec_mesh);
 	CameraComponent* AddNewFrustum();
 	float4x4 GetMatrix_Trans();
 	GameObject(const std::string name, GameObject* parent, const bool active, const Tag_Object_Enum tag_temp, const bool static_obj);

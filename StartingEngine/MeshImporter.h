@@ -18,7 +18,7 @@ public:
 	void Load_Mesh_Childs_Recursive(char ** cursor, GameObject* Parent);
 	void General_Bin_Mesh(char ** cursor, const aiScene* scene, aiNode* node, const char* path);
 	geometry_base_creating * Create_Base_Geometry(const char* path, const char* name, const char* final_path);
-
+	bool Load_Texture_Scenes(const aiScene* scene);
 	MeshImporter();
 	~MeshImporter();
 	int change_nameimporter = 0;

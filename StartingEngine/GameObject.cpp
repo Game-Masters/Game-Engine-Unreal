@@ -64,9 +64,9 @@ Mesh * GameObject::AddNewMesh(geometry_base_creating* vec_mesh, const char* path
 	return n_mesh;
 }
 
-Material * GameObject::AddNewMaterial(const char * Path_texture, const char * Path_fbx)
+Material * GameObject::AddNewMaterial(const char * Path_texture, const char * Path_fbx, geometry_base_creating* vec_mesh)
 {
-	Material* n_mat = new Material(Path_texture,Path_fbx,this);
+	Material* n_mat = new Material(Path_texture,Path_fbx, vec_mesh,this);
 	this->Component_Vect.push_back(n_mat);
 	return n_mat;
 }

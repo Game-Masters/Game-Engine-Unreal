@@ -271,7 +271,7 @@ update_status ModuleGui::Update(float dt)
 					case Component_Type_Enum::component_material_type:
 						mat_temp = (Material*)Comp_temp;
 						if (mat_temp != nullptr) {
-							temp_v = mat_temp->GetMaterialVec();
+							//temp_v = mat_temp->GetMaterialVec();
 							if (temp_v != nullptr) {
 								ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
 								if (temp_v->texture_w_h != nullptr) {

@@ -220,8 +220,8 @@ void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Materi
 
 	if (mesh_v->num_indices > 0 && mesh_v->num_vertices > 0) {
 		if (texture_mesh != nullptr) {
-			material_base_geometry* temp_text_vec;
-			temp_text_vec = texture_mesh->GetMaterialVec();
+			geometry_base_creating* temp_text_vec= texture_mesh->texture_v;
+
 			if (temp_text_vec != nullptr) {
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, 0);

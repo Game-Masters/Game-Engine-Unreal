@@ -5,14 +5,13 @@
 
 
 
-Material::Material(const char * path_text, const char* fbx, GameObject * parent): Component(Component_Type_Enum::component_material_type,
-	parent, true)
+Material::Material(const char * path_text, const char* fbx, geometry_base_creating *base_text, GameObject * parent): Component(Component_Type_Enum::component_material_type,	parent, true)
 {
 	//texture_v = App->assimp->ImportGeometry_Texture(fbx);
 
 		path_texture = path_text;
-		texture_v = nullptr;
-		texture_v->texture_w_h = App->assimp->LoadImage_devil(path_texture.c_str(), &texture_v->id_image_devil);
+		texture_v = base_text;
+		
 
 		glGenBuffers(1, (GLuint*)&(texture_v->id_texture));
 		glBindBuffer(GL_ARRAY_BUFFER, texture_v->id_texture);
@@ -31,10 +30,7 @@ Material::~Material()
 {
 }
 
-material_base_geometry* Material::GetMaterialVec()
-{
-	return texture_v;
-}
+
 
 const char * Material::GetPathMaterial()
 {

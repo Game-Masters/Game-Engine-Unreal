@@ -2,6 +2,7 @@
 #include"Application.h"
 #include"ModuleFileSystem_Engine.h"
 #include"GameObject.h"
+#include"MaterialImporter.h"
 
 #define MAXRANGCHAR 70
 
@@ -21,6 +22,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 	App->fs_e->SaveFile(path_new_format.data(), buffer_total_gen, size_buffer_gen);
 	RELEASE_ARRAY(buffer_total_gen);
 
+	Load_Texture_Scenes(scene);
 
 	geometry_base_creating* m = nullptr;
 	//std::vector<geometry_base_creating*> mesh_v;
@@ -106,7 +108,13 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 
 			}
 
+
 		}
+
+
+		m->id_image_devil = scene->mMeshes[i]->mMaterialIndex;
+		
+		
 
 		ImportMesh(m, path);
 		
@@ -117,6 +125,8 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 
 	delete m;
 }
+
+
 
 void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
 {
@@ -132,23 +142,27 @@ void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
 		if (temp_m->Know_if_m_have[2] == 1)
 			total_size += sizeof(float)*temp_m->num_vertices * 3;
 
+		total_size += sizeof(uint)*1;
 
 	char* buffer_total = new char[total_size];
 	char* cursor = buffer_total;
 
-		
+
 		uint size = sizeof(ranges);
 		memcpy(cursor, ranges, size);
 		cursor += size;
+
 
 		size = sizeof(uint)*4;
 		memcpy(cursor, temp_m->Know_if_m_have, size);
 		cursor += size;
 
+
 		if (temp_m->Know_if_m_have[1] == 1) {
 			size = sizeof(uint)*temp_m->num_indices;
 			memcpy(cursor, temp_m->indices, temp_m->num_indices * sizeof(uint));
 			cursor += size;
+
 		}
 
 		//store vertex
@@ -156,6 +170,7 @@ void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
 			size = sizeof(float)*temp_m->num_vertices * 3;
 			memcpy(cursor, temp_m->vertices, size);
 			cursor += size;
+
 		}
 
 		if (temp_m->Know_if_m_have[3] == 1) {
@@ -163,6 +178,8 @@ void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
 			size = sizeof(float)*temp_m->num_vertices * 2;
 			memcpy(cursor, temp_m->textures_coord, size);
 			cursor += size;
+
+
 		}
 
 		if (temp_m->Know_if_m_have[2] == 1) {
@@ -170,7 +187,14 @@ void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
 			size = sizeof(float)*temp_m->num_vertices * 3;
 			memcpy(cursor, temp_m->normals, size);
 			cursor += size;
+
 		}
+
+		
+		size = sizeof(uint);
+		memcpy(cursor, &temp_m->id_image_devil, size);
+		cursor += size;
+
 
 
 	std::string path_n = path;
@@ -195,7 +219,7 @@ bool MeshImporter::LoadMesh(const char * path)
 
 	//parent nullptr_ root go
 	LoadRecursive(&cursor, nullptr, path);
-
+	App->imp_mat->Mat_Map.clear();
 	RELEASE_ARRAY(buffer);
 	return false;
 }
@@ -210,6 +234,7 @@ void MeshImporter::LoadRecursive(char ** cursor, GameObject* Parent, const char*
 	for (int i = 0; i < child_num; i++) {
 		LoadRecursive(&cursor[0], Parent, path);
 	}
+
 
 }
 
@@ -267,7 +292,8 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 
 		Final_quat = { rotation.w ,rotation.x,rotation.y,rotation.z};
 
-
+		
+		Material* mat = nullptr;
 		if (num_meshes > 0) {
 			final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name + ".ric";
 			n_temp_mesh = Create_Base_Geometry(path, name_mesh.c_str(), final_path_mesh.c_str());
@@ -280,7 +306,22 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, parent, Tag_Object_Enum::no_obj_tag, false);
 		}
 		if (n_temp_mesh!=nullptr) {
-			child_gameobj->AddNewMesh(n_temp_mesh, final_path_mesh.c_str());
+			if (n_temp_mesh->id_image_devil != -1) {
+				uint p_temp = 0;
+				std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);
+				if (it != App->imp_mat->Mat_Map.end())
+					
+					App->assimp->LoadImage_devil(it->second.c_str(), &p_temp);
+				n_temp_mesh->id_image_devil = p_temp;
+				mat = child_gameobj->AddNewMaterial(it->second.c_str(), final_path_mesh.c_str(), n_temp_mesh);
+			}
+			if (mat != nullptr) {
+				child_gameobj->AddNewMesh(n_temp_mesh, final_path_mesh.c_str(), mat);
+			}
+			else {
+				child_gameobj->AddNewMesh(n_temp_mesh, final_path_mesh.c_str());
+			}
+			
 		}
 			child_gameobj->AddNewTransform(translation_f, scale_f, Final_quat);
 		
@@ -322,9 +363,11 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 	n_temp_mesh->num_vertices = ranges_num[1];
 	cursor_Mesh += size_mesh;
 
+
 	size_mesh = sizeof(uint) * 4;
 	memcpy(ranges, cursor_Mesh, size_mesh);
 	cursor_Mesh += size_mesh;
+
 
 	if (ranges[1] == 1) {
 
@@ -333,6 +376,7 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 		memcpy(ind, cursor_Mesh, size_mesh);
 		n_temp_mesh->indices = ind;
 		cursor_Mesh += size_mesh;
+
 	}
 
 	if (ranges[0] == 1) {
@@ -341,6 +385,7 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 		n_temp_mesh->vertices = new float[n_temp_mesh->num_vertices * 3];
 		memcpy(n_temp_mesh->vertices, cursor_Mesh, size_mesh);
 		cursor_Mesh += size_mesh;
+
 	}
 
 	if (ranges[3] == 1) {
@@ -349,6 +394,7 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 		n_temp_mesh->textures_coord = new float[n_temp_mesh->num_vertices * 2];
 		memcpy(n_temp_mesh->textures_coord, cursor_Mesh, size_mesh);
 		cursor_Mesh += size_mesh;
+
 	}
 
 	if (ranges[2] == 1) {
@@ -357,7 +403,13 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 		n_temp_mesh->normals = new float[n_temp_mesh->num_vertices * 3];
 		memcpy(n_temp_mesh->normals, cursor_Mesh, size_mesh);
 		cursor_Mesh += size_mesh;
+
 	}
+
+	size_mesh = sizeof(uint);
+	memcpy(&n_temp_mesh->id_image_devil, cursor_Mesh, size_mesh);
+	cursor_Mesh += size_mesh;
+
 
 	n_temp_mesh->BoundBox.SetNegativeInfinity();
 	n_temp_mesh->BoundBox.Enclose((float3*)n_temp_mesh->vertices, n_temp_mesh->num_vertices);
@@ -365,6 +417,56 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 	App->camera->CameraCenter(&n_temp_mesh->BoundBox);
 	RELEASE_ARRAY(buffer_Mesh);
 	return n_temp_mesh;
+}
+
+bool MeshImporter::Load_Texture_Scenes(const aiScene* scene)
+{
+
+	ILboolean success;
+
+	/* initialization of DevIL */
+	ilInit();
+
+	/* scan scene's materials for textures */
+	for (unsigned int m = 0; m<scene->mNumMaterials; ++m)
+	{
+		int texIndex = 0;
+		aiString aipath;  // filename
+
+
+		if (scene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, 0, &aipath) == AI_SUCCESS) {
+
+			std::string file_name = aipath.C_Str();
+			
+			App->imp_mat->ImportMaterial(file_name.c_str());
+		}
+	}
+
+	for (int i = 0; i < scene->mNumMeshes; i++) {
+		uint id_text = scene->mMeshes[i]->mMaterialIndex;
+
+		aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
+		uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
+
+		aiString path;
+		uint p;
+		material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+		std::string temp = path.C_Str();
+		std::string final_path;
+		App->fs_e->ChangeFormat_File(temp.c_str(), "dds", &final_path, App->fs_e->Material_Engine);
+	
+		std::pair<uint, std::string> pair_t;
+		pair_t.first = id_text;
+		pair_t.second = final_path;
+		App->imp_mat->Mat_Map.insert(pair_t);
+
+	}
+
+	
+
+	
+	return true;
+
 }
 
 uint MeshImporter::RecursiveSizeScene(aiNode * node, const aiScene * scene)

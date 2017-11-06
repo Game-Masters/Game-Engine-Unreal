@@ -124,7 +124,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					std::size_t pos_to_find_end = full_path.rfind(".");
 					std::string Imp_Path = full_path.substr(pos_to_find_end, full_path.size());
 					if (Imp_Path==".png") {
-						App->imp_mat->ImportMaterial(dropped_filedir.c_str());
+						//App->imp_mat->ImportMaterial(dropped_filedir.c_str());
 					}
 					if (Imp_Path == ".fbx" || Imp_Path == ".FBX") {
 						

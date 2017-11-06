@@ -1,12 +1,5 @@
 #include "Quadtree.h"
-#define  U_NE 0
-#define  U_SE 1
-#define  U_SW 2
-#define  U_NW 3
-#define  D_NE 4
-#define  D_SE 5
-#define  D_SW 6
-#define  D_NW 7
+
 //QUADTREE NODE
 QuadTreeNode::QuadTreeNode()
 {
@@ -68,6 +61,12 @@ void QuadTreeNode::Subdivide()
 
 void QuadTreeNode::Fill()
 {
+	std::vector<GameObject*> root_children = App->scene_intro->root_gameobject->Childrens_GameObject_Vect;
+	for (std::vector<GameObject*>::iterator it = root_children.begin(); it != root_children.end(); ++it)
+	{
+
+	}
+
 }
 
 std::vector<QuadTreeNode*> QuadTreeNode::GetChildren()

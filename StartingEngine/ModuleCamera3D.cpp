@@ -129,7 +129,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 
 
-		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && App->gui->n4 == false) {
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->gui->n4 == false) {
 			ray_cast_pressed = true;
 		}
 		

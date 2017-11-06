@@ -13,7 +13,7 @@ private:
 	float3 scale;
 	Quat rotation;
 	float4x4 matrix= float4x4::identity;
-	ImGuizmo::OPERATION Operator_Guiz = ImGuizmo::OPERATION::TRANSLATE;
+	ImGuizmo::OPERATION Operator_Guiz = ImGuizmo::OPERATION::ROTATE;
 public:
 
 	Transform(GameObject *parent, float3 position, float3 scale, Quat rotations);

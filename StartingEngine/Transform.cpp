@@ -16,16 +16,20 @@ void Transform::Update()
 {
 	this->matrix.Decompose(this->position, this->rotation, this->scale);
 
+	if (this->parent==App->gui->inspection_node) {
+		ImGuizmo::Enable(true);
+		float4x4 mat_proj = App->camera->CamComp->Get_Frustum().ViewProjMatrix();
+		float4x4 mat = App->camera->CamComp->Get_Frustum().ViewMatrix();
 
-	/*ImGuizmo::Enable(true);
-
-	//Just debug purpose
-			//float4x4 viewmatrix = App->camera->GetViewMatrix();
-				//float4x4 projectionmatrix = App->camera->GetViewProjMatrix();
+		ImGuiIO& io = ImGui::GetIO();
 		
-		ImGuizmo::Manipulate(App->camera->CamComp->Get_Frustum().ViewMatrix().ptr(), App->camera->CamComp->Get_Frustum().ViewProjMatrix().ptr(), Operator_Guiz, ImGuizmo::LOCAL, matrix.ptr());
+		float4x4 matrix_t = GetMatrix();
+		ImGuizmo::SetRect(App->scene_intro->tx_vec.x, App->scene_intro->tx_vec.y, App->scene_intro->tx_vec.z, App->scene_intro->tx_vec.w);
 
-	ImGuizmo::Enable(false);*/
+		ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), Operator_Guiz, ImGuizmo::LOCAL, matrix_t.Transposed().ptr());
+	
+		ImGuizmo::Enable(false);
+	}
 
 }
 

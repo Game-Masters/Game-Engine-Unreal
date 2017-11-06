@@ -9,7 +9,7 @@
 #include"ModuleSceneIntro.h"
 #include "ModuleCamera3D.h"
 #include"ModuleInput.h"
-
+#include"Imgui\ImGuizmo.h"
 #include"GameObject.h";
 #include"Transform.h"
 #include"Mesh.h"
@@ -147,7 +147,7 @@ update_status ModuleGui::PreUpdate(float dt)
 {
 	//ImGui_ImplSdlGL2_NewFrame(App->window->window);
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
-
+	ImGuizmo::BeginFrame();
 	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) show_editor = !show_editor;
 	
 	return update_status::UPDATE_CONTINUE;

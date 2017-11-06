@@ -75,18 +75,18 @@ void Texture_Engine::Resize(uint new_width, uint new_height)
 
 void Texture_Engine::Bind()
 {
-	ImVec2 n_size = ImGui::GetSizeDock(3);
-	Resize(n_size.x, n_size.y);
+	ImVec4 n_size = ImGui::GetSizeDock(3);
+	Resize(n_size.z, n_size.w);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glViewport(0, 0, n_size.x, n_size.y);
+	glViewport(0, 0, n_size.z, n_size.w);
 }
 
 void Texture_Engine::Unbind()
 {
-	ImVec2 n_size = ImGui::GetSizeDock(3);
+	ImVec4 n_size = ImGui::GetSizeDock(3);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, n_size.x, n_size.y);
+	glViewport(0, 0, n_size.z, n_size.w);
 }
 
 void Texture_Engine::Destroy()

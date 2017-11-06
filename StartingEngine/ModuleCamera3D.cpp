@@ -127,7 +127,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Raycast calc-------------
 
-		ImGuizmo::BeginFrame();
+
 
 		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && App->gui->n4 == false) {
 			ray_cast_pressed = true;
@@ -141,8 +141,8 @@ update_status ModuleCamera3D::Update(float dt)
 		if (ray_cast_pressed) {
 			const Frustum temp_t = CamComp->Get_Frustum();
 			float2 mouse_pos(App->input->GetMouseX(), App->input->GetMouseY());
-			mouse_pos.x = -(1-((mouse_pos.x- 232) / (App->scene_intro->tx_vec.x / 2)));
-			mouse_pos.y = 1-((mouse_pos.y- 141) / (App->scene_intro->tx_vec.y / 2));
+			mouse_pos.x = -(1-((mouse_pos.x- App->scene_intro->tx_vec.x) / (App->scene_intro->tx_vec.z / 2)));
+			mouse_pos.y = 1-((mouse_pos.y- App->scene_intro->tx_vec.y) / (App->scene_intro->tx_vec.w / 2));
 			r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
 
 			Recursive_Ray_Distance(App->scene_intro->root_gameobject);
@@ -193,7 +193,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		if (Closest_Ray_GO!=nullptr) {
 			App->gui->inspection_node = Closest_Ray_GO;
-
+			
 
 		}
 		

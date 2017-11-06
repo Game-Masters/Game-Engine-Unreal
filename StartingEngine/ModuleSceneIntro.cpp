@@ -36,7 +36,7 @@ bool ModuleSceneIntro::Start()
 
 	tx_vec=ImGui::GetSizeDock(3);
 	world_texture = new Texture_Engine();
-	world_texture->Create(nullptr, tx_vec.x, tx_vec.y);
+	world_texture->Create(nullptr, tx_vec.z, tx_vec.w);
 	std::string path_temp = "..\\Game\\Data\\BakerHouse.fbx";
 	std::string path_temp2 = "..\\Game\\Data\\Baker_house.png";
 	Material* temp = nullptr;

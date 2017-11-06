@@ -3,6 +3,7 @@
 #include"MathGeoLib\MathGeoLib.h"
 #include"MathGeoLib\MathBuildConfig.h"
 #include"Component.h"
+#include"Imgui\ImGuizmo.h"
 class GameObject;
 class Transform :
 	public Component
@@ -12,7 +13,7 @@ private:
 	float3 scale;
 	Quat rotation;
 	float4x4 matrix= float4x4::identity;
-
+	ImGuizmo::OPERATION Operator_Guiz = ImGuizmo::OPERATION::TRANSLATE;
 public:
 
 	Transform(GameObject *parent, float3 position, float3 scale, Quat rotations);

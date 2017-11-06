@@ -1,6 +1,6 @@
 #include "Transform.h"
 #include"GameObject.h"
-
+#include"CameraFrustrum.h"
 Transform::Transform(GameObject *parent, float3 position, float3 scale, Quat rotations ):Component(
 	Component_Type_Enum::component_transform_type, parent, true), position(position),scale(scale), rotation(rotations)
 {
@@ -15,6 +15,18 @@ Transform::~Transform()
 void Transform::Update()
 {
 	this->matrix.Decompose(this->position, this->rotation, this->scale);
+
+
+	/*ImGuizmo::Enable(true);
+
+	//Just debug purpose
+			//float4x4 viewmatrix = App->camera->GetViewMatrix();
+				//float4x4 projectionmatrix = App->camera->GetViewProjMatrix();
+		
+		ImGuizmo::Manipulate(App->camera->CamComp->Get_Frustum().ViewMatrix().ptr(), App->camera->CamComp->Get_Frustum().ViewProjMatrix().ptr(), Operator_Guiz, ImGuizmo::LOCAL, matrix.ptr());
+
+	ImGuizmo::Enable(false);*/
+
 }
 
 void Transform::SetPosition(float3 n_pos)

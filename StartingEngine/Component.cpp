@@ -28,9 +28,6 @@ void Component::PreUpdate()
 
 void Component::Update()
 {
-
-
-
 }
 
 Component_Type_Enum Component::GetComponentType() const

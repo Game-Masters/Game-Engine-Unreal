@@ -14,7 +14,8 @@ class CameraComponent;
 
 enum Tag_Object_Enum {
 	root_tag,
-	no_obj_tag
+	no_obj_tag,
+	frustrum_obj_tag
 };
 
 class Component;

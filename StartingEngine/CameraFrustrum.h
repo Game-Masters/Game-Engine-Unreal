@@ -15,7 +15,7 @@ class CameraComponent : public Component
 public:
 	CameraComponent(GameObject* parent, bool Active);
 	~CameraComponent();
-	void Preupdate();
+	void PreUpdate();
 	
 	void Update();
 	bool Enable();

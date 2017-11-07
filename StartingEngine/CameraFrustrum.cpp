@@ -31,7 +31,7 @@ bool CameraComponent::Disable()
 	return false;
 }
 
-void CameraComponent::Preupdate()
+void CameraComponent::PreUpdate()
 {
 	GameObject* temp = App->scene_intro->root_gameobject;
 	CheckInFrustum(temp);
@@ -39,30 +39,33 @@ void CameraComponent::Preupdate()
 
 void CameraComponent::CheckInFrustum(GameObject* temp)
 {
-	for (int j = 0; j < temp->Component_Vect.size(); j++) {
-		if (temp->Component_Vect[j]->GetComponentType() == component_mesh_type)
-		{
-			AABB* temp2 = &((Mesh*)temp->Component_Vect[j])->GetGeometryBaseMesh()->BoundBox;
-			//DO THE CULLING FUNCTION
-			if (InsideFrustrum(temp2) == CULL_OUTSIDE)
+	if (temp->object_tag_s != Tag_Object_Enum::frustrum_obj_tag) {
+		for (int j = 0; j < temp->Component_Vect.size(); j++) {
+			if (temp->Component_Vect[j]->GetComponentType() == component_mesh_type)
 			{
-				temp->active = false;
-			}
-			else
-			{
-				temp->active = true;
-			}
+				AABB* temp2 = &((Mesh*)temp->Component_Vect[j])->Copy_aabb;
+				//DO THE CULLING FUNCTION
+				if (InsideFrustrum(temp2) == CULL_OUTSIDE)
+				{
+					temp->active = false;
+				}
+				else
+				{
+					temp->active = true;
+				}
 
 
-			//
-		}
-		if (temp->Childrens_GameObject_Vect.size() != 0)
-		{
-			for (int i = 0; i < temp->Childrens_GameObject_Vect.size(); i++) {
-				CheckInFrustum(temp);
-
+				//
 			}
 		}
+	
+	if (temp->Childrens_GameObject_Vect.size() != 0)
+	{
+		for (int i = 0; i < temp->Childrens_GameObject_Vect.size(); i++) {
+			CheckInFrustum(temp->Childrens_GameObject_Vect[i]);
+
+		}
+	}
 	}
 }
 const CamCulling CameraComponent::InsideFrustrum(const AABB * aabb)

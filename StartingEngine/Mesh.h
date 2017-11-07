@@ -79,10 +79,10 @@ private:
 	std::string path_fbx;
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
 	geometry_base_creating* mesh_v;
-	AABB Copy_aabb;
+
 public:
 	float4x4 ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
-
+	AABB Copy_aabb;
 	void Update();
 	Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* path, Material* m_text=nullptr);
 	~Mesh();

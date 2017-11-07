@@ -216,7 +216,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 		}
 		
-		
 
 		glLineWidth(5.0f);
 		glBegin(GL_LINES);

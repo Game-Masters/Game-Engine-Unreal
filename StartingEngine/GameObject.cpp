@@ -86,7 +86,7 @@ float4x4 GameObject::GetMatrix_Trans()
 	
 	if (this->parent != nullptr) {
 		if(this->parent->GetTransform()!=nullptr)
-		matrix= this->parent->GetMatrix_Trans()*matrix;
+		return this->parent->GetMatrix_Trans()*matrix;
 
 	}
 	return matrix;

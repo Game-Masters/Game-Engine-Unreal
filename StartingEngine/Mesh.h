@@ -31,9 +31,9 @@ struct geometry_base_creating {
 	std::string texture_str;
 	AABB BoundBox;
 	uint id_aabb=0;
-	float* vertex_aabb;
+	float* vertex_aabb=nullptr;
 	uint id_index_aabb=0;
-	uint* index_aabb;
+	uint* index_aabb = nullptr;
 	uint num_tris = 0;
 	std::string name;
 	uint Know_if_m_have[4]{ 0,0,0,0 };
@@ -47,9 +47,8 @@ struct geometry_base_creating {
 		glDeleteBuffers(1, &id_colors);
 		glDeleteBuffers(1, &id_texture);
 		glDeleteBuffers(1, &id_image_devil);
-
-		/*delete[] vertex_aabb;
-		delete[] index_aabb;*/
+		delete[] vertex_aabb;
+		delete[] index_aabb;
 		delete[] indices;
 		delete[] vertices;
 		delete[] colors;

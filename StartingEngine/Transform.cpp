@@ -37,7 +37,7 @@ void Transform::Update()
 		float4x4 temp_mat;
 		ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, temp_mat.ptr());
 		
-		temp_mat.Decompose(position,rotation,scale);
+		//temp_mat.Decompose(position,rotation,scale);
 		
 		
 

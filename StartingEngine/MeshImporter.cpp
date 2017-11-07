@@ -204,7 +204,7 @@ void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
 
 	path_new_format = "";
 
-	
+	RELEASE_ARRAY(buffer_total);
 
 }
 
@@ -271,7 +271,8 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		memcpy(name, cursor[0], size);
 		name_mesh = name;
 		cursor[0] += size;
-		
+	
+
 		size = sizeof(int);
 		memcpy(num_childs, cursor[0], size);
 		cursor[0] += size;
@@ -326,11 +327,12 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			child_gameobj->AddNewTransform(translation_f, scale_f, Final_quat);
 		
 		num_mesh_iterator_count++;
+		delete[] name;
 	} while (num_mesh_iterator_count < num_meshes);
 
 
 	delete[] ind;
-	
+
 	return child_gameobj;
 }
 

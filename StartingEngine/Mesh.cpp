@@ -20,6 +20,24 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* pat
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh_v->num_indices, &mesh_v->indices[0], GL_STATIC_DRAW);
 	}
 	Copy_aabb = mesh_v->BoundBox;
+	this->mesh_v->vertex_aabb = new float[8 * 3];
+	this->mesh_v->index_aabb = new uint[8 * 3];
+	uint indices[] =
+	{
+		0,2,
+		0,4,
+		0,1,
+		7,6,
+		7,3,
+		7,5,
+		5,1,
+		5,4,
+		2,3,
+		2,6,
+		6,4,
+		3,1
+	};
+	memcpy(this->mesh_v->index_aabb, indices, sizeof(uint) * 24);
 	Update_AABB();
 	
 }
@@ -39,7 +57,7 @@ void Mesh::Update_AABB() {
 		glDeleteBuffers(1, &mesh_v->id_index_aabb);
 	}
 
-	this->mesh_v->vertex_aabb = new float[8 * 3];
+
 
 	float vertex_Aabb[] = {
 		Copy_aabb.CornerPoint(0).x,Copy_aabb.CornerPoint(0).y,Copy_aabb.CornerPoint(0).z,
@@ -52,26 +70,6 @@ void Mesh::Update_AABB() {
 		Copy_aabb.CornerPoint(7).x,Copy_aabb.CornerPoint(7).y,Copy_aabb.CornerPoint(7).z
 	};
 	memcpy(this->mesh_v->vertex_aabb, vertex_Aabb, sizeof(float) * 24);
-
-
-	this->mesh_v->index_aabb = new uint[8 * 3];
-	uint indices[] =
-	{
-		0,2,
-		0,4,
-		0,1,
-		7,6,
-		7,3,
-		7,5,
-		5,1,
-		5,4,
-		2,3,
-		2,6,
-		6,4,
-		3,1
-	};
-	memcpy(this->mesh_v->index_aabb, indices, sizeof(uint) * 24);
-
 
 
 	glGenBuffers(1, (GLuint*)&(mesh_v->id_aabb));

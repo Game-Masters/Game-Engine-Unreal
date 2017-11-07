@@ -576,12 +576,7 @@ update_status ModuleGui::Update(float dt)
 		}
 		ImGui::SameLine();
 		ImGui::Text("Controls info");
-		ImGui::SameLine();
-		if (ImGui::BeginMenu("GameObjects Options"))
-		{
-			if (ImGui::MenuItem("Create a new Gameobject")) { create_empty_gameobject = !create_empty_gameobject; }
-			ImGui::EndMenu();
-		}
+	
 		
 		ImGui::EndMainMenuBar();
 

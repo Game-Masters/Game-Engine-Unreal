@@ -211,62 +211,7 @@ update_status ModuleGui::Update(float dt)
 					Comp_temp = inspection_node->Component_Vect[j];
 					switch (Comp_temp->GetComponentType())
 					{
-					case Component_Type_Enum::component_transform_type:
-						modify = false;
-						t_temp = (Transform*)Comp_temp;
-						trans =t_temp->GetPosition();
-						temp_transf = trans;
-						ImGui::Text("                                Position");
-						ImGui::Text("Pos x:"); ImGui::SameLine();
-						ImGui::DragFloat("##6", &trans.x, 0.1f, -500.0f, 500.0f);
-						ImGui::Text("Pos y:"); ImGui::SameLine();
-						ImGui::DragFloat("##7", &trans.y, 0.1f, -500.0f, 500.0f);
-						ImGui::Text("Pos z:"); ImGui::SameLine();
-						ImGui::DragFloat("##8", &trans.z, 0.1f, -500.0f, 500.0f);
-						if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z ) {
-							//t_temp->SetPosition(trans);
-							modify = true;
-						}
-
-						scale = t_temp->GetScale();
-						temp_transf = scale;
-						ImGui::Text("                                Scale");
-						ImGui::Text("Scale x:"); ImGui::SameLine();
-						ImGui::DragFloat("##9", &scale.x, 0.1f, 1.0f, 500.0f);
-						ImGui::Text("Scale y:"); ImGui::SameLine();
-						ImGui::DragFloat("##10", &scale.y, 0.1f, 1.0f, 500.0f);
-						ImGui::Text("Scale z:"); ImGui::SameLine();
-						ImGui::DragFloat("##11", &scale.z, 0.1f, 1.0f, 500.0f);
-						if (scale.x != temp_transf.x || scale.y != temp_transf.y || scale.z != temp_transf.z) {
-							//t_temp->SetScale(scale);
-							modify = true;
-						}
-
-						q_temp = t_temp->GetRotation();
-						eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
-						temp_transf = eul_ang;
-						ImGui::Text("                                Rotation");
-						ImGui::Text("Rotation x:"); ImGui::SameLine();
-						ImGui::DragFloat("##12", &eul_ang.x, 0.1f, -180.0f, 180.0f);
-						ImGui::Text("Rotation y:"); ImGui::SameLine();
-						ImGui::DragFloat("##13", &eul_ang.y, 0.1f, -180.0f, 180.0f);
-						ImGui::Text("Rotation z:"); ImGui::SameLine();
-						ImGui::DragFloat("##14", &eul_ang.z, 0.1f, -180.0f, 180.0f);
-						//Not really working
-						if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
-							eul_ang *= DEGTORAD;
-							q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
-							modify = true;
-						}
-
-						if(inspection_node->GetTransform()!=nullptr && modify == true)
-						inspection_node->GetTransform()->SetMatrix(float4x4::FromTRS(trans, q_temp, scale));
-
-						break;
-					case Component_Type_Enum::component_mesh_type:
-						m_temp = (Mesh*)Comp_temp;
-						ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
-						break;
+					
 
 					case Component_Type_Enum::component_material_type:
 						mat_temp = (Material*)Comp_temp;
@@ -283,6 +228,57 @@ update_status ModuleGui::Update(float dt)
 						}
 						break;
 					case Component_Type_Enum::component_null_type:
+						break;
+					case Component_Type_Enum::component_transform_type:
+						if (ImGui::CollapsingHeader("Transformation"))
+						{
+							modify = false;
+							t_temp = (Transform*)Comp_temp;
+							trans = t_temp->GetPosition();
+							temp_transf = trans;
+							//ImGui::Text("                                Position");
+							ImGui::Text("Pos :"); ImGui::SameLine();
+							ImGui::DragFloat3("##6", &trans[0], 0.1f, -500.0f, 500.0f);
+							if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z) {
+								//t_temp->SetPosition(trans);
+								modify = true;
+							}
+
+							scale = t_temp->GetScale();
+							temp_transf = scale;
+							//ImGui::Text("                                Scale");
+							ImGui::Text("Scale:"); ImGui::SameLine();
+							ImGui::DragFloat3("##9", &scale[0], 0.1f, 1.0f, 500.0f);
+
+							if (scale.x != temp_transf.x || scale.y != temp_transf.y || scale.z != temp_transf.z) {
+								//t_temp->SetScale(scale);
+								modify = true;
+							}
+
+							q_temp = t_temp->GetRotation();
+							eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
+							temp_transf = eul_ang;
+							//ImGui::Text("                                Rotation");
+							ImGui::Text("Rot :"); ImGui::SameLine();
+							ImGui::DragFloat3("##12", &eul_ang[0], 0.1f, -180.0f, 180.0f);
+
+							//Not really working
+							if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
+								eul_ang *= DEGTORAD;
+								q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
+								modify = true;
+							}
+
+							if (inspection_node->GetTransform() != nullptr && modify == true)
+								inspection_node->GetTransform()->SetMatrix(float4x4::FromTRS(trans, q_temp, scale));
+						}
+						break;
+					case Component_Type_Enum::component_mesh_type:
+						if (ImGui::CollapsingHeader("Mesh"))
+						{
+							m_temp = (Mesh*)Comp_temp;
+							ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
+						}
 						break;
 					default:
 						break;

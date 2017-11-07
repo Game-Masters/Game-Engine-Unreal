@@ -121,11 +121,11 @@ void CameraComponent::Update()
 		float4x4 transform_mesh;
 		
 		//Transform* transform = parent->;
-		if (ParentHasTransform(position, scale, rotation)!= false)
+		if (this->parent != nullptr)
 		{
 		
 			//transform_mesh = float4x4::FromTRS(position, rotation, scale);
-			transform_mesh = float4x4::FromTRS(position, rotation, scale);
+			transform_mesh = this->parent->GetMatrix_Trans().Transposed();
 			bool frustum_changed = false;
 			float3 prev_pos = frustum.pos;
 			frustum.pos = transform_mesh.Row3(3);

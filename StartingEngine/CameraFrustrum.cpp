@@ -105,6 +105,15 @@ Frustum CameraComponent::Get_Frustum() const
 {
 	return frustum;
 }
+void CameraComponent::SetVertFOV(float n_fov)
+{
+	frustum.verticalFov = n_fov;
+}
+void CameraComponent::SetFOV_WH()
+{
+	frustum.horizontalFov = (2 * math::Atan(math::Tan(frustum.verticalFov / 2) * App->window->GetAspect_Ratio()));
+
+}
 void CameraComponent::Update()
 {
 

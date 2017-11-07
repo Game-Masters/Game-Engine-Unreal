@@ -37,6 +37,8 @@ bool ModuleSceneIntro::Start()
 	tx_vec=ImGui::GetSizeDock(3);
 	world_texture = new Texture_Engine();
 	world_texture->Create(nullptr, tx_vec.z, tx_vec.w);
+	App->renderer3D->OnResize(tx_vec.z, tx_vec.w);
+	world_texture->Bind();
 	std::string path_temp = "..\\Game\\Data\\BakerHouse.fbx";
 	std::string path_temp2 = "..\\Game\\Data\\Baker_house.png";
 	Material* temp = nullptr;
@@ -47,10 +49,10 @@ bool ModuleSceneIntro::Start()
 
 	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
 
-
+/*
 	frustrumtest =CreateNewGameObjects("Frustrum test", true, root_gameobject, Tag_Object_Enum::frustrum_obj_tag, false);
 	frustrumtest->AddNewTransform(float3(0,0,0), float3(1, 1, 1), Quat(0,0,0,1));
-	frustrumtest->AddNewFrustum();
+	frustrumtest->AddNewFrustum();*/
 
 	
 	//Load_Scene();
@@ -66,6 +68,8 @@ bool ModuleSceneIntro::Start()
 update_status ModuleSceneIntro::PreUpdate(float dt)
 {
 	world_texture->Bind();
+	tx_vec = ImGui::GetSizeDock(3);
+	world_texture->Resize(tx_vec.z, tx_vec.w);
 	//world_texture->Resize()
 	root_gameobject->PreUpdate();
 

@@ -26,7 +26,7 @@ void Transform::Update()
 		float4x4 matrix_t = GetMatrix();
 		ImGuizmo::SetRect(0, 0, App->scene_intro->tx_vec.z, App->scene_intro->tx_vec.w);
 		ImGuizmo::DrawCube(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), matrix_t.Transposed().ptr());
-		ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), Operator_Guiz, ImGuizmo::WORLD, matrix_t.Transposed().ptr());
+		ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), Operator_Guiz, ImGuizmo::LOCAL, matrix_t.Transposed().ptr());
 	
 		ImGuizmo::Enable(false);
 	}

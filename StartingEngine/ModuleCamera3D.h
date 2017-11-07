@@ -18,6 +18,7 @@ public:
 	~ModuleCamera3D();
 
 	bool Start();
+	bool Init();
 	update_status Update(float dt);
 	bool CleanUp();
 	//bool Gui_Engine_Modules(float dt);

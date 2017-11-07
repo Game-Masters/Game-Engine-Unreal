@@ -3,7 +3,8 @@
 #include "ModuleRenderer3D.h"
 #include"Mesh.h"
 #include"Material.h"
-#include"GameObject.h";
+#include"GameObject.h"
+#include"ModuleCamera3D.h"
 #include "CameraFrustrum.h"
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
@@ -93,7 +94,7 @@ bool ModuleRenderer3D::Init()
 	if(Window_Color!=nullptr)
 	glClearColor(*(Window_Color), *(Window_Color + 1), *(Window_Color + 2), 1.f);
 
-
+	App->camera->CamComp->SetFOV_WH();
 	return ret;
 }
 
@@ -288,11 +289,21 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	ProjectionMatrix = App->camera->CamComp->Get_Frustum().ViewProjMatrix().Transposed();
+	glLoadMatrixf(ProjectionMatrix.ptr());
 
+
+	App->camera->CamComp->SetFOV_WH();
+	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+
+
+
+
+
+
 }
 
 bool ModuleRenderer3D::LoadConfig(JSON_Object * node)

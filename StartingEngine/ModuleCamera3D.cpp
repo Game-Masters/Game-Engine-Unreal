@@ -26,13 +26,20 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 ModuleCamera3D::~ModuleCamera3D()
 {}
 
+bool ModuleCamera3D::Init() {
+
+	CamComp = new CameraComponent(App->scene_intro->root_gameobject, true);
+	CalculateViewMatrix();
+	return true;
+}
+
 // -----------------------------------------------------------------
 bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
-	CamComp = new CameraComponent(App->scene_intro->root_gameobject,true);
-	CalculateViewMatrix();
+
+	
 	r_cast_segm.a = float3(0, 0, 0);
 	r_cast_segm.b = float3(0, 0, 0);
 	temp_ray.a = float3(0, 0, 0);
@@ -129,7 +136,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 
 
-		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN && App->gui->n4 == false) {
+		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->gui->n4 == false) {
 			ray_cast_pressed = true;
 		}
 		
@@ -144,6 +151,9 @@ update_status ModuleCamera3D::Update(float dt)
 
 			mouse_pos.x = -(1.0f-((mx - App->scene_intro->tx_vec.x) / (App->scene_intro->tx_vec.z / 2.0f)));
 			mouse_pos.y = (1.0f-((my- App->scene_intro->tx_vec.y) / (App->scene_intro->tx_vec.w / 2.0f)));
+			
+			LOG("mx: %f", mx - App->scene_intro->tx_vec.x - 12);
+			LOG("my: %f", my - App->scene_intro->tx_vec.y - 43);
 			r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
 
 			Recursive_Ray_Distance(App->scene_intro->root_gameobject);
@@ -164,35 +174,36 @@ update_status ModuleCamera3D::Update(float dt)
 				float3 hit_point = float3::zero;
 				int i = 0;
 				if (temp_mesh_base->num_indices >9) {
-					while (i < temp_mesh_base->num_indices - 9) {
-						Triangle tri;
-						float point1[] = {
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]]
+					//while (i < temp_mesh_base->num_indices - 9) {
+				
+						/*float point1[] = {
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
+
 						};
 
 						float point2[] = {
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]]
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
 						};
 
 						float point3[] = {
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]]
-						};
+							temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
 
-						tri.a.Set(point1);
-						tri.b.Set(point2);
-						tri.c.Set(point3);
+						};*/
 
-						if (temp_ray.Intersects(tri, &distance, &hit_point) && dist_to_cam < dist_min_ray_go) {
-							Closest_Ray_GO = temp;
-							dist_min_ray_go = distance;
+
+						//}
+					while(i < temp_mesh_base->num_indices) {
+							Triangle tri;
+							tri.a.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
+							tri.b.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
+							tri.c.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
+
+							if (temp_ray.Intersects(tri, &distance, &hit_point) && dist_to_cam < dist_min_ray_go) {
+								Closest_Ray_GO = temp;
+								dist_min_ray_go = distance;
+							}
 						}
-					}
+
 				}
 
 			}

@@ -79,6 +79,7 @@ bool ModuleWindow::Init()
 		}
 	}
 	
+	GetAspect_Ratio();
 
 	return ret;
 }
@@ -218,4 +219,10 @@ update_status ModuleWindow::PreUpdate(float dt)
 	SDL_GetWindowSize(window, &win_width, &win_height);
 
 	return update_status::UPDATE_CONTINUE;
+}
+
+float ModuleWindow::GetAspect_Ratio()
+{
+	return App->scene_intro->tx_vec.z / App->scene_intro->tx_vec.w;
+	
 }

@@ -29,7 +29,7 @@ public:
 	char str_p[64] = { 0 };
 	char str_w[64] = { 0 };
 	char str_h[64] = { 0 };
-	
+	float GetAspect_Ratio();
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
 	bool fullscreen_bool = false;

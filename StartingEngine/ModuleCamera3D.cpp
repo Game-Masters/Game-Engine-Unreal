@@ -163,7 +163,7 @@ update_status ModuleCamera3D::Update(float dt)
 				float distance = 0;
 				float3 hit_point = float3::zero;
 				int i = 0;
-			
+				if (temp_mesh_base->num_indices >9) {
 					while (i < temp_mesh_base->num_indices - 9) {
 						Triangle tri;
 						float point1[] = {
@@ -183,7 +183,7 @@ update_status ModuleCamera3D::Update(float dt)
 							temp_mesh_base->vertices[temp_mesh_base->indices[i++]],
 							temp_mesh_base->vertices[temp_mesh_base->indices[i++]]
 						};
-						
+
 						tri.a.Set(point1);
 						tri.b.Set(point2);
 						tri.c.Set(point3);
@@ -192,6 +192,7 @@ update_status ModuleCamera3D::Update(float dt)
 							Closest_Ray_GO = temp;
 							dist_min_ray_go = distance;
 						}
+					}
 				}
 
 			}

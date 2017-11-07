@@ -17,7 +17,9 @@ public:
 	std::vector<QuadTreeNode*> GetChildren();
 	std::vector<GameObject*> GetGameObjects();
 	bool IsLeaf() const;
-
+	bool Full();
+	bool InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNode* node);
+	bool IsSmall();
 public:
 
 	std::vector<GameObject*> gameobjs;
@@ -25,6 +27,10 @@ public:
 	QuadTreeNode* parent = nullptr;
 	AABB bounds;
 	int max_game_objects = NODE_CAPACITY;
+private:
+	float3 min { 0,0,0 };
+	float3 max { 0.25,0.25,0.25 };
+	AABB MinAbb = AABB(min, max);
 };
 
 

@@ -57,6 +57,7 @@ void QuadTreeNode::Subdivide()
 	child3->Fill();
 	children.push_back(child4);
 	child4->Fill();
+	
 }
 
 void QuadTreeNode::Fill()
@@ -64,7 +65,22 @@ void QuadTreeNode::Fill()
 	std::vector<GameObject*> root_children = App->scene_intro->root_gameobject->Childrens_GameObject_Vect;
 	for (std::vector<GameObject*>::iterator it = root_children.begin(); it != root_children.end(); ++it)
 	{
-
+		if (InsideTree(it,this) == false)
+		{
+			//CHECK IF IT IS SMALLER THAN THE SMALLEST POSSIBLE
+			if (this->IsSmall() == false)
+			{
+				gameobjs.clear();
+				Subdivide();
+				break;
+			}
+			else
+			{
+				break;
+			}
+			
+			
+		}
 	}
 
 }
@@ -83,6 +99,56 @@ std::vector<GameObject*> QuadTreeNode::GetGameObjects()
 bool QuadTreeNode::IsLeaf() const
 {
 	return children[0] == nullptr;
+}
+
+bool QuadTreeNode::Full()
+{
+	return gameobjs.size() >= NODE_CAPACITY;
+}
+
+bool QuadTreeNode::InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNode* node)
+{
+	bool ret = true;
+	if ((*it)->static_obj != true)
+	{
+		return ret;
+	}
+	else
+	{
+		if ((*it)->Get_GO_Mesh() != nullptr)
+		{
+			if (node->bounds.Intersects((*it)->Get_GO_Mesh()->Copy_aabb));
+			{
+				node->Insert((*it));
+			}
+		}
+
+		if (node->Full() && (node->IsSmall() != true))
+		{
+			return false;
+		}
+		for (std::vector<GameObject*>::iterator it2 = (*it)->Childrens_GameObject_Vect.begin(); it != (*it)->Childrens_GameObject_Vect.end(); ++it)
+		{
+			ret = InsideTree(it2,node);
+			if (ret == false || (node->IsSmall() != true))
+			{
+				break;
+			}
+		}
+		
+	}
+
+	
+	return ret;
+}
+
+bool QuadTreeNode::IsSmall()
+{
+	float3 boundsmin = bounds.minPoint;
+	float3 boundsmax = bounds.maxPoint;
+	float boundslength = (boundsmax - boundsmin).Length();
+	float minlength = (max - min).Length();
+	return (boundslength <= minlength);
 }
 
 //QUADTREE

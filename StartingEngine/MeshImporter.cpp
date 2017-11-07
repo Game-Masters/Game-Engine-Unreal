@@ -118,8 +118,6 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 
 		ImportMesh(m, path);
 		
-	//	mesh_v.push_back(m);
-
 	}
 
 

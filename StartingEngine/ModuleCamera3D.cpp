@@ -135,15 +135,17 @@ update_status ModuleCamera3D::Update(float dt)
 	// Raycast calc-------------
 
 
-
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->gui->n4 == false) {
-			ray_cast_pressed = true;
-		}
+			if (!ImGuizmo::IsOver()) {
+				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->gui->n4 == false) {
+					ray_cast_pressed = true;
+					Closest_Ray_GO = nullptr;
+				}
+			}
 		
 
 		
 		
-		float dist_min_ray_go = 9999;
+		float dist_min_ray_go = INFINITY;
 		if (ray_cast_pressed) {
 			const Frustum temp_t = CamComp->Get_Frustum();
 			float mx = (float)App->input->GetMouseX();
@@ -202,6 +204,7 @@ update_status ModuleCamera3D::Update(float dt)
 								Closest_Ray_GO = temp;
 								dist_min_ray_go = distance;
 							}
+
 						}
 
 				}
@@ -212,8 +215,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 		if (Closest_Ray_GO!=nullptr) {
 			App->gui->inspection_node = Closest_Ray_GO;
-			
-
 		}
 		
 

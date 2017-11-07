@@ -14,35 +14,39 @@ Transform::~Transform()
 
 void Transform::Update()
 {
-	this->matrix.Decompose(this->position, this->rotation, this->scale);
+	
 
 	if (this->parent==App->gui->inspection_node) {
 		ImGuizmo::Enable(true);
-		float4x4 mat_proj = App->camera->CamComp->Get_Frustum().ProjectionMatrix();
-		float4x4 mat = App->camera->CamComp->Get_Frustum().ViewMatrix();
-		float4x4 matrix_t = parent->GetMatrix_Trans();
 
 		ImGuiIO& io = ImGui::GetIO();
 		ImGuizmo::SetRect(App->scene_intro->tx_vec.x, App->scene_intro->tx_vec.y, App->scene_intro->tx_vec.z, App->scene_intro->tx_vec.w);
 
-		
-		float matrixTranslation[3], matrixRotation[4], matrixScale[3];
+		float4x4 mat_proj = App->camera->CamComp->Get_Frustum().ProjectionMatrix();
+		float4x4 mat = App->camera->CamComp->Get_Frustum().ViewMatrix();
+		float4x4 matrix_t = parent->GetMatrix_Trans().Transposed();
+	
 
-		ImGuizmo::DecomposeMatrixToComponents(this->parent->GetMatrix_Trans().Inverted().ptr(), matrixTranslation, matrixRotation, matrixScale);
-		/*position.x = matrixTranslation[0];	position.y = matrixTranslation[1];	position.z = matrixTranslation[2];
-		scale.x = matrixScale[0];	scale.y = matrixScale[1];	scale.z = matrixScale[2];
-		rotation.x = matrixRotation[0];	position.y = matrixRotation[1];	position.z = matrixRotation[2];*/
-		ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), Operator_Guiz, ImGuizmo::WORLD, matrix_t.Transposed().ptr());
+		ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, matrix_t.ptr());
 
-		float4x4 temp_mat;
-		ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, temp_mat.ptr());
-		
-		//temp_mat.Decompose(position,rotation,scale);
-		
-		
+		if (ImGuizmo::IsUsing())
+		{
+			matrix_t.Transpose();
+			float3 trans, sca;
+			Quat rot;
+			matrix_t.Decompose(trans, rot, sca);
+
+			position = trans;
+
+			this->parent->GetTransform()->SetMatrix(float4x4::FromTRS(trans, rotation, scale));
+		}
 
 
-		ImGuizmo::Enable(false);
+
+		//ImGuizmo::Enable(false);
+	}
+	else {
+		this->matrix.Decompose(this->position, this->rotation, this->scale);
 	}
 
 }

@@ -4,6 +4,10 @@
 QuadTreeNode::QuadTreeNode()
 {
 }
+QuadTreeNode::QuadTreeNode(AABB * box)
+{
+	bounds = *box;
+}
 QuadTreeNode::QuadTreeNode(float3 min_point, float3 max_point, int max_objects) :max_game_objects(max_objects)
 {
 	bounds.maxPoint = max_point;
@@ -151,6 +155,27 @@ bool QuadTreeNode::IsSmall()
 	return (boundslength <= minlength);
 }
 
+void QuadTreeNode::DebugDraw()
+{
+	for (uint i = 0; i < 12; i++)
+	{
+		glVertex3f(bounds.Edge(i).a.x, bounds.Edge(i).a.y, bounds.Edge(i).a.z);
+		glVertex3f(bounds.Edge(i).b.x, bounds.Edge(i).b.y, bounds.Edge(i).b.z);
+	}
+	if (children[0] != nullptr)
+	{
+		if (IsLeaf() == false)
+		{
+			for (uint i = 0; i < NODE_CAPACITY; i++)
+			{
+				children[i]->DebugDraw();
+			}
+
+		}
+		
+	}
+}
+
 //QUADTREE
 QuadTreeZ::QuadTreeZ()
 {
@@ -162,13 +187,14 @@ QuadTreeZ::~QuadTreeZ()
 
 void QuadTreeZ::Calculate()
 {
-	root.Clear();
-	root.Fill();
+	root->Clear();
+	root->Fill();
 	
 }
 
-void QuadTreeZ::SetBoundaries(const AABB & bounds)
+void QuadTreeZ::SetBoundaries(const AABB * bounds)
 {
+	root = new QuadTreeNode((AABB*)bounds);
 }
 
 void QuadTreeZ::Insert(GameObject * game_object)
@@ -181,4 +207,19 @@ void QuadTreeZ::Erase(GameObject * game_object)
 
 void QuadTreeZ::Clear()
 {
+}
+
+void QuadTreeZ::DebugDraw()
+{
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor3f(1.00f, 0.761f, 0.00f);
+
+	if (root != nullptr)
+	{
+		root->DebugDraw();
+	}
+
+	glEnd();
+	glColor3f(1.0f, 1.0f, 1.0f);
 }

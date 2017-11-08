@@ -7,6 +7,7 @@ class QuadTreeNode
 {
 public:
 	QuadTreeNode();
+	QuadTreeNode(AABB* box);
 	QuadTreeNode(float3 min_point, float3 max_point, int max_objects);
 	~QuadTreeNode();
 	void Insert(GameObject* game_object);
@@ -20,6 +21,7 @@ public:
 	bool Full();
 	bool InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNode* node);
 	bool IsSmall();
+	void DebugDraw();
 public:
 
 	std::vector<GameObject*> gameobjs;
@@ -41,10 +43,11 @@ public:
 	QuadTreeZ();
 	~QuadTreeZ();
 	void Calculate();
-	void SetBoundaries(const AABB& bounds);
+	void SetBoundaries(const AABB* bounds);
 	void Insert(GameObject*  game_object);
 	void Erase(GameObject*  game_object);
 	void Clear();
-	QuadTreeNode root;
+	void DebugDraw();
+	QuadTreeNode* root;
 	std::vector<GameObject*> gameobjs;
 };

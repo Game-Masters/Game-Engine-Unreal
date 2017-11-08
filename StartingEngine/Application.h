@@ -57,9 +57,10 @@ public:
 private:
 
 	Timer	ms_timer;
-	float play_timer;
+	float play_timer = 0;
 	float	dt;
-	float	dtvariation;
+	float	dtvariation = 0;
+	float	tempdt = 1;
 	
 	//p2List<Module*> list_modules;
 	j1PerfTimer			ptimer;

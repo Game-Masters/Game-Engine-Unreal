@@ -141,6 +141,7 @@ void Application::Pause()
 void Application::Stop()
 {
 	timeStatus = stop;
+	play_timer = 0;
 	DtSwitch();
 }
 
@@ -148,15 +149,17 @@ void Application::DtSwitch()
 {
 	if (timeStatus == play)
 	{
-		dtvariation = 1.0f;
+		dtvariation = tempdt;
 		StartPlayingScene();
 	}
 	if (timeStatus == pause)
 	{
+		tempdt = dtvariation;
 		dtvariation = 0.0f;
 	}
 	if (timeStatus == stop)
 	{
+		tempdt = dtvariation;
 		dtvariation = 0.0f;
 		ReStartScene();
 	}
@@ -221,9 +224,13 @@ update_status Application::Update()
 			(*item)->Update(tempdt);
 		}
 		(*item)->PauseTimer();
+		
+	}
+	if (timeStatus == play)
+	{
 		play_timer += tempdt;
 	}
-
+	
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {
 		(*item)->ResumeTimer();
 		if ((*item) == camera)
@@ -313,6 +320,9 @@ bool Application::Gui_Engine_Modules(float dt)
 	if (ImGui::InputInt("Fps capped:", &temp_cap, -1, 100, ImGuiInputTextFlags_EnterReturnsTrue)) {
 		capped_ms = temp_cap;
 	}
+	ImGui::SliderFloat("dt", &dtvariation ,0.0f, 10.0f);
+	;
+	ImGui::Text("Time Since Startup: %f", play_timer);
 	ImGui::EndDock();
 	return true;
 }

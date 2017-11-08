@@ -128,6 +128,7 @@ int Application::GetFramesCapped()
 void Application::Play()
 {
 	timeStatus = play;
+	play_timer = 0;
 	DtSwitch();
 }
 
@@ -220,6 +221,7 @@ update_status Application::Update()
 			(*item)->Update(tempdt);
 		}
 		(*item)->PauseTimer();
+		play_timer += tempdt;
 	}
 
 	for (std::list<Module*>::iterator item = list_modules.begin(); item != list_modules.end(); ++item) {

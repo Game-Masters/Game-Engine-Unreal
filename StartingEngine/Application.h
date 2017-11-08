@@ -57,6 +57,7 @@ public:
 private:
 
 	Timer	ms_timer;
+	float play_timer;
 	float	dt;
 	float	dtvariation;
 	

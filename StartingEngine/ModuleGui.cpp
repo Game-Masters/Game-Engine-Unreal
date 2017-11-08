@@ -292,18 +292,24 @@ update_status ModuleGui::Update(float dt)
 		GameObject* temp=nullptr;
 	
 		if (ImGui::BeginDock("Scene", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+			
 
-			if (ImGui::TreeNode(App->scene_intro->root_gameobject->name.c_str())) {
-				for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
-					temp = App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i];
-					IterateChilds(temp);
-					
+				if (ImGui::TreeNode(App->scene_intro->root_gameobject->name.c_str())) {
+					for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+						temp = App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i];
+						IterateChilds(temp);
+
+					}
+					ImGui::TreePop();
 				}
-				ImGui::TreePop();
+				/*
+			if (ImGui::BeginPopupContextItem("Paco")) {
+				ImGui::Text("PACOTETE");
+				ImGui::EndPopup();
 			}
-
+			*/
+			ImGui::EndDock();
 		}
-		ImGui::EndDock();
 		//To print information about the geometry in the scene
 		
 		

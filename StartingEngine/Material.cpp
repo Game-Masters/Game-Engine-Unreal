@@ -18,7 +18,6 @@ Material::Material(const char * path_text, const char* fbx, geometry_base_creati
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *texture_v->num_vertices * 2, &texture_v->textures_coord[0], GL_STATIC_DRAW); 
 
 
-
 }
 
 void Material::Update()

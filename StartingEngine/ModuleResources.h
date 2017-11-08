@@ -17,11 +17,11 @@ class ModuleResources :
 public:
 	ModuleResources();
 	~ModuleResources();
-	
+	update_status Update(float dt);
 	int Find(const char* file_in_assets) const;
 	int ImportFile(const char* new_file_in_assets, bool force = false);
 	int GenerateNewUID();
-	const Resource* Get(int uid) const;
+	//const Resource* Get(int uid) const;
 	Resource* Get(int uid);
 	Resource* CreateNewResource(Resources_Type type, int force_uid = 0);
 

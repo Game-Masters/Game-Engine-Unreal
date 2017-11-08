@@ -3,7 +3,7 @@
 #include"ModuleFileSystem_Engine.h"
 #include"GameObject.h"
 #include"MaterialImporter.h"
-
+#include"ResourceTexture.h"
 #define MAXRANGCHAR 70
 
 
@@ -23,7 +23,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 	*new_name = path_new_format;
 	RELEASE_ARRAY(buffer_total_gen);
 
-	//Load_Texture_Scenes(scene);
+	Load_Texture_Scenes(scene);
 
 	geometry_base_creating* m = nullptr;
 	//std::vector<geometry_base_creating*> mesh_v;
@@ -294,6 +294,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 
 		
 		Material* mat = nullptr;
+		Resource* res_mat = nullptr;
 		if (num_meshes > 0) {
 			final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name + ".ric";
 			n_temp_mesh = Create_Base_Geometry(path, name_mesh.c_str(), final_path_mesh.c_str());
@@ -309,11 +310,13 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size()>0) {
 				uint p_temp = 0;
 				std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);
-				if (it != App->imp_mat->Mat_Map.end())
-					
-					App->assimp->LoadImage_devil(it->second.c_str(), &p_temp);
-				n_temp_mesh->id_image_devil = p_temp;
-				mat = child_gameobj->AddNewMaterial(it->second.c_str(), final_path_mesh.c_str(), n_temp_mesh);
+				if (it == App->imp_mat->Mat_Map.end()) {}
+				else {
+					//App->resources_mod->Find(it->second.c_str());
+					res_mat = App->resources_mod->Get(App->resources_mod->Find(it->second.c_str()));
+					n_temp_mesh->id_image_devil = ((ResourceTexture*)res_mat)->id_image_devil;
+					mat = child_gameobj->AddNewMaterial(it->second.c_str(), final_path_mesh.c_str(), n_temp_mesh);
+				}
 			}
 			if (mat != nullptr) {
 				child_gameobj->AddNewMesh(n_temp_mesh, final_path_mesh.c_str(), mat);
@@ -429,7 +432,7 @@ bool MeshImporter::Load_Texture_Scenes(const aiScene* scene)
 	ilInit();
 
 	/* scan scene's materials for textures */
-	for (unsigned int m = 0; m<scene->mNumMaterials; ++m)
+	/*for (unsigned int m = 0; m<scene->mNumMaterials; ++m)
 	{
 		int texIndex = 0;
 		aiString aipath;  // filename
@@ -441,7 +444,7 @@ bool MeshImporter::Load_Texture_Scenes(const aiScene* scene)
 			
 			App->imp_mat->ImportMaterial(file_name.c_str());
 		}
-	}
+	}*/
 
 	for (int i = 0; i < scene->mNumMeshes; i++) {
 		uint id_text = scene->mMeshes[i]->mMaterialIndex;
@@ -451,15 +454,19 @@ bool MeshImporter::Load_Texture_Scenes(const aiScene* scene)
 
 		aiString path;
 		uint p;
-		material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-		std::string temp = path.C_Str();
-		std::string final_path;
-		App->fs_e->ChangeFormat_File(temp.c_str(), "dds", &final_path, App->fs_e->Material_Engine);
-	
-		std::pair<uint, std::string> pair_t;
-		pair_t.first = id_text;
-		pair_t.second = final_path;
-		App->imp_mat->Mat_Map.insert(pair_t);
+		
+		
+		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path)== AI_SUCCESS) {
+			std::string temp = path.C_Str();
+			std::string final_path;
+			App->resources_mod->ImportFile(temp.c_str());
+			//App->fs_e->ChangeFormat_File(temp.c_str(), "dds", &final_path, App->fs_e->Material_Engine);
+
+			std::pair<uint, std::string> pair_t;
+			pair_t.first = id_text;
+			pair_t.second = temp;
+			App->imp_mat->Mat_Map.insert(pair_t);
+		}
 
 	}
 

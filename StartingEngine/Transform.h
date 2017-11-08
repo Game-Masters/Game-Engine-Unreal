@@ -15,7 +15,7 @@ private:
 	float4x4 matrix= float4x4::identity;
 	ImGuizmo::OPERATION Operator_Guiz = ImGuizmo::OPERATION::TRANSLATE;
 public:
-
+	bool trans_f=false, rot_f = false, scal_f = false;
 	Transform(GameObject *parent, float3 position, float3 scale, Quat rotations);
 	~Transform();
 	void SetPosition(float3 n_pos);

@@ -64,6 +64,9 @@
     <Filter Include="Sources\Modules\MathGeoLib\Time">
       <UniqueIdentifier>{e3f4c30d-6e26-40d8-9028-e68e911ca328}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Resources">
+      <UniqueIdentifier>{d0885ff7-203a-4631-baf9-bb2e967bc880}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -549,6 +552,9 @@
     <ClInclude Include="Quadtree.h">
       <Filter>Sources\Modules\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Imgui\ImGuizmo.h" />
+    <ClInclude Include="ModuleResources.h" />
+    <ClInclude Include="ResourceTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -776,6 +782,9 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Sources\Modules\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Imgui\ImGuizmo.cpp" />
+    <ClCompile Include="ModuleResources.cpp" />
+    <ClCompile Include="ResourceTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assimp\include\assimp\.editorconfig">

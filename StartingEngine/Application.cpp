@@ -17,6 +17,7 @@ Application::Application()
 	gui = new ModuleGui();
 	assimp = new ModuleAssimp();
 	fs_e = new ModuleFileSystem_Engine();
+	resources_mod = new ModuleResources();
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -28,7 +29,7 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(assimp);
-	
+	AddModule(resources_mod);
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(physics);
@@ -51,7 +52,7 @@ Application::Application()
 	player->name = "player";
 	scene_intro->name = "scene intro";
 	assimp->name = "assimp";
-
+	resources_mod->name = "resources_manager";
 }
 
 Application::~Application()

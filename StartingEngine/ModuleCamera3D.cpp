@@ -223,11 +223,6 @@ update_status ModuleCamera3D::Update(float dt)
 		glColor3f(1, 0, 0);
 		glVertex3f(r_cast_segm.a.x, r_cast_segm.a.y, r_cast_segm.a.z);
 		glVertex3f(r_cast_segm.b.x, r_cast_segm.b.y, r_cast_segm.b.z);
-
-		glColor3f(0, 1, 0);
-		glVertex3f(temp_ray.a.x, temp_ray.a.y, temp_ray.a.z);
-		glVertex3f(temp_ray.b.x, temp_ray.b.y, temp_ray.b.z);
-
 		glEnd();
 		glColor3f(1, 1, 1);
 		mymap.clear();

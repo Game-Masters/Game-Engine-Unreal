@@ -17,6 +17,7 @@
 #include "Parson_JSON.h"
 #include"Parson_JSON.h"
 #include"ModuleFileSystem_Engine.h"
+#include"ModuleResources.h"
 #include <list>
 #include <vector>
 #include "Geometry.h"
@@ -47,7 +48,7 @@ public:
 	ModuleGui* gui;
 	ModuleFileSystem_Engine* fs_e;
 	ModuleAssimp* assimp;
-
+	ModuleResources* resources_mod;
 	//----
 	Parson_JSON* json_class;
 	MaterialImporter* imp_mat = nullptr;

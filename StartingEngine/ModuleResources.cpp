@@ -37,33 +37,41 @@ int ModuleResources::Find(const char * file_in_assets) const
 int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 {
 	int ret = -1;
-	std::string file_imported = new_file_in_assets;
-	size_t find_ext = file_imported.rfind("."); find_ext += 1;
-	std::string ext_file = file_imported.substr(find_ext, file_imported.size());
-	std::string file_in_engine="-1";
-	Resources_Type type = Resources_Type::unknown_r;
-	Resource* res = nullptr;
 
-	if (ext_file == "png" || ext_file == "PNG" || ext_file == "tga" || ext_file == "TGA") {
-		App->imp_mat->ImportMaterial(new_file_in_assets, &file_in_engine);
-		type = Resources_Type::texture;
-		res = CreateNewResource(type);
-		res->Set_New_Resource_Files(file_in_engine, new_file_in_assets);
-		App->assimp->LoadImage_devil(file_in_engine.c_str(), &((ResourceTexture*)res)->id_image_devil);
-		ret = res->GetUID();
-	}
-	else if (ext_file == "fbx" || ext_file == "FBX") {
-		App->assimp->ImportGeometry(new_file_in_assets, &file_in_engine);
-		App->imp_mesh->LoadMesh(file_in_engine.c_str());
-		type = Resources_Type::mesh;
-	}
+	if (Find(new_file_in_assets)==-1) {
+		std::string file_imported = new_file_in_assets;
+		size_t find_ext = file_imported.rfind("."); find_ext += 1;
+		std::string ext_file = file_imported.substr(find_ext, file_imported.size());
+		std::string file_in_engine = "-1";
+		Resources_Type type = Resources_Type::unknown_r;
+		Resource* res = nullptr;
 
-	if (file_in_engine != "-1" && type!= Resources_Type::unknown_r) {
-		std::pair<int, Resource*> p;
-		p.first = ret;
-		p.second = res;
-		resources.insert(p);
+		if (ext_file == "png" || ext_file == "PNG" || ext_file == "tga" || ext_file == "TGA") {
+			std::string path_in_engine = "-1";
+			App->fs_e->ChangeFormat_File(new_file_in_assets, "dds", &path_in_engine, App->fs_e->Material_Engine);
+
+			type = Resources_Type::texture;
+			res = CreateNewResource(type);
+			res->Set_New_Resource_Files(path_in_engine, new_file_in_assets);
+			if (res->LoadToMemory()) {
+
+				std::pair<int, Resource*> p;
+				p.first = ret;
+				p.second = res;
+				resources.insert(p);
+				ret = res->GetUID();
+			}
+
+		}
+		else if (ext_file == "fbx" || ext_file == "FBX") {
+			App->assimp->ImportGeometry(new_file_in_assets, &file_in_engine);
+			App->imp_mesh->LoadMesh(file_in_engine.c_str());
+			type = Resources_Type::mesh;
+		}
 	}
+	/*if (file_in_engine != "-1" && type!= Resources_Type::unknown_r) {
+		
+	}*/
 
 	return ret;
 }
@@ -136,6 +144,20 @@ const char * Resource::GetFile() const
 const char * Resource::GetExportedFile() const
 {
 	return exported_file.c_str();
+}
+
+bool Resource::IsLoadedToMemory() const
+{
+	return loaded>0;
+}
+
+bool Resource::LoadToMemory()
+{
+	if (loaded == 0) {
+		return true;
+	}
+	loaded++;
+	return false;
 }
 
 void Resource::Set_New_Resource_Files(std::string file, std::string exported_file)

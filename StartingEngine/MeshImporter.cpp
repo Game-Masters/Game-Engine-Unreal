@@ -432,7 +432,7 @@ bool MeshImporter::Load_Texture_Scenes(const aiScene* scene)
 	ilInit();
 
 	/* scan scene's materials for textures */
-	/*for (unsigned int m = 0; m<scene->mNumMaterials; ++m)
+	for (unsigned int m = 0; m<scene->mNumMaterials; ++m)
 	{
 		int texIndex = 0;
 		aiString aipath;  // filename
@@ -441,10 +441,10 @@ bool MeshImporter::Load_Texture_Scenes(const aiScene* scene)
 		if (scene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, 0, &aipath) == AI_SUCCESS) {
 
 			std::string file_name = aipath.C_Str();
-			
-			App->imp_mat->ImportMaterial(file_name.c_str());
+			std::string file_name_end;
+			App->imp_mat->ImportMaterial(file_name.c_str(),&file_name_end);
 		}
-	}*/
+	}
 
 	for (int i = 0; i < scene->mNumMeshes; i++) {
 		uint id_text = scene->mMeshes[i]->mMaterialIndex;

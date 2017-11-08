@@ -24,10 +24,7 @@ class Material :
 {
 protected:
 	std::string path_texture;
-
-	
-
-
+	int UUID_mat;
 public:
 	geometry_base_creating* texture_v = nullptr;
 	Material(const char* path_text, const char* fbx, geometry_base_creating* base_text, GameObject* parent);

@@ -20,7 +20,7 @@ public:
 	ResourceTexture();
 	virtual ~ResourceTexture();
 	ResourceTexture(int id);
-
+	bool LoadToMemory();
 	//bool LoadInMemory() override;
 	//void Save(Config& config) const;
 	//void Load(const Config& config);

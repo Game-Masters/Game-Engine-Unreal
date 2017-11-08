@@ -14,6 +14,10 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* pat
 		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh_v->num_vertices * 3, &mesh_v->vertices[0], GL_STATIC_DRAW);
 
+		glGenBuffers(1, (GLuint*)&(mesh_v->id_texture));
+		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_texture);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh_v->num_vertices * 2, &mesh_v->textures_coord[0], GL_STATIC_DRAW);
+
 		// Buffer for indices
 		glGenBuffers(1, (GLuint*)&(mesh_v->id_indices));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);

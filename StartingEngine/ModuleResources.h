@@ -42,12 +42,12 @@ public:
 	int GetUID() const;
 	const char* GetFile() const;
 	const char* GetExportedFile() const;
-	//bool IsLoadedToMemory() const;
-	//bool LoadToMemory();
+	bool IsLoadedToMemory() const;
+	virtual bool LoadToMemory();
 	void Set_New_Resource_Files(std::string file, std::string exported_file);
 	uint CountReferences() const;
 //LOAD SAVE?
-	//virtual bool LoadInMemory() = 0;
+
 
 protected:
 	int uid = 0;

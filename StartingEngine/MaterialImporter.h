@@ -8,7 +8,7 @@ public:
 	~MaterialImporter();
 	std::multimap<int, std::string> Mat_Map;
 public:
-	void ImportMaterial(const char* path);
+	void ImportMaterial(const char* path, std::string * new_path=nullptr);
 	
 };
 

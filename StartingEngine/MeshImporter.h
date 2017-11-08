@@ -7,7 +7,7 @@ class GameObject;
 class MeshImporter
 {
 public:
-	void CalculateMeshAssimp_Values(const aiScene* scene, const char* path);
+	void CalculateMeshAssimp_Values(const aiScene* scene, const char* path, std::string *new_name=nullptr);
 	void ImportMesh(geometry_base_creating* temp_m, const char* path);
 	bool LoadMesh(const char* path);
 	void LoadRecursive(char ** cursor, GameObject* Parent, const char* path);

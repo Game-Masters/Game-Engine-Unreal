@@ -134,7 +134,7 @@ bool ModuleAssimp::CleanUp()
 }
 
 
-void ModuleAssimp::ImportGeometry(const char* fbx)
+void ModuleAssimp::ImportGeometry(const char* fbx, std::string *str)
 {
 
 	//----------------ASSIMP
@@ -143,16 +143,16 @@ void ModuleAssimp::ImportGeometry(const char* fbx)
 	std::string full_path;
 	full_path = fbx;
 
-
+	
 	const aiScene* scene = aiImportFile(full_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		
-		App->imp_mesh->CalculateMeshAssimp_Values(scene, fbx);
+		App->imp_mesh->CalculateMeshAssimp_Values(scene, fbx, str);
 		aiReleaseImport(scene);
 	}
-
+	
 		// Use scene->mNumMeshes to iterate on scene->mMeshes array
 		/*for (int i = 0; i < scene->mNumMeshes; i++) {
 

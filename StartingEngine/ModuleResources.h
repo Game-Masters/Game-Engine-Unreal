@@ -44,6 +44,7 @@ public:
 	const char* GetExportedFile() const;
 	//bool IsLoadedToMemory() const;
 	//bool LoadToMemory();
+	void Set_New_Resource_Files(std::string file, std::string exported_file);
 	uint CountReferences() const;
 //LOAD SAVE?
 	//virtual bool LoadInMemory() = 0;

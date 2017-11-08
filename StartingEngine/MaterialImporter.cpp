@@ -12,7 +12,7 @@ MaterialImporter::~MaterialImporter()
 }
 
 
-void MaterialImporter::ImportMaterial(const char * path)
+void MaterialImporter::ImportMaterial(const char * path, std::string *new_path)
 {
 
 	char* buffer = nullptr;
@@ -40,7 +40,7 @@ void MaterialImporter::ImportMaterial(const char * path)
 					std::string final_path;
 					App->fs_e->ChangeFormat_File(str_path_to_load.c_str(), "dds", &final_path,App->fs_e->Material_Engine);
 					App->fs_e->SaveFile(final_path.c_str(), (char*)data, size);
-					
+					*new_path = final_path;
 				}
 				//ret = App->fs_e->SaveFile(output_file, data, size, LIBRARY_TEXTURES_FOLDER, "texture", "dds");
 				RELEASE_ARRAY(data);

@@ -88,6 +88,9 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	bool quit = false;
 	SDL_Event e;
+	std::string full_path;
+	std::size_t pos_to_find_end;
+	std::string Imp_Path;
 	while(SDL_PollEvent(&e))
 	{
 		ImGui_ImplSdlGL2_ProcessEvent(&e);
@@ -111,18 +114,10 @@ update_status ModuleInput::PreUpdate(float dt)
 
 			case (SDL_DROPFILE): 
 				// In case if dropped file
-				
-				if (App->gui->create_empty_gameobject) {
-					dropped_filedir_newGO = "";
-					dropped_filedir_newGO= e.drop.file;
-					std::string temp_str = dropped_filedir_newGO;
-					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", temp_str.c_str(), App->window->window);
-				}
-				else {
 					dropped_filedir = e.drop.file;
-					std::string full_path = dropped_filedir;
-					std::size_t pos_to_find_end = full_path.rfind(".");
-					std::string Imp_Path = full_path.substr(pos_to_find_end, full_path.size());
+					/*full_path = dropped_filedir;
+					pos_to_find_end = full_path.rfind(".");
+					Imp_Path = full_path.substr(pos_to_find_end, full_path.size());
 					if (Imp_Path==".png") {
 						//App->imp_mat->ImportMaterial(dropped_filedir.c_str());
 					}
@@ -133,12 +128,13 @@ update_status ModuleInput::PreUpdate(float dt)
 						std::string new_format_mesh_load;
 						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &new_format_mesh_load, App->fs_e->Mesh_Engine);
 						App->imp_mesh->LoadMesh(new_format_mesh_load.c_str());
-					}
+					}*/
+					App->resources_mod->ImportFile(dropped_filedir.c_str());
 					
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
 					App->imp_mesh->change_nameimporter = 0;
 					dropped_filedir = "";
-				}
+	
 				flie_dropped = true;
 				// Shows directory of dropped file
 				

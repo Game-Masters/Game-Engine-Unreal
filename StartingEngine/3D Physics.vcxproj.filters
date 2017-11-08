@@ -555,6 +555,7 @@
     <ClInclude Include="Imgui\ImGuizmo.h" />
     <ClInclude Include="ModuleResources.h" />
     <ClInclude Include="ResourceTexture.h" />
+    <ClInclude Include="ResourceMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -785,6 +786,7 @@
     <ClCompile Include="Imgui\ImGuizmo.cpp" />
     <ClCompile Include="ModuleResources.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assimp\include\assimp\.editorconfig">

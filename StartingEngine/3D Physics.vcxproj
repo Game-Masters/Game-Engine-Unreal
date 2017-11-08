@@ -234,6 +234,7 @@
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="Texture_Engine.h" />
     <ClInclude Include="Timer.h" />
@@ -314,6 +315,7 @@
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="Texture_Engine.cpp" />
     <ClCompile Include="Timer.cpp" />

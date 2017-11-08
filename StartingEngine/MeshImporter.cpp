@@ -7,7 +7,7 @@
 #define MAXRANGCHAR 70
 
 
-void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* path)
+void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* path, std::string *new_name)
 {
 
 	uint size_buffer_gen = GetSceneSize(scene);
@@ -20,9 +20,10 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 	std::string path_new_format;
 	App->fs_e->ChangeFormat_File(path_n.c_str(), "ric", &path_new_format, App->fs_e->Mesh_Engine);
 	App->fs_e->SaveFile(path_new_format.data(), buffer_total_gen, size_buffer_gen);
+	*new_name = path_new_format;
 	RELEASE_ARRAY(buffer_total_gen);
 
-	Load_Texture_Scenes(scene);
+	//Load_Texture_Scenes(scene);
 
 	geometry_base_creating* m = nullptr;
 	//std::vector<geometry_base_creating*> mesh_v;
@@ -305,7 +306,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, parent, Tag_Object_Enum::no_obj_tag, false);
 		}
 		if (n_temp_mesh!=nullptr) {
-			if (n_temp_mesh->id_image_devil != -1) {
+			if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size()>0) {
 				uint p_temp = 0;
 				std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);
 				if (it != App->imp_mat->Mat_Map.end())

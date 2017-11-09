@@ -38,7 +38,7 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 {
 	int ret = -1;
 
-	if (Find(new_file_in_assets)==-1) {
+
 		std::string file_imported = new_file_in_assets;
 		size_t find_ext = file_imported.rfind("."); find_ext += 1;
 		std::string ext_file = file_imported.substr(find_ext, file_imported.size());
@@ -49,14 +49,20 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 		if (ext_file == "png" || ext_file == "PNG" || ext_file == "tga" || ext_file == "TGA") {
 			std::string path_in_engine = "-1";
 			App->fs_e->ChangeFormat_File(new_file_in_assets, "dds", &path_in_engine, App->fs_e->Material_Engine);
+			int uid_r = Find(new_file_in_assets);
+			if (uid_r==-1) {
+				type = Resources_Type::texture;
+				res = CreateNewResource(type);
+				res->Set_New_Resource_Files(path_in_engine, new_file_in_assets);
+			}
+			else {
+				res=Get(uid_r);
+			}
 
-			type = Resources_Type::texture;
-			res = CreateNewResource(type);
-			res->Set_New_Resource_Files(path_in_engine, new_file_in_assets);
-			if (res->LoadToMemory()) {
+			if (res->LoadToMemory() && res!=nullptr) {
 
 				std::pair<int, Resource*> p;
-				p.first = ret;
+				p.first = res->GetUID();
 				p.second = res;
 				resources.insert(p);
 				ret = res->GetUID();
@@ -68,7 +74,7 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 			App->imp_mesh->LoadMesh(file_in_engine.c_str());
 			type = Resources_Type::mesh;
 		}
-	}
+	
 	/*if (file_in_engine != "-1" && type!= Resources_Type::unknown_r) {
 		
 	}*/
@@ -107,14 +113,6 @@ Resource * ModuleResources::CreateNewResource(Resources_Type type, int force_uid
 	}
 
 
-
-
-	if (ret != nullptr) {
-		std::pair<int, Resource*> res_p;
-		res_p.first = uid;
-		res_p.second = ret;
-		resources.insert(res_p);
-	}
 	return ret;
 }
 

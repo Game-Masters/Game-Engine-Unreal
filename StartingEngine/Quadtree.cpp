@@ -121,7 +121,7 @@ bool QuadTreeNode::InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNod
 	{
 		if ((*it)->Get_GO_Mesh() != nullptr)
 		{
-			if (node->bounds.Intersects((*it)->Get_GO_Mesh()->Copy_aabb));
+			if (node->bounds.Intersects(((ResourceMesh*)(*it)->Get_GO_Mesh()->mesh_r)->Copy_aabb));
 			{
 				node->Insert((*it));
 			}

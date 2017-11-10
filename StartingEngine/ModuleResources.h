@@ -4,6 +4,7 @@
 
 class Resource;
 
+
 enum Resources_Type {
 	mesh,
 	texture,
@@ -18,13 +19,14 @@ public:
 	ModuleResources();
 	~ModuleResources();
 	update_status Update(float dt);
-	int Find(const char* file_in_assets) const;
+	int Find_UserRes(const char* file_in_assets) const;
+	int Find_EngineRes(const char* file_in_assets) const;
 	int ImportFile(const char* new_file_in_assets, bool force = false);
 	int GenerateNewUID();
 	//const Resource* Get(int uid) const;
 	Resource* Get(int uid);
 	Resource* CreateNewResource(Resources_Type type, int force_uid = 0);
-
+	bool AddResources(Resource* n_res);
 private:
 
 	int last_uid = 1;

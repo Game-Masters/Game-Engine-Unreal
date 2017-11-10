@@ -230,9 +230,11 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 			JSON_Object* node_mesh;
 			node_mesh = json_object_get_object(node, "Mesh");
 			if (node_mesh != nullptr) {
+				//(ResourceMesh*)
 				std::string fbx_path = json_object_get_string(node_mesh, "Path FBX");
-				geometry_base_creating* temp_geom = App->imp_mesh->Create_Base_Geometry(fbx_path.c_str(), name_go.c_str(), fbx_path.c_str());
-				temp_go->AddNewMesh(temp_geom, fbx_path.c_str());
+				Resource_Mesh_Base* temp_geom = App->imp_mesh->Create_Base_Geometry(fbx_path.c_str(), name_go.c_str(), fbx_path.c_str());
+				//NEED TO FIX THE LOAD SCENE
+				//temp_go->AddNewMesh();
 			}
 			GO_Load.push_back(temp_go);
 

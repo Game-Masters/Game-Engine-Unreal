@@ -139,6 +139,7 @@ update_status ModuleCamera3D::Update(float dt)
 				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->gui->n4 == false) {
 					ray_cast_pressed = true;
 					Closest_Ray_GO = nullptr;
+					App->gui->inspection_node = nullptr;
 				}
 			}
 		
@@ -170,7 +171,7 @@ update_status ModuleCamera3D::Update(float dt)
 				float dist_to_cam = it->first;
 				float4x4 mat_trans = temp->GetMatrix_Trans().Inverted();
 				temp_ray.Transform(mat_trans);
-				geometry_base_creating* temp_mesh_base = temp->Get_GO_Mesh()->GetGeometryBaseMesh();
+				Resource_Mesh_Base* temp_mesh_base = temp->Get_GO_Mesh()->GetGeometryBaseMesh();
 				//iterate the index to iterate the tris in order
 				float distance = 0;
 				float3 hit_point = float3::zero;

@@ -18,11 +18,24 @@ update_status ModuleResources::Update(float dt)
 	return update_status::UPDATE_CONTINUE;
 }
 
-int ModuleResources::Find(const char * file_in_assets) const
+int ModuleResources::Find_UserRes(const char * file_in_assets) const
 {
 	
 	for (std::map<int, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it ) {
 		std::string str = it->second->GetExportedFile();
+
+		if (str == file_in_assets) {
+			return it->second->GetUID();
+		}
+	}
+
+	return -1;
+}
+
+int ModuleResources::Find_EngineRes(const char * file_in_assets) const
+{
+	for (std::map<int, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it) {
+		std::string str = it->second->GetFile();
 
 		if (str == file_in_assets) {
 			return it->second->GetUID();
@@ -49,7 +62,7 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 		if (ext_file == "png" || ext_file == "PNG" || ext_file == "tga" || ext_file == "TGA") {
 			std::string path_in_engine = "-1";
 			App->fs_e->ChangeFormat_File(new_file_in_assets, "dds", &path_in_engine, App->fs_e->Material_Engine);
-			int uid_r = Find(new_file_in_assets);
+			int uid_r = Find_UserRes(new_file_in_assets);
 			if (uid_r==-1) {
 				type = Resources_Type::texture;
 				res = CreateNewResource(type);
@@ -105,7 +118,7 @@ Resource * ModuleResources::CreateNewResource(Resources_Type type, int force_uid
 		ret = (Resource*)new ResourceTexture(uid);
 		break;
 	case Resources_Type::mesh:
-		ret = (Resource*)new ResourceTexture(uid);
+		ret = (Resource*)new ResourceMesh(uid);
 		break;
 
 	default:
@@ -114,6 +127,21 @@ Resource * ModuleResources::CreateNewResource(Resources_Type type, int force_uid
 
 
 	return ret;
+}
+
+bool ModuleResources::AddResources(Resource * n_res)
+{
+	if (n_res!=nullptr) {
+
+		std::pair<int, Resource*> p_res;
+		p_res.first = n_res->GetUID();
+		p_res.second = n_res;
+		resources.insert(p_res);
+
+		return true;
+	}
+
+	return false;
 }
 
 Resource::Resource(int uid, Resources_Type type): uid(uid), type(type)
@@ -162,6 +190,7 @@ void Resource::Set_New_Resource_Files(std::string file, std::string exported_fil
 {
 	this->file = file;
 	this->exported_file = exported_file;
+
 }
 
 uint Resource::CountReferences() const

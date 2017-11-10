@@ -57,16 +57,16 @@ Transform * GameObject::AddNewTransform(float3 position, float3 scale, Quat rota
 	return n_transform;
 }
 
-Mesh * GameObject::AddNewMesh(geometry_base_creating* vec_mesh, const char* path,Material* t_mat)
+Mesh * GameObject::AddNewMesh(int UUID,Material* t_mat)
 {
-	Mesh* n_mesh = new Mesh(this, vec_mesh, path, t_mat);
+	Mesh* n_mesh = new Mesh(this, UUID, t_mat);
 	this->Component_Vect.push_back(n_mesh);
 	return n_mesh;
 }
 
-Material * GameObject::AddNewMaterial(const char * Path_texture, const char * Path_fbx, geometry_base_creating* vec_mesh)
+Material * GameObject::AddNewMaterial(int UUID)
 {
-	Material* n_mat = new Material(Path_texture,Path_fbx, vec_mesh,this);
+	Material* n_mat = new Material(UUID,this);
 	this->Component_Vect.push_back(n_mat);
 	return n_mat;
 }

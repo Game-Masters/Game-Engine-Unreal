@@ -3,6 +3,7 @@
 #include"ModuleFileSystem_Engine.h"
 #include"GameObject.h"
 #include"MaterialImporter.h"
+#include"ResourceMesh.h"
 #include"ResourceTexture.h"
 #define MAXRANGCHAR 70
 
@@ -24,13 +25,13 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 	RELEASE_ARRAY(buffer_total_gen);
 
 	Load_Texture_Scenes(scene);
-
-	geometry_base_creating* m = nullptr;
+	Resource* temp = nullptr;
+	Resource_Mesh_Base* m = nullptr;
 	//std::vector<geometry_base_creating*> mesh_v;
 	for (int i = 0; i < scene->mNumMeshes; i++) {
 
 		LOG("Mesh imported %i----------------", i);
-		m = new geometry_base_creating();
+		m = new Resource_Mesh_Base();
 		std::string str_parent = path;
 		size_t temp_uint = str_parent.rfind("\\")+1;
 		size_t temp_uint_2 = str_parent.rfind(".");
@@ -112,22 +113,36 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 
 		}
 
+		m->BoundBox.SetNegativeInfinity();
+		m->BoundBox.Enclose((float3*)m->vertices, m->num_vertices);
+
 
 		m->id_image_devil = scene->mMeshes[i]->mMaterialIndex;
 		
-		
+		//CreateResource
+		std::string str_fin = App->fs_e->Mesh_Engine->path + "\\" + m->name + ".ric";
+		int uuid_tm=App->resources_mod->Find_EngineRes(str_fin.c_str());
+		if (uuid_tm == -1) {
+			temp = App->resources_mod->CreateNewResource(Resources_Type::mesh);
+			((ResourceMesh*)temp)->Res_Mesh_Base = m;
+			((ResourceMesh*)temp)->Set_New_Resource_Files(str_fin, path);
+			((ResourceMesh*)temp)->LoadToMemory();
+			App->resources_mod->AddResources(temp);
+		}
+		else {
+			temp = App->resources_mod->Get(uuid_tm);
+		}
 
-		ImportMesh(m, path);
-		
+		ImportMesh(((ResourceMesh*)temp)->Res_Mesh_Base, path);
 	}
 
 
-	delete m;
+	//delete m;
 }
 
 
 
-void MeshImporter::ImportMesh(geometry_base_creating* temp_m, const char* path)
+void MeshImporter::ImportMesh(Resource_Mesh_Base* temp_m, const char* path)
 {
 
 	float total_size = 0;
@@ -253,8 +268,8 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 	float3 translation_f;
 	float3 scale_f;
 	Quat Final_quat;
-	geometry_base_creating* n_temp_mesh = nullptr;
-	
+	Resource_Mesh_Base* n_temp_mesh = nullptr;
+	Resource *temp = nullptr;
 	//need to fix
 	std::string final_path_mesh;
 	GameObject* child_gameobj = nullptr;
@@ -299,6 +314,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name + ".ric";
 			n_temp_mesh = Create_Base_Geometry(path, name_mesh.c_str(), final_path_mesh.c_str());
 		}
+		
 		//delete name;
 		if (parent == nullptr) {
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
@@ -307,25 +323,48 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, parent, Tag_Object_Enum::no_obj_tag, false);
 		}
 		if (n_temp_mesh!=nullptr) {
+			n_temp_mesh->name = final_path_mesh;
 			if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size()>0) {
 				uint p_temp = 0;
 				std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);
 				if (it == App->imp_mat->Mat_Map.end()) {}
 				else {
 					//App->resources_mod->Find(it->second.c_str());
-					res_mat = App->resources_mod->Get(App->resources_mod->Find(it->second.c_str()));
+					int uuid_mat = App->resources_mod->Find_UserRes(it->second.c_str());
+					res_mat = App->resources_mod->Get(uuid_mat);
 					n_temp_mesh->id_image_devil = ((ResourceTexture*)res_mat)->id_image_devil;
-					mat = child_gameobj->AddNewMaterial(it->second.c_str(), final_path_mesh.c_str(), n_temp_mesh);
+					mat = child_gameobj->AddNewMaterial(uuid_mat);
+					mat->UUID_mat = uuid_mat;
 				}
 			}
-			if (mat != nullptr) {
-				child_gameobj->AddNewMesh(n_temp_mesh, final_path_mesh.c_str(), mat);
-			}
-			else {
-				child_gameobj->AddNewMesh(n_temp_mesh, final_path_mesh.c_str());
-			}
 			
-		}
+				int uuid_mesh = App->resources_mod->Find_EngineRes(n_temp_mesh->name.c_str());
+				if (uuid_mesh == -1) {
+					temp = App->resources_mod->CreateNewResource(Resources_Type::mesh);
+					((ResourceMesh*)temp)->Res_Mesh_Base = n_temp_mesh;
+					((ResourceMesh*)temp)->Set_New_Resource_Files(n_temp_mesh->name.c_str(), path);
+					((ResourceMesh*)temp)->LoadToMemory();
+					App->resources_mod->AddResources(temp);
+					if (mat != nullptr) {
+						child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID(), mat);
+					}
+					else {
+						child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID());
+					}
+				}
+				else {
+					if (mat != nullptr) {
+						child_gameobj->AddNewMesh(uuid_mesh, mat);
+					}
+					else {
+						child_gameobj->AddNewMesh(uuid_mesh);
+					}
+				}
+				
+			}
+
+			//--
+
 			child_gameobj->AddNewTransform(translation_f, scale_f, Final_quat);
 		
 		num_mesh_iterator_count++;
@@ -339,7 +378,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 }
 
 
-geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, const char* name, const char* final_path) {
+Resource_Mesh_Base * MeshImporter::Create_Base_Geometry(const char* path, const char* name, const char* final_path) {
 	//need fix
 	uint* ind = nullptr;
 	uint name_lenght;
@@ -350,7 +389,7 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 
 	std::string name_mesh;
 
-	geometry_base_creating* n_temp_mesh = nullptr;
+	Resource_Mesh_Base* n_temp_mesh = nullptr;
 	std::string final_path_mesh;
 
 	char* buffer_Mesh;
@@ -358,7 +397,7 @@ geometry_base_creating * MeshImporter::Create_Base_Geometry(const char* path, co
 	char* cursor_Mesh = buffer_Mesh;
 
 	uint ranges[4]{ 0,0,0,0 };
-	n_temp_mesh = new geometry_base_creating();
+	n_temp_mesh = new Resource_Mesh_Base();
 	uint ranges_num[2];
 
 	size_mesh = sizeof(ranges_num);

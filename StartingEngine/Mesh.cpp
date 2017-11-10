@@ -1,15 +1,15 @@
 #include "Mesh.h"
 #include"GameObject.h"
 
-Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* path, Material* m_text): Component(Component_Type_Enum::component_mesh_type,
+Mesh::Mesh(GameObject* parent, int uuid, Material* m_text): Component(Component_Type_Enum::component_mesh_type,
 	parent,true)
 {
-	path_fbx = path;
+
 	texture_mesh = m_text;
+	uuid_mesh = uuid;
+	mesh_r = App->resources_mod->Get(uuid_mesh);
 
-	mesh_v = vec_mesh;
-
-	if (mesh_v->vertices != nullptr && mesh_v->indices!=nullptr) {
+	/*if (mesh_v->vertices != nullptr && mesh_v->indices!=nullptr) {
 		glGenBuffers(1, (GLuint*)&(mesh_v->id_vertices));
 		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh_v->num_vertices * 3, &mesh_v->vertices[0], GL_STATIC_DRAW);
@@ -22,6 +22,7 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* pat
 		glGenBuffers(1, (GLuint*)&(mesh_v->id_indices));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh_v->num_indices, &mesh_v->indices[0], GL_STATIC_DRAW);
+	
 	}
 	Copy_aabb = mesh_v->BoundBox;
 	this->mesh_v->vertex_aabb = new float[8 * 3];
@@ -42,47 +43,50 @@ Mesh::Mesh(GameObject* parent, geometry_base_creating* vec_mesh, const char* pat
 		3,1
 	};
 	memcpy(this->mesh_v->index_aabb, indices, sizeof(uint) * 24);
-	Update_AABB();
+	Update_AABB();*/
 	
 }
 
 
 Mesh::~Mesh()
 {
-	delete mesh_v;
+
 }
 
 void Mesh::Update_AABB() {
 
-	if (mesh_v->id_aabb != 0) {
-		glDeleteBuffers(1, &mesh_v->id_aabb);
-	}
-	if (mesh_v->id_index_aabb != 0) {
-		glDeleteBuffers(1, &mesh_v->id_index_aabb);
-	}
+	this;
+	Resource_Mesh_Base* m_t = ((ResourceMesh*)mesh_r)->Res_Mesh_Base;
 
-
+	if (m_t->id_aabb != 0) {
+		glDeleteBuffers(1, &(m_t->id_aabb));
+	}
+	if (m_t->id_index_aabb != 0) {
+		glDeleteBuffers(1, &(m_t->id_index_aabb));
+	}
 
 	float vertex_Aabb[] = {
-		Copy_aabb.CornerPoint(0).x,Copy_aabb.CornerPoint(0).y,Copy_aabb.CornerPoint(0).z,
-		Copy_aabb.CornerPoint(1).x,Copy_aabb.CornerPoint(1).y,Copy_aabb.CornerPoint(1).z,
-		Copy_aabb.CornerPoint(2).x,Copy_aabb.CornerPoint(2).y,Copy_aabb.CornerPoint(2).z,
-		Copy_aabb.CornerPoint(3).x,Copy_aabb.CornerPoint(3).y,Copy_aabb.CornerPoint(3).z,
-		Copy_aabb.CornerPoint(4).x,Copy_aabb.CornerPoint(4).y,Copy_aabb.CornerPoint(4).z,
-		Copy_aabb.CornerPoint(5).x,Copy_aabb.CornerPoint(5).y,Copy_aabb.CornerPoint(5).z,
-		Copy_aabb.CornerPoint(6).x,Copy_aabb.CornerPoint(6).y,Copy_aabb.CornerPoint(6).z,
-		Copy_aabb.CornerPoint(7).x,Copy_aabb.CornerPoint(7).y,Copy_aabb.CornerPoint(7).z
+		Copy_aabb_using.CornerPoint(0).x,Copy_aabb_using.CornerPoint(0).y,Copy_aabb_using.CornerPoint(0).z,
+		Copy_aabb_using.CornerPoint(1).x,Copy_aabb_using.CornerPoint(1).y,Copy_aabb_using.CornerPoint(1).z,
+		Copy_aabb_using.CornerPoint(2).x,Copy_aabb_using.CornerPoint(2).y,Copy_aabb_using.CornerPoint(2).z,
+		Copy_aabb_using.CornerPoint(3).x,Copy_aabb_using.CornerPoint(3).y,Copy_aabb_using.CornerPoint(3).z,
+		Copy_aabb_using.CornerPoint(4).x,Copy_aabb_using.CornerPoint(4).y,Copy_aabb_using.CornerPoint(4).z,
+		Copy_aabb_using.CornerPoint(5).x,Copy_aabb_using.CornerPoint(5).y,Copy_aabb_using.CornerPoint(5).z,
+		Copy_aabb_using.CornerPoint(6).x,Copy_aabb_using.CornerPoint(6).y,Copy_aabb_using.CornerPoint(6).z,
+		Copy_aabb_using.CornerPoint(7).x,Copy_aabb_using.CornerPoint(7).y,Copy_aabb_using.CornerPoint(7).z
 	};
-	memcpy(this->mesh_v->vertex_aabb, vertex_Aabb, sizeof(float) * 24);
+	memcpy(m_t->vertex_aabb, vertex_Aabb, sizeof(float) * 24);
 
+	
+	glGenBuffers(1, (GLuint*)&(m_t->id_aabb));
+	glBindBuffer(GL_ARRAY_BUFFER, m_t->id_aabb);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, &m_t->vertex_aabb[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*)&(mesh_v->id_aabb));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_aabb);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8 * 3, &this->mesh_v->vertex_aabb[0], GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*)&(m_t->id_index_aabb));
+	glBindBuffer(GL_ARRAY_BUFFER, m_t->id_index_aabb);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * 8 * 3, &m_t->index_aabb[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*)&(mesh_v->id_index_aabb));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_index_aabb);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * 8 * 3, &mesh_v->index_aabb[0], GL_STATIC_DRAW);
+	
 }
 
 float4x4 Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & rotation)
@@ -106,13 +110,12 @@ float4x4 Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & ro
 
 void Mesh::Update()
 {
-
-	App->renderer3D->Render_3D(this, mesh_v, texture_mesh);	
 	float4x4 p = parent->GetMatrix_Trans();
-	Copy_aabb= mesh_v->BoundBox;
-	Copy_aabb.TransformAsAABB(p);
-
+	Copy_aabb_using = ((ResourceMesh*)mesh_r)->Copy_aabb;
+	Copy_aabb_using.TransformAsAABB(p);
 	Update_AABB();
+	App->renderer3D->Render_3D(this, uuid_mesh, texture_mesh);
+
 }
 	
 
@@ -134,15 +137,15 @@ const char * Mesh::GetGeometryPath()
 	return path_fbx.c_str();
 }
 
-geometry_base_creating * Mesh::GetGeometryBaseMesh()
+Resource_Mesh_Base* Mesh::GetGeometryBaseMesh()
 {
-	return mesh_v;
+	return ((ResourceMesh*)mesh_r)->Res_Mesh_Base;
 	
 }
 
 AABB Mesh::GetAABB() const
 {
-	return this->Copy_aabb;
+	return Copy_aabb_using;
 }
 
 void Mesh::Save(JSON_Object * root_object_scene)

@@ -5,10 +5,9 @@
 
 
 
-Material::Material(const char * path_text, const char* fbx, geometry_base_creating *base_text, GameObject * parent): Component(Component_Type_Enum::component_material_type,	parent, true)
+Material::Material(int UUID, GameObject * parent): Component(Component_Type_Enum::component_material_type,	parent, true)
 {
-		path_texture = path_text;
-		texture_v = base_text;
+
 }
 
 void Material::Update()

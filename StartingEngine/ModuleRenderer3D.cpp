@@ -6,6 +6,7 @@
 #include"GameObject.h"
 #include"ModuleCamera3D.h"
 #include "CameraFrustrum.h"
+#include"ResourceTexture.h"
 
 #pragma comment (lib, "Glew/libx86/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -195,58 +196,61 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 	return false;
 }
 
-void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Material* texture_mesh) {
+void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
+	
+	ResourceMesh* mesh_v=(ResourceMesh*)App->resources_mod->Get(uuid);
+	if (App->gui->inspection_node != nullptr) {
+		GameObject* par = m->Get_Parent();
+		//std::string str_ins = ((ResourceMesh*)App->gui->inspection_node->Get_GO_Mesh()->mesh_r)->Res_Mesh_Base->name;
+		if (App->gui->inspection_node == par) {
 
-	if (App->gui->inspection_node == m->Get_Parent()) {
 
+			float3 position;
+			float3 scale;
+			Quat rotation;
 
-		float3 position;
-		float3 scale;
-		Quat rotation;
-		
-		glLineWidth(2.0f);
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_aabb);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
+			glLineWidth(2.0f);
+			glColor3f(0.0f, 1.0f, 0.0f);
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER,((ResourceMesh*)m->mesh_r)->Res_Mesh_Base->id_aabb);
+			glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_index_aabb);
-		glDrawElements(GL_LINES, 8 * 3, GL_UNSIGNED_INT, NULL);
-		glLineWidth(1.0f);
-		glColor3f(1.0f, 1.0f, 1.0f);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((ResourceMesh*)m->mesh_r)->Res_Mesh_Base->id_index_aabb);
+			glDrawElements(GL_LINES, 8 * 3, GL_UNSIGNED_INT, NULL);
+			glLineWidth(1.0f);
+			glColor3f(1.0f, 1.0f, 1.0f);
+
+		}
 
 	}
 
-
-
-	if (mesh_v->num_indices > 0 && mesh_v->num_vertices > 0) {
+	if (mesh_v->Res_Mesh_Base->num_indices > 0 && mesh_v->Res_Mesh_Base->num_vertices > 0) {
 		if (texture_mesh != nullptr) {
-			geometry_base_creating* temp_text_vec= texture_mesh->texture_v;
-
-			if (temp_text_vec != nullptr) {
+			Resource* text_m=App->resources_mod->Get(texture_mesh->UUID_mat);
+			if (mesh_v->Res_Mesh_Base != nullptr) {
 				glEnable(GL_TEXTURE_2D);
 				glBindTexture(GL_TEXTURE_2D, 0);
-				glBindTexture(GL_TEXTURE_2D, (temp_text_vec->id_image_devil));
+				glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);
 
-				if (temp_text_vec->textures_coord != nullptr) {
+				if (mesh_v->Res_Mesh_Base->textures_coord != nullptr) {
 
 					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-					glBindBuffer(GL_ARRAY_BUFFER, temp_text_vec->id_texture);
+					glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_texture);
 					glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
 				}
 			}
 		}
 
-		if (App->renderer3D->debugnormals == true && mesh_v->normals != nullptr) {
-			for (uint k = 0; k < mesh_v->num_vertices * 3; k += 3)
+		if (App->renderer3D->debugnormals == true && mesh_v->Res_Mesh_Base->normals != nullptr) {
+			for (uint k = 0; k < mesh_v->Res_Mesh_Base->num_vertices * 3; k += 3)
 			{
 				glLineWidth(2.0f);
 				glColor3f(1.0f, 0.0f, 0.0f);
 
 				glBegin(GL_LINES);
-				glVertex3f(mesh_v->vertices[k], mesh_v->vertices[k + 1], mesh_v->vertices[k + 2]);
-				glVertex3f(mesh_v->vertices[k] + mesh_v->normals[k], mesh_v->vertices[k + 1] + mesh_v->normals[k + 1], mesh_v->vertices[k + 2] + mesh_v->normals[k + 2]);
+				glVertex3f(mesh_v->Res_Mesh_Base->vertices[k], mesh_v->Res_Mesh_Base->vertices[k + 1], mesh_v->Res_Mesh_Base->vertices[k + 2]);
+				glVertex3f(mesh_v->Res_Mesh_Base->vertices[k] + mesh_v->Res_Mesh_Base->normals[k], mesh_v->Res_Mesh_Base->vertices[k + 1] + mesh_v->Res_Mesh_Base->normals[k + 1], mesh_v->Res_Mesh_Base->vertices[k + 2] + mesh_v->Res_Mesh_Base->normals[k + 2]);
 				glEnd();
 
 				glLineWidth(1.0f);
@@ -264,14 +268,14 @@ void ModuleRenderer3D::Render_3D(Mesh* m, geometry_base_creating* mesh_v, Materi
 
 		//glLoadMatrixf(trans_point);
 		glMultMatrixf(transform_mesh.ptr());
-		if (mesh_v->vertices != nullptr && mesh_v->indices != nullptr) {
+		if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
 			glEnableClientState(GL_VERTEX_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
+			glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_vertices);
 			glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
-			glDrawElements(GL_TRIANGLES, mesh_v->num_indices, GL_UNSIGNED_INT, NULL);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_indices);
+			glDrawElements(GL_TRIANGLES, mesh_v->Res_Mesh_Base->num_indices, GL_UNSIGNED_INT, NULL);
 		}
 		glPopMatrix();
 		glBindTexture(GL_TEXTURE_2D, 0);

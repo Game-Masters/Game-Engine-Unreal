@@ -43,7 +43,7 @@ void CameraComponent::CheckInFrustum(GameObject* temp)
 		for (int j = 0; j < temp->Component_Vect.size(); j++) {
 			if (temp->Component_Vect[j]->GetComponentType() == component_mesh_type)
 			{
-				AABB* temp2 = &((Mesh*)temp->Component_Vect[j])->Copy_aabb;
+				AABB* temp2 = &((ResourceMesh*)((Mesh*)temp->Component_Vect[j])->mesh_r)->Copy_aabb;
 				//DO THE CULLING FUNCTION
 				if (InsideFrustrum(temp2) == CULL_OUTSIDE)
 				{

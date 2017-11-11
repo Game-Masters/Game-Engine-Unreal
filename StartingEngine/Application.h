@@ -10,8 +10,8 @@
 #include "ModuleSceneIntro.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-#include "ModulePhysics3D.h"
-#include "ModulePlayer.h"
+
+
 #include "ModuleGui.h"
 #include "ModuleAssimp.h"
 #include "Parson_JSON.h"
@@ -43,8 +43,7 @@ public:
 	ModuleSceneIntro* scene_intro;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
-	ModulePhysics3D* physics;
-	ModulePlayer* player;
+
 	ModuleGui* gui;
 	ModuleFileSystem_Engine* fs_e;
 	ModuleAssimp* assimp;

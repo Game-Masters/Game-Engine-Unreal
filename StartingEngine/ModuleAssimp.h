@@ -32,7 +32,6 @@ public:
 	bool CleanUp();
 
 	void ImportGeometry(const char* fbx, std::string *str);
-	std::vector<material_base_geometry*> ImportGeometry_Texture(const char* fbx);
 
 
 	aiNode* Calc_AllGeometry_Childs(aiNode* Parent_node, uint search_mesh);

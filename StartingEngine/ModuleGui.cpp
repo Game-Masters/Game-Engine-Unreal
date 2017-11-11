@@ -190,101 +190,13 @@ update_status ModuleGui::Update(float dt)
 		}
 		ImGui::EndDock();
 
-		Transform* t_temp = nullptr;
-		Mesh* m_temp = nullptr;
-		Material* mat_temp = nullptr;
-		Component* Comp_temp = nullptr;
-		math::Quat q_temp;
-		float3 eul_ang;
-		material_base_geometry* temp_v=nullptr;
-		math::float3 trans;
-		math::float3 scale;
+	
 		
 		Quat result_rot;
-		float3 temp_transf;
+	
 		if (ImGui::BeginDock("Inspector", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 			if (inspection_node != nullptr) {
-				ImGui::Checkbox("##100", &inspection_node->active); ImGui::SameLine();
-				ImGui::Text("Name: %s", inspection_node->name.c_str());
-				for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
-					bool modify = false;
-					Comp_temp = inspection_node->Component_Vect[j];
-					switch (Comp_temp->GetComponentType())
-					{
-					
-
-					case Component_Type_Enum::component_material_type:
-						mat_temp = (Material*)Comp_temp;
-						if (mat_temp != nullptr) {
-							//temp_v = mat_temp->GetMaterialVec();
-							if (temp_v != nullptr) {
-								ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-								if (temp_v->texture_w_h != nullptr) {
-									ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
-									ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
-								}
-								ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
-							}
-						}
-						break;
-					case Component_Type_Enum::component_null_type:
-						break;
-					case Component_Type_Enum::component_transform_type:
-						if (ImGui::CollapsingHeader("Transformation"))
-						{
-							modify = false;
-							t_temp = (Transform*)Comp_temp;
-							trans = t_temp->GetPosition();
-							temp_transf = trans;
-							//ImGui::Text("                                Position");
-							ImGui::Text("Pos :"); ImGui::SameLine();
-							ImGui::DragFloat3("##6", &trans[0], 0.1f, -500.0f, 500.0f);
-							if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z) {
-								//t_temp->SetPosition(trans);
-								modify = true;
-							}
-
-							scale = t_temp->GetScale();
-							temp_transf = scale;
-							//ImGui::Text("                                Scale");
-							ImGui::Text("Scale:"); ImGui::SameLine();
-							ImGui::DragFloat3("##9", &scale[0], 0.1f, 1.0f, 500.0f);
-
-							if (scale.x != temp_transf.x || scale.y != temp_transf.y || scale.z != temp_transf.z) {
-								//t_temp->SetScale(scale);
-								modify = true;
-							}
-
-							q_temp = t_temp->GetRotation();
-							eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
-							temp_transf = eul_ang;
-							//ImGui::Text("                                Rotation");
-							ImGui::Text("Rot :"); ImGui::SameLine();
-							ImGui::DragFloat3("##12", &eul_ang[0], 0.1f, -180.0f, 180.0f);
-
-							//Not really working
-							if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
-								eul_ang *= DEGTORAD;
-								q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
-								modify = true;
-							}
-
-							if (inspection_node->GetTransform() != nullptr && modify == true)
-								inspection_node->GetTransform()->SetMatrix(float4x4::FromTRS(trans, q_temp, scale));
-						}
-						break;
-					case Component_Type_Enum::component_mesh_type:
-						if (ImGui::CollapsingHeader("Mesh"))
-						{
-							m_temp = (Mesh*)Comp_temp;
-							ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
-						}
-						break;
-					default:
-						break;
-					}
-
-				}
+				InspectionNode_Gui();
 			}
 		}
 		ImGui::EndDock();
@@ -790,6 +702,103 @@ bool ModuleGui::CleanUp()
 	aiDetachAllLogStreams();
 
 	return true;
+}
+
+void ModuleGui::InspectionNode_Gui()
+{
+	Transform* t_temp = nullptr;
+	Mesh* m_temp = nullptr;
+	Material* mat_temp = nullptr;
+	Component* Comp_temp = nullptr;
+	math::Quat q_temp;
+	float3 eul_ang;
+	material_base_geometry* temp_v = nullptr;
+	math::float3 trans;
+	math::float3 scale;
+	float3 temp_transf;
+
+	ImGui::Checkbox("##100", &inspection_node->active); ImGui::SameLine();
+	ImGui::Text("Name: %s", inspection_node->name.c_str());
+	for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
+		bool modify = false;
+		Comp_temp = inspection_node->Component_Vect[j];
+		switch (Comp_temp->GetComponentType())
+		{
+
+
+		case Component_Type_Enum::component_material_type:
+			mat_temp = (Material*)Comp_temp;
+			if (mat_temp != nullptr) {
+				//temp_v = mat_temp->GetMaterialVec();
+				if (temp_v != nullptr) {
+					ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+					if (temp_v->texture_w_h != nullptr) {
+						ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
+						ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
+					}
+					ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
+				}
+			}
+			break;
+		case Component_Type_Enum::component_null_type:
+			break;
+		case Component_Type_Enum::component_transform_type:
+			if (ImGui::CollapsingHeader("Transformation"))
+			{
+				modify = false;
+				t_temp = (Transform*)Comp_temp;
+				trans = t_temp->GetPosition();
+				temp_transf = trans;
+				//ImGui::Text("                                Position");
+				ImGui::Text("Pos :"); ImGui::SameLine();
+				ImGui::DragFloat3("##6", &trans[0], 0.1f, -500.0f, 500.0f);
+				if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z) {
+					//t_temp->SetPosition(trans);
+					modify = true;
+				}
+
+				scale = t_temp->GetScale();
+				temp_transf = scale;
+				//ImGui::Text("                                Scale");
+				ImGui::Text("Scale:"); ImGui::SameLine();
+				ImGui::DragFloat3("##9", &scale[0], 0.1f, 1.0f, 500.0f);
+
+				if (scale.x != temp_transf.x || scale.y != temp_transf.y || scale.z != temp_transf.z) {
+					//t_temp->SetScale(scale);
+					modify = true;
+				}
+
+				q_temp = t_temp->GetRotation();
+				eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
+				temp_transf = eul_ang;
+				//ImGui::Text("                                Rotation");
+				ImGui::Text("Rot :"); ImGui::SameLine();
+				ImGui::DragFloat3("##12", &eul_ang[0], 0.1f, -180.0f, 180.0f);
+
+				//Not really working
+				if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
+					eul_ang *= DEGTORAD;
+					q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
+					modify = true;
+				}
+
+				if (inspection_node->GetTransform() != nullptr && modify == true)
+					inspection_node->GetTransform()->SetMatrix(float4x4::FromTRS(trans, q_temp, scale));
+			}
+			break;
+		case Component_Type_Enum::component_mesh_type:
+			if (ImGui::CollapsingHeader("Mesh"))
+			{
+				m_temp = (Mesh*)Comp_temp;
+				ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
+			}
+			break;
+		default:
+			break;
+		}
+
+	}
+
 }
 
 void ModuleGui::IterateChilds(GameObject * item)

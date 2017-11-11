@@ -12,8 +12,6 @@ Application::Application()
 	scene_intro = new ModuleSceneIntro();
 	renderer3D = new ModuleRenderer3D();
 	camera = new ModuleCamera3D();
-	physics = new ModulePhysics3D();
-	player = new ModulePlayer();
 	gui = new ModuleGui();
 	assimp = new ModuleAssimp();
 	fs_e = new ModuleFileSystem_Engine();
@@ -32,8 +30,8 @@ Application::Application()
 	AddModule(resources_mod);
 	// Scenes
 	AddModule(scene_intro);
-	AddModule(physics);
-	AddModule(player);
+
+
 	
 	// Renderer last!
 	AddModule(renderer3D);
@@ -45,11 +43,11 @@ Application::Application()
 	fs_e->name = "filesystem";
 	camera->name = "camera";
 	input->name = "input";
-	physics->name = "physics";
+
 	renderer3D->name = "renderer3D";
 	gui->name = "gui";
 	audio->name = "audio";
-	player->name = "player";
+
 	scene_intro->name = "scene intro";
 	assimp->name = "assimp";
 	resources_mod->name = "resources_manager";

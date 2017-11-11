@@ -25,7 +25,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
-
+	void InspectionNode_Gui();
 public:
 	sMStats Gpu_Vram_Stats;
 	bool button_exit_app = false;

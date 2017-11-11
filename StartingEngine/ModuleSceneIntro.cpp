@@ -81,7 +81,7 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 update_status ModuleSceneIntro::Update(float dt)
 {
 
-	
+	drawGrid(50);
 	
 	root_gameobject->Update();
 	
@@ -272,9 +272,34 @@ GameObject * ModuleSceneIntro::Find_UUID_Root(int uuid)
 	return this->root_gameobject->FindUUID(uuid);
 }
 
+void ModuleSceneIntro::drawLines(const vec3 from, const vec3 to, const vec3 color)
+{
+	glLineWidth(2.0f);
+	glBegin(GL_LINES);
+	glColor3f(color.x, color.y, color.z);
+	glVertex3f(from.x, from.y, from.z);
+	glVertex3f(to.x, to.y, to.z);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glEnd();
+}
 
+void ModuleSceneIntro::drawGrid(int grid_size)
+{
 
+	vec3 line_color = { 1, 1 ,1 };
 
+	for (int i = -grid_size; i <= grid_size; i++)
+	{
+		vec3 vect = { (float)i, 0 , (float)-grid_size };
+		vec3 vect2 = { (float)i, 0 , (float)grid_size };
+		drawLines(vect, vect2, line_color);
+
+		vect = { (float)-grid_size, 0 , (float)i };
+		vect2 = { (float)grid_size, 0 , (float)i };
+		drawLines(vect, vect2, line_color);
+
+	}
+}
 
 
 

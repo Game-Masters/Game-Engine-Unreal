@@ -142,75 +142,9 @@ update_status ModuleCamera3D::Update(float dt)
 					App->gui->inspection_node = nullptr;
 				}
 			}
-		
 
-		
-		
-		float dist_min_ray_go = INFINITY;
 		if (ray_cast_pressed) {
-			const Frustum temp_t = CamComp->Get_Frustum();
-			float mx = (float)App->input->GetMouseX();
-			float my = (float)App->input->GetMouseY();
-
-			mouse_pos.x = -(1.0f-((mx - App->scene_intro->tx_vec.x) / (App->scene_intro->tx_vec.z / 2.0f)));
-			mouse_pos.y = (1.0f-((my- App->scene_intro->tx_vec.y) / (App->scene_intro->tx_vec.w / 2.0f)));
-			
-			LOG("mx: %f", mx - App->scene_intro->tx_vec.x - 12);
-			LOG("my: %f", my - App->scene_intro->tx_vec.y - 43);
-			r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
-
-			Recursive_Ray_Distance(App->scene_intro->root_gameobject);
-
-
-			//Time to see if intersects with triangles
-
-
-			for (std::map<float, GameObject*>::iterator it = mymap.begin(); it != mymap.end(); ++it) {
-				temp_ray = r_cast_segm;
-				GameObject* temp = it->second;
-				float dist_to_cam = it->first;
-				float4x4 mat_trans = temp->GetMatrix_Trans().Inverted();
-				temp_ray.Transform(mat_trans);
-				Resource_Mesh_Base* temp_mesh_base = temp->Get_GO_Mesh()->GetGeometryBaseMesh();
-				//iterate the index to iterate the tris in order
-				float distance = 0;
-				float3 hit_point = float3::zero;
-				int i = 0;
-				if (temp_mesh_base->num_indices >9) {
-					//while (i < temp_mesh_base->num_indices - 9) {
-				
-						/*float point1[] = {
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
-
-						};
-
-						float point2[] = {
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
-						};
-
-						float point3[] = {
-							temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
-
-						};*/
-
-
-						//}
-					while(i < temp_mesh_base->num_indices) {
-							Triangle tri;
-							tri.a.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
-							tri.b.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
-							tri.c.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
-
-							if (temp_ray.Intersects(tri, &distance, &hit_point) && dist_to_cam < dist_min_ray_go) {
-								Closest_Ray_GO = temp;
-								dist_min_ray_go = distance;
-							}
-
-						}
-
-				}
-
-			}
+			Create_Ray_Mouse();
 			ray_cast_pressed = false;
 		}
 
@@ -227,6 +161,8 @@ update_status ModuleCamera3D::Update(float dt)
 		glEnd();
 		glColor3f(1, 1, 1);
 		mymap.clear();
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -304,6 +240,77 @@ void ModuleCamera3D::Move(const float3 &Movement)
 const float* ModuleCamera3D::GetViewMatrix()
 {
 	return CamComp->GetViewProjMatrix();
+}
+
+void ModuleCamera3D::Create_Ray_Mouse()
+{
+	const Frustum temp_t = CamComp->Get_Frustum();
+	float mx = (float)App->input->GetMouseX();
+	float my = (float)App->input->GetMouseY();
+
+	mouse_pos.x = -(1.0f - ((mx - App->scene_intro->tx_vec.x) / (App->scene_intro->tx_vec.z / 2.0f)));
+	mouse_pos.y = (1.0f - ((my - App->scene_intro->tx_vec.y) / (App->scene_intro->tx_vec.w / 2.0f)));
+
+	LOG("mx: %f", mx - App->scene_intro->tx_vec.x - 12);
+	LOG("my: %f", my - App->scene_intro->tx_vec.y - 43);
+	r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
+
+	Recursive_Ray_Distance(App->scene_intro->root_gameobject);
+
+	CheckCollision_Mesh();
+
+}
+
+void ModuleCamera3D::CheckCollision_Mesh()
+{
+	float dist_min_ray_go = INFINITY;
+	for (std::map<float, GameObject*>::iterator it = mymap.begin(); it != mymap.end(); ++it) {
+		temp_ray = r_cast_segm;
+		GameObject* temp = it->second;
+		float dist_to_cam = it->first;
+		float4x4 mat_trans = temp->GetMatrix_Trans().Inverted();
+		temp_ray.Transform(mat_trans);
+		Resource_Mesh_Base* temp_mesh_base = temp->Get_GO_Mesh()->GetGeometryBaseMesh();
+		//iterate the index to iterate the tris in order
+		float distance = 0;
+		float3 hit_point = float3::zero;
+		int i = 0;
+		if (temp_mesh_base->num_indices >9) {
+			//while (i < temp_mesh_base->num_indices - 9) {
+
+			/*float point1[] = {
+			temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
+
+			};
+
+			float point2[] = {
+			temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
+			};
+
+			float point3[] = {
+			temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
+
+			};*/
+
+
+			//}
+			while (i < temp_mesh_base->num_indices) {
+				Triangle tri;
+				tri.a.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
+				tri.b.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
+				tri.c.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
+
+				if (temp_ray.Intersects(tri, &distance, &hit_point) && dist_to_cam < dist_min_ray_go) {
+					Closest_Ray_GO = temp;
+					dist_min_ray_go = distance;
+				}
+
+			}
+
+		}
+
+	}
+
 }
 
 // -----------------------------------------------------------------

@@ -25,120 +25,124 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 	RELEASE_ARRAY(buffer_total_gen);
 
 	Load_Texture_Scenes(scene);
-	Resource* temp = nullptr;
-	Resource_Mesh_Base* m = nullptr;
+
+
 	//std::vector<geometry_base_creating*> mesh_v;
 	for (int i = 0; i < scene->mNumMeshes; i++) {
-
 		LOG("Mesh imported %i----------------", i);
-		m = new Resource_Mesh_Base();
 		std::string str_parent = path;
-		size_t temp_uint = str_parent.rfind("\\")+1;
+		size_t temp_uint = str_parent.rfind("\\") + 1;
 		size_t temp_uint_2 = str_parent.rfind(".");
 		uint diff = temp_uint_2 - temp_uint;
 		std::string str_parent_substracted = str_parent.substr(temp_uint, diff);
 		std::string str_n_i = std::to_string(i);
-		m->name = str_parent_substracted+ " " + str_n_i;
-		m->num_vertices = scene->mMeshes[i]->mNumVertices;
-		m->vertices = new float[m->num_vertices * 3];
-		LOG("New mesh with %d vertices", m->num_vertices);
-		memcpy(m->vertices, scene->mMeshes[i]->mVertices, sizeof(float) * m->num_vertices * 3);
-		if (m->vertices == nullptr) {
-			LOG("The new mesh has failed trying to import the vertices");
-		}
-		else {
-			m->Know_if_m_have[0] = 1;
-			LOG("The new mesh has succed trying to import the vertices");
-		}
-		//Generate bounding bax
-		
-		LOG("A BoundBox has been added to the mesh", m->num_vertices);
-		// copy faces
-		if (scene->mMeshes[i]->HasFaces())
-		{
-			m->num_tris = scene->mMeshes[i]->mNumFaces;
-			m->num_indices = scene->mMeshes[i]->mNumFaces *3;
-			LOG("The mesh has %d triangles", m->num_tris);
-			m->indices = new uint[scene->mMeshes[i]->mNumFaces * 3]; // assume each face is a triangle
-			LOG("The mesh has %d indices", m->num_indices);
-
-			for (uint k = 0; k < scene->mMeshes[i]->mNumFaces; ++k)
-			{
-				if (scene->mMeshes[i]->mFaces[k].mNumIndices != 3) {
-					LOG("WARNING, geometry face with != 3 indices!");
-				}
-				else {
-					memcpy(&m->indices[k * 3], scene->mMeshes[i]->mFaces[k].mIndices, 3 * sizeof(uint));
-				}
-			}
-		}
-		if (m->indices == nullptr) {
-			LOG("The new mesh has failed trying to import the indices");
-		}
-		else {
-			m->Know_if_m_have[1] = 1;
-			LOG("The new mesh has succed trying to import the indices");
-		}
-
-		if (scene->mMeshes[i]->HasNormals()) {
-
-			LOG("The new mesh has normals");
-			m->normals = new float[scene->mMeshes[i]->mNumVertices * 3];
-			memcpy(m->normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->num_vertices * 3);
-			if (m->normals == nullptr) {
-				LOG("The new mesh has failed trying to import the normals");
-			}
-			else {
-				m->Know_if_m_have[2] = 1;
-				LOG("The new mesh has succed trying to import the normals");
-			}
-		}
-		else {
-			LOG("The new mesh has not normals so the engine cannot import them");
-		}
-
-		if (scene->mMeshes[i]->HasTextureCoords(0))
-		{
-			m->Know_if_m_have[3] = 1;
-			m->textures_coord = new float[scene->mMeshes[i]->mNumVertices * 2];
-
-			for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
-
-				m->textures_coord[z * 2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
-				m->textures_coord[z * 2 + 1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
-
-
-			}
-
-
-		}
-
-		m->BoundBox.SetNegativeInfinity();
-		m->BoundBox.Enclose((float3*)m->vertices, m->num_vertices);
-
-
-		m->id_image_devil = scene->mMeshes[i]->mMaterialIndex;
-		
-		//CreateResource
-		std::string str_fin = App->fs_e->Mesh_Engine->path + "\\" + m->name + ".ric";
-		int uuid_tm=App->resources_mod->Find_EngineRes(str_fin.c_str());
-		if (uuid_tm == -1) {
-			temp = App->resources_mod->CreateNewResource(Resources_Type::mesh);
-			((ResourceMesh*)temp)->Res_Mesh_Base = m;
-			((ResourceMesh*)temp)->Set_New_Resource_Files(str_fin, path);
-			((ResourceMesh*)temp)->LoadToMemory();
-			App->resources_mod->AddResources(temp);
-		}
-		else {
-			temp = App->resources_mod->Get(uuid_tm);
-		}
-
-		ImportMesh(((ResourceMesh*)temp)->Res_Mesh_Base, path);
+		std::string name_mesh = str_parent_substracted + " " + str_n_i;
+		Resource_Assimp_Creation(scene, path, name_mesh.c_str(),i);
 	}
 
 
 	//delete m;
 }
+
+void MeshImporter::Resource_Assimp_Creation(const aiScene * scene, const char* path, const char* name, int i)
+{
+	Resource* temp = nullptr;
+	Resource_Mesh_Base* m = nullptr;
+
+	m = new Resource_Mesh_Base();
+
+	m->name = name;
+	m->num_vertices = scene->mMeshes[i]->mNumVertices;
+	m->vertices = new float[m->num_vertices * 3];
+	LOG("New mesh with %d vertices", m->num_vertices);
+	memcpy(m->vertices, scene->mMeshes[i]->mVertices, sizeof(float) * m->num_vertices * 3);
+	if (m->vertices == nullptr) {
+		LOG("The new mesh has failed trying to import the vertices");
+	}
+	else {
+		m->Know_if_m_have[0] = 1;
+		LOG("The new mesh has succed trying to import the vertices");
+	}
+	//Generate bounding bax
+
+	LOG("A BoundBox has been added to the mesh", m->num_vertices);
+	// copy faces
+	if (scene->mMeshes[i]->HasFaces())
+	{
+		m->num_tris = scene->mMeshes[i]->mNumFaces;
+		m->num_indices = scene->mMeshes[i]->mNumFaces * 3;
+		LOG("The mesh has %d triangles", m->num_tris);
+		m->indices = new uint[scene->mMeshes[i]->mNumFaces * 3]; // assume each face is a triangle
+		LOG("The mesh has %d indices", m->num_indices);
+
+		for (uint k = 0; k < scene->mMeshes[i]->mNumFaces; ++k)
+		{
+			if (scene->mMeshes[i]->mFaces[k].mNumIndices != 3) {
+				LOG("WARNING, geometry face with != 3 indices!");
+			}
+			else {
+				memcpy(&m->indices[k * 3], scene->mMeshes[i]->mFaces[k].mIndices, 3 * sizeof(uint));
+			}
+		}
+	}
+	if (m->indices == nullptr) {
+		LOG("The new mesh has failed trying to import the indices");
+	}
+	else {
+		m->Know_if_m_have[1] = 1;
+		LOG("The new mesh has succed trying to import the indices");
+	}
+
+	if (scene->mMeshes[i]->HasNormals()) {
+
+		LOG("The new mesh has normals");
+		m->normals = new float[scene->mMeshes[i]->mNumVertices * 3];
+		memcpy(m->normals, scene->mMeshes[i]->mNormals, sizeof(float) * m->num_vertices * 3);
+		if (m->normals == nullptr) {
+			LOG("The new mesh has failed trying to import the normals");
+		}
+		else {
+			m->Know_if_m_have[2] = 1;
+			LOG("The new mesh has succed trying to import the normals");
+		}
+	}
+	else {
+		LOG("The new mesh has not normals so the engine cannot import them");
+	}
+
+	if (scene->mMeshes[i]->HasTextureCoords(0))
+	{
+		m->Know_if_m_have[3] = 1;
+		m->textures_coord = new float[scene->mMeshes[i]->mNumVertices * 2];
+
+		for (int z = 0; z < scene->mMeshes[i]->mNumVertices; ++z) {
+
+			m->textures_coord[z * 2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
+			m->textures_coord[z * 2 + 1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
+		}
+	}
+	m->BoundBox.SetNegativeInfinity();
+	m->BoundBox.Enclose((float3*)m->vertices, m->num_vertices);
+	m->id_image_devil = scene->mMeshes[i]->mMaterialIndex;
+
+	//CreateResource
+	std::string str_fin = App->fs_e->Mesh_Engine->path + "\\" + m->name + ".ric";
+	int uuid_tm = App->resources_mod->Find_EngineRes(str_fin.c_str());
+	if (uuid_tm == -1) {
+
+		temp = App->resources_mod->CreateNewResource(Resources_Type::mesh);
+		((ResourceMesh*)temp)->Res_Mesh_Base = m;
+		((ResourceMesh*)temp)->Set_New_Resource_Files(str_fin, path);
+		((ResourceMesh*)temp)->LoadToMemory();
+		App->resources_mod->AddResources(temp);
+	}
+	else {
+		temp = App->resources_mod->Get(uuid_tm);
+	}
+
+	ImportMesh(((ResourceMesh*)temp)->Res_Mesh_Base, path);
+}
+
 
 
 
@@ -307,9 +311,8 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 
 		Final_quat = { rotation.w ,rotation.x,rotation.y,rotation.z};
 
-		
 		Material* mat = nullptr;
-		Resource* res_mat = nullptr;
+	
 		if (num_meshes > 0) {
 			final_path_mesh = App->fs_e->Mesh_Engine->path + "\\" + name + ".ric";
 			n_temp_mesh = Create_Base_Geometry(path, name_mesh.c_str(), final_path_mesh.c_str());
@@ -322,49 +325,16 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		else {
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, parent, Tag_Object_Enum::no_obj_tag, false);
 		}
+
+		//Add texture resource
+
 		if (n_temp_mesh!=nullptr) {
-			n_temp_mesh->name = final_path_mesh;
-			if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size()>0) {
-				uint p_temp = 0;
-				std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);
-				if (it == App->imp_mat->Mat_Map.end()) {}
-				else {
-					//App->resources_mod->Find(it->second.c_str());
-					int uuid_mat = App->resources_mod->Find_UserRes(it->second.c_str());
-					res_mat = App->resources_mod->Get(uuid_mat);
-					n_temp_mesh->id_image_devil = ((ResourceTexture*)res_mat)->id_image_devil;
-					mat = child_gameobj->AddNewMaterial(uuid_mat);
-					mat->UUID_mat = uuid_mat;
-				}
-			}
+
+			mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str());
 			
 				int uuid_mesh = App->resources_mod->Find_EngineRes(n_temp_mesh->name.c_str());
-				if (uuid_mesh == -1) {
-					temp = App->resources_mod->CreateNewResource(Resources_Type::mesh);
-					((ResourceMesh*)temp)->Res_Mesh_Base = n_temp_mesh;
-					((ResourceMesh*)temp)->Set_New_Resource_Files(n_temp_mesh->name.c_str(), path);
-					((ResourceMesh*)temp)->LoadToMemory();
-					App->resources_mod->AddResources(temp);
-					if (mat != nullptr) {
-						child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID(), mat);
-					}
-					else {
-						child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID());
-					}
-				}
-				else {
-					if (mat != nullptr) {
-						child_gameobj->AddNewMesh(uuid_mesh, mat);
-					}
-					else {
-						child_gameobj->AddNewMesh(uuid_mesh);
-					}
-				}
-				
+				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, path);				
 			}
-
-			//--
-
 			child_gameobj->AddNewTransform(translation_f, scale_f, Final_quat);
 		
 		num_mesh_iterator_count++;
@@ -377,6 +347,60 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 	return child_gameobj;
 }
 
+Material* MeshImporter::AddTextureResourceToGO(Resource_Mesh_Base* n_temp_mesh, GameObject* child_gameobj, const char* final_path_mesh) {
+
+	
+	Resource *temp = nullptr;
+	//need to fix
+	Material* mat = nullptr;
+	Resource* res_mat = nullptr;
+
+
+	n_temp_mesh->name = final_path_mesh;
+	if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size()>0) {
+		uint p_temp = 0;
+		std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);
+		if (it == App->imp_mat->Mat_Map.end()) {}
+		else {
+			//App->resources_mod->Find(it->second.c_str());
+			int uuid_mat = App->resources_mod->Find_UserRes(it->second.c_str());
+			res_mat = App->resources_mod->Get(uuid_mat);
+			n_temp_mesh->id_image_devil = ((ResourceTexture*)res_mat)->id_image_devil;
+			mat = child_gameobj->AddNewMaterial(uuid_mat);
+			mat->UUID_mat = uuid_mat;
+		}
+	}
+
+	return mat;
+
+}
+
+void MeshImporter::AddMeshResourceToGO(Resource_Mesh_Base * n_temp_mesh, GameObject * child_gameobj, int uuid_mesh, Material* mat, const char* path)
+{
+
+	Resource *temp = nullptr;
+	if (uuid_mesh == -1) {
+		temp = App->resources_mod->CreateNewResource(Resources_Type::mesh);
+		((ResourceMesh*)temp)->Res_Mesh_Base = n_temp_mesh;
+		((ResourceMesh*)temp)->Set_New_Resource_Files(n_temp_mesh->name.c_str(), path);
+		((ResourceMesh*)temp)->LoadToMemory();
+		App->resources_mod->AddResources(temp);
+		if (mat != nullptr) {
+			child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID(), mat);
+		}
+		else {
+			child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID());
+		}
+	}
+	else {
+		if (mat != nullptr) {
+			child_gameobj->AddNewMesh(uuid_mesh, mat);
+		}
+		else {
+			child_gameobj->AddNewMesh(uuid_mesh);
+		}
+	}
+}
 
 Resource_Mesh_Base * MeshImporter::Create_Base_Geometry(const char* path, const char* name, const char* final_path) {
 	//need fix
@@ -560,6 +584,7 @@ void MeshImporter::Recursive_childs_general_bin(char **cursor, const aiScene * s
 	}
 
 }
+
 
 void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNode* node, const char* path)
 {

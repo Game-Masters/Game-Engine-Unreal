@@ -59,6 +59,7 @@ public:
 	ResourceMesh(int id);
 
 	bool LoadToMemory();
+	void LoadMeshBase();
 	//void Save(Config& config) const;
 	//void Load(const Config& config);
 

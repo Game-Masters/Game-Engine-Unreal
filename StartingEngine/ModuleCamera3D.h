@@ -29,6 +29,8 @@ public:
 	void CameraRecenter();
 	const float* GetViewMatrix();
 	AABB* LCenter = nullptr;
+	void Create_Ray_Mouse();
+	void CheckCollision_Mesh();
 	CameraComponent* CamComp=nullptr;
 	bool ray_cast_pressed = false;
 	math::LineSegment r_cast_segm;

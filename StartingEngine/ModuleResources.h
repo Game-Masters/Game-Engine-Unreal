@@ -24,6 +24,8 @@ public:
 	int ImportFile(const char* new_file_in_assets, bool force = false);
 	int GenerateNewUID();
 	//const Resource* Get(int uid) const;
+	int Create_New_resource_Text(std::string path_in_engine, const char* new_file_in_assets, int uid_r, Resources_Type type);
+	Resources_Type DetectFiles_Type(const char* new_file_in_assets);
 	Resource* Get(int uid);
 	Resource* CreateNewResource(Resources_Type type, int force_uid = 0);
 	bool AddResources(Resource* n_res);

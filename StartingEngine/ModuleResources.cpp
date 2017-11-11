@@ -1,7 +1,7 @@
 #include "ModuleResources.h"
 #include"Application.h"
 #include"ResourceTexture.h"
-
+#include<string>;
 
 ModuleResources::ModuleResources()
 {
@@ -45,44 +45,23 @@ int ModuleResources::Find_EngineRes(const char * file_in_assets) const
 	return -1;
 }
 
-
-
 int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 {
+	
 	int ret = -1;
+	Resources_Type type = DetectFiles_Type(new_file_in_assets);
+	Resource* res = nullptr;
+	std::string file_in_engine = "-1";
 
 
-		std::string file_imported = new_file_in_assets;
-		size_t find_ext = file_imported.rfind("."); find_ext += 1;
-		std::string ext_file = file_imported.substr(find_ext, file_imported.size());
-		std::string file_in_engine = "-1";
-		Resources_Type type = Resources_Type::unknown_r;
-		Resource* res = nullptr;
-
-		if (ext_file == "png" || ext_file == "PNG" || ext_file == "tga" || ext_file == "TGA") {
+		if (type== Resources_Type::texture) {
 			std::string path_in_engine = "-1";
 			App->fs_e->ChangeFormat_File(new_file_in_assets, "dds", &path_in_engine, App->fs_e->Material_Engine);
 			int uid_r = Find_UserRes(new_file_in_assets);
-			if (uid_r==-1) {
-				type = Resources_Type::texture;
-				res = CreateNewResource(type);
-				res->Set_New_Resource_Files(path_in_engine, new_file_in_assets);
-			}
-			else {
-				res=Get(uid_r);
-			}
-
-			if (res->LoadToMemory() && res!=nullptr) {
-
-				std::pair<int, Resource*> p;
-				p.first = res->GetUID();
-				p.second = res;
-				resources.insert(p);
-				ret = res->GetUID();
-			}
+			Create_New_resource_Text(path_in_engine, new_file_in_assets, uid_r, type);
 
 		}
-		else if (ext_file == "fbx" || ext_file == "FBX") {
+		else if (type == Resources_Type::mesh) {
 			App->assimp->ImportGeometry(new_file_in_assets, &file_in_engine);
 			App->imp_mesh->LoadMesh(file_in_engine.c_str());
 			type = Resources_Type::mesh;
@@ -99,6 +78,48 @@ int ModuleResources::GenerateNewUID()
 {
 	LCG p;
 	return p.Int();
+}
+
+int ModuleResources::Create_New_resource_Text(std::string path_in_engine, const char * new_file_in_assets, int uid_r, Resources_Type type)
+{
+
+	Resource* res = nullptr;
+
+	if (uid_r == -1) {
+		res = CreateNewResource(type);
+		res->Set_New_Resource_Files(path_in_engine, new_file_in_assets);
+	}
+	else {
+		res = Get(uid_r);
+	}
+
+	if (res->LoadToMemory() && res != nullptr) {
+
+		std::pair<int, Resource*> p;
+		p.first = res->GetUID();
+		p.second = res;
+		resources.insert(p);
+	
+	}
+	return res->GetUID();
+
+}
+
+Resources_Type ModuleResources::DetectFiles_Type(const char * new_file_in_assets)
+{
+	std::string file_imported = new_file_in_assets;
+	size_t find_ext = file_imported.rfind("."); find_ext += 1;
+	std::string ext_file = file_imported.substr(find_ext, file_imported.size());
+	Resources_Type type = Resources_Type::unknown_r;
+	if (ext_file == "png" || ext_file == "PNG" || ext_file == "tga" || ext_file == "TGA") {
+		type= Resources_Type::texture;
+	}
+	else if (ext_file == "fbx" || ext_file == "FBX") {
+		type = Resources_Type::mesh;
+	}
+
+	
+	return type;
 }
 
 Resource * ModuleResources::Get(int uid)

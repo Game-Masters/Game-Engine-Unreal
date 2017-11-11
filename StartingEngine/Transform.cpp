@@ -27,23 +27,17 @@ void Transform::Update()
 		float4x4 matrix_t = parent->GetMatrix_Trans().Transposed();
 	
 		if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) {
-			trans_f = true; rot_f = false; scal_f = false;
+			App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::TRANSLATE;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
-			trans_f = false; rot_f = true; scal_f = false;
+			App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::ROTATE;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
-			trans_f = false; rot_f = false; scal_f = true;
+			App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::SCALE;
 		}
-		if(trans_f)
-		ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), ImGuizmo::TRANSLATE, ImGuizmo::WORLD, matrix_t.ptr());
 
-		if (rot_f)
-			ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), ImGuizmo::ROTATE, ImGuizmo::WORLD, matrix_t.ptr());
 
-		if (scal_f)
-			ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), ImGuizmo::SCALE, ImGuizmo::LOCAL, matrix_t.ptr());
-
+		ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), App->scene_intro->Operator_Guiz, ImGuizmo::WORLD, matrix_t.ptr());
 
 		if (ImGuizmo::IsUsing())
 		{
@@ -53,14 +47,9 @@ void Transform::Update()
 					matrix_t = parent->parent->GetMatrix_Trans().Inverted() * matrix_t;
 				}
 				matrix_t.Decompose(position, rotation, scale);
-		
-
-		
 
 			this->parent->GetTransform()->SetMatrix(float4x4::FromTRS(position, rotation, scale));
 		}
-
-
 
 		//ImGuizmo::Enable(false);
 	}

@@ -12,6 +12,7 @@
 #include "../StartingEngine/Glew/include/glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include"Texture_Engine.h"
+#include"Imgui\ImGuizmo.h"
 
 
 //#include"Geometry.h"
@@ -66,6 +67,7 @@ public:
 	GameObject* root_gameobject= nullptr;
 	JSON_Value *root_value_scene = nullptr;
 	JSON_Object *root_object_scene = nullptr;
+	ImGuizmo::OPERATION Operator_Guiz = ImGuizmo::OPERATION::TRANSLATE;
 	void Connect_Load_Gerarchy(std::vector<GameObject*>GO_Load);
 	int num_GO=0;
 	GameObject* Find_UUID_Root(int uuid);

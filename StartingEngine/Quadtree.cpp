@@ -132,11 +132,12 @@ bool QuadTreeNode::InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNod
 			return false;
 		}
 		//check problem
-		for (std::vector<GameObject*>::iterator it2 = (*it)->Childrens_GameObject_Vect.begin(); it != (*it)->Childrens_GameObject_Vect.end(); ++it)
+		for (std::vector<GameObject*>::iterator it2 = (*it)->Childrens_GameObject_Vect.begin(); it2 != (*it)->Childrens_GameObject_Vect.end(); it2++)
 		{
 			ret = InsideTree(it2,node);
-			if (ret == false || (node->IsSmall() != true))
+			if (ret == false || (node->IsSmall() != true) && (*it)->Childrens_GameObject_Vect.size() == 0)
 			{
+				
 				break;
 			}
 		}

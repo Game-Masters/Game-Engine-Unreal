@@ -19,6 +19,8 @@ class ModuleFileSystem_Engine :
 	public Module
 {
 public:
+	bool Init();
+
 	bool Start();
 	bool CleanUp();
 	Directory_* CreateDir(const char* name, Directory_Type type, Directory_* parent=nullptr, bool visible=true);
@@ -27,10 +29,11 @@ public:
 	bool SaveFile(const char* path, char* buffer, uint size, Directory_* parent=nullptr);
 	ModuleFileSystem_Engine();
 	~ModuleFileSystem_Engine();
-	bool SerchInDirectorySistem(const char* path, File_type type);
+	bool SerchInDirectorySystem(const char* path, File_type type);
 	void ChangeFormat_File(const char* path, const char* n_format, std::string *new_path, Directory_ *Parent);
 	void IterateAllDirect_To_Save(const char * path_dir, std::string * new_path);
 	void IterateAllDirect(const char* path_dir, std::string *new_path);
+	void Asset_User_File_Iteration();
 public:
 	Directory_ *RootDirect_User=nullptr;
 	Directory_ *Mesh_User = nullptr;

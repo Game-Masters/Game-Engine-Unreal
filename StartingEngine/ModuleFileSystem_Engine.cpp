@@ -1,11 +1,12 @@
 #include "ModuleFileSystem_Engine.h"
+#include"Application.h"
 #include<filesystem>
 #include <iostream>
 #include <experimental/filesystem>
 #include<fstream>
 #include"Imgui\imgui.h"
 
-bool ModuleFileSystem_Engine::Start()
+bool ModuleFileSystem_Engine::Init()
 {
 	RootDirect_User = nullptr;
 	RootDirect_User = CreateDir("Assets", Directory_Type::user_directory_type);
@@ -15,15 +16,17 @@ bool ModuleFileSystem_Engine::Start()
 	Directories_User_V.push_back(RootDirect_User);
 	Directories_User_V.push_back(Mesh_User);
 	Directories_User_V.push_back(Material_User);
-	
+
 	RootDirect_Engine = nullptr;
-	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr,true);
+	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr, true);
 	Mesh_Engine = CreateDir("Mesh", Directory_Type::engine_directory_type, RootDirect_Engine, true);
 	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine, true);
 
+	return true;
+}
 
-	
-
+bool ModuleFileSystem_Engine::Start()
+{
 
 	return true;
 }
@@ -163,7 +166,7 @@ ModuleFileSystem_Engine::~ModuleFileSystem_Engine()
 {
 }
 
-bool ModuleFileSystem_Engine::SerchInDirectorySistem(const char * path, File_type type)
+bool ModuleFileSystem_Engine::SerchInDirectorySystem(const char * path, File_type type)
 {
 	std::string n_path;
 	size_t s_str = 0;
@@ -253,5 +256,18 @@ void ModuleFileSystem_Engine::IterateAllDirect_To_Save(const char * path_dir, st
 				ImGui::TreePop();
 			}
 		}
+	}
+}
+
+void ModuleFileSystem_Engine::Asset_User_File_Iteration() {
+	for (std::experimental::filesystem::recursive_directory_iterator::value_type item : std::experimental::filesystem::recursive_directory_iterator(RootDirect_User->path)) {
+		std::string str_path = item.path().string().c_str();
+
+		//Check extension
+		size_t start_ext = str_path.rfind("\\") + 1;
+		std::string name_str= str_path.substr(start_ext, str_path.size());
+		size_t start_ext_r = str_path.rfind(".") + 1;
+		std::string name_str_r = str_path.substr(start_ext_r, str_path.size());
+			App->resources_mod->ImportFile(str_path.c_str());
 	}
 }

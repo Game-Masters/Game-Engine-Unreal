@@ -31,6 +31,7 @@ class Mesh :
 private:
 	Material* texture_mesh;
 	std::string path_fbx;
+	std::string path_fbx_mesh;
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
 
 

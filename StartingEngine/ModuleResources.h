@@ -18,9 +18,12 @@ class ModuleResources :
 public:
 	ModuleResources();
 	~ModuleResources();
+	bool Start();
+
 	update_status Update(float dt);
 	int Find_UserRes(const char* file_in_assets) const;
 	int Find_EngineRes(const char* file_in_assets) const;
+	
 	int ImportFile(const char* new_file_in_assets, bool force = false);
 	int GenerateNewUID();
 	//const Resource* Get(int uid) const;

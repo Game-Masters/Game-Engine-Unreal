@@ -8,7 +8,8 @@ Mesh::Mesh(GameObject* parent, int uuid, Material* m_text): Component(Component_
 	texture_mesh = m_text;
 	uuid_mesh = uuid;
 	mesh_r = App->resources_mod->Get(uuid_mesh);
-
+	path_fbx = mesh_r->GetExportedFile();
+	path_fbx_mesh = mesh_r->GetFile();
 	/*if (mesh_v->vertices != nullptr && mesh_v->indices!=nullptr) {
 		glGenBuffers(1, (GLuint*)&(mesh_v->id_vertices));
 		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
@@ -157,7 +158,7 @@ void Mesh::Save(JSON_Object * root_object_scene)
 	if (parent != nullptr) {
 		json_object_set_number(node, "UUID_parent", this->UUID_parent_GO);
 	}
-	json_object_set_string(node, "Path FBX", this->path_fbx.c_str());
+	json_object_set_string(node, "Resource Mesh", path_fbx_mesh.c_str());
 
 }
 

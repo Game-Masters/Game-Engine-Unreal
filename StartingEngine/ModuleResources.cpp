@@ -2,6 +2,7 @@
 #include"Application.h"
 #include"ResourceTexture.h"
 #include<string>;
+#include"Timer.h"
 
 ModuleResources::ModuleResources()
 {
@@ -12,9 +13,16 @@ ModuleResources::~ModuleResources()
 {
 }
 
+bool ModuleResources::Start() {
+
+	//App->fs_e->Asset_User_File_Iteration();
+
+	return true;
+}
+
 update_status ModuleResources::Update(float dt)
 {
-	resources;
+
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -45,6 +53,7 @@ int ModuleResources::Find_EngineRes(const char * file_in_assets) const
 	return -1;
 }
 
+
 int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 {
 	
@@ -56,7 +65,10 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 
 		if (type== Resources_Type::texture) {
 			std::string path_in_engine = "-1";
-			App->fs_e->ChangeFormat_File(new_file_in_assets, "dds", &path_in_engine, App->fs_e->Material_Engine);
+
+			App->imp_mat->ImportMaterial(new_file_in_assets, &path_in_engine);
+			//App->fs_e->ChangeFormat_File(new_file_in_assets, "dds", &path_in_engine, App->fs_e->Material_Engine);
+
 			int uid_r = Find_UserRes(new_file_in_assets);
 			Create_New_resource_Text(path_in_engine, new_file_in_assets, uid_r, type);
 

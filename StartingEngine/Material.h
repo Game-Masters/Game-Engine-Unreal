@@ -23,8 +23,8 @@ class Material :
 	public Component
 {
 protected:
+	std::string path_texture_exported;
 	std::string path_texture;
-
 public:
 	geometry_base_creating* texture_v = nullptr;
 	int UUID_mat;

@@ -227,14 +227,22 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 				quat.w = (float)json_value_get_number(json_array_get_value(array_t, 3));
 				temp_go->AddNewTransform(pos, scale, quat);
 			}
+
+			JSON_Object* node_mat;
+			Material *mat=nullptr;
+			node_mat = json_object_get_object(node, "Material");
+			if (node_mat != nullptr) {
+				std::string str_p_t = json_object_get_string(node_mat, "Resource Material");
+				mat=temp_go->AddNewMaterial(App->resources_mod->Find_EngineRes(str_p_t.c_str()));
+			}
+		
+
 			JSON_Object* node_mesh;
 			node_mesh = json_object_get_object(node, "Mesh");
 			if (node_mesh != nullptr) {
-				//(ResourceMesh*)
-				std::string fbx_path = json_object_get_string(node_mesh, "Path FBX");
-				Resource_Mesh_Base* temp_geom = App->imp_mesh->Create_Base_Geometry(fbx_path.c_str(), name_go.c_str(), fbx_path.c_str());
-				//NEED TO FIX THE LOAD SCENE
-				//temp_go->AddNewMesh();
+				std::string str_p = json_object_get_string(node_mesh, "Resource Mesh");
+				int uuid_pp = App->resources_mod->Find_EngineRes(str_p.c_str());
+				temp_go->AddNewMesh(uuid_pp,mat);
 			}
 			GO_Load.push_back(temp_go);
 

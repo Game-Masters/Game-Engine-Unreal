@@ -26,16 +26,18 @@ void Transform::Update()
 		float4x4 mat = App->camera->CamComp->Get_Frustum().ViewMatrix();
 		float4x4 matrix_t = parent->GetMatrix_Trans().Transposed();
 	
-		if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) {
-			App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::TRANSLATE;
+		if (!ImGuizmo::IsUsing())
+		{
+			if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN) {
+				App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::TRANSLATE;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
+				App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::ROTATE;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
+				App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::SCALE;
+			}
 		}
-		if (App->input->GetKey(SDL_SCANCODE_6) == KEY_DOWN) {
-			App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::ROTATE;
-		}
-		if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN) {
-			App->scene_intro->Operator_Guiz = ImGuizmo::OPERATION::SCALE;
-		}
-
 
 		ImGuizmo::Manipulate(mat.Transposed().ptr(), mat_proj.Transposed().ptr(), App->scene_intro->Operator_Guiz, ImGuizmo::WORLD, matrix_t.ptr());
 

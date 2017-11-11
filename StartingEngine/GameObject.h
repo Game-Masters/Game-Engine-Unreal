@@ -28,7 +28,7 @@ public:
 	std::vector<GameObject*> Childrens_GameObject_Vect;
 	std::vector<Component*> Component_Vect;
 	bool active = true;
-	bool static_obj = false;
+	bool static_obj = true;
 	Tag_Object_Enum object_tag_s = Tag_Object_Enum::no_obj_tag;
 	bool IsComponentType(Component_Type_Enum temp_type);
 	void PreUpdate();

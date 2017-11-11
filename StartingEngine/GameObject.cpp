@@ -106,7 +106,7 @@ GameObject::GameObject(const std::string name, GameObject * parent, const bool a
 			this->UUID_parent = parent->UUID;
 		}
 	}
-
+	this->static_obj = true;
 }
 
 GameObject* GameObject::FindUUID(int GO_Load) {

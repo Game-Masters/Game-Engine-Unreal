@@ -7,6 +7,7 @@
 #include"Transform.h"
 #include"Imgui\Data.h"
 #include"Imgui\imguidock.h"
+#include"Quadtree.h"
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 {
@@ -34,10 +35,20 @@ bool ModuleSceneIntro::Start()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
 
+
+	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
+	scene_quadtree = new QuadTreeZ();
+	scene_quadtree->SetBoundaries(&(AABB(float3(-100.0f, -100.0f, -100.0f), float3(100.0f, 100.0f, 100.0f))));
+	
+
+
+
 	tx_vec=ImGui::GetSizeDock(3);
 	world_texture = new Texture_Engine();
 	world_texture->Create(nullptr, tx_vec.z, tx_vec.w);
+
 	App->renderer3D->OnResize(tx_vec.z, tx_vec.w);
+
 	world_texture->Bind();
 	std::string path_temp = "..\\Game\\Data\\BakerHouse.fbx";
 	std::string path_temp2 = "..\\Game\\Data\\Baker_house.png";
@@ -47,8 +58,7 @@ bool ModuleSceneIntro::Start()
 
 
 
-	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
-
+	
 /*
 	frustrumtest =CreateNewGameObjects("Frustrum test", true, root_gameobject, Tag_Object_Enum::frustrum_obj_tag, false);
 	frustrumtest->AddNewTransform(float3(0,0,0), float3(1, 1, 1), Quat(0,0,0,1));
@@ -84,7 +94,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	drawGrid(50);
 	
 	root_gameobject->Update();
-	
+	scene_quadtree->DebugDraw();
+	scene_quadtree->Calculate();
 
 	glLineWidth(5.0f);
 	glBegin(GL_LINES);

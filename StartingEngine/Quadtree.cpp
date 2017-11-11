@@ -102,7 +102,7 @@ std::vector<GameObject*> QuadTreeNode::GetGameObjects()
 
 bool QuadTreeNode::IsLeaf() const
 {
-	return children[0] == nullptr;
+	return children.size() <= 0;
 }
 
 bool QuadTreeNode::Full()
@@ -131,6 +131,7 @@ bool QuadTreeNode::InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNod
 		{
 			return false;
 		}
+		//check problem
 		for (std::vector<GameObject*>::iterator it2 = (*it)->Childrens_GameObject_Vect.begin(); it != (*it)->Childrens_GameObject_Vect.end(); ++it)
 		{
 			ret = InsideTree(it2,node);
@@ -162,9 +163,9 @@ void QuadTreeNode::DebugDraw()
 		glVertex3f(bounds.Edge(i).a.x, bounds.Edge(i).a.y, bounds.Edge(i).a.z);
 		glVertex3f(bounds.Edge(i).b.x, bounds.Edge(i).b.y, bounds.Edge(i).b.z);
 	}
-	if (children[0] != nullptr)
+	if (IsLeaf() == false)
 	{
-		if (IsLeaf() == false)
+		if (children[0] != nullptr)
 		{
 			for (uint i = 0; i < NODE_CAPACITY; i++)
 			{
@@ -213,7 +214,7 @@ void QuadTreeZ::DebugDraw()
 {
 	glBegin(GL_LINES);
 	glLineWidth(3.0f);
-	glColor3f(1.00f, 0.761f, 0.00f);
+	glColor4f(1.00f, 0.761f, 0.00f, 1.0f);
 
 	if (root != nullptr)
 	{
@@ -221,5 +222,5 @@ void QuadTreeZ::DebugDraw()
 	}
 
 	glEnd();
-	glColor3f(1.0f, 1.0f, 1.0f);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }

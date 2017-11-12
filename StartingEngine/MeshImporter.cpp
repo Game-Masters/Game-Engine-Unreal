@@ -20,6 +20,9 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 	std::string path_n = path;
 	std::string path_new_format;
 	App->fs_e->ChangeFormat_File(path_n.c_str(), "ric", &path_new_format, App->fs_e->Mesh_Engine);
+	ResourceMesh* bin_gen_res = (ResourceMesh*)App->resources_mod->CreateNewResource(Resources_Type::mesh);
+	bin_gen_res->Set_New_Resource_Files(path_new_format, path);
+	bin_gen_res->CreateMeta();
 	App->fs_e->SaveFile(path_new_format.data(), buffer_total_gen, size_buffer_gen);
 	*new_name = path_new_format;
 	RELEASE_ARRAY(buffer_total_gen);

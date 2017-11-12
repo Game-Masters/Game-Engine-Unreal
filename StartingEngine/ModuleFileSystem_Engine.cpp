@@ -268,6 +268,24 @@ void ModuleFileSystem_Engine::Asset_User_File_Iteration() {
 		std::string name_str= str_path.substr(start_ext, str_path.size());
 		size_t start_ext_r = str_path.rfind(".") + 1;
 		std::string name_str_r = str_path.substr(start_ext_r, str_path.size());
+		std::string str_path_meta = str_path+".meta";
+		if (!Find_in_Asset(str_path_meta.c_str())) {
 			App->resources_mod->ImportFile(str_path.c_str());
+		}
+		else {
+			App->resources_mod->ImportResources_Path_Usable(str_path_meta.c_str());
+		}
+	
 	}
+}
+
+bool ModuleFileSystem_Engine::Find_in_Asset(const char* path) {
+	for (std::experimental::filesystem::recursive_directory_iterator::value_type item : std::experimental::filesystem::recursive_directory_iterator(RootDirect_User->path)) {
+		std::string str_path = item.path().string().c_str();
+		if (str_path == path) {
+			return true;
+		}
+	}
+
+	return false;
 }

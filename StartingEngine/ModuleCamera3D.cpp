@@ -139,7 +139,7 @@ update_status ModuleCamera3D::Update(float dt)
 				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->gui->n4 == false) {
 					ray_cast_pressed = true;
 					Closest_Ray_GO = nullptr;
-					App->gui->inspection_node = nullptr;
+					//App->gui->inspection_node = nullptr;
 				}
 			}
 

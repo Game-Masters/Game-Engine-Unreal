@@ -34,6 +34,7 @@ public:
 	void IterateAllDirect_To_Save(const char * path_dir, std::string * new_path);
 	void IterateAllDirect(const char* path_dir, std::string *new_path);
 	void Asset_User_File_Iteration();
+	bool Find_in_Asset(const char* path);
 public:
 	Directory_ *RootDirect_User=nullptr;
 	Directory_ *Mesh_User = nullptr;

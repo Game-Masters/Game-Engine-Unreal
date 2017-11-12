@@ -15,13 +15,24 @@ ModuleResources::~ModuleResources()
 
 bool ModuleResources::Start() {
 
-	//App->fs_e->Asset_User_File_Iteration();
-
+	App->fs_e->Asset_User_File_Iteration();
+	tim_check_Assets.Start();
 	return true;
 }
 
 update_status ModuleResources::Update(float dt)
 {
+	int i = 546;
+	resources;
+	/*if (tim_check_Assets.ReadSec()>5) {
+		tim_check_Assets.Stop();
+		for (int i = 0; i < resources.size(); i++) {
+			if (App->fs_e->Find_in_Asset(resources[i]->GetExportedFile()) == false) {
+				resources.erase(resources[i]->GetUID());
+			}
+		}
+		tim_check_Assets.Start();
+	}*/
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -53,6 +64,34 @@ int ModuleResources::Find_EngineRes(const char * file_in_assets) const
 	return -1;
 }
 
+void ModuleResources::ImportResources_Path_Usable(const char * new_file_in_assets)
+{
+
+	JSON_Value* val_doc;
+	JSON_Object* obj_doc;
+	std::string str_type;
+	Resource* temp_mesh = nullptr;
+	App->json_class->Create_JSON_DOC(&val_doc, &obj_doc, new_file_in_assets);
+
+	str_type=json_object_get_string(obj_doc, "Type");
+
+	if (str_type == "Texture") {
+		temp_mesh= CreateNewResource(Resources_Type::texture);
+	}
+	else if (str_type == "Mesh") {
+		temp_mesh = CreateNewResource(Resources_Type::mesh);
+	}
+	temp_mesh->Set_New_Resource_Files(json_object_get_string(obj_doc, "Path File"), json_object_get_string(obj_doc, "Path File Exported"));
+
+
+	std::pair<int, Resource*> p;
+	p.first = temp_mesh->GetUID();
+	p.second = temp_mesh;
+	resources.insert(p);
+
+
+}
+
 
 int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 {
@@ -70,12 +109,13 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 			//App->fs_e->ChangeFormat_File(new_file_in_assets, "dds", &path_in_engine, App->fs_e->Material_Engine);
 
 			int uid_r = Find_UserRes(new_file_in_assets);
-			Create_New_resource_Text(path_in_engine, new_file_in_assets, uid_r, type);
-
+			
+			Resource* res_mat=Get(Create_New_resource_Text(path_in_engine, new_file_in_assets, uid_r, type));
+			res_mat->CreateMeta();
 		}
 		else if (type == Resources_Type::mesh) {
 			App->assimp->ImportGeometry(new_file_in_assets, &file_in_engine);
-			App->imp_mesh->LoadMesh(file_in_engine.c_str());
+			//App->imp_mesh->LoadMesh(file_in_engine.c_str());
 			type = Resources_Type::mesh;
 		}
 	
@@ -217,6 +257,23 @@ bool Resource::LoadToMemory()
 	}
 	loaded++;
 	return false;
+}
+
+void Resource::CreateMeta()
+{
+	std::string final_dest_str = exported_file + ".meta";
+	App->json_class->Create_JSON_DOC(&val_doc, &obj_doc, final_dest_str.c_str());
+	json_object_clear(obj_doc);
+	if (type== Resources_Type::texture) {
+		json_object_set_string(obj_doc, "Type", "Texture");
+	}
+	else if (type == Resources_Type::mesh) {
+		json_object_set_string(obj_doc, "Type", "Mesh");
+	}
+	json_object_set_string(obj_doc, "Path File Exported", exported_file.c_str());
+	json_object_set_string(obj_doc, "Path File", file.c_str());
+	char* serialized_string = json_serialize_to_string_pretty(val_doc);
+	json_serialize_to_file(val_doc, final_dest_str.c_str());
 }
 
 void Resource::Set_New_Resource_Files(std::string file, std::string exported_file)

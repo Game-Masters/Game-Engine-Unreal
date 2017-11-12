@@ -23,7 +23,7 @@ public:
 	update_status Update(float dt);
 	int Find_UserRes(const char* file_in_assets) const;
 	int Find_EngineRes(const char* file_in_assets) const;
-	
+	void ImportResources_Path_Usable(const char* new_file_in_assets);
 	int ImportFile(const char* new_file_in_assets, bool force = false);
 	int GenerateNewUID();
 	//const Resource* Get(int uid) const;
@@ -33,7 +33,7 @@ public:
 	Resource* CreateNewResource(Resources_Type type, int force_uid = 0);
 	bool AddResources(Resource* n_res);
 private:
-
+	Timer tim_check_Assets;
 	int last_uid = 1;
 	std::map<int, Resource*> resources;
 
@@ -51,6 +51,7 @@ public:
 	const char* GetExportedFile() const;
 	bool IsLoadedToMemory() const;
 	virtual bool LoadToMemory();
+	virtual void CreateMeta();
 	void Set_New_Resource_Files(std::string file, std::string exported_file);
 	uint CountReferences() const;
 //LOAD SAVE?
@@ -62,7 +63,8 @@ protected:
 	std::string exported_file;
 	Resources_Type type = Resources_Type::unknown_r;
 	uint loaded = 0;
-
+	JSON_Value* val_doc;
+	JSON_Object* obj_doc;
 
 
 };

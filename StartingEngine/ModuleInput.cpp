@@ -129,8 +129,11 @@ update_status ModuleInput::PreUpdate(float dt)
 						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &new_format_mesh_load, App->fs_e->Mesh_Engine);
 						App->imp_mesh->LoadMesh(new_format_mesh_load.c_str());
 					}*/
-					App->resources_mod->ImportFile(dropped_filedir.c_str());
-					
+					//App->resources_mod->ImportFile(dropped_filedir.c_str());
+					//App->fs_e->
+					App->imp_mesh->LoadMesh(dropped_filedir.c_str());
+
+
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
 					App->imp_mesh->change_nameimporter = 0;
 					dropped_filedir = "";

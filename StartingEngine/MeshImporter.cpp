@@ -234,8 +234,11 @@ void MeshImporter::ImportMesh(Resource_Mesh_Base* temp_m, const char* path)
 bool MeshImporter::LoadMesh(const char * path)
 {
 
+	std::string path_r;
+	App->fs_e->ChangeFormat_File(path, "ric", &path_r, App->fs_e->Mesh_Engine);
+
 	char* buffer;
-	App->fs_e->LoadFile(path, &buffer);
+	App->fs_e->LoadFile(path_r.c_str(), &buffer);
 	char* cursor = buffer;
 
 	//parent nullptr_ root go

@@ -95,6 +95,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	
 	root_gameobject->Update();
 	scene_quadtree->DebugDraw();
+	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 	scene_quadtree->Calculate();
 
 	glLineWidth(5.0f);

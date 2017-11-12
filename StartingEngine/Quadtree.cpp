@@ -11,7 +11,7 @@ QuadTreeNode::QuadTreeNode(AABB * box)
 QuadTreeNode::QuadTreeNode(float3 min_point, float3 max_point, int max_objects) :max_game_objects(max_objects)
 {
 	bounds.maxPoint = max_point;
-	bounds.minPoint + min_point;
+	bounds.minPoint = min_point;
 }
 QuadTreeNode::~QuadTreeNode()
 {
@@ -61,15 +61,15 @@ void QuadTreeNode::Subdivide()
 	child3->Fill();
 	children.push_back(child4);
 	child4->Fill();
-	
+
 }
 
 void QuadTreeNode::Fill()
 {
 	std::vector<GameObject*> root_children = App->scene_intro->root_gameobject->Childrens_GameObject_Vect;
-	for (std::vector<GameObject*>::iterator it = root_children.begin(); it != root_children.end(); ++it)
+	for (std::vector<GameObject*>::iterator it = root_children.begin(); it != root_children.end(); it++)
 	{
-		if (InsideTree(it,this) == false)
+		if (InsideTree(it, this) == false)
 		{
 			//CHECK IF IT IS SMALLER THAN THE SMALLEST POSSIBLE
 			if (this->IsSmall() == false)
@@ -82,8 +82,8 @@ void QuadTreeNode::Fill()
 			{
 				break;
 			}
-			
-			
+
+
 		}
 	}
 
@@ -97,7 +97,7 @@ std::vector<QuadTreeNode*> QuadTreeNode::GetChildren()
 std::vector<GameObject*> QuadTreeNode::GetGameObjects()
 {
 	return gameobjs;
-	
+
 }
 
 bool QuadTreeNode::IsLeaf() const
@@ -121,7 +121,8 @@ bool QuadTreeNode::InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNod
 	{
 		if ((*it)->Get_GO_Mesh() != nullptr)
 		{
-			if (node->bounds.Intersects(((ResourceMesh*)(*it)->Get_GO_Mesh()->mesh_r)->Copy_aabb));
+			AABB temp_aabb = (*it)->Get_GO_Mesh()->Copy_aabb_using;
+			if (node->bounds.Intersects(temp_aabb))
 			{
 				node->Insert((*it));
 			}
@@ -134,17 +135,17 @@ bool QuadTreeNode::InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNod
 		//check problem
 		for (std::vector<GameObject*>::iterator it2 = (*it)->Childrens_GameObject_Vect.begin(); it2 != (*it)->Childrens_GameObject_Vect.end(); it2++)
 		{
-			ret = InsideTree(it2,node);
-			if (ret == false || (node->IsSmall() != true) && (*it)->Childrens_GameObject_Vect.size() == 0)
+			ret = InsideTree(it2, node);
+			if (ret == false || (node->IsSmall() == true))
 			{
-				
+
 				break;
 			}
 		}
-		
+
 	}
 
-	
+
 	return ret;
 }
 
@@ -164,18 +165,16 @@ void QuadTreeNode::DebugDraw()
 		glVertex3f(bounds.Edge(i).a.x, bounds.Edge(i).a.y, bounds.Edge(i).a.z);
 		glVertex3f(bounds.Edge(i).b.x, bounds.Edge(i).b.y, bounds.Edge(i).b.z);
 	}
-	if (IsLeaf() == false)
-	{
-		if (children[0] != nullptr)
-		{
-			for (uint i = 0; i < NODE_CAPACITY; i++)
-			{
-				children[i]->DebugDraw();
-			}
 
+	if (children.size()>0)
+	{
+		for (uint i = 0; i < children.size(); i++)
+		{
+			children[i]->DebugDraw();
 		}
-		
+
 	}
+
 }
 
 //QUADTREE
@@ -191,7 +190,7 @@ void QuadTreeZ::Calculate()
 {
 	root->Clear();
 	root->Fill();
-	
+
 }
 
 void QuadTreeZ::SetBoundaries(const AABB * bounds)

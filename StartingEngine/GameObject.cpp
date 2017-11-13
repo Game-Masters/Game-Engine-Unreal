@@ -57,9 +57,9 @@ Transform * GameObject::AddNewTransform(float3 position, float3 scale, Quat rota
 	return n_transform;
 }
 
-Mesh * GameObject::AddNewMesh(int UUID,Material* t_mat)
+Mesh * GameObject::AddNewMesh(int UUID,const char* path, Material* t_mat)
 {
-	Mesh* n_mesh = new Mesh(this, UUID, t_mat);
+	Mesh* n_mesh = new Mesh(this, UUID, path, t_mat);
 	this->Component_Vect.push_back(n_mesh);
 	return n_mesh;
 }

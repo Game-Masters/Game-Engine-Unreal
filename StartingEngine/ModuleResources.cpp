@@ -24,11 +24,11 @@ update_status ModuleResources::Update(float dt)
 {
 	int i = 546;
 	resources;
-	/*if (tim_check_Assets.ReadSec()>5) {
+	/*if (tim_check_Assets.ReadSec()>10) {
 		tim_check_Assets.Stop();
-		for (int i = 0; i < resources.size(); i++) {
-			if (App->fs_e->Find_in_Asset(resources[i]->GetExportedFile()) == false) {
-				resources.erase(resources[i]->GetUID());
+		for (std::map<int, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it){
+			if (App->fs_e->Find_in_Asset(it->second->GetExportedFile()) == false) {
+				resources.erase(it);
 			}
 		}
 		tim_check_Assets.Start();

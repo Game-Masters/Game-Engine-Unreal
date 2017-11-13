@@ -33,7 +33,7 @@ private:
 	std::string path_fbx;
 	std::string path_fbx_mesh;
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
-
+	std::string general_fb_path;
 
 public:
 	int uuid_mesh;
@@ -41,7 +41,7 @@ public:
 	float4x4 ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
 	AABB Copy_aabb_using;
 	void Update();
-	Mesh(GameObject* parent, int uuid, Material* m_text=nullptr);
+	Mesh(GameObject* parent, int uuid, const char* path=nullptr, Material* m_text=nullptr);
 	~Mesh();
 	PrimitiveTypes_Mesh    GetType()const;
 	void CleanUp();

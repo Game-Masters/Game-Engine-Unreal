@@ -1,10 +1,10 @@
 #include "Mesh.h"
 #include"GameObject.h"
 
-Mesh::Mesh(GameObject* parent, int uuid, Material* m_text): Component(Component_Type_Enum::component_mesh_type,
+Mesh::Mesh(GameObject* parent, int uuid, const char* path, Material* m_text): Component(Component_Type_Enum::component_mesh_type,
 	parent,true)
 {
-
+	general_fb_path = path;
 	texture_mesh = m_text;
 	uuid_mesh = uuid;
 	mesh_r = App->resources_mod->Get(uuid_mesh);
@@ -158,6 +158,9 @@ void Mesh::Save(JSON_Object * root_object_scene)
 	if (parent != nullptr) {
 		json_object_set_number(node, "UUID_parent", this->UUID_parent_GO);
 	}
+	
+	json_object_set_string(node, "General_Path_FBX", general_fb_path.c_str());
+	json_object_set_string(node, "Resource Mesh exported", path_fbx.c_str());
 	json_object_set_string(node, "Resource Mesh", path_fbx_mesh.c_str());
 
 }

@@ -8,6 +8,7 @@
 #include"Imgui\Data.h"
 #include"Imgui\imguidock.h"
 #include"Quadtree.h"
+#include"ResourceTexture.h"
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 {
@@ -245,16 +246,28 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 			node_mat = json_object_get_object(node, "Material");
 			if (node_mat != nullptr) {
 				std::string str_p_t = json_object_get_string(node_mat, "Resource Material");
-				mat=temp_go->AddNewMaterial(App->resources_mod->Find_EngineRes(str_p_t.c_str()));
+				int uuid_text = App->resources_mod->Find_EngineRes(str_p_t.c_str());
+				ResourceTexture* res_text = (ResourceTexture*)App->resources_mod->Get(uuid_text);
+				res_text->LoadToMemory();
+				mat=temp_go->AddNewMaterial(uuid_text);
 			}
 		
 
 			JSON_Object* node_mesh;
 			node_mesh = json_object_get_object(node, "Mesh");
 			if (node_mesh != nullptr) {
+				std::string str_p_fbx = json_object_get_string(node_mesh, "General_Path_FBX");
+				std::string str_p_ex = json_object_get_string(node_mesh, "Resource Mesh exported");
 				std::string str_p = json_object_get_string(node_mesh, "Resource Mesh");
-				int uuid_pp = App->resources_mod->Find_EngineRes(str_p.c_str());
-				temp_go->AddNewMesh(uuid_pp,mat);
+				int uuid_pp = App->resources_mod->Find_EngineRes(str_p_ex.c_str());
+				//ResourceMesh* res_mesh=	(ResourceMesh*)	App->resources_mod->Get(uuid_pp);
+				if (uuid_pp != -1) {
+					App->resources_mod->ImportFile(str_p_fbx.c_str());
+				}
+				int uuid_pp_child = App->resources_mod->Find_EngineRes(str_p.c_str());
+				ResourceMesh* temp_mesh= (ResourceMesh*)App->resources_mod->Get(uuid_pp_child);
+				temp_mesh->LoadToMemory();
+				temp_go->AddNewMesh(uuid_pp, str_p_fbx.c_str(),mat);
 			}
 			GO_Load.push_back(temp_go);
 

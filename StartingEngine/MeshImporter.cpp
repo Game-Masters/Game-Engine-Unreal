@@ -231,38 +231,37 @@ void MeshImporter::ImportMesh(Resource_Mesh_Base* temp_m, const char* path)
 
 //char** cursor, Object* parent, int* num_childs
 
-bool MeshImporter::LoadMesh(const char * path)
+bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen)
 {
 
-	std::string path_r;
-	App->fs_e->ChangeFormat_File(path, "ric", &path_r, App->fs_e->Mesh_Engine);
+
 
 	char* buffer;
-	App->fs_e->LoadFile(path_r.c_str(), &buffer);
+	App->fs_e->LoadFile(path, &buffer);
 	char* cursor = buffer;
 
 	//parent nullptr_ root go
-	LoadRecursive(&cursor, nullptr, path);
+	LoadRecursive(&cursor, nullptr, path, path_fbx_gen);
 	App->imp_mat->Mat_Map.clear();
 	RELEASE_ARRAY(buffer);
 	return false;
 }
 
 
-void MeshImporter::LoadRecursive(char ** cursor, GameObject* Parent, const char* path) {
+void MeshImporter::LoadRecursive(char ** cursor, GameObject* Parent, const char* path, const char * path_fbx_gen) {
 
 	int child_num = 0;
 	
-	Parent = LoadMesh_variables(&cursor[0], Parent, &child_num, path);
+	Parent = LoadMesh_variables(&cursor[0], Parent, &child_num, path, path_fbx_gen);
 
 	for (int i = 0; i < child_num; i++) {
-		LoadRecursive(&cursor[0], Parent, path);
+		LoadRecursive(&cursor[0], Parent, path,path_fbx_gen);
 	}
 
 
 }
 
-GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent, int* num_childs, const char* path)
+GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent, int* num_childs, const char* path, const char * path_fbx_gen)
 {
 	uint* ind = nullptr;
 	uint name_lenght;
@@ -336,10 +335,10 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 
 		if (n_temp_mesh!=nullptr) {
 
-			mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str());
+			mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str(), path_fbx_gen);
 			
 				int uuid_mesh = App->resources_mod->Find_EngineRes(n_temp_mesh->name.c_str());
-				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, path);				
+				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, path, path_fbx_gen);
 			}
 			child_gameobj->AddNewTransform(translation_f, scale_f, Final_quat);
 		
@@ -353,7 +352,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 	return child_gameobj;
 }
 
-Material* MeshImporter::AddTextureResourceToGO(Resource_Mesh_Base* n_temp_mesh, GameObject* child_gameobj, const char* final_path_mesh) {
+Material* MeshImporter::AddTextureResourceToGO(Resource_Mesh_Base* n_temp_mesh, GameObject* child_gameobj, const char* final_path_mesh, const char * path_fbx_gen) {
 
 	
 	Resource *temp = nullptr;
@@ -381,7 +380,7 @@ Material* MeshImporter::AddTextureResourceToGO(Resource_Mesh_Base* n_temp_mesh, 
 
 }
 
-void MeshImporter::AddMeshResourceToGO(Resource_Mesh_Base * n_temp_mesh, GameObject * child_gameobj, int uuid_mesh, Material* mat, const char* path)
+void MeshImporter::AddMeshResourceToGO(Resource_Mesh_Base * n_temp_mesh, GameObject * child_gameobj, int uuid_mesh, Material* mat, const char * path, const char * path_fbx_gen)
 {
 
 	Resource *temp = nullptr;
@@ -392,18 +391,18 @@ void MeshImporter::AddMeshResourceToGO(Resource_Mesh_Base * n_temp_mesh, GameObj
 		((ResourceMesh*)temp)->LoadToMemory();
 		App->resources_mod->AddResources(temp);
 		if (mat != nullptr) {
-			child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID(), mat);
+			child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID(), path_fbx_gen,mat);
 		}
 		else {
-			child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID());
+			child_gameobj->AddNewMesh(((ResourceMesh*)temp)->GetUID(), path_fbx_gen);
 		}
 	}
 	else {
 		if (mat != nullptr) {
-			child_gameobj->AddNewMesh(uuid_mesh, mat);
+			child_gameobj->AddNewMesh(uuid_mesh, path_fbx_gen, mat);
 		}
 		else {
-			child_gameobj->AddNewMesh(uuid_mesh);
+			child_gameobj->AddNewMesh(uuid_mesh, path_fbx_gen);
 		}
 	}
 }

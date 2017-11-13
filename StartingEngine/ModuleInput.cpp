@@ -88,9 +88,8 @@ update_status ModuleInput::PreUpdate(float dt)
 
 	bool quit = false;
 	SDL_Event e;
-	std::string full_path;
-	std::size_t pos_to_find_end;
-	std::string Imp_Path;
+	const aiScene* scene = nullptr;
+	std::string path_r;
 	while(SDL_PollEvent(&e))
 	{
 		ImGui_ImplSdlGL2_ProcessEvent(&e);
@@ -115,23 +114,15 @@ update_status ModuleInput::PreUpdate(float dt)
 			case (SDL_DROPFILE): 
 				// In case if dropped file
 					dropped_filedir = e.drop.file;
-					/*full_path = dropped_filedir;
-					pos_to_find_end = full_path.rfind(".");
-					Imp_Path = full_path.substr(pos_to_find_end, full_path.size());
-					if (Imp_Path==".png") {
-						//App->imp_mat->ImportMaterial(dropped_filedir.c_str());
-					}
-					if (Imp_Path == ".fbx" || Imp_Path == ".FBX") {
-						
-							App->assimp->ImportGeometry(dropped_filedir.c_str());
-	
-						std::string new_format_mesh_load;
-						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &new_format_mesh_load, App->fs_e->Mesh_Engine);
-						App->imp_mesh->LoadMesh(new_format_mesh_load.c_str());
-					}*/
-					//App->resources_mod->ImportFile(dropped_filedir.c_str());
-					//App->fs_e->
-					App->imp_mesh->LoadMesh(dropped_filedir.c_str());
+									
+					//Im not very sure about this 
+					scene = aiImportFile(dropped_filedir.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+					App->imp_mesh->Load_Texture_Scenes(scene);
+					//Probably it has to be done in other way
+					//-------------------------------------------
+					
+					App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &path_r, App->fs_e->Mesh_Engine);					
+					App->imp_mesh->LoadMesh(path_r.c_str(), dropped_filedir.c_str());
 
 
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);

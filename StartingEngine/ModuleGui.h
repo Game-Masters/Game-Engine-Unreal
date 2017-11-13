@@ -6,6 +6,7 @@
 #include"Console_ImGui.h"
 #include "Fluid_Studios_Memory_Manager\mmgr.h"
 #include "Fluid_Studios_Memory_Manager\nommgr.h"
+#include"ModuleFileSystem_Engine.h"
 #define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 class Application;
 
@@ -26,6 +27,7 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
 	void InspectionNode_Gui();
+	void CreateButtonWithTextAndImage(GLuint temp, const char* str);
 public:
 	sMStats Gpu_Vram_Stats;
 	bool button_exit_app = false;
@@ -67,7 +69,12 @@ public:
 
 	void IterateChilds(GameObject* item);
 	bool create_empty_gameobject = false;
+	bool win_choose_fbx = false;
+	bool win_choose_img = false;
 
+	std::string str_path_fbx;
+	std::string str_path_img;
+	
 	char filename_save[64] = { 0 };
 	char* str_geom_user;
 	char* str_text_user;
@@ -79,7 +86,7 @@ public:
 	std::string full_path;
 	GameObject* inspection_node = nullptr;
 	std::string path_to_load = "-1";
-
+	std::string Current_Dir;
 };
 
 #endif // ModuleGui

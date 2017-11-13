@@ -13,6 +13,7 @@
 #include"GameObject.h";
 #include"Transform.h"
 #include"Mesh.h"
+#include"ModuleFileSystem_Engine.h"
 
 #define COLOR_ENGINE ImVec4(0.878, 0.262, 0, 1.0f)
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
@@ -121,14 +122,18 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Data/Icons/Pause.png", &Pause);
 	App->assimp->LoadImage_devil("Data/Icons/Stop.png", &Stop);
 	App->assimp->LoadImage_devil("Data/Icons/NextFrame.png", &NextFrame);
+	App->assimp->LoadImage_devil("Data/Icons/directory-icon.png", &App->fs_e->Dir_Image);
+	App->assimp->LoadImage_devil("Data/Icons/fbx-icon.png", &App->fs_e->Fbx_Image);
+	App->assimp->LoadImage_devil("Data/Icons/image-icon.png", &App->fs_e->Png_Image);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
 	
 
 	io.Fonts->AddFontFromFileTTF("Data\\Fonts\\Product Sans Bold.ttf", 15);
-
-
+	Current_Dir = App->fs_e->RootDirect_User->path.c_str();
+	str_path_fbx = "-1";
+	str_path_img = "-1";
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 10);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 18);
@@ -420,6 +425,9 @@ update_status ModuleGui::Update(float dt)
 			ImGui::End();
 		}
 
+
+	
+
 		if (ImGui::BeginDock("About", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 
 			ImGui::Image((void*)Logo, ImVec2(314, 100), ImVec2(0, 0), ImVec2(1, -1));
@@ -464,6 +472,15 @@ update_status ModuleGui::Update(float dt)
 	}
 
 
+	if (ImGui::BeginDock("Assets", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+
+
+		App->fs_e->Asset_Editor(Current_Dir.c_str());
+
+		ImGui::EndDock();
+	}
+
+
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 		show_gui_engine = !show_gui_engine;
 
@@ -476,6 +493,7 @@ update_status ModuleGui::Update(float dt)
 		ImGui::SameLine();
 		if (ImGui::BeginMenu("Menu"))
 		{
+			if (ImGui::MenuItem("Create Empty GameObject")) { create_empty_gameobject = true; }
 			if (ImGui::MenuItem("Save")) { App->scene_intro->save_scene = !App->scene_intro->save_scene; }
 			if (ImGui::MenuItem("Load")) { App->scene_intro->load_scene = !App->scene_intro->load_scene; }
 			if (ImGui::MenuItem("Console")) { show_console = !show_console; }
@@ -483,6 +501,14 @@ update_status ModuleGui::Update(float dt)
 			if (ImGui::MenuItem("Close App")) { button_exit_app = true; }
 			ImGui::EndMenu();
 		}
+		if (create_empty_gameobject)
+		{
+			GameObject* temp = new GameObject("Empty_Obj",App->scene_intro->root_gameobject,true, Tag_Object_Enum::no_obj_tag,true);
+			temp->AddNewTransform(math::float3::zero, math::float3(1, 1, 1), math::Quat(0, 0, 0, 1));
+			App->scene_intro->root_gameobject->Childrens_GameObject_Vect.push_back(temp);
+			create_empty_gameobject = false;
+		}
+
 		bool temp = ImGui::ImageButton((void*)Q, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
 		if (temp == true)
 		{
@@ -797,8 +823,78 @@ void ModuleGui::InspectionNode_Gui()
 			break;
 		}
 
+	}ImGui::Separator();
+
+	if (ImGui::Button("Add new Component", ImVec2(250, 30)) && inspection_node)
+		ImGui::OpenPopup("Add new Component");
+	if (ImGui::BeginPopup("Add new Component"))
+	{
+		if (ImGui::MenuItem("Component Mesh"))
+		{
+			if (inspection_node->Get_GO_Mesh() == nullptr) {
+				win_choose_fbx = true;
+							//App->resources_mod->find
+				//inspection_node->AddNewMesh()
+			}
+		}
+		if (ImGui::MenuItem("Component Material"))
+		{
+			if (inspection_node->Get_GO_Mesh() != nullptr) {
+				if (inspection_node->Get_GO_Mesh()->GetMaterial() != nullptr) {
+					win_choose_img = true;
+				}
+			}
+		}
+		ImGui::EndPopup();
 	}
 
+
+	
+	if (win_choose_fbx) {
+		ImGui::Begin(("Meshes_dis"), &win_choose_fbx);
+		
+		App->fs_e->Asset_Editor(App->fs_e->Mesh_User->path.c_str(), &str_path_fbx);
+		if (str_path_fbx != "-1") {
+			std::string str_path_img_end;
+			App->fs_e->ChangeFormat_File(str_path_fbx.c_str(), "ric", &str_path_img_end, App->fs_e->Mesh_Engine);
+			int uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
+			if (uuid_mesh == -1) {
+				int uuid_mesh_n = App->resources_mod->ImportFile(str_path_img_end.c_str());
+				App->imp_mesh->LoadMesh(str_path_img_end.c_str(), str_path_fbx.c_str());
+				//inspection_node->AddNewMesh(uuid_mesh_n);
+				win_choose_fbx = false;
+			}
+			else {
+				ResourceMesh* r_mesh= (ResourceMesh*)App->resources_mod->Get(uuid_mesh);
+				App->imp_mesh->LoadMesh(r_mesh->GetFile() , r_mesh->GetExportedFile(),inspection_node);
+				int p_t = r_mesh->GetUID();
+				win_choose_fbx = false;
+				//r_mesh->LoadToMemory();
+				//inspection_node->AddNewMesh(p_t, r_mesh->GetExportedFile());
+			}
+		}
+
+		ImGui::End();
+	}
+
+	if (win_choose_img) {
+		ImGui::Begin(("Texture_dis"), &win_choose_img);
+
+		App->fs_e->Asset_Editor(App->fs_e->Material_User->path.c_str(), &str_path_img);
+
+		if (str_path_img != "-1") {
+			int i = 12312;
+		}
+		ImGui::End();
+	}
+	
+}
+
+void ModuleGui::CreateButtonWithTextAndImage(GLuint temp, const char * str)
+{
+	ImGui::ImageButton((void*)temp, ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+	ImGui::Text(str);
+	ImGui::AlignFirstTextHeightToWidgets();
 }
 
 void ModuleGui::IterateChilds(GameObject * item)

@@ -149,6 +149,11 @@ AABB Mesh::GetAABB() const
 	return Copy_aabb_using;
 }
 
+Material * Mesh::GetMaterial() const
+{
+	return texture_mesh;
+}
+
 void Mesh::Save(JSON_Object * root_object_scene)
 {
 	JSON_Object* node;

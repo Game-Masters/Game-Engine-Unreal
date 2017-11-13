@@ -29,7 +29,7 @@ class Mesh :
 {
 
 private:
-	Material* texture_mesh;
+	Material* texture_mesh=nullptr;
 	std::string path_fbx;
 	std::string path_fbx_mesh;
 	PrimitiveTypes_Mesh    type = PrimitiveTypes_Mesh::Primitive_Undef_Mesh;
@@ -48,6 +48,7 @@ public:
 	const char* GetGeometryPath();
 	Resource_Mesh_Base* GetGeometryBaseMesh();
 	AABB GetAABB()const;
+	Material* GetMaterial()const;
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
 	void Update_AABB();

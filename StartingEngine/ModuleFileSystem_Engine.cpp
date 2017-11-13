@@ -27,7 +27,8 @@ bool ModuleFileSystem_Engine::Init()
 
 bool ModuleFileSystem_Engine::Start()
 {
-
+	//E:\CITM\3ero VJ\Game-Engine-Unreal\StartingEngine\Game\Data\Icons
+	
 	return true;
 }
 
@@ -288,4 +289,50 @@ bool ModuleFileSystem_Engine::Find_in_Asset(const char* path) {
 	}
 
 	return false;
+}
+
+bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_path) {
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		App->gui->Current_Dir = RootDirect_User->path.c_str();
+	}
+
+	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path)) {
+		std::string str_path = item.path().string().c_str();
+
+		size_t end_name = str_path.rfind(".");
+		size_t sart_name = str_path.rfind("\\") + 1;
+		std::string name = str_path.substr(sart_name, end_name - sart_name);
+		std::string ext_str= str_path.substr(end_name, str_path.size());
+		if (item.status().type() == std::experimental::filesystem::file_type::directory) {
+			ImGui::ImageButton_with_text((void*)Dir_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (ImGui::IsItemClicked()) {
+				if (ImGui::IsMouseDoubleClicked(0)) {
+					App->gui->Current_Dir = str_path;
+				}
+			}
+		}
+
+		if (ext_str==".fbx" || ext_str == ".FBX") {
+			ImGui::ImageButton_with_text((void*)Fbx_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (ImGui::IsItemClicked()) {
+				if (ImGui::IsMouseDoubleClicked(0)) {
+					*new_path = str_path.c_str();
+				}
+			}
+		}
+
+		if (ext_str == ".png" || ext_str == ".PNG" || ext_str == ".tga" || ext_str == ".TGA") {
+			ImGui::ImageButton_with_text((void*)Png_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (ImGui::IsItemClicked()) {
+				if (ImGui::IsMouseDoubleClicked(0)) {
+					*new_path = str_path.c_str();
+				}
+			}
+		}
+
+	}
+
+
+	return true;
 }

@@ -1,7 +1,9 @@
 #pragma once
 #include "Module.h"
+#include"Glew\include\glew.h"
 #include<vector>
 #include<string>
+
 class Directory_;
 
 enum File_type {
@@ -35,6 +37,8 @@ public:
 	void IterateAllDirect(const char* path_dir, std::string *new_path);
 	void Asset_User_File_Iteration();
 	bool Find_in_Asset(const char* path);
+	bool Asset_Editor(const char* path, std::string * new_path=nullptr);
+	
 public:
 	Directory_ *RootDirect_User=nullptr;
 	Directory_ *Mesh_User = nullptr;
@@ -45,6 +49,10 @@ public:
 	Directory_ *RootDirect_Engine = nullptr;
 	Directory_ *Mesh_Engine = nullptr;
 	Directory_ *Material_Engine = nullptr;
+
+	GLuint Dir_Image;
+	GLuint Png_Image;
+	GLuint Fbx_Image;
 
 };
 

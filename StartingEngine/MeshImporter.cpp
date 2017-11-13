@@ -231,7 +231,7 @@ void MeshImporter::ImportMesh(Resource_Mesh_Base* temp_m, const char* path)
 
 //char** cursor, Object* parent, int* num_childs
 
-bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen)
+bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen, GameObject* parent)
 {
 
 
@@ -241,27 +241,27 @@ bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen)
 	char* cursor = buffer;
 
 	//parent nullptr_ root go
-	LoadRecursive(&cursor, nullptr, path, path_fbx_gen);
+	LoadRecursive(&cursor, nullptr, path, path_fbx_gen, parent);
 	App->imp_mat->Mat_Map.clear();
 	RELEASE_ARRAY(buffer);
 	return false;
 }
 
 
-void MeshImporter::LoadRecursive(char ** cursor, GameObject* Parent, const char* path, const char * path_fbx_gen) {
+void MeshImporter::LoadRecursive(char ** cursor, GameObject* Parent, const char* path, const char * path_fbx_gen, GameObject* Parent_Gen_World) {
 
 	int child_num = 0;
 	
-	Parent = LoadMesh_variables(&cursor[0], Parent, &child_num, path, path_fbx_gen);
+	Parent = LoadMesh_variables(&cursor[0], Parent, &child_num, path, path_fbx_gen, Parent_Gen_World);
 
 	for (int i = 0; i < child_num; i++) {
-		LoadRecursive(&cursor[0], Parent, path,path_fbx_gen);
+		LoadRecursive(&cursor[0], Parent, path,path_fbx_gen, Parent_Gen_World);
 	}
 
 
 }
 
-GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent, int* num_childs, const char* path, const char * path_fbx_gen)
+GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent, int* num_childs, const char* path, const char * path_fbx_gen, GameObject* Parent_Gen_World)
 {
 	uint* ind = nullptr;
 	uint name_lenght;
@@ -324,8 +324,11 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		}
 		
 		//delete name;
-		if (parent == nullptr) {
+		if (parent == nullptr && Parent_Gen_World == nullptr) {
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
+		}
+		else if (parent == nullptr && Parent_Gen_World != nullptr) {
+			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, Parent_Gen_World, Tag_Object_Enum::no_obj_tag, false);
 		}
 		else {
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, parent, Tag_Object_Enum::no_obj_tag, false);
@@ -407,7 +410,7 @@ void MeshImporter::AddMeshResourceToGO(Resource_Mesh_Base * n_temp_mesh, GameObj
 	}
 }
 
-Resource_Mesh_Base * MeshImporter::Create_Base_Geometry(const char* path, const char* name, const char* final_path) {
+Resource_Mesh_Base * MeshImporter::Create_Base_Geometry(const char* path, const char* name, const char* final_path, GameObject* Parent_Gen_World) {
 	//need fix
 	uint* ind = nullptr;
 	uint name_lenght;

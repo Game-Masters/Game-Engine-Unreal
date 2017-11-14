@@ -5887,15 +5887,36 @@ bool ImGui::ImageButton_with_text(ImTextureID user_texture_id, const char* text,
 	ImGuiContext& g = *GImGui;
 	const ImGuiStyle& style = g.Style;
 
-	// Default to using texture ID as ID. User can still push string/integer prefixes.
-	// We could hash the size/uv to create a unique ID but that would prevent the user from animating UV.
-	PushID((void *)user_texture_id);
-	const ImGuiID id = window->GetID("#image");
-	PopID();
+	const ImGuiID id = window->GetID(text);
+	const ImVec2 textSize = ImGui::CalcTextSize(text, NULL, true);
 
 	const ImVec2 padding = (frame_padding >= 0) ? ImVec2((float)frame_padding, (float)frame_padding) : style.FramePadding;
-	const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + size + padding * 2);
-	const ImRect image_bb(window->DC.CursorPos + padding, window->DC.CursorPos + padding + size);
+//	const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + size + padding * 2);
+	ImVec2 total_;
+	ImVec2 totalSizeWithoutPadding(size.x, size.y>textSize.y ? size.y : textSize.y);
+	total_ = totalSizeWithoutPadding;
+
+	const ImRect bb(window->DC.CursorPos, window->DC.CursorPos + total_ + padding * 2);
+	ImVec2 start(0, 0);
+	start = window->DC.CursorPos + padding;
+	if (size.y < textSize.y)
+	{
+		start.y += (textSize.y - size.y);
+
+	}
+
+	ImVec2 add_less(0, 0);
+	ImVec2 add_more = size;
+	/*if (bb.Max.y - textSize.y < start.y + add_more.y)
+	{
+		add_less.x += textSize.y / 2;
+		add_more.x -= textSize.y / 2;
+	}*/
+	
+	const ImRect image_bb(start + add_less, start + add_more);
+	start = window->DC.CursorPos + padding;
+	start.y += (size.y - textSize.y) + 2;
+	
 	ItemSize(bb);
 	if (!ItemAdd(bb, &id))
 		return false;
@@ -5903,16 +5924,16 @@ bool ImGui::ImageButton_with_text(ImTextureID user_texture_id, const char* text,
 	bool hovered, held;
 	bool pressed = ButtonBehavior(bb, id, &hovered, &held);	
 
-	Text(text);
-
 	// Render
 	const ImU32 col = GetColorU32((hovered && held) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
 	RenderFrame(bb.Min, bb.Max, col, true, ImClamp((float)ImMin(padding.x, padding.y), 0.0f, style.FrameRounding));
 	if (bg_col.w > 0.0f)
-		window->DrawList->AddRectFilled(image_bb.Min, image_bb.Max, GetColorU32(bg_col));
+	window->DrawList->AddRectFilled(image_bb.Min, image_bb.Max, GetColorU32(bg_col));
 	window->DrawList->AddImage(user_texture_id, image_bb.Min, image_bb.Max, uv0, uv1, GetColorU32(tint_col));
+	RenderText(start, text);
 
 	return pressed;
+
 }
 
 

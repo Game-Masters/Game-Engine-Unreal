@@ -16,7 +16,7 @@ void Transform::Update()
 {
 	
 
-	if (this->parent==App->gui->inspection_node) {
+	if (this->parent==App->gui->inspection_node && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT) {
 		ImGuizmo::Enable(true);
 
 		ImGuiIO& io = ImGui::GetIO();

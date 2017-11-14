@@ -854,7 +854,7 @@ void ModuleGui::InspectionNode_Gui()
 	if (win_choose_fbx) {
 		ImGui::Begin(("Meshes_dis"), &win_choose_fbx);
 		
-		App->fs_e->Asset_Editor(App->fs_e->Mesh_User->path.c_str(), &str_path_fbx);
+		App->fs_e->Asset_Editor(App->fs_e->Mesh_User->path.c_str(), &str_path_fbx,false);
 		if (str_path_fbx != "-1") {
 			std::string str_path_img_end;
 			App->fs_e->ChangeFormat_File(str_path_fbx.c_str(), "ric", &str_path_img_end, App->fs_e->Mesh_Engine);
@@ -882,7 +882,7 @@ void ModuleGui::InspectionNode_Gui()
 	if (win_choose_img) {
 		ImGui::Begin(("Texture_dis"), &win_choose_img);
 
-		App->fs_e->Asset_Editor(App->fs_e->Material_User->path.c_str(), &str_path_img);
+		App->fs_e->Asset_Editor(App->fs_e->Material_User->path.c_str(), &str_path_img,false);
 
 		if (str_path_img != "-1") {
 			std::string str_path_img_end;

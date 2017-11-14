@@ -37,7 +37,7 @@ public:
 	void IterateAllDirect(const char* path_dir, std::string *new_path);
 	void Asset_User_File_Iteration();
 	bool Find_in_Asset(const char* path);
-	bool Asset_Editor(const char* path, std::string * new_path=nullptr);
+	bool Asset_Editor(const char* path, std::string * new_path=nullptr, bool asset_editor=true);
 	
 public:
 	Directory_ *RootDirect_User=nullptr;

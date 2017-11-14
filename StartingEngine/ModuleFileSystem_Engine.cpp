@@ -291,7 +291,7 @@ bool ModuleFileSystem_Engine::Find_in_Asset(const char* path) {
 	return false;
 }
 
-bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_path) {
+bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_path, bool asset_editor ) {
 
 	std::string ptr = "-1";
 	
@@ -308,6 +308,7 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 		std::string ext_str= str_path.substr(end_name, str_path.size());
 		if (item.status().type() == std::experimental::filesystem::file_type::directory) {
 			ImGui::ImageButton_with_text((void*)Dir_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+			ImGui::SameLine(0, 50);
 			if (ImGui::IsItemClicked()) {
 				if (ImGui::IsMouseDoubleClicked(0)) {
 					App->gui->Current_Dir = str_path;
@@ -317,6 +318,8 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 
 		if (ext_str==".fbx" || ext_str == ".FBX") {
 			ImGui::ImageButton_with_text((void*)Fbx_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if(asset_editor)
+			ImGui::SameLine(0, 50);
 			if (ImGui::IsItemClicked()) {
 				if (ImGui::IsMouseDoubleClicked(0)) {
 					ptr = str_path.c_str();
@@ -326,6 +329,8 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 
 		if (ext_str == ".png" || ext_str == ".PNG" || ext_str == ".tga" || ext_str == ".TGA") {
 			ImGui::ImageButton_with_text((void*)Png_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if(asset_editor)
+			ImGui::SameLine(0, 50);
 			if (ImGui::IsItemClicked()) {
 				if (ImGui::IsMouseDoubleClicked(0)) {
 					ptr = str_path.c_str();

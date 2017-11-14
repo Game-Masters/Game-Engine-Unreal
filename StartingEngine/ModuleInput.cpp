@@ -3,7 +3,9 @@
 #include "ModuleInput.h"
 #include"Imgui/imgui_impl_sdl.h"
 #include"Winuser.h"
-
+#include <experimental/filesystem>
+#include"ModuleResources.h"
+#include"ResourceTexture.h"
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(bool start_enabled) : Module(start_enabled)
@@ -90,6 +92,7 @@ update_status ModuleInput::PreUpdate(float dt)
 	SDL_Event e;
 	const aiScene* scene = nullptr;
 	std::string path_r;
+	Resources_Type type_file = Resources_Type::unknown_r;
 	while(SDL_PollEvent(&e))
 	{
 		ImGui_ImplSdlGL2_ProcessEvent(&e);
@@ -114,17 +117,45 @@ update_status ModuleInput::PreUpdate(float dt)
 			case (SDL_DROPFILE): 
 				// In case if dropped file
 					dropped_filedir = e.drop.file;
-									
-					//Im not very sure about this 
-					scene = aiImportFile(dropped_filedir.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-					App->imp_mesh->Load_Texture_Scenes(scene);
-					//Probably it has to be done in other way
-					//-------------------------------------------
+
+		
+					type_file=App->resources_mod->DetectFiles_Type(dropped_filedir.c_str());
+					if (type_file == Resources_Type::mesh) {
+						size_t end_name = dropped_filedir.rfind(".");
+						size_t sart_name = dropped_filedir.rfind("\\") + 1;
+						std::string name = dropped_filedir.substr(sart_name, dropped_filedir.size());
+						std::experimental::filesystem::path p1 = dropped_filedir;
+						std::experimental::filesystem::path p2 = App->fs_e->Mesh_User->path+ "\\"+name;
+						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &path_r, App->fs_e->Mesh_Engine);
+						std::experimental::filesystem::copy_file(p1, p2);
 					
-					App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &path_r, App->fs_e->Mesh_Engine);					
-					App->imp_mesh->LoadMesh(path_r.c_str(), dropped_filedir.c_str());
+						if (App->resources_mod->Find_UserRes(p2.string().c_str())==-1) {
+							ResourceMesh* temp_mesh_try = (ResourceMesh*)App->resources_mod->CreateNewResource(Resources_Type::mesh);
+							temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
+							App->resources_mod->AddResources(temp_mesh_try);
+							temp_mesh_try->CreateMeta();
+						}
 
+						//App->imp_mesh->LoadMesh(path_r.c_str(), dropped_filedir.c_str());
+					}
+					if (type_file == Resources_Type::texture) {
+						size_t end_name = dropped_filedir.rfind(".");
+						size_t sart_name = dropped_filedir.rfind("\\") + 1;
+						std::string name = dropped_filedir.substr(sart_name, dropped_filedir.size());
+						std::experimental::filesystem::path p1 = dropped_filedir;
+						std::experimental::filesystem::path p2 = App->fs_e->Material_User->path + "\\" + name;
+						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "dds", &path_r, App->fs_e->Mesh_Engine);
+						std::experimental::filesystem::copy_file(p1, p2);
 
+						if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {
+							ResourceTexture* temp_mesh_try = (ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
+							temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
+							App->resources_mod->AddResources(temp_mesh_try);
+							temp_mesh_try->CreateMeta();
+						}
+					}
+
+					
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
 					App->imp_mesh->change_nameimporter = 0;
 					dropped_filedir = "";

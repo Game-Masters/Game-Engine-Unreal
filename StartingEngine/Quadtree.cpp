@@ -156,6 +156,7 @@ bool QuadTreeNode::IsSmall()
 	float3 boundsmax = bounds.maxPoint;
 	float3 boundstemp = (boundsmax - boundsmin).Abs();
 	float boundslength = boundstemp.Length();
+	float3 boundstemp2 = (max2 - min).Abs();
 	float minlength = boundstemp2.Length();
 	return (boundslength <= minlength);
 }

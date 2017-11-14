@@ -530,7 +530,7 @@ bool MeshImporter::Load_Texture_Scenes(const aiScene* scene)
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path)== AI_SUCCESS) {
 			std::string temp = path.C_Str();
 			std::string final_path= App->fs_e->Material_User->path+ "\\" + temp;
-			App->resources_mod->ImportFile(final_path.c_str());
+			//App->resources_mod->ImportFile(final_path.c_str());
 			//App->fs_e->ChangeFormat_File(temp.c_str(), "dds", &final_path, App->fs_e->Material_Engine);
 
 			std::pair<uint, std::string> pair_t;

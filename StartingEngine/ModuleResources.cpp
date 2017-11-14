@@ -282,7 +282,7 @@ void Resource::CreateMeta()
 	json_object_set_string(obj_doc, "Path File Exported", exported_file.c_str());
 	json_object_set_string(obj_doc, "Path File", file.c_str());
 	
-	if (!App->resources_mod->Find_UserRes(exported_file.c_str())) {
+	//if (!App->resources_mod->Find_UserRes(exported_file.c_str())) {
 		std::experimental::filesystem::path p = exported_file;
 		auto ftime = std::experimental::filesystem::last_write_time(p);
 		std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
@@ -290,7 +290,7 @@ void Resource::CreateMeta()
 		//std::string str_time = std::asctime(std::localtime(&cftime));
 
 		json_object_set_number(obj_doc, "Last Time Modification", cftime);
-	}
+	//}
 	char* serialized_string = json_serialize_to_string_pretty(val_doc);
 	json_serialize_to_file(val_doc, final_dest_str.c_str());
 }

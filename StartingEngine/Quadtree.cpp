@@ -74,6 +74,7 @@ void QuadTreeNode::Fill()
 			//CHECK IF IT IS SMALLER THAN THE SMALLEST POSSIBLE
 			if (this->IsSmall() == false)
 			{
+				
 				gameobjs.clear();
 				Subdivide();
 				break;
@@ -153,8 +154,9 @@ bool QuadTreeNode::IsSmall()
 {
 	float3 boundsmin = bounds.minPoint;
 	float3 boundsmax = bounds.maxPoint;
-	float boundslength = (boundsmax - boundsmin).Length();
-	float minlength = (max - min).Length();
+	float3 boundstemp = (boundsmax - boundsmin).Abs();
+	float boundslength = boundstemp.Length();
+	float minlength = boundstemp2.Length();
 	return (boundslength <= minlength);
 }
 
@@ -162,6 +164,7 @@ void QuadTreeNode::DebugDraw()
 {
 	for (uint i = 0; i < 12; i++)
 	{
+		
 		glVertex3f(bounds.Edge(i).a.x, bounds.Edge(i).a.y, bounds.Edge(i).a.z);
 		glVertex3f(bounds.Edge(i).b.x, bounds.Edge(i).b.y, bounds.Edge(i).b.z);
 	}

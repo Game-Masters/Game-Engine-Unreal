@@ -31,8 +31,8 @@ public:
 	int max_game_objects = NODE_CAPACITY;
 private:
 	float3 min { 0,0,0 };
-	float3 max { 1,1,1 };
-	AABB MinAbb = AABB(min, max);
+	float3 max2 { 10,200,10 };
+	AABB MinAbb = AABB(min, max2);
 };
 
 

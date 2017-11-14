@@ -251,7 +251,7 @@ void ModuleCamera3D::Create_Ray_Mouse()
 		&& my < App->scene_intro->tx_vec.y - 43 + App->scene_intro->tx_vec.w
 		&& App->scene_intro->tx_vec.y <= my - 43
 		&& App->scene_intro->tx_vec.x <= mx) {
-		App->gui->inspection_node = nullptr;
+		//App->gui->inspection_node = nullptr;
 		mouse_pos.x = -(1.0f - ((mx - App->scene_intro->tx_vec.x) / (App->scene_intro->tx_vec.z / 2.0f)));
 		mouse_pos.y = (1.0f - ((my - App->scene_intro->tx_vec.y) / (App->scene_intro->tx_vec.w / 2.0f)));
 

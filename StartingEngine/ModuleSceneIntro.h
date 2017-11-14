@@ -78,4 +78,5 @@ public:
 	void drawGrid(int grid_size);
 	void drawLines(const vec3 from, const vec3 to, const vec3 color);
 	QuadTreeZ* scene_quadtree;
+	int num_gameobjects_empty_created = 0;
 };

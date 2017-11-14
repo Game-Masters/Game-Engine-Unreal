@@ -293,6 +293,8 @@ bool ModuleFileSystem_Engine::Find_in_Asset(const char* path) {
 
 bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_path) {
 
+	std::string ptr = "-1";
+	
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		App->gui->Current_Dir = RootDirect_User->path.c_str();
 	}
@@ -317,7 +319,7 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 			ImGui::ImageButton_with_text((void*)Fbx_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
 			if (ImGui::IsItemClicked()) {
 				if (ImGui::IsMouseDoubleClicked(0)) {
-					*new_path = str_path.c_str();
+					ptr = str_path.c_str();
 				}
 			}
 		}
@@ -326,13 +328,15 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 			ImGui::ImageButton_with_text((void*)Png_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
 			if (ImGui::IsItemClicked()) {
 				if (ImGui::IsMouseDoubleClicked(0)) {
-					*new_path = str_path.c_str();
+					ptr = str_path.c_str();
 				}
 			}
 		}
 
 	}
-
+	if (new_path != nullptr) {
+		*new_path = ptr;
+	}
 
 	return true;
 }

@@ -9,7 +9,7 @@ struct Resource_Mesh_Base {
 	uint* indices;
 	uint id_indices = 0; // id in VRAM
 	uint num_vertices = 0;
-	float* vertices;
+	float* vertices = nullptr;
 	uint id_normales = 0;
 	float* normals = nullptr;
 	uint id_colors = 0;
@@ -57,7 +57,7 @@ public:
 	ResourceMesh();
 	~ResourceMesh();
 	ResourceMesh(int id);
-
+	void CreateOnlyMesh();
 	bool LoadToMemory();
 	void LoadMeshBase();
 	//void Save(Config& config) const;

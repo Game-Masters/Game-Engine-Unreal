@@ -36,13 +36,14 @@ void Material::Save(JSON_Object * root_object_scene)
 {
 
 	JSON_Object* node;
-	json_object_set_value(root_object_scene, "Mesh", json_value_init_object());
-	node = json_object_get_object(root_object_scene, "Mesh");
+	json_object_set_value(root_object_scene, "Material", json_value_init_object());
+	node = json_object_get_object(root_object_scene, "Material");
 	json_object_set_number(node, "UUID", this->UUID_comp);
 	if (parent != nullptr) {
 		json_object_set_number(node, "UUID_parent", this->UUID_parent_GO);
 	}
-	json_object_set_string(node, "Resource Mesh", path_texture.c_str());
+	json_object_set_string(node, "Resource Material", path_texture.c_str());
+	json_object_set_string(node, "Resource Material exported", path_texture_exported.c_str());
 
 }
 

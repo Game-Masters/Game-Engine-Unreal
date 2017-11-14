@@ -54,6 +54,7 @@ public:
 	virtual void CreateMeta();
 	void Set_New_Resource_Files(std::string file, std::string exported_file);
 	uint CountReferences() const;
+	uint GetLoadedNum()const;
 //LOAD SAVE?
 
 

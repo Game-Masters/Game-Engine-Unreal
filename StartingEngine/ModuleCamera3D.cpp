@@ -139,7 +139,6 @@ update_status ModuleCamera3D::Update(float dt)
 				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->gui->n4 == false) {
 					ray_cast_pressed = true;
 					Closest_Ray_GO = nullptr;
-					//App->gui->inspection_node = nullptr;
 				}
 			}
 
@@ -248,16 +247,25 @@ void ModuleCamera3D::Create_Ray_Mouse()
 	float mx = (float)App->input->GetMouseX();
 	float my = (float)App->input->GetMouseY();
 
-	mouse_pos.x = -(1.0f - ((mx - App->scene_intro->tx_vec.x) / (App->scene_intro->tx_vec.z / 2.0f)));
-	mouse_pos.y = (1.0f - ((my - App->scene_intro->tx_vec.y) / (App->scene_intro->tx_vec.w / 2.0f)));
+	if (mx < App->scene_intro->tx_vec.x + App->scene_intro->tx_vec.z
+		&& my < App->scene_intro->tx_vec.y - 43 + App->scene_intro->tx_vec.w
+		&& App->scene_intro->tx_vec.y <= my - 43
+		&& App->scene_intro->tx_vec.x <= mx) {
+		App->gui->inspection_node = nullptr;
+		mouse_pos.x = -(1.0f - ((mx - App->scene_intro->tx_vec.x) / (App->scene_intro->tx_vec.z / 2.0f)));
+		mouse_pos.y = (1.0f - ((my - App->scene_intro->tx_vec.y) / (App->scene_intro->tx_vec.w / 2.0f)));
 
-	LOG("mx: %f", mx - App->scene_intro->tx_vec.x - 12);
-	LOG("my: %f", my - App->scene_intro->tx_vec.y - 43);
-	r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
+		LOG("mx: %f", mx - App->scene_intro->tx_vec.x - 12);
+		LOG("my: %f", my - App->scene_intro->tx_vec.y - 43);
+		r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
 
-	Recursive_Ray_Distance(App->scene_intro->root_gameobject);
+		Recursive_Ray_Distance(App->scene_intro->root_gameobject);
 
-	CheckCollision_Mesh();
+		CheckCollision_Mesh();
+
+	}
+
+	
 
 }
 

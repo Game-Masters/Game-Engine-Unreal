@@ -14,6 +14,7 @@
 #include"Transform.h"
 #include"Mesh.h"
 #include"ModuleFileSystem_Engine.h"
+#include"ResourceTexture.h"
 
 #define COLOR_ENGINE ImVec4(0.878, 0.262, 0, 1.0f)
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
@@ -503,9 +504,11 @@ update_status ModuleGui::Update(float dt)
 		}
 		if (create_empty_gameobject)
 		{
-			GameObject* temp = new GameObject("Empty_Obj",App->scene_intro->root_gameobject,true, Tag_Object_Enum::no_obj_tag,true);
+			std::string name_obj_created= "Empty_Obj" + std::to_string(App->scene_intro->num_gameobjects_empty_created);
+			GameObject* temp = new GameObject(name_obj_created.c_str(),App->scene_intro->root_gameobject,true, Tag_Object_Enum::no_obj_tag,true);
 			temp->AddNewTransform(math::float3::zero, math::float3(1, 1, 1), math::Quat(0, 0, 0, 1));
 			App->scene_intro->root_gameobject->Childrens_GameObject_Vect.push_back(temp);
+			App->scene_intro->num_gameobjects_empty_created++;
 			create_empty_gameobject = false;
 		}
 
@@ -839,10 +842,8 @@ void ModuleGui::InspectionNode_Gui()
 		}
 		if (ImGui::MenuItem("Component Material"))
 		{
-			if (inspection_node->Get_GO_Mesh() != nullptr) {
-				if (inspection_node->Get_GO_Mesh()->GetMaterial() != nullptr) {
+			if (inspection_node->Get_GO_Mesh() != nullptr) {	
 					win_choose_img = true;
-				}
 			}
 		}
 		ImGui::EndPopup();
@@ -861,6 +862,7 @@ void ModuleGui::InspectionNode_Gui()
 			if (uuid_mesh == -1) {
 				int uuid_mesh_n = App->resources_mod->ImportFile(str_path_img_end.c_str());
 				App->imp_mesh->LoadMesh(str_path_img_end.c_str(), str_path_fbx.c_str());
+				str_path_fbx = "-1";
 				//inspection_node->AddNewMesh(uuid_mesh_n);
 				win_choose_fbx = false;
 			}
@@ -883,7 +885,20 @@ void ModuleGui::InspectionNode_Gui()
 		App->fs_e->Asset_Editor(App->fs_e->Material_User->path.c_str(), &str_path_img);
 
 		if (str_path_img != "-1") {
-			int i = 12312;
+			std::string str_path_img_end;
+			App->fs_e->ChangeFormat_File(str_path_img.c_str(), "dds", &str_path_img_end, App->fs_e->Material_Engine);
+			int uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
+			if (uuid_mesh == -1) {
+
+			}
+			else {
+				ResourceTexture* r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
+				r_mesh->LoadToMemory();
+				//Material* mat = new Material(r_mesh->GetUID(), inspection_node);
+				inspection_node->Get_GO_Mesh()->SetMaterial(inspection_node->AddNewMaterial(r_mesh->GetUID()));
+			}
+
+			win_choose_img = false;
 		}
 		ImGui::End();
 	}

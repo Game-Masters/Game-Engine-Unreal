@@ -149,6 +149,11 @@ AABB Mesh::GetAABB() const
 	return Copy_aabb_using;
 }
 
+void Mesh::SetMaterial(Material * mat)
+{
+	texture_mesh = mat;
+}
+
 Material * Mesh::GetMaterial() const
 {
 	return texture_mesh;

@@ -103,18 +103,21 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 
 
 		if (type== Resources_Type::texture) {
+			
 			std::string path_in_engine = "-1";
-
 			App->imp_mat->ImportMaterial(new_file_in_assets, &path_in_engine);
 			//App->fs_e->ChangeFormat_File(new_file_in_assets, "dds", &path_in_engine, App->fs_e->Material_Engine);
 
 			int uid_r = Find_UserRes(new_file_in_assets);
 			
-			Resource* res_mat=Get(Create_New_resource_Text(path_in_engine, new_file_in_assets, uid_r, type));
-			res_mat->CreateMeta();
+			res = Get(Create_New_resource_Text(path_in_engine, new_file_in_assets, uid_r, type));
+			res->CreateMeta();
 		}
 		else if (type == Resources_Type::mesh) {
+			std::string path_in_engine = "-1";
 			App->assimp->ImportGeometry(new_file_in_assets, &file_in_engine);
+			//int uid_r = Find_UserRes(new_file_in_assets);
+			//res = Get(Create_New_resource_Text(file_in_engine, new_file_in_assets, uid_r, type));
 			//App->imp_mesh->LoadMesh(file_in_engine.c_str());
 			type = Resources_Type::mesh;
 		}
@@ -284,6 +287,11 @@ void Resource::Set_New_Resource_Files(std::string file, std::string exported_fil
 }
 
 uint Resource::CountReferences() const
+{
+	return loaded;
+}
+
+uint Resource::GetLoadedNum() const
 {
 	return loaded;
 }

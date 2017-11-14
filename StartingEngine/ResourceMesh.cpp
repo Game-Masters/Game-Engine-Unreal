@@ -1,6 +1,6 @@
 #include "ResourceMesh.h"
 #include"ResourceMesh.h"
-
+#include"Application.h"
 
 ResourceMesh::ResourceMesh():Resource(uid_rm.Int(), Resources_Type::mesh)
 {
@@ -13,6 +13,12 @@ ResourceMesh::~ResourceMesh()
 
 ResourceMesh::ResourceMesh(int id) : Resource(id, Resources_Type::mesh)
 {
+}
+
+void ResourceMesh::CreateOnlyMesh()
+{
+	Res_Mesh_Base=App->imp_mesh->Create_Base_Geometry(file.c_str(), exported_file.c_str(), file.c_str());
+	LoadToMemory();
 }
 
 bool ResourceMesh::LoadToMemory()

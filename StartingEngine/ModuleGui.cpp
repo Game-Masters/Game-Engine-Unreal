@@ -470,7 +470,7 @@ update_status ModuleGui::Update(float dt)
 
 		}
 		ImGui::EndDock();
-	}
+	
 
 
 	if (ImGui::BeginDock("Assets", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
@@ -480,7 +480,7 @@ update_status ModuleGui::Update(float dt)
 
 		ImGui::EndDock();
 	}
-
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 		show_gui_engine = !show_gui_engine;
@@ -868,6 +868,14 @@ void ModuleGui::InspectionNode_Gui()
 			}
 			else {
 				ResourceMesh* r_mesh= (ResourceMesh*)App->resources_mod->Get(uuid_mesh);
+				if (r_mesh->GetLoadedNum()==0) {
+					App->resources_mod->ImportFile(str_path_fbx.c_str());
+				}
+			//	int uuid_mesh_end = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
+
+			
+				
+				
 				App->imp_mesh->LoadMesh(r_mesh->GetFile() , r_mesh->GetExportedFile(),inspection_node);
 				int p_t = r_mesh->GetUID();
 				win_choose_fbx = false;
@@ -893,8 +901,8 @@ void ModuleGui::InspectionNode_Gui()
 			}
 			else {
 				ResourceTexture* r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
+				App->resources_mod->ImportFile(r_mesh->GetExportedFile());
 				r_mesh->LoadToMemory();
-				//Material* mat = new Material(r_mesh->GetUID(), inspection_node);
 				inspection_node->Get_GO_Mesh()->SetMaterial(inspection_node->AddNewMaterial(r_mesh->GetUID()));
 			}
 

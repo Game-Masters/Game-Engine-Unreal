@@ -65,7 +65,7 @@ public:
 
 public:
 	LCG uid_rm;
-	Resource_Mesh_Base *Res_Mesh_Base;
+	Resource_Mesh_Base *Res_Mesh_Base=nullptr;
 	AABB Copy_aabb;
 	
 

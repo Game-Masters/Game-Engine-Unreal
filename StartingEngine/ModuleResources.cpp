@@ -128,9 +128,6 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 			type = Resources_Type::mesh;
 		}
 	
-	/*if (file_in_engine != "-1" && type!= Resources_Type::unknown_r) {
-		
-	}*/
 
 	return ret;
 }

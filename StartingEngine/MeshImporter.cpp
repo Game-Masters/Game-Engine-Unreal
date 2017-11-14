@@ -236,12 +236,14 @@ bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen, GameOb
 
 
 
-	char* buffer;
+	char* buffer=nullptr;
 	App->fs_e->LoadFile(path, &buffer);
 	char* cursor = buffer;
 
 	//parent nullptr_ root go
-	LoadRecursive(&cursor, nullptr, path, path_fbx_gen, parent);
+	if (buffer != nullptr) {
+		LoadRecursive(&cursor, nullptr, path, path_fbx_gen, parent);
+	}
 	App->imp_mat->Mat_Map.clear();
 	RELEASE_ARRAY(buffer);
 	return false;
@@ -337,8 +339,8 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		//Add texture resource
 
 		if (n_temp_mesh!=nullptr) {
-
-			mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str(), path_fbx_gen);
+			n_temp_mesh->name = final_path_mesh;
+			//mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str(), path_fbx_gen);
 			
 				int uuid_mesh = App->resources_mod->Find_EngineRes(n_temp_mesh->name.c_str());
 				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, path, path_fbx_gen);
@@ -364,7 +366,7 @@ Material* MeshImporter::AddTextureResourceToGO(Resource_Mesh_Base* n_temp_mesh, 
 	Resource* res_mat = nullptr;
 
 
-	n_temp_mesh->name = final_path_mesh;
+
 	if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size()>0) {
 		uint p_temp = 0;
 		std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);

@@ -5886,7 +5886,7 @@ bool ImGui::ImageButton_with_text(ImTextureID user_texture_id, const char* text,
 
 	ImGuiContext& g = *GImGui;
 	const ImGuiStyle& style = g.Style;
-
+	//style.Colors[ImGuiCol_FrameBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
 	const ImGuiID id = window->GetID(text);
 	const ImVec2 textSize = ImGui::CalcTextSize(text, NULL, true);
 

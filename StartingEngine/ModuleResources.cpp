@@ -3,6 +3,8 @@
 #include"ResourceTexture.h"
 #include<string>;
 #include"Timer.h"
+#include <chrono>
+#include <experimental/filesystem>
 
 ModuleResources::ModuleResources()
 {
@@ -111,7 +113,11 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 			int uid_r = Find_UserRes(new_file_in_assets);
 			
 			res = Get(Create_New_resource_Text(path_in_engine, new_file_in_assets, uid_r, type));
-			res->CreateMeta();
+			std::string str = new_file_in_assets;
+			int s_t=str.rfind("\\");
+			if (s_t!= -1) {
+				res->CreateMeta();
+			}
 		}
 		else if (type == Resources_Type::mesh) {
 			std::string path_in_engine = "-1";
@@ -275,6 +281,16 @@ void Resource::CreateMeta()
 	}
 	json_object_set_string(obj_doc, "Path File Exported", exported_file.c_str());
 	json_object_set_string(obj_doc, "Path File", file.c_str());
+	
+	if (!App->resources_mod->Find_UserRes(exported_file.c_str())) {
+		std::experimental::filesystem::path p = exported_file;
+		auto ftime = std::experimental::filesystem::last_write_time(p);
+		std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
+		//std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
+		//std::string str_time = std::asctime(std::localtime(&cftime));
+
+		json_object_set_number(obj_doc, "Last Time Modification", cftime);
+	}
 	char* serialized_string = json_serialize_to_string_pretty(val_doc);
 	json_serialize_to_file(val_doc, final_dest_str.c_str());
 }

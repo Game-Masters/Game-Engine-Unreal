@@ -281,6 +281,7 @@ bool Application::CleanUp()
 	json_class->Save();
 	json_class->CleanUp();
 	ImGui::SaveDocks();
+	App->imp_mat->Mat_Map.clear();
 	delete imp_mat;
 	delete imp_mesh;
 

@@ -94,6 +94,15 @@ void ModuleResources::ImportResources_Path_Usable(const char * new_file_in_asset
 }
 
 
+bool ModuleResources::CleanUp() {
+
+	for (std::map<int, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it) {
+		it->second->DeleteRes();
+	}
+
+	return true;
+}
+
 int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 {
 	
@@ -307,6 +316,10 @@ bool Resource::ReadMetaModif()
 		ret= false;
 	}
 	return ret;
+}
+
+void Resource::DeleteRes() {
+
 }
 
 void Resource::Set_New_Resource_Files(std::string file, std::string exported_file)

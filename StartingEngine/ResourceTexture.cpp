@@ -17,6 +17,10 @@ ResourceTexture::ResourceTexture(int id): Resource(id,Resources_Type::texture)
 	
 }
 
+void ResourceTexture::DeleteRes() {
+	glDeleteBuffers(1, &id_image_devil);
+}
+
 bool ResourceTexture::LoadToMemory()
 {
 	if (loaded == 0) {

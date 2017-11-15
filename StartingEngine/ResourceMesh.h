@@ -60,6 +60,7 @@ public:
 	void CreateOnlyMesh();
 	bool LoadToMemory();
 	void LoadMeshBase();
+	void DeleteRes();
 	//void Save(Config& config) const;
 	//void Load(const Config& config);
 

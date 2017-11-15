@@ -22,6 +22,7 @@ public:
 	ResourceTexture(int id);
 	bool LoadToMemory();
 	void Update_Resource();
+	void DeleteRes();
 	//bool LoadInMemory() override;
 	//void Save(Config& config) const;
 	//void Load(const Config& config);

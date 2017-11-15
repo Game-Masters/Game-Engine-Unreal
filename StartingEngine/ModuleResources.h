@@ -19,7 +19,7 @@ public:
 	ModuleResources();
 	~ModuleResources();
 	bool Start();
-
+	bool CleanUp();
 	update_status Update(float dt);
 	int Find_UserRes(const char* file_in_assets) const;
 	int Find_EngineRes(const char* file_in_assets) const;
@@ -59,6 +59,7 @@ public:
 	uint GetLoadedNum()const;
 	void SetLastTimeModf(double time);
 	virtual void Update_Resource();
+	virtual void DeleteRes();
 //LOAD SAVE?
 
 

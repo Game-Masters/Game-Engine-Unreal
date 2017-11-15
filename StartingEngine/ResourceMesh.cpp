@@ -33,6 +33,10 @@ bool ResourceMesh::LoadToMemory()
 	return false;
 }
 
+void ResourceMesh::DeleteRes() {
+	delete Res_Mesh_Base;
+}
+
 void ResourceMesh::LoadMeshBase()
 {
 

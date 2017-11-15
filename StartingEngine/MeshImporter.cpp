@@ -273,6 +273,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 	uint size_mesh = 0;
 
 	std::string name_mesh;
+	std::string name_mesh_true;
 	aiVector3D translation = { 0,0,0 };
 	aiVector3D scaling = { 1,1,1 };
 	aiQuaternion rotation = { 0, 0, 0, 1 };
@@ -297,6 +298,12 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		name_mesh = name;
 		cursor[0] += size;
 	
+
+		size = sizeof(char)*(MAXRANGCHAR);
+		char* name_mesh_temp = new char[MAXRANGCHAR];
+		memcpy(name_mesh_temp, cursor[0], size);
+		name_mesh_true = name_mesh_temp;
+		cursor[0] += size;
 
 		size = sizeof(int);
 		memcpy(num_childs, cursor[0], size);
@@ -330,19 +337,19 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
 		}
 		else if (parent == nullptr && Parent_Gen_World != nullptr) {
-			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, Parent_Gen_World, Tag_Object_Enum::no_obj_tag, false);
+			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh_true.c_str(), true, Parent_Gen_World, Tag_Object_Enum::no_obj_tag, false);
 		}
 		else {
-			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh.c_str(), true, parent, Tag_Object_Enum::no_obj_tag, false);
+			child_gameobj = App->scene_intro->CreateNewGameObjects(name_mesh_true.c_str(), true, parent, Tag_Object_Enum::no_obj_tag, false);
 		}
 
 		//Add texture resource
 
 		if (n_temp_mesh!=nullptr) {
-			n_temp_mesh->name = final_path_mesh;
+			n_temp_mesh->name = name_mesh_true;
 			//mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str(), path_fbx_gen);
 			
-				int uuid_mesh = App->resources_mod->Find_EngineRes(n_temp_mesh->name.c_str());
+				int uuid_mesh = App->resources_mod->Find_EngineRes(final_path_mesh.c_str());
 				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, path, path_fbx_gen);
 			}
 			child_gameobj->AddNewTransform(translation_f, scale_f, Final_quat);
@@ -557,7 +564,7 @@ uint MeshImporter::RecursiveSizeScene(aiNode * node, const aiScene * scene)
 	uint n_meshes = 0;
 	do {
 
-		size += sizeof(aiVector3D) * 2 + sizeof(aiQuaternion) + sizeof(char)*MAXRANGCHAR + sizeof(uint);
+		size += sizeof(aiVector3D) * 2 + sizeof(aiQuaternion) + sizeof(char)*MAXRANGCHAR+ sizeof(char)*MAXRANGCHAR + sizeof(uint);
 
 		for (int i = 0; i < node->mNumChildren; i++) {
 			size += RecursiveSizeScene(node->mChildren[i], scene);
@@ -608,7 +615,7 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 		aiVector3D translation = { 0,0,0 };
 		aiVector3D scaling = { 1,1,1 };
 		aiQuaternion rotation = { 0, 0, 0, 1 };
-		
+		std::string name_mesh_true = "-1";
 		size = sizeof(uint);
 		uint num_mesh = node->mNumMeshes;
 		memcpy(cursor[0], &num_mesh,size);
@@ -623,18 +630,25 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 			std::string num_added_change_name_Str = std::to_string(change_nameimporter);
 			std::string str_parent_substracted = str_parent.substr(temp_uint, diff);
 			name_mesh = str_parent_substracted + "n"+ num_added_change_name_Str;
+			name_mesh_true = "parent" + num_added_change_name_Str;
 			node->mTransformation.Decompose(scaling, rotation, translation);
+
+			
 			if (node->mNumMeshes > 0 && scene->mRootNode!= node) {
 				mesh_temp = scene->mMeshes[node->mMeshes[num_child_iterator]];
 				std::string str_n_i = std::to_string(node->mMeshes[num_child_iterator]);
 				name_mesh = str_parent_substracted + " " + str_n_i;
+				name_mesh_true = node->mName.C_Str();
 			}
-				
 
-				
 			size = sizeof(char)* MAXRANGCHAR;
 			memcpy(cursor[0], name_mesh.data(), size);
 			cursor[0] += size;
+
+			size = sizeof(char)* MAXRANGCHAR;
+			memcpy(cursor[0], name_mesh_true.data(), size);
+			cursor[0] += size;
+			
 
 			size = sizeof(uint);
 			memcpy(cursor[0], &node->mNumChildren, size);

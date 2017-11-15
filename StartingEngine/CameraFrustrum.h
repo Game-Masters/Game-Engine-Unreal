@@ -4,6 +4,7 @@
 #include"Application.h"
 #include"Globals.h"
 #include "Transform.h"
+#include"Quadtree.h"
 enum CamCulling
 {
 	CULL_INSIDE,
@@ -16,13 +17,13 @@ public:
 	CameraComponent(GameObject* parent, bool Active);
 	~CameraComponent();
 	void PreUpdate();
-	
+
 	void Update();
 	bool Enable();
 	bool Disable();
 	float* GetViewProjMatrix()const;
 	bool ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
-	void CheckInFrustum(GameObject*);
+	void CheckInFrustum(QuadTreeNode*);
 	void SetNewFrame(const float3 pos, const float3 front, const float3 up);
 	const CamCulling InsideFrustrum(const AABB* aabb);
 	Frustum Get_Frustum()const;
@@ -41,7 +42,7 @@ private:
 	float3 Pos = { 0.0f, 0.0f, 0.0f };
 	float3 Up = { 0.0f, 1.0f, 0.0f };
 	float3 Front = { 0.0f, 0.0f, 1.0f };
-	
+
 	bool DebugDrawFrustum = false;
 	uint DebugDrawFrustum_id_vertices = 0; // id in VRAM
 	float* DebugDrawFrustum_vertices = nullptr;

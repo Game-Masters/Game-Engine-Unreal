@@ -14,10 +14,10 @@ CameraComponent::CameraComponent(GameObject* parent, bool Active) :Component(Com
 	frustum.pos = Pos;
 	frustum.up = Up;
 	frustum.front = Front;
-	float4x4 p=	frustum.ViewProjMatrix();
+	float4x4 p = frustum.ViewProjMatrix();
 
 }
-CameraComponent::~CameraComponent() 
+CameraComponent::~CameraComponent()
 {
 
 }
@@ -36,44 +36,46 @@ void CameraComponent::PreUpdate()
 
 }
 
-void CameraComponent::CheckInFrustum(GameObject* temp_obj)
+void CameraComponent::CheckInFrustum(QuadTreeNode* temp_obj)
 {
-	if (temp_obj->object_tag_s != Tag_Object_Enum::frustrum_obj_tag) {
-		if (temp_obj->Get_GO_Mesh() != nullptr) {
-			
-			AABB* temp2 = &temp_obj->Get_GO_Mesh()->GetAABB();
-			//DO THE CULLING FUNCTION
-			if (InsideFrustrum(temp2) == CULL_OUTSIDE)
-			{
-				temp_obj->active = false;
+
+	for (int i = 0; i<temp_obj->gameobjs.size(); i++) {
+		if (temp_obj->gameobjs[i]->Get_GO_Mesh() != nullptr) {
+			if (temp_obj->gameobjs[i]->static_obj == true) {
+				AABB* temp2 = &temp_obj->gameobjs[i]->Get_GO_Mesh()->GetAABB();
+				//DO THE CULLING FUNCTION
+				if (InsideFrustrum(temp2) == CULL_OUTSIDE)
+				{
+					temp_obj->gameobjs[i]->active = false;
+				}
+				else
+				{
+					temp_obj->gameobjs[i]->active = true;
+				}
 			}
-			else
-			{
-				temp_obj->active = true;
-			}
+		}
+
+	}   //
 
 
-		}	//
-	
-	
-	if (temp_obj->Childrens_GameObject_Vect.size() != 0)
+	if (temp_obj->children.size() != 0)
 	{
-		for (int i = 0; i < temp_obj->Childrens_GameObject_Vect.size(); i++) {
-			CheckInFrustum(temp_obj->Childrens_GameObject_Vect[i]);
+		for (int i = 0; i < temp_obj->children.size(); i++) {
+			CheckInFrustum(temp_obj->children[i]);
 
 		}
 	}
-	}
 }
+
 const CamCulling CameraComponent::InsideFrustrum(const AABB * aabb)
 {
 	float3 vCorner[8];
 	int iTotalIn = 0;
 	aabb->GetCornerPoints(vCorner);
-	 // get the corners of the box into the vCorner array
-								 // test all 8 corners against the 6 sides
-								 // if all points are behind 1 specific plane, we are out
-								 // if we are in with all points, then we are fully in
+	// get the corners of the box into the vCorner array
+	// test all 8 corners against the 6 sides
+	// if all points are behind 1 specific plane, we are out
+	// if we are in with all points, then we are fully in
 	for (int p = 0; p < 6; p++) {
 		int iInCount = 8;
 		int iPtIn = 1;
@@ -86,7 +88,7 @@ const CamCulling CameraComponent::InsideFrustrum(const AABB * aabb)
 			}
 		}
 		// were all the points outside of plane p?
-		if(iInCount == 0)
+		if (iInCount == 0)
 			return(CULL_OUTSIDE);
 		// check if they were all on the right side of the plane
 		iTotalIn += iPtIn;
@@ -114,8 +116,7 @@ void CameraComponent::SetFOV_WH()
 void CameraComponent::Update()
 {
 
-	GameObject* temp = App->scene_intro->root_gameobject;
-	CheckInFrustum(temp);
+	CheckInFrustum(App->scene_intro->scene_quadtree->root);
 
 	if (first_time)
 	{
@@ -128,11 +129,11 @@ void CameraComponent::Update()
 		float3 scale;
 		Quat rotation;
 		float4x4 transform_mesh;
-		
+
 		//Transform* transform = parent->;
 		if (this->parent != nullptr)
 		{
-		
+
 			//transform_mesh = float4x4::FromTRS(position, rotation, scale);
 			transform_mesh = this->parent->GetMatrix_Trans().Transposed();
 			bool frustum_changed = false;
@@ -142,7 +143,7 @@ void CameraComponent::Update()
 				frustum_changed = true;
 
 			float3 prev_front = frustum.front;
-			frustum.front =transform_mesh.Row3(2);
+			frustum.front = transform_mesh.Row3(2);
 			if ((prev_front.x != frustum.front.x) || (prev_front.y != frustum.front.y) || (prev_front.z != frustum.front.z))
 				frustum_changed = true;
 
@@ -222,9 +223,9 @@ void CameraComponent::GenerateFrustumDraw()
 }
 
 void CameraComponent::SetNewFrame(const float3 pos, const float3 front, const float3 up) {
-	
 
-	frustum.front= front;
+
+	frustum.front = front;
 	frustum.pos = pos;
 	frustum.up = up;
 
@@ -255,11 +256,11 @@ float* CameraComponent::GetViewProjMatrix()const
 bool CameraComponent::ParentHasTransform(float3 & position, float3 & scaling, Quat & rotation)
 {
 
-	if (this->parent!=nullptr) {
+	if (this->parent != nullptr) {
 
 		for (int i = 0; i < parent->Component_Vect.size(); i++) {
 
-			if (parent->Component_Vect[i]->GetComponentType()== Component_Type_Enum::component_transform_type) {
+			if (parent->Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_transform_type) {
 				position = ((Transform*)parent->Component_Vect[i])->GetPosition();
 				scaling = ((Transform*)parent->Component_Vect[i])->GetScale();
 				rotation = ((Transform*)parent->Component_Vect[i])->GetRotation();

@@ -270,7 +270,11 @@ update_status ModuleGui::Update(float dt)
 			bool temp = ImGui::ImageButton((void*)CC, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);
 			if (temp == true)
 			{
-				App->camera->CameraRecenter();
+				if (inspection_node != nullptr) {
+					if (inspection_node->Get_GO_Mesh() != nullptr) {
+						App->camera->CameraCenter(&inspection_node->Get_GO_Mesh()->Copy_aabb_using);
+					}
+				}
 			}
 			ImGui::SameLine();
 			bool temp2 = ImGui::ImageButton((void*)CA, ImVec2(30, 30), ImVec2(0, 0), ImVec2(1, -1), 0);

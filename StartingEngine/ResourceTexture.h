@@ -21,6 +21,7 @@ public:
 	virtual ~ResourceTexture();
 	ResourceTexture(int id);
 	bool LoadToMemory();
+	void Update_Resource();
 	//bool LoadInMemory() override;
 	//void Save(Config& config) const;
 	//void Load(const Config& config);

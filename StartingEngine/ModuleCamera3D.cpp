@@ -349,7 +349,8 @@ void ModuleCamera3D::CameraCenter(AABB* mesh)
 		//resize
 		float3 difference = mesh->maxPoint - mesh->minPoint;
 		float wide = difference.Length() + 2.0f; //This magic number is just to have some frame around geometry
-		float FOVdistance = (wide * 0.5f) / tan(60.0f * 0.5f * DEGTORAD);
+		float FOVdistance = (wide * 0.5f) / tan(60.0f * 0.5f * DEGTORAD); //F
+
 		Position = Z * FOVdistance;
 	}
 

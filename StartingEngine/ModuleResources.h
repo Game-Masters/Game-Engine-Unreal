@@ -32,6 +32,7 @@ public:
 	Resource* Get(int uid);
 	Resource* CreateNewResource(Resources_Type type, int force_uid = 0);
 	bool AddResources(Resource* n_res);
+	//void SelectResourceUpdate(Resource* res);
 private:
 	Timer tim_check_Assets;
 	int last_uid = 1;
@@ -52,9 +53,12 @@ public:
 	bool IsLoadedToMemory() const;
 	virtual bool LoadToMemory();
 	virtual void CreateMeta();
+	virtual bool ReadMetaModif();
 	void Set_New_Resource_Files(std::string file, std::string exported_file);
 	uint CountReferences() const;
 	uint GetLoadedNum()const;
+	void SetLastTimeModf(double time);
+	virtual void Update_Resource();
 //LOAD SAVE?
 
 
@@ -62,6 +66,7 @@ protected:
 	int uid = 0;
 	std::string file;
 	std::string exported_file;
+	double time_from_last_modify = 0;
 	Resources_Type type = Resources_Type::unknown_r;
 	uint loaded = 0;
 	JSON_Value* val_doc;

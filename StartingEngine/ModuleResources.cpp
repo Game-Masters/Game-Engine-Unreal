@@ -24,17 +24,16 @@ bool ModuleResources::Start() {
 
 update_status ModuleResources::Update(float dt)
 {
-	int i = 546;
 	resources;
-	/*if (tim_check_Assets.ReadSec()>10) {
+	if (tim_check_Assets.ReadSec()>8) {
 		tim_check_Assets.Stop();
 		for (std::map<int, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it){
-			if (App->fs_e->Find_in_Asset(it->second->GetExportedFile()) == false) {
-				resources.erase(it);
+			if (App->fs_e->Find_in_Asset(it->second->GetExportedFile())) {
+				it->second->ReadMetaModif();
 			}
 		}
 		tim_check_Assets.Start();
-	}*/
+	}
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -84,7 +83,7 @@ void ModuleResources::ImportResources_Path_Usable(const char * new_file_in_asset
 		temp_mesh = CreateNewResource(Resources_Type::mesh);
 	}
 	temp_mesh->Set_New_Resource_Files(json_object_get_string(obj_doc, "Path File"), json_object_get_string(obj_doc, "Path File Exported"));
-
+	temp_mesh->SetLastTimeModf(json_object_get_number(obj_doc, "Last Time Modification"));
 
 	std::pair<int, Resource*> p;
 	p.first = temp_mesh->GetUID();
@@ -122,9 +121,7 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 		else if (type == Resources_Type::mesh) {
 			std::string path_in_engine = "-1";
 			App->assimp->ImportGeometry(new_file_in_assets, &file_in_engine);
-			//int uid_r = Find_UserRes(new_file_in_assets);
-			//res = Get(Create_New_resource_Text(file_in_engine, new_file_in_assets, uid_r, type));
-			//App->imp_mesh->LoadMesh(file_in_engine.c_str());
+			
 			type = Resources_Type::mesh;
 		}
 	
@@ -223,6 +220,8 @@ bool ModuleResources::AddResources(Resource * n_res)
 	return false;
 }
 
+
+
 Resource::Resource(int uid, Resources_Type type): uid(uid), type(type)
 {
 }
@@ -279,17 +278,35 @@ void Resource::CreateMeta()
 	json_object_set_string(obj_doc, "Path File Exported", exported_file.c_str());
 	json_object_set_string(obj_doc, "Path File", file.c_str());
 	
-	//if (!App->resources_mod->Find_UserRes(exported_file.c_str())) {
+
 		std::experimental::filesystem::path p = exported_file;
 		auto ftime = std::experimental::filesystem::last_write_time(p);
 		std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
-		//std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
-		//std::string str_time = std::asctime(std::localtime(&cftime));
-
+		time_from_last_modify = cftime;
 		json_object_set_number(obj_doc, "Last Time Modification", cftime);
-	//}
+
 	char* serialized_string = json_serialize_to_string_pretty(val_doc);
 	json_serialize_to_file(val_doc, final_dest_str.c_str());
+}
+
+bool Resource::ReadMetaModif()
+{
+	bool ret = false;
+
+	std::experimental::filesystem::path p = exported_file;
+	auto ftime = std::experimental::filesystem::last_write_time(p);
+	std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
+	double last_mod = cftime;
+
+	if (time_from_last_modify != last_mod && type== Resources_Type::texture) {
+		Update_Resource();
+		SetLastTimeModf(last_mod);
+		ret= true;
+	}
+	else {
+		ret= false;
+	}
+	return ret;
 }
 
 void Resource::Set_New_Resource_Files(std::string file, std::string exported_file)
@@ -307,4 +324,13 @@ uint Resource::CountReferences() const
 uint Resource::GetLoadedNum() const
 {
 	return loaded;
+}
+
+void Resource::SetLastTimeModf(double time)
+{
+	time_from_last_modify = time;
+}
+
+void Resource::Update_Resource()
+{
 }

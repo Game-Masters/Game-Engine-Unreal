@@ -27,3 +27,14 @@ bool ResourceTexture::LoadToMemory()
 		loaded++;
 	return false;
 }
+
+void ResourceTexture::Update_Resource()
+{
+	if (loaded > 0) {
+		glDeleteBuffers(1, &id_image_devil);
+		std::string n_file;
+		App->imp_mat->ImportMaterial(exported_file.c_str(), &n_file);
+		exported_file = n_file;
+		App->assimp->LoadImage_devil(n_file.c_str(), &id_image_devil);
+	}
+}

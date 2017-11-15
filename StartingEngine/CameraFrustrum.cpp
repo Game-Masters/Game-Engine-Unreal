@@ -33,36 +33,33 @@ bool CameraComponent::Disable()
 
 void CameraComponent::PreUpdate()
 {
-	GameObject* temp = App->scene_intro->root_gameobject;
-	CheckInFrustum(temp);
+
 }
 
-void CameraComponent::CheckInFrustum(GameObject* temp)
+void CameraComponent::CheckInFrustum(GameObject* temp_obj)
 {
-	if (temp->object_tag_s != Tag_Object_Enum::frustrum_obj_tag) {
-		for (int j = 0; j < temp->Component_Vect.size(); j++) {
-			if (temp->Component_Vect[j]->GetComponentType() == component_mesh_type)
+	if (temp_obj->object_tag_s != Tag_Object_Enum::frustrum_obj_tag) {
+		if (temp_obj->Get_GO_Mesh() != nullptr) {
+			
+			AABB* temp2 = &temp_obj->Get_GO_Mesh()->GetAABB();
+			//DO THE CULLING FUNCTION
+			if (InsideFrustrum(temp2) == CULL_OUTSIDE)
 			{
-				AABB* temp2 = &((ResourceMesh*)((Mesh*)temp->Component_Vect[j])->mesh_r)->Copy_aabb;
-				//DO THE CULLING FUNCTION
-				if (InsideFrustrum(temp2) == CULL_OUTSIDE)
-				{
-					temp->active = false;
-				}
-				else
-				{
-					temp->active = true;
-				}
-
-
-				//
+				temp_obj->active = false;
 			}
-		}
+			else
+			{
+				temp_obj->active = true;
+			}
+
+
+		}	//
 	
-	if (temp->Childrens_GameObject_Vect.size() != 0)
+	
+	if (temp_obj->Childrens_GameObject_Vect.size() != 0)
 	{
-		for (int i = 0; i < temp->Childrens_GameObject_Vect.size(); i++) {
-			CheckInFrustum(temp->Childrens_GameObject_Vect[i]);
+		for (int i = 0; i < temp_obj->Childrens_GameObject_Vect.size(); i++) {
+			CheckInFrustum(temp_obj->Childrens_GameObject_Vect[i]);
 
 		}
 	}
@@ -116,6 +113,9 @@ void CameraComponent::SetFOV_WH()
 }
 void CameraComponent::Update()
 {
+
+	GameObject* temp = App->scene_intro->root_gameobject;
+	CheckInFrustum(temp);
 
 	if (first_time)
 	{

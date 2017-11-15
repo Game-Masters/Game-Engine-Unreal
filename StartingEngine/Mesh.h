@@ -41,6 +41,7 @@ public:
 	float4x4 ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
 	AABB Copy_aabb_using;
 	void Update();
+	void PreUpdate();
 	Mesh(GameObject* parent, int uuid, const char* path=nullptr, Material* m_text=nullptr);
 	~Mesh();
 	PrimitiveTypes_Mesh    GetType()const;

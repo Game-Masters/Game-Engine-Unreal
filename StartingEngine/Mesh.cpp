@@ -10,41 +10,8 @@ Mesh::Mesh(GameObject* parent, int uuid, const char* path, Material* m_text): Co
 	mesh_r = App->resources_mod->Get(uuid_mesh);
 	path_fbx = mesh_r->GetExportedFile();
 	path_fbx_mesh = mesh_r->GetFile();
-	/*if (mesh_v->vertices != nullptr && mesh_v->indices!=nullptr) {
-		glGenBuffers(1, (GLuint*)&(mesh_v->id_vertices));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_vertices);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh_v->num_vertices * 3, &mesh_v->vertices[0], GL_STATIC_DRAW);
 
-		glGenBuffers(1, (GLuint*)&(mesh_v->id_texture));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh_v->id_texture);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *mesh_v->num_vertices * 2, &mesh_v->textures_coord[0], GL_STATIC_DRAW);
-
-		// Buffer for indices
-		glGenBuffers(1, (GLuint*)&(mesh_v->id_indices));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->id_indices);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh_v->num_indices, &mesh_v->indices[0], GL_STATIC_DRAW);
-	
-	}
-	Copy_aabb = mesh_v->BoundBox;
-	this->mesh_v->vertex_aabb = new float[8 * 3];
-	this->mesh_v->index_aabb = new uint[8 * 3];
-	uint indices[] =
-	{
-		0,2,
-		0,4,
-		0,1,
-		7,6,
-		7,3,
-		7,5,
-		5,1,
-		5,4,
-		2,3,
-		2,6,
-		6,4,
-		3,1
-	};
-	memcpy(this->mesh_v->index_aabb, indices, sizeof(uint) * 24);
-	Update_AABB();*/
+	Update_AABB();
 	
 }
 
@@ -109,18 +76,21 @@ float4x4 Mesh::ParentHasTransform(float3 & position, float3 & scaling, Quat & ro
 	return matrix;
 }
 
-void Mesh::Update()
+void Mesh::PreUpdate()
 {
+
 	float4x4 p = parent->GetMatrix_Trans();
 	Copy_aabb_using = ((ResourceMesh*)mesh_r)->Copy_aabb;
 	Copy_aabb_using.TransformAsAABB(p);
 	Update_AABB();
+}
+
+void Mesh::Update()
+{
+
 	App->renderer3D->Render_3D(this, uuid_mesh, texture_mesh);
 
 }
-	
-
-
 
 
 PrimitiveTypes_Mesh Mesh::GetType() const

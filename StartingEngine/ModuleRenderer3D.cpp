@@ -241,7 +241,15 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				}
 			}
 		}
+		glPushMatrix();
+		float3 position;
+		float3 scale;
+		Quat rotation;
+		float4x4 transform_mesh = m->Get_Parent()->GetMatrix_Trans();
+		transform_mesh.Transpose();
 
+		//glLoadMatrixf(trans_point);
+		glMultMatrixf(transform_mesh.ptr());
 		if (App->renderer3D->debugnormals == true && mesh_v->Res_Mesh_Base->normals != nullptr) {
 			for (uint k = 0; k < mesh_v->Res_Mesh_Base->num_vertices * 3; k += 3)
 			{
@@ -259,15 +267,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 		}
 
 
-		glPushMatrix();
-		float3 position;
-		float3 scale;
-		Quat rotation;
-		float4x4 transform_mesh = m->Get_Parent()->GetMatrix_Trans();
-		transform_mesh.Transpose();
-
-		//glLoadMatrixf(trans_point);
-		glMultMatrixf(transform_mesh.ptr());
+	
 		if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_vertices);

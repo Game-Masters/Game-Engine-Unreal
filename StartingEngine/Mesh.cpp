@@ -82,12 +82,12 @@ void Mesh::PreUpdate()
 	float4x4 p = parent->GetMatrix_Trans();
 	Copy_aabb_using = ((ResourceMesh*)mesh_r)->Copy_aabb;
 	Copy_aabb_using.TransformAsAABB(p);
-	Update_AABB();
+
 }
 
 void Mesh::Update()
 {
-
+	Update_AABB();
 	App->renderer3D->Render_3D(this, uuid_mesh, texture_mesh);
 
 }

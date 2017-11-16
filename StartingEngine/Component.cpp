@@ -35,6 +35,11 @@ Component_Type_Enum Component::GetComponentType() const
 	return type_component;
 }
 
+void Component::Set_Parent(GameObject * par)
+{
+	parent = par;
+}
+
 GameObject * Component::Get_Parent() const
 {
 	return parent;

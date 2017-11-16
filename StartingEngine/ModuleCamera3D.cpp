@@ -20,7 +20,7 @@ ModuleCamera3D::ModuleCamera3D(bool start_enabled) : Module(start_enabled)
 	Reference = float3(0.0f, 0.0f, 0.0f);
 
 
-	
+	CamComp = new CameraComponent(nullptr, true);
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -28,7 +28,7 @@ ModuleCamera3D::~ModuleCamera3D()
 
 bool ModuleCamera3D::Init() {
 
-	CamComp = new CameraComponent(App->scene_intro->root_gameobject, true);
+	CamComp->Set_Parent(App->scene_intro->root_gameobject);
 	CalculateViewMatrix();
 	return true;
 }
@@ -59,12 +59,43 @@ bool ModuleCamera3D::CleanUp()
 }
 bool ModuleCamera3D::LoadConfig(JSON_Object * node)
 {
-	return false;
+	if (json_object_get_value(node, "vertical_fov") == NULL) {
+		json_object_set_value(node, "vertical_fov", json_value_init_object());
+		json_object_set_number(node, "vertical_fov", CamComp->Get_Frustum().verticalFov);
+	}
+	else {
+		CamComp->SetVertFOV(json_object_get_number(node, "vertical_fov"));
+	}
+
+	if (json_object_get_value(node, "near_plane") == NULL && json_object_get_value(node, "far_plane") == NULL) {
+		json_object_set_value(node, "near_plane", json_value_init_object());
+		json_object_set_number(node, "near_plane", CamComp->Get_Frustum().nearPlaneDistance);
+
+		json_object_set_value(node, "far_plane", json_value_init_object());
+		json_object_set_number(node, "far_plane", CamComp->Get_Frustum().verticalFov);
+	}
+	else {
+		CamComp->SetNearFarPlane(json_object_get_number(node, "vertical_fov"), json_object_get_number(node, "far_plane"));
+	}
+
+
+
+	return true;
 }
 bool ModuleCamera3D::SaveConfig(JSON_Object * node)
 {
-	return false;
+
+	json_object_set_number(node, "vertical_fov", CamComp->Get_Frustum().verticalFov);
+
+
+	json_object_set_number(node, "near_plane", CamComp->Get_Frustum().nearPlaneDistance);
+	json_object_set_number(node, "far_plane", CamComp->Get_Frustum().farPlaneDistance);
+
+
+	return true;
 }
+
+
 bool ModuleCamera3D::Gui_Engine_Modules(float dt)
 {
 	if (ImGui::CollapsingHeader(name.c_str()))

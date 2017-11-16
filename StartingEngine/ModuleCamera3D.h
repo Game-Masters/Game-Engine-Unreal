@@ -21,6 +21,8 @@ public:
 	bool Init();
 	update_status Update(float dt);
 	bool CleanUp();
+	bool LoadConfig(JSON_Object* node);
+	bool SaveConfig(JSON_Object* node);
 	bool Gui_Engine_Modules(float dt);
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &Spot);

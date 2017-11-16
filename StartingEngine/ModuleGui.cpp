@@ -750,7 +750,8 @@ void ModuleGui::InspectionNode_Gui()
 	math::float3 scale;
 	float3 temp_transf;
 
-	ImGui::Checkbox("##100", &inspection_node->active); ImGui::SameLine();
+	ImGui::Text("Active:"); ImGui::SameLine(); ImGui::Checkbox("##100", &inspection_node->active);
+	ImGui::Text("Static:"); ImGui::SameLine();	ImGui::Checkbox("##105", &inspection_node->static_obj);
 	ImGui::Text("Name: %s", inspection_node->name.c_str());
 	for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
 		bool modify = false;

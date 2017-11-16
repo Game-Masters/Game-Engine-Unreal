@@ -57,6 +57,14 @@ bool ModuleCamera3D::CleanUp()
 
 	return true;
 }
+bool ModuleCamera3D::LoadConfig(JSON_Object * node)
+{
+	return false;
+}
+bool ModuleCamera3D::SaveConfig(JSON_Object * node)
+{
+	return false;
+}
 bool ModuleCamera3D::Gui_Engine_Modules(float dt)
 {
 	if (ImGui::CollapsingHeader(name.c_str()))

@@ -57,10 +57,29 @@ bool ModuleCamera3D::CleanUp()
 
 	return true;
 }
-bool Gui_Engine_Modules(float dt) {
+bool ModuleCamera3D::Gui_Engine_Modules(float dt)
+{
+	if (ImGui::CollapsingHeader(name.c_str()))
+	{
+		Frustum frust = CamComp->Get_Frustum();
 
-	return true;
+		float near_plane_t = frust.nearPlaneDistance;
+		ImGui::SliderFloat("Near Plane", &near_plane_t, 0.0, 200);
+		float far_plane_t = frust.farPlaneDistance;
+		ImGui::SliderFloat("Far Plane", &far_plane_t, 0.0, 500);
+		CamComp->SetNearFarPlane(near_plane_t, far_plane_t);
+
+
+		float n_vert_fov= frust.verticalFov;
+		ImGui::SliderFloat("Vertical FOV", &n_vert_fov, 0.0, 3);
+		CamComp->SetVertFOV(n_vert_fov);
+		CamComp->SetFOV_WH();
+
+	}
+
+	return false;
 }
+
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {

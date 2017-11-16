@@ -28,6 +28,7 @@ public:
 	const CamCulling InsideFrustrum(const AABB* aabb);
 	Frustum Get_Frustum()const;
 	void SetVertFOV(float n_fov);
+	void SetNearFarPlane(float near_p, float far_p);
 	void SetFOV_WH();
 private:
 	void GenerateFrustumDraw();
@@ -36,7 +37,7 @@ private:
 private:
 	Frustum frustum;
 	float NearPlaneDistance = 0.1f;
-	float FarPlaneDistance = 1000.0f;
+	float FarPlaneDistance = 100.0f;
 	float FOVVertical = 60.0f;
 	float AspectRatio = 1280.0f / 720.0f;
 	float3 Pos = { 0.0f, 0.0f, 0.0f };

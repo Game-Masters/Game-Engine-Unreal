@@ -1,6 +1,6 @@
 #include"Globals.h"
 #include "Application.h"
-#define NODE_CAPACITY  4
+#define NODE_CAPACITY  6
 class GameObject;
 
 class QuadTreeNode

@@ -499,8 +499,8 @@ update_status ModuleGui::Update(float dt)
 		if (ImGui::BeginMenu("Menu"))
 		{
 			if (ImGui::MenuItem("Create Empty GameObject")) { create_empty_gameobject = true; }
-			if (ImGui::MenuItem("Save")) { App->scene_intro->save_scene = !App->scene_intro->save_scene; }
-			if (ImGui::MenuItem("Load")) { App->scene_intro->load_scene = !App->scene_intro->load_scene; }
+			if (ImGui::MenuItem("Save Scene")) { App->scene_intro->save_scene = !App->scene_intro->save_scene; }
+			if (ImGui::MenuItem("Load Scene")) { App->scene_intro->load_scene = !App->scene_intro->load_scene; }
 			if (ImGui::MenuItem("Console")) { show_console = !show_console; }
 			if (ImGui::MenuItem("Go to github")) { ShellExecuteA(NULL, "open", "https://github.com/Game-Masters/Game-Engine-Unreal", NULL, NULL, SW_SHOWNORMAL); }
 			if (ImGui::MenuItem("Close App")) { button_exit_app = true; }
@@ -891,6 +891,7 @@ void ModuleGui::InspectionNode_Gui()
 		ImGui::End();
 	}
 
+	ResourceTexture* r_mesh = nullptr;
 	if (win_choose_img) {
 		ImGui::Begin(("Texture_dis"), &win_choose_img);
 
@@ -901,10 +902,13 @@ void ModuleGui::InspectionNode_Gui()
 			App->fs_e->ChangeFormat_File(str_path_img.c_str(), "dds", &str_path_img_end, App->fs_e->Material_Engine);
 			int uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
 			if (uuid_mesh == -1) {
-
+				App->resources_mod->ImportFile(str_path_img.c_str());
+				uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
+				r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
+				inspection_node->Get_GO_Mesh()->SetMaterial(inspection_node->AddNewMaterial(r_mesh->GetUID()));
 			}
 			else {
-				ResourceTexture* r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
+				r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
 				App->resources_mod->ImportFile(r_mesh->GetExportedFile());
 				r_mesh->LoadToMemory();
 				inspection_node->Get_GO_Mesh()->SetMaterial(inspection_node->AddNewMaterial(r_mesh->GetUID()));

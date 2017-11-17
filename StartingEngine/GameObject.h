@@ -23,7 +23,7 @@ class GameObject
 {
 public:
 
-	std::string name;
+	std::string name="-1";
 	GameObject* parent=nullptr;
 	std::vector<GameObject*> Childrens_GameObject_Vect;
 	std::vector<Component*> Component_Vect;

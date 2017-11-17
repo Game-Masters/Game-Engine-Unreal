@@ -165,6 +165,7 @@ void Application::DtSwitch()
 
 void Application::ReStartScene()
 {
+	App->gui->inspection_node = nullptr;
 	App->scene_intro->root_gameobject->CleanUp();
 	App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene,"..\\Game\\Library\\TempPlay");
 	App->scene_intro->Load_Scene(App->scene_intro->root_object_scene);

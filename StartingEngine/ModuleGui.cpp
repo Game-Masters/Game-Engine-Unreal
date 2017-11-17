@@ -758,177 +758,177 @@ void ModuleGui::InspectionNode_Gui()
 	math::float3 trans;
 	math::float3 scale;
 	float3 temp_transf;
+	if (inspection_node != nullptr) {
+		ImGui::Text("Active:"); ImGui::SameLine(); ImGui::Checkbox("##100", &inspection_node->active);
+		ImGui::Text("Static:"); ImGui::SameLine();	ImGui::Checkbox("##105", &inspection_node->static_obj);
+		ImGui::Text("Name: %s", inspection_node->name.c_str());
+		for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
+			bool modify = false;
+			Comp_temp = inspection_node->Component_Vect[j];
+			switch (Comp_temp->GetComponentType())
+			{
 
-	ImGui::Text("Active:"); ImGui::SameLine(); ImGui::Checkbox("##100", &inspection_node->active);
-	ImGui::Text("Static:"); ImGui::SameLine();	ImGui::Checkbox("##105", &inspection_node->static_obj);
-	ImGui::Text("Name: %s", inspection_node->name.c_str());
-	for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
-		bool modify = false;
-		Comp_temp = inspection_node->Component_Vect[j];
-		switch (Comp_temp->GetComponentType())
-		{
 
-
-		case Component_Type_Enum::component_material_type:
-			mat_temp = (Material*)Comp_temp;
-			if (mat_temp != nullptr) {
-				//temp_v = mat_temp->GetMaterialVec();
-				if (temp_v != nullptr) {
-					ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-					if (temp_v->texture_w_h != nullptr) {
-						ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
-						ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
+			case Component_Type_Enum::component_material_type:
+				mat_temp = (Material*)Comp_temp;
+				if (mat_temp != nullptr) {
+					//temp_v = mat_temp->GetMaterialVec();
+					if (temp_v != nullptr) {
+						ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+						if (temp_v->texture_w_h != nullptr) {
+							ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
+							ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
+						}
+						ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 					}
-					ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
 				}
+				break;
+			case Component_Type_Enum::component_null_type:
+				break;
+			case Component_Type_Enum::component_transform_type:
+				if (ImGui::CollapsingHeader("Transformation"))
+				{
+					modify = false;
+					t_temp = (Transform*)Comp_temp;
+					trans = t_temp->GetPosition();
+					temp_transf = trans;
+					//ImGui::Text("                                Position");
+					ImGui::Text("Pos :"); ImGui::SameLine();
+					ImGui::DragFloat3("##6", &trans[0], 0.1f, -500.0f, 500.0f);
+					if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z) {
+						//t_temp->SetPosition(trans);
+						modify = true;
+					}
+
+					scale = t_temp->GetScale();
+					temp_transf = scale;
+					//ImGui::Text("                                Scale");
+					ImGui::Text("Scale:"); ImGui::SameLine();
+					ImGui::DragFloat3("##9", &scale[0], 0.1f, 1.0f, 500.0f);
+
+					if (scale.x != temp_transf.x || scale.y != temp_transf.y || scale.z != temp_transf.z) {
+						//t_temp->SetScale(scale);
+						modify = true;
+					}
+
+					q_temp = t_temp->GetRotation();
+					eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
+					temp_transf = eul_ang;
+					//ImGui::Text("                                Rotation");
+					ImGui::Text("Rot :"); ImGui::SameLine();
+					ImGui::DragFloat3("##12", &eul_ang[0], 0.1f, -180.0f, 180.0f);
+
+					//Not really working
+					if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
+						eul_ang *= DEGTORAD;
+						q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
+						modify = true;
+					}
+
+					if (inspection_node->GetTransform() != nullptr && modify == true)
+						inspection_node->GetTransform()->SetMatrix(float4x4::FromTRS(trans, q_temp, scale));
+				}
+				break;
+			case Component_Type_Enum::component_mesh_type:
+				if (ImGui::CollapsingHeader("Mesh"))
+				{
+					m_temp = (Mesh*)Comp_temp;
+					ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case Component_Type_Enum::component_null_type:
-			break;
-		case Component_Type_Enum::component_transform_type:
-			if (ImGui::CollapsingHeader("Transformation"))
-			{
-				modify = false;
-				t_temp = (Transform*)Comp_temp;
-				trans = t_temp->GetPosition();
-				temp_transf = trans;
-				//ImGui::Text("                                Position");
-				ImGui::Text("Pos :"); ImGui::SameLine();
-				ImGui::DragFloat3("##6", &trans[0], 0.1f, -500.0f, 500.0f);
-				if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z) {
-					//t_temp->SetPosition(trans);
-					modify = true;
-				}
 
-				scale = t_temp->GetScale();
-				temp_transf = scale;
-				//ImGui::Text("                                Scale");
-				ImGui::Text("Scale:"); ImGui::SameLine();
-				ImGui::DragFloat3("##9", &scale[0], 0.1f, 1.0f, 500.0f);
+		}ImGui::Separator();
 
-				if (scale.x != temp_transf.x || scale.y != temp_transf.y || scale.z != temp_transf.z) {
-					//t_temp->SetScale(scale);
-					modify = true;
-				}
-
-				q_temp = t_temp->GetRotation();
-				eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
-				temp_transf = eul_ang;
-				//ImGui::Text("                                Rotation");
-				ImGui::Text("Rot :"); ImGui::SameLine();
-				ImGui::DragFloat3("##12", &eul_ang[0], 0.1f, -180.0f, 180.0f);
-
-				//Not really working
-				if (eul_ang.x != temp_transf.x || eul_ang.y != temp_transf.y || eul_ang.z != temp_transf.z) {
-					eul_ang *= DEGTORAD;
-					q_temp = q_temp.FromEulerXYZ(eul_ang.x, eul_ang.y, eul_ang.z);
-					modify = true;
-				}
-
-				if (inspection_node->GetTransform() != nullptr && modify == true)
-					inspection_node->GetTransform()->SetMatrix(float4x4::FromTRS(trans, q_temp, scale));
-			}
-			break;
-		case Component_Type_Enum::component_mesh_type:
-			if (ImGui::CollapsingHeader("Mesh"))
-			{
-				m_temp = (Mesh*)Comp_temp;
-				ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());
-			}
-			break;
-		default:
-			break;
-		}
-
-	}ImGui::Separator();
-
-	if (ImGui::Button("Add new Component", ImVec2(250, 30)) && inspection_node)
-		ImGui::OpenPopup("Add new Component");
-	if (ImGui::BeginPopup("Add new Component"))
-	{
-		if (ImGui::MenuItem("Component Mesh"))
+		if (ImGui::Button("Add new Component", ImVec2(250, 30)) && inspection_node)
+			ImGui::OpenPopup("Add new Component");
+		if (ImGui::BeginPopup("Add new Component"))
 		{
-			if (inspection_node->Get_GO_Mesh() == nullptr) {
-				win_choose_fbx = true;
-							//App->resources_mod->find
-				//inspection_node->AddNewMesh()
+			if (ImGui::MenuItem("Component Mesh"))
+			{
+				if (inspection_node->Get_GO_Mesh() == nullptr) {
+					win_choose_fbx = true;
+					//App->resources_mod->find
+		//inspection_node->AddNewMesh()
+				}
 			}
-		}
-		if (ImGui::MenuItem("Component Material"))
-		{
-			if (inspection_node->Get_GO_Mesh() != nullptr) {	
+			if (ImGui::MenuItem("Component Material"))
+			{
+				if (inspection_node->Get_GO_Mesh() != nullptr) {
 					win_choose_img = true;
-			}
-		}
-		ImGui::EndPopup();
-	}
-
-
-	
-	if (win_choose_fbx) {
-		ImGui::Begin(("Meshes_dis"), &win_choose_fbx);
-		
-		App->fs_e->Asset_Editor(App->fs_e->Mesh_User->path.c_str(), &str_path_fbx,false);
-		if (str_path_fbx != "-1") {
-			std::string str_path_img_end;
-			App->fs_e->ChangeFormat_File(str_path_fbx.c_str(), "ric", &str_path_img_end, App->fs_e->Mesh_Engine);
-			int uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
-			if (uuid_mesh == -1) {
-				int uuid_mesh_n = App->resources_mod->ImportFile(str_path_img_end.c_str());
-				App->imp_mesh->LoadMesh(str_path_img_end.c_str(), str_path_fbx.c_str());
-				str_path_fbx = "-1";
-				//inspection_node->AddNewMesh(uuid_mesh_n);
-				win_choose_fbx = false;
-			}
-			else {
-				ResourceMesh* r_mesh= (ResourceMesh*)App->resources_mod->Get(uuid_mesh);
-				if (r_mesh->GetLoadedNum()==0) {
-					App->resources_mod->ImportFile(str_path_fbx.c_str());
 				}
-			//	int uuid_mesh_end = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
-
-			
-				
-				
-				App->imp_mesh->LoadMesh(r_mesh->GetFile() , r_mesh->GetExportedFile(),inspection_node);
-				int p_t = r_mesh->GetUID();
-				win_choose_fbx = false;
-				//r_mesh->LoadToMemory();
-				//inspection_node->AddNewMesh(p_t, r_mesh->GetExportedFile());
 			}
+			ImGui::EndPopup();
 		}
 
-		ImGui::End();
-	}
 
-	ResourceTexture* r_mesh = nullptr;
-	if (win_choose_img) {
-		ImGui::Begin(("Texture_dis"), &win_choose_img);
 
-		App->fs_e->Asset_Editor(App->fs_e->Material_User->path.c_str(), &str_path_img,false);
+		if (win_choose_fbx) {
+			ImGui::Begin(("Meshes_dis"), &win_choose_fbx);
 
-		if (str_path_img != "-1") {
-			std::string str_path_img_end;
-			App->fs_e->ChangeFormat_File(str_path_img.c_str(), "dds", &str_path_img_end, App->fs_e->Material_Engine);
-			int uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
-			if (uuid_mesh == -1) {
-				App->resources_mod->ImportFile(str_path_img.c_str());
-				uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
-				r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
-				inspection_node->Get_GO_Mesh()->SetMaterial(inspection_node->AddNewMaterial(r_mesh->GetUID()));
+			App->fs_e->Asset_Editor(App->fs_e->Mesh_User->path.c_str(), &str_path_fbx, false);
+			if (str_path_fbx != "-1") {
+				std::string str_path_img_end;
+				App->fs_e->ChangeFormat_File(str_path_fbx.c_str(), "ric", &str_path_img_end, App->fs_e->Mesh_Engine);
+				int uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
+				if (uuid_mesh == -1) {
+					int uuid_mesh_n = App->resources_mod->ImportFile(str_path_img_end.c_str());
+					App->imp_mesh->LoadMesh(str_path_img_end.c_str(), str_path_fbx.c_str());
+					str_path_fbx = "-1";
+					//inspection_node->AddNewMesh(uuid_mesh_n);
+					win_choose_fbx = false;
+				}
+				else {
+					ResourceMesh* r_mesh = (ResourceMesh*)App->resources_mod->Get(uuid_mesh);
+					if (r_mesh->GetLoadedNum() == 0) {
+						App->resources_mod->ImportFile(str_path_fbx.c_str());
+					}
+					//	int uuid_mesh_end = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
+
+
+
+
+					App->imp_mesh->LoadMesh(r_mesh->GetFile(), r_mesh->GetExportedFile(), inspection_node);
+					int p_t = r_mesh->GetUID();
+					win_choose_fbx = false;
+					//r_mesh->LoadToMemory();
+					//inspection_node->AddNewMesh(p_t, r_mesh->GetExportedFile());
+				}
 			}
-			else {
-				r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
-				App->resources_mod->ImportFile(r_mesh->GetExportedFile());
-				r_mesh->LoadToMemory();
-				inspection_node->Get_GO_Mesh()->SetMaterial(inspection_node->AddNewMaterial(r_mesh->GetUID()));
-			}
 
-			win_choose_img = false;
+			ImGui::End();
 		}
-		ImGui::End();
+
+		ResourceTexture* r_mesh = nullptr;
+		if (win_choose_img) {
+			ImGui::Begin(("Texture_dis"), &win_choose_img);
+
+			App->fs_e->Asset_Editor(App->fs_e->Material_User->path.c_str(), &str_path_img, false);
+
+			if (str_path_img != "-1") {
+				std::string str_path_img_end;
+				App->fs_e->ChangeFormat_File(str_path_img.c_str(), "dds", &str_path_img_end, App->fs_e->Material_Engine);
+				int uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
+				if (uuid_mesh == -1) {
+					App->resources_mod->ImportFile(str_path_img.c_str());
+					uuid_mesh = App->resources_mod->Find_EngineRes(str_path_img_end.c_str());
+					r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
+					inspection_node->Get_GO_Mesh()->SetMaterial(inspection_node->AddNewMaterial(r_mesh->GetUID()));
+				}
+				else {
+					r_mesh = (ResourceTexture*)App->resources_mod->Get(uuid_mesh);
+					App->resources_mod->ImportFile(r_mesh->GetExportedFile());
+					r_mesh->LoadToMemory();
+					inspection_node->Get_GO_Mesh()->SetMaterial(inspection_node->AddNewMaterial(r_mesh->GetUID()));
+				}
+
+				win_choose_img = false;
+			}
+			ImGui::End();
+		}
 	}
-	
 }
 
 void ModuleGui::CreateButtonWithTextAndImage(GLuint temp, const char * str)

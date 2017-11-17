@@ -204,8 +204,10 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 	std::string g_temp = "GameObject" + std::to_string(i + 1);
 	JSON_Object* node;
 	node = json_object_get_object(root_object_scene, g_temp.c_str());
-	if (node == nullptr)
+	if (node == nullptr) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Loading", "You can only load Scene Files with this option", App->window->window);
+		return;
+	}
 
 	while(node!=nullptr){
 		std::string g_temp = "GameObject" + std::to_string(i + 1);
@@ -302,9 +304,7 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 		i++;
 
 	}
-
-
-	//I need to connect the gerarchy of UUID
+	//connect the gerarchy of UUID
 	Connect_Load_Gerarchy(GO_Load);
 }
 

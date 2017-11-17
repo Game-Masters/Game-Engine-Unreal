@@ -15,6 +15,7 @@ QuadTreeNode::QuadTreeNode(float3 min_point, float3 max_point, int max_objects) 
 }
 QuadTreeNode::~QuadTreeNode()
 {
+	Clear();
 }
 
 void QuadTreeNode::Insert(GameObject * game_object)
@@ -29,6 +30,10 @@ void QuadTreeNode::Erase(GameObject * game_object)
 
 void QuadTreeNode::Clear()
 {
+	for (std::vector<GameObject*>::iterator it = gameobjs.begin(); it != gameobjs.end(); ++it)
+	{
+		(*it)->active = true;
+	}
 	for (std::vector<QuadTreeNode*>::iterator it = children.begin(); it != children.end(); ++it)
 	{
 		RELEASE(*it);
@@ -245,6 +250,7 @@ void QuadTreeZ::Erase(GameObject * game_object)
 
 void QuadTreeZ::Clear()
 {
+	root->Clear();
 }
 
 void QuadTreeZ::DebugDraw()

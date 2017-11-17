@@ -164,18 +164,19 @@ bool QuadTreeNode::InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNod
 			if (node->bounds.Intersects(temp_aabb))
 			{
 				node->Insert((*it));
+				if (node->Full() && (node->IsSmall() != true))
+				{
+					return false;
+				}
 			}
 		}
 
-		if (node->Full() && (node->IsSmall() != true))
-		{
-			return false;
-		}
+	
 		//check problem
 		for (std::vector<GameObject*>::iterator it2 = (*it)->Childrens_GameObject_Vect.begin(); it2 != (*it)->Childrens_GameObject_Vect.end(); it2++)
 		{
 			ret = InsideTree(it2, node);
-			if (ret == false || (node->IsSmall() == true))
+			if (ret == false && (node->IsSmall() != true))
 			{
 
 				break;

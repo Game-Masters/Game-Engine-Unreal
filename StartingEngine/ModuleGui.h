@@ -73,6 +73,7 @@ public:
 	bool win_choose_img = false;
 	bool world_focused = false;
 	bool assets_dock_focus = false;
+	bool Octree_Window = false;
 
 	std::string str_path_fbx;
 	std::string str_path_img;

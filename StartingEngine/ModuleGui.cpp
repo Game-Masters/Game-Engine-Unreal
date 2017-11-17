@@ -17,6 +17,7 @@
 #include"ResourceTexture.h"
 #include "ImGui\imgui_internal.h"
 #include"ResourceTexture.h"
+#include "Quadtree.h"
 
 #define COLOR_ENGINE ImVec4(0.878, 0.262, 0, 1.0f)
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
@@ -69,9 +70,9 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_PopupBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_Border] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
-	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.15f, 0.15f, 1.00f);
+	style.Colors[ImGuiCol_FrameBg] = ImVec4(0.3f, 0.3f, 0.3f, 1.00f);
 	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.33f, 0.33f, 0.33f, 1.00f);
-	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.878, 0.262, 0, 1.00f);
+	style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.3, 0.3, 0.3, 1.00f);
 	style.Colors[ImGuiCol_TitleBg] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
 	style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.47f, 0.47, 0.47f, 0.75f);
 	style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.47f, 0.47, 0.47f, 1.00f);
@@ -84,7 +85,7 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_CheckMark] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
 	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
-	style.Colors[ImGuiCol_Button] = ImVec4(0.10f, 0.16f, 0.15f, 1.00f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.3f, 0.3f, 0.3f, 1.00f);
 	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
 	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_Header] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
@@ -299,6 +300,23 @@ update_status ModuleGui::Update(float dt)
 				n3 = true;
 			}
 			ImGui::SameLine();
+			if(ImGui::Button("Octree Options", ImVec2(120, 30))== true);
+			{
+				Octree_Window = true ;
+			}
+			if (Octree_Window == true)
+			{
+				ImGui::Begin("Octree Options", &Octree_Window);
+				ImGui::Button("Bake tree", ImVec2(120, 30));
+				
+				ImGui::InputFloat3("Min node size", &App->scene_intro->scene_quadtree->root->max[0],3);
+				ImGui::Text("\n \n WARNING: Putting the minimum node size with really \n small numbers may  generate a crash ");
+				ImGui::End();
+			}
+				
+			
+			ImGui::SameLine();
+
 			ImGui::Text("                             ");
 			ImGui::SameLine();
 			//ImGui::Begin("##15", NULL, ImVec2(App->window->win_width / 2, 0), 1.0f, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);

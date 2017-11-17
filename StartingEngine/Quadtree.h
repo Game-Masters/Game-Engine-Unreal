@@ -30,9 +30,10 @@ public:
 	QuadTreeNode* parent = nullptr;
 	AABB bounds;
 	int max_game_objects = NODE_CAPACITY;
+	float3 min{ 0,0,0 };
+	float3 max{ 1,1,1 };
 private:
-	float3 min { 0,0,0 };
-	float3 max { 10,10,10 };
+	
 	AABB MinAbb = AABB(min, max);
 };
 

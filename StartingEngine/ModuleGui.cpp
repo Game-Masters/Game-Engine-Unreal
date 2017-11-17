@@ -488,8 +488,14 @@ update_status ModuleGui::Update(float dt)
 
 	if (ImGui::BeginDock("Assets", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
 
-
-		App->fs_e->Asset_Editor(Current_Dir.c_str());
+		auto im_context = ImGui::GetCurrentContext();
+		auto focused_window = im_context->NavWindow;
+		auto this_window = ImGui::GetCurrentWindowRead();
+		assets_dock_focus = false;
+		if (this_window == focused_window)
+			assets_dock_focus = true;
+			App->fs_e->Asset_Editor(Current_Dir.c_str());
+		
 
 		ImGui::EndDock();
 	}
@@ -853,11 +859,17 @@ void ModuleGui::InspectionNode_Gui()
 					//App->resources_mod->find
 		//inspection_node->AddNewMesh()
 				}
+				else {
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Adding Mesh", "This gameobject already has a mesh", App->window->window);
+				}
 			}
 			if (ImGui::MenuItem("Component Material"))
 			{
 				if (inspection_node->Get_GO_Mesh() != nullptr) {
 					win_choose_img = true;
+				}
+				else {
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Adding Material", "This gameobject doesn't have a mesh", App->window->window);
 				}
 			}
 			ImGui::EndPopup();

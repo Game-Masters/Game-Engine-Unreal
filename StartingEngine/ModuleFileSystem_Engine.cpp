@@ -291,13 +291,27 @@ bool ModuleFileSystem_Engine::Find_in_Asset(const char* path) {
 	return false;
 }
 
-bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_path, bool asset_editor ) {
+bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_path, bool asset_editor) {
 
 	std::string ptr = "-1";
-	
+
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		App->gui->Current_Dir = RootDirect_User->path.c_str();
 	}
+
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN && App->gui->assets_dock_focus == true) {
+		ImGui::OpenPopup("File Settings");
+
+	}
+	
+	if (ImGui::BeginPopup("File Settings")) {
+		if (ImGui::MenuItem("Create Directory"))
+		{
+
+		}
+		ImGui::EndPopup();
+	}
+
 
 	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path)) {
 		std::string str_path = item.path().string().c_str();

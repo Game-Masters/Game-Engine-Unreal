@@ -39,7 +39,7 @@ bool ModuleSceneIntro::Start()
 
 	root_gameobject = CreateNewGameObjects("root", true, nullptr, Tag_Object_Enum::root_tag, false);
 	scene_quadtree = new QuadTreeZ();
-	scene_quadtree->SetBoundaries(&(AABB(float3(-100.0f, -100.0f, -100.0f), float3(100.0f, 100.0f, 100.0f))));
+	scene_quadtree->SetBoundaries(&(AABB(float3(-10.0f, -10.0f, -10.0f), float3(10.0f, 10.0f, 10.0f))));
 	
 
 

@@ -42,7 +42,7 @@ void CameraComponent::CheckInFrustum(QuadTreeNode* temp_obj)
 		for (int i = 0; i < temp_obj->gameobjs.size(); i++) {
 			if (temp_obj->gameobjs[i]->Get_GO_Mesh() != nullptr) {
 				if (temp_obj->gameobjs[i]->static_obj == true) {
-					AABB* temp2 = &temp_obj->gameobjs[i]->Get_GO_Mesh()->GetAABB();
+					AABB* temp2 = &temp_obj->gameobjs[i]->Get_GO_Mesh()->Copy_aabb_using;
 					//DO THE CULLING FUNCTION
 					if (InsideFrustrum(temp2) == CULL_OUTSIDE)
 					{
@@ -76,7 +76,7 @@ void CameraComponent::CheckInFrustumNOStatic(GameObject* temp_go)
 
 		if (temp_go->Get_GO_Mesh() != nullptr) {
 			if (temp_go->static_obj == false) {
-				AABB* temp2 = &temp_go->Get_GO_Mesh()->GetAABB();
+				AABB* temp2 = &temp_go->Get_GO_Mesh()->Copy_aabb_using;
 				//DO THE CULLING FUNCTION
 				if (InsideFrustrum(temp2) == CULL_OUTSIDE)
 				{

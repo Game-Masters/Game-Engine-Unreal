@@ -127,6 +127,9 @@ update_status ModuleInput::PreUpdate(float dt)
 						std::experimental::filesystem::path p1 = dropped_filedir;
 						std::experimental::filesystem::path p2 = App->fs_e->Mesh_User->path+ "\\"+name;
 						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &path_r, App->fs_e->Mesh_Engine);
+						if (App->fs_e->Find_in_Asset(p1.string().c_str())) {
+							std::experimental::filesystem::remove(p1.string().c_str());
+						}
 						std::experimental::filesystem::copy_file(p1, p2);
 					
 						if (App->resources_mod->Find_UserRes(p2.string().c_str())==-1) {
@@ -145,6 +148,9 @@ update_status ModuleInput::PreUpdate(float dt)
 						std::experimental::filesystem::path p1 = dropped_filedir;
 						std::experimental::filesystem::path p2 = App->fs_e->Material_User->path + "\\" + name;
 						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "dds", &path_r, App->fs_e->Material_Engine);
+						if (App->fs_e->Find_in_Asset(p2.string().c_str())) {
+							std::experimental::filesystem::remove(p2.string().c_str());
+						}
 						std::experimental::filesystem::copy_file(p1, p2);
 
 						if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {

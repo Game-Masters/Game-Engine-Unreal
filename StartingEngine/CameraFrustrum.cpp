@@ -39,23 +39,25 @@ void CameraComponent::PreUpdate()
 void CameraComponent::CheckInFrustum(QuadTreeNode* temp_obj)
 {
 	if (temp_obj != nullptr) {
-		for (int i = 0; i < temp_obj->gameobjs.size(); i++) {
-			if (temp_obj->gameobjs[i]->Get_GO_Mesh() != nullptr) {
-				if (temp_obj->gameobjs[i]->static_obj == true) {
-					AABB* temp2 = &temp_obj->gameobjs[i]->Get_GO_Mesh()->Copy_aabb_using;
-					//DO THE CULLING FUNCTION
-					if (InsideFrustrum(temp2) == CULL_OUTSIDE)
-					{
-						temp_obj->gameobjs[i]->active = false;
-					}
-					else
-					{
-						temp_obj->gameobjs[i]->active = true;
+		if (temp_obj->IsLeaf()) {
+			for (int i = 0; i < temp_obj->gameobjs.size(); i++) {
+				if (temp_obj->gameobjs[i]->Get_GO_Mesh() != nullptr) {
+					if (temp_obj->gameobjs[i]->static_obj == true) {
+						AABB* temp2 = &temp_obj->gameobjs[i]->Get_GO_Mesh()->Copy_aabb_using;
+						//DO THE CULLING FUNCTION
+						if (InsideFrustrum(temp2) == CULL_OUTSIDE)
+						{
+							temp_obj->gameobjs[i]->active = false;
+						}
+						else
+						{
+							temp_obj->gameobjs[i]->active = true;
+						}
 					}
 				}
-			}
 
-		}   //
+			}   //
+		}
 
 
 		if (temp_obj->children.size() != 0)
@@ -176,7 +178,7 @@ void CameraComponent::Update()
 {
 
 	CheckInFrustum(App->scene_intro->scene_quadtree->root);
-	CheckInFrustumNOStatic(App->scene_intro->root_gameobject);
+	//CheckInFrustumNOStatic(App->scene_intro->root_gameobject);
 
 	if (first_time)
 	{

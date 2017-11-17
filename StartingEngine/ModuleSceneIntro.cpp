@@ -196,6 +196,18 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 	return n_gameobject;
 }
 
+void ModuleSceneIntro::StaticAllGameObject(GameObject * temp, bool static_t)
+{
+
+	temp->static_obj = static_t;
+
+	for (int i = 0; i < temp->Childrens_GameObject_Vect.size(); i++) {
+		StaticAllGameObject(temp->Childrens_GameObject_Vect[i], static_t);
+	}
+
+
+}
+
 void ModuleSceneIntro::ActivateAllObj(GameObject * root)
 {
 

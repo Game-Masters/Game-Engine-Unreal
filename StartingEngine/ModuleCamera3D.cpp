@@ -105,7 +105,7 @@ bool ModuleCamera3D::Gui_Engine_Modules(float dt)
 		float near_plane_t = frust.nearPlaneDistance;
 		ImGui::SliderFloat("Near Plane", &near_plane_t, 0.0, 200);
 		float far_plane_t = frust.farPlaneDistance;
-		ImGui::SliderFloat("Far Plane", &far_plane_t, 0.0, 500);
+		ImGui::SliderFloat("Far Plane", &far_plane_t, 0.0, 1000);
 		CamComp->SetNearFarPlane(near_plane_t, far_plane_t);
 
 

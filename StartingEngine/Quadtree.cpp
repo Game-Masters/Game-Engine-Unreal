@@ -39,6 +39,7 @@ void QuadTreeNode::Clear()
 
 void QuadTreeNode::Subdivide()
 {
+	/*
 	float3 center_point = { (bounds.minPoint.x + bounds.maxPoint.x) / 2,0,(bounds.minPoint.z + bounds.maxPoint.z) / 2 };
 	float3 min_point1 = bounds.minPoint;
 	float3 max_point1 = { center_point.x,bounds.maxPoint.y,center_point.z };
@@ -48,10 +49,34 @@ void QuadTreeNode::Subdivide()
 	float3 max_point3 = { bounds.maxPoint.x,bounds.maxPoint.y,center_point.z };
 	float3 min_point4 = { bounds.minPoint.x,bounds.minPoint.y,center_point.z };
 	float3 max_point4 = { center_point.x,bounds.maxPoint.y,bounds.maxPoint.z };
+	*/
+	float3 center_point = { (bounds.minPoint.x + bounds.maxPoint.x) / 2,(bounds.minPoint.y + bounds.maxPoint.y) / 2,(bounds.minPoint.z + bounds.maxPoint.z) / 2 };
+	
+	float3 max_point1 = bounds.maxPoint;
+	float3 min_point1 = center_point;
+	float3 max_point2 = { center_point.x, bounds.maxPoint.y, bounds.maxPoint.z };
+	float3 min_point2 = {bounds.minPoint.x, center_point.y, center_point.z };
+	float3 max_point3 = {center_point.x, bounds.maxPoint.y, center_point.z};
+	float3 min_point3 = {bounds.minPoint.x, center_point.y,bounds.minPoint.z};
+	float3 max_point4 = { bounds.maxPoint.x, bounds.maxPoint.y, center_point.z };
+	float3 min_point4 = { center_point.x,center_point.y, bounds.minPoint.z };
+	float3 max_point5 = {bounds.maxPoint.x, center_point.y, bounds.maxPoint.z};
+	float3 min_point5 = {center_point.x,bounds. minPoint.y,center_point.z};
+	float3 max_point6 = {center_point.x, center_point.y, bounds.maxPoint.z};
+	float3 min_point6 = { bounds. minPoint.x, bounds.minPoint.y, center_point.z};
+	float3 max_point7 = center_point;
+	float3 min_point7 = bounds.minPoint ;
+	float3 max_point8 = { bounds.maxPoint.x, center_point.y, center_point.z };
+	float3 min_point8 = {center_point.x, bounds.minPoint.y, bounds.minPoint.z};
+	
 	QuadTreeNode* child1 = new QuadTreeNode(min_point1, max_point1, NODE_CAPACITY);
 	QuadTreeNode* child2 = new QuadTreeNode(min_point2, max_point2, NODE_CAPACITY);
 	QuadTreeNode* child3 = new QuadTreeNode(min_point3, max_point3, NODE_CAPACITY);
 	QuadTreeNode* child4 = new QuadTreeNode(min_point4, max_point4, NODE_CAPACITY);
+	QuadTreeNode* child5 = new QuadTreeNode(min_point5, max_point5, NODE_CAPACITY);
+	QuadTreeNode* child6 = new QuadTreeNode(min_point6, max_point6, NODE_CAPACITY);
+	QuadTreeNode* child7 = new QuadTreeNode(min_point7, max_point7, NODE_CAPACITY);
+	QuadTreeNode* child8 = new QuadTreeNode(min_point8, max_point8, NODE_CAPACITY);
 
 	children.push_back(child1);
 	child1->Fill();
@@ -61,7 +86,14 @@ void QuadTreeNode::Subdivide()
 	child3->Fill();
 	children.push_back(child4);
 	child4->Fill();
-
+	children.push_back(child5);
+	child5->Fill();
+	children.push_back(child6);
+	child6->Fill();
+	children.push_back(child7);
+	child7->Fill();
+	children.push_back(child8);
+	child8->Fill();
 }
 
 void QuadTreeNode::Fill()
@@ -123,6 +155,7 @@ bool QuadTreeNode::InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNod
 		if ((*it)->Get_GO_Mesh() != nullptr)
 		{
 			AABB temp_aabb = (*it)->Get_GO_Mesh()->Copy_aabb_using;
+			App->scene_intro->scene_quadtree->AdaptativeBoundaries(temp_aabb);
 			if (node->bounds.Intersects(temp_aabb))
 			{
 				node->Insert((*it));
@@ -156,7 +189,7 @@ bool QuadTreeNode::IsSmall()
 	float3 boundsmax = bounds.maxPoint;
 	float3 boundstemp = (boundsmax - boundsmin).Abs();
 	float boundslength = boundstemp.Length();
-	float3 boundstemp2 = (max2 - min).Abs();
+	float3 boundstemp2 = (max - min).Abs();
 	float minlength = boundstemp2.Length();
 	return (boundslength <= minlength);
 }
@@ -228,3 +261,34 @@ void QuadTreeZ::DebugDraw()
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
+
+void QuadTreeZ::AdaptativeBoundaries(AABB temp)
+
+{
+	if (temp.maxPoint.x > App->scene_intro->scene_quadtree->root->bounds.maxPoint.x)
+	{
+		App->scene_intro->scene_quadtree->root->bounds.maxPoint.x = temp.maxPoint.x;
+	}
+	if (temp.maxPoint.y > App->scene_intro->scene_quadtree->root->bounds.maxPoint.y)
+	{
+		App->scene_intro->scene_quadtree->root->bounds.maxPoint.y = temp.maxPoint.y;
+	}
+	if (temp.maxPoint.z > App->scene_intro->scene_quadtree->root->bounds.maxPoint.z)
+	{
+		App->scene_intro->scene_quadtree->root->bounds.maxPoint.z = temp.maxPoint.z;
+	}
+	if (temp.minPoint.x < App->scene_intro->scene_quadtree->root->bounds.minPoint.x)
+	{
+		App->scene_intro->scene_quadtree->root->bounds.minPoint.x = temp.minPoint.x;
+	}
+	if (temp.minPoint.y < App->scene_intro->scene_quadtree->root->bounds.minPoint.y)
+	{
+		App->scene_intro->scene_quadtree->root->bounds.minPoint.y = temp.minPoint.y;
+	}
+	if (temp.minPoint.z < App->scene_intro->scene_quadtree->root->bounds.minPoint.z)
+	{
+		App->scene_intro->scene_quadtree->root->bounds.minPoint.z = temp.minPoint.z;
+	}
+	
+}
+	

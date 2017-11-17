@@ -36,6 +36,7 @@ public:
 	uint bytes = 0;
 	uint gpu_id = 0;
 	uint id_image_devil = 0;
+	float2 text_w_h={0,0};
 	Format format = Format::unknown_form;
 
 };

@@ -196,6 +196,25 @@ GameObject * ModuleSceneIntro::CreateNewGameObjects(const char * name, bool acti
 	return n_gameobject;
 }
 
+void ModuleSceneIntro::ActivateAllObj(GameObject * root)
+{
+
+	for (int i = 0; i < root->Childrens_GameObject_Vect.size(); i++) {
+		root->Childrens_GameObject_Vect[i]->active = true;
+
+		GameObject* temp = root->Childrens_GameObject_Vect[i];
+
+		for (int j = 0; j < temp->Childrens_GameObject_Vect.size(); j++) {
+			ActivateAllObj(temp);
+		}
+	}
+
+
+
+
+
+}
+
 void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 {
 	std::vector<GameObject*> GO_Load;
@@ -206,7 +225,7 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 	node = json_object_get_object(root_object_scene, g_temp.c_str());
 	if (node == nullptr) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Loading", "You can only load Scene Files with this option", App->window->window);
-		return;
+	
 	}
 
 	while(node!=nullptr){
@@ -217,13 +236,16 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 			int UUID = json_object_get_number(node, "UUID");
 			int UUID_parent = json_object_get_number(node, "UUID_parent");
 			std::string name_go = json_object_get_string(node, "Name");
+
 			if (UUID_parent==0) {
 				temp_go = CreateNewGameObjects(name_go.c_str(), true, App->scene_intro->root_gameobject, Tag_Object_Enum::no_obj_tag, false);
 			}
 			else {
 				temp_go = CreateNewGameObjects(name_go.c_str(), true, nullptr, Tag_Object_Enum::no_obj_tag, false);
 			}
-			
+			temp_go->active=json_object_get_boolean(node, "Active");
+			temp_go->static_obj=json_object_get_boolean(node, "Static");
+
 			temp_go->Set_UUID(UUID);
 			temp_go->Set_UUID_parent(UUID_parent);
 
@@ -295,6 +317,12 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 					temp_go->AddNewMesh(temp_mesh_try->GetUID(), str_p_fbx.c_str(), mat);
 				}
 			}
+			node_mesh = json_object_get_object(node, "Frustum Comp");
+			if (node_mesh != nullptr) {
+				temp_go->AddNewFrustum();
+			}
+
+
 			GO_Load.push_back(temp_go);
 
 		}
@@ -306,6 +334,8 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 	}
 	//connect the gerarchy of UUID
 	Connect_Load_Gerarchy(GO_Load);
+
+	num_GO = 0;
 }
 
 void ModuleSceneIntro::Connect_Load_Gerarchy(std::vector<GameObject*>GO_Load)

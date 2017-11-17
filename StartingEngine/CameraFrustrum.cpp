@@ -38,31 +38,65 @@ void CameraComponent::PreUpdate()
 
 void CameraComponent::CheckInFrustum(QuadTreeNode* temp_obj)
 {
+	if (temp_obj != nullptr) {
+		for (int i = 0; i < temp_obj->gameobjs.size(); i++) {
+			if (temp_obj->gameobjs[i]->Get_GO_Mesh() != nullptr) {
+				if (temp_obj->gameobjs[i]->static_obj == true) {
+					AABB* temp2 = &temp_obj->gameobjs[i]->Get_GO_Mesh()->GetAABB();
+					//DO THE CULLING FUNCTION
+					if (InsideFrustrum(temp2) == CULL_OUTSIDE)
+					{
+						temp_obj->gameobjs[i]->active = false;
+					}
+					else
+					{
+						temp_obj->gameobjs[i]->active = true;
+					}
+				}
+			}
 
-	for (int i = 0; i<temp_obj->gameobjs.size(); i++) {
-		if (temp_obj->gameobjs[i]->Get_GO_Mesh() != nullptr) {
-			if (temp_obj->gameobjs[i]->static_obj == true) {
-				AABB* temp2 = &temp_obj->gameobjs[i]->Get_GO_Mesh()->GetAABB();
+		}   //
+
+
+		if (temp_obj->children.size() != 0)
+		{
+			for (int i = 0; i < temp_obj->children.size(); i++) {
+				CheckInFrustum(temp_obj->children[i]);
+
+			}
+		}
+	}
+}
+
+void CameraComponent::CheckInFrustumNOStatic(GameObject* temp_go)
+{
+
+	if (temp_go != nullptr) {
+		
+
+		if (temp_go->Get_GO_Mesh() != nullptr) {
+			if (temp_go->static_obj == false) {
+				AABB* temp2 = &temp_go->Get_GO_Mesh()->GetAABB();
 				//DO THE CULLING FUNCTION
 				if (InsideFrustrum(temp2) == CULL_OUTSIDE)
 				{
-					temp_obj->gameobjs[i]->active = false;
+					temp_go->active = false;
 				}
 				else
 				{
-					temp_obj->gameobjs[i]->active = true;
+					temp_go->active = true;
 				}
 			}
+
+
 		}
 
-	}   //
+		if (temp_go->Childrens_GameObject_Vect.size() != 0)
+		{
+			for (int j = 0; j < temp_go->Childrens_GameObject_Vect.size(); j++) {
+				CheckInFrustumNOStatic(temp_go->Childrens_GameObject_Vect[j]);
 
-
-	if (temp_obj->children.size() != 0)
-	{
-		for (int i = 0; i < temp_obj->children.size(); i++) {
-			CheckInFrustum(temp_obj->children[i]);
-
+			}
 		}
 	}
 }
@@ -100,6 +134,20 @@ const CamCulling CameraComponent::InsideFrustrum(const AABB * aabb)
 	return(CULL_INTERSECT);
 
 }
+void CameraComponent::Save(JSON_Object * root_object_scene)
+{
+
+	JSON_Object* node;
+	json_object_set_value(root_object_scene, "Frustum Comp", json_value_init_object());
+	node = json_object_get_object(root_object_scene, "Frustum Comp");
+
+}
+void CameraComponent::Load(JSON_Object * root_object_scene)
+{
+
+
+
+}
 Frustum CameraComponent::Get_Frustum() const
 {
 	return frustum;
@@ -118,10 +166,17 @@ void CameraComponent::SetFOV_WH()
 	frustum.horizontalFov = (2 * math::Atan(math::Tan(frustum.verticalFov / 2) * App->window->GetAspect_Ratio()));
 
 }
+void CameraComponent::CleanUp()
+{
+
+	App->scene_intro->scene_quadtree->Clear();
+
+}
 void CameraComponent::Update()
 {
 
 	CheckInFrustum(App->scene_intro->scene_quadtree->root);
+	CheckInFrustumNOStatic(App->scene_intro->root_gameobject);
 
 	if (first_time)
 	{

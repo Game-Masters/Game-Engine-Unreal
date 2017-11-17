@@ -43,6 +43,7 @@ public:
 	Directory_ *RootDirect_User=nullptr;
 	Directory_ *Mesh_User = nullptr;
 	Directory_ *Material_User= nullptr;
+	Directory_ *Scene_User = nullptr;
 
 	std::vector<Directory_*>Directories_User_V;
 

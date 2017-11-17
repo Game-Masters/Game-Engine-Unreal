@@ -16,6 +16,7 @@
 #include"ModuleFileSystem_Engine.h"
 #include"ResourceTexture.h"
 #include "ImGui\imgui_internal.h"
+#include"ResourceTexture.h"
 
 #define COLOR_ENGINE ImVec4(0.878, 0.262, 0, 1.0f)
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
@@ -501,8 +502,6 @@ update_status ModuleGui::Update(float dt)
 	}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
-		show_gui_engine = !show_gui_engine;
 
 
 
@@ -629,62 +628,6 @@ update_status ModuleGui::Update(float dt)
 			item++;
 		}
 	}
-	if (show_gui_engine) {
-		ImGui::ShowTestWindow();
-		ImGui::Begin("Click here to close the APP");
-
-		//to change the font scale of the window
-		//ImGui::SetWindowFontScale(1);
-		if (ImGui::CollapsingHeader("Widgets"))
-		{
-			if (ImGui::TreeNode("Bullets"))
-			{
-				ImGui::BulletText("Bullet point 1");
-				ImGui::TreePop();
-			}
-			if (ImGui::TreeNode("Colored Text"))
-			{
-				// Using shortcut. You can use PushStyleColor()/PopStyleColor() for more flexibility.
-				ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Pink");
-				ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Yellow");
-
-				ImGui::TreePop();
-			}
-		}
-
-		//button_exit_app = ImGui::Button("Click here to close the APP", ImVec2(0, 0));
-		button_rand = ImGui::Button("Click here to create random int", ImVec2(0, 0));
-
-		if (button_rand == true)
-		{
-
-
-			iop = rand_test.Int(0, 100);
-			n1 = true;
-
-		}
-
-		if (n1 == true)
-		{
-
-			ImGui::SameLine(250);
-			ImGui::Text("%i", iop);
-		}
-		button_rand2 = ImGui::Button("Click here to create random float", ImVec2(0, 0));
-		if (button_rand2 == true)
-		{
-			iop2 = rand_test.Float(0.0, 1.0);
-			n2 = true;
-		}
-		if (n2 == true)
-		{
-			ImGui::SameLine(300);
-			ImGui::Text("%.4f", iop2);
-		}
-
-		ImGui::End();
-	}
-
 
 	
 	App->scene_intro->world_texture->Unbind();
@@ -764,6 +707,7 @@ void ModuleGui::InspectionNode_Gui()
 	math::float3 trans;
 	math::float3 scale;
 	float3 temp_transf;
+	ResourceTexture* temp_res;
 	if (inspection_node != nullptr) {
 		ImGui::Text("Active:"); ImGui::SameLine(); ImGui::Checkbox("##100", &inspection_node->active);
 		ImGui::Text("Static:"); ImGui::SameLine();	ImGui::Checkbox("##105", &inspection_node->static_obj);
@@ -777,15 +721,14 @@ void ModuleGui::InspectionNode_Gui()
 
 			case Component_Type_Enum::component_material_type:
 				mat_temp = (Material*)Comp_temp;
+				if (ImGui::CollapsingHeader("Material"))
+				{
+				temp_res = (ResourceTexture*)App->resources_mod->Get(mat_temp->UUID_mat);
 				if (mat_temp != nullptr) {
-					//temp_v = mat_temp->GetMaterialVec();
-					if (temp_v != nullptr) {
-						ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-						if (temp_v->texture_w_h != nullptr) {
-							ImGui::Text("Texture width: %i", temp_v->texture_w_h[0]);
-							ImGui::Text("Texture height: %i", temp_v->texture_w_h[1]);
-						}
-						ImGui::Image((void*)temp_v->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
+					ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+					ImGui::Text("Texture width: %f", temp_res->text_w_h.x);
+					ImGui::Text("Texture height: %f", temp_res->text_w_h.y);
+					ImGui::Image((void*)temp_res->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));			
 					}
 				}
 				break;

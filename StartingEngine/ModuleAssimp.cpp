@@ -155,9 +155,9 @@ void ModuleAssimp::ImportGeometry(const char* fbx, std::string *str)
 }
 
 
-uint* ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
+float2 ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 {
-	uint texture_w_h [2];
+	float2 texture_w_h;
 	//Texture loading success
 	bool textureLoaded = false;
 
@@ -185,7 +185,7 @@ uint* ModuleAssimp::LoadImage_devil(const char * theFileName, GLuint *buff)
 		if (success == IL_TRUE)
 		{
 			textureLoaded = loadTextureFromPixels32((GLuint*)ilGetData(), (GLuint)ilGetInteger(IL_IMAGE_WIDTH), (GLuint)ilGetInteger(IL_IMAGE_HEIGHT), buff);
-			texture_w_h[0]= (uint)ilGetInteger(IL_IMAGE_WIDTH); texture_w_h[1] = (uint)ilGetInteger(IL_IMAGE_HEIGHT);
+			texture_w_h.x= (uint)ilGetInteger(IL_IMAGE_WIDTH); texture_w_h.y = (uint)ilGetInteger(IL_IMAGE_HEIGHT);
 			//Create texture from file pixels
 			textureLoaded = true;
 		}

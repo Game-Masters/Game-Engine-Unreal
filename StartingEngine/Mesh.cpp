@@ -10,7 +10,9 @@ Mesh::Mesh(GameObject* parent, int uuid, const char* path, Material* m_text): Co
 	mesh_r = App->resources_mod->Get(uuid_mesh);
 	path_fbx = mesh_r->GetExportedFile();
 	path_fbx_mesh = mesh_r->GetFile();
-
+	float4x4 p = parent->GetMatrix_Trans();
+	Copy_aabb_using = ((ResourceMesh*)mesh_r)->Copy_aabb;
+	Copy_aabb_using.TransformAsAABB(p);
 	Update_AABB();
 	
 }

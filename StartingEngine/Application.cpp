@@ -3,6 +3,7 @@
 #include"Imgui/imgui_impl_sdl.h"
 #include"Imgui\imgui.h"
 #include"Imgui\imguidock.h"
+#include"Quadtree.h"
 
 Application::Application()
 {
@@ -166,14 +167,16 @@ void Application::DtSwitch()
 void Application::ReStartScene()
 {
 	App->gui->inspection_node = nullptr;
+	App->scene_intro->num_GO = 0;
 	App->scene_intro->root_gameobject->CleanUp();
 	App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene,"..\\Game\\Library\\TempPlay");
 	App->scene_intro->Load_Scene(App->scene_intro->root_object_scene);
+	App->scene_intro->ActivateAllObj(App->scene_intro->root_gameobject);
+	
 }
 
 void Application::StartPlayingScene()
 {
-
 	App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, "..\\Game\\Library\\TempPlay");
 	json_object_clear(App->scene_intro->root_object_scene);
 	App->scene_intro->root_gameobject->Save(App->scene_intro->root_object_scene);

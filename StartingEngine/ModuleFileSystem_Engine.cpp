@@ -12,6 +12,7 @@ bool ModuleFileSystem_Engine::Init()
 	RootDirect_User = CreateDir("Assets", Directory_Type::user_directory_type);
 	Mesh_User = CreateDir("Mesh", Directory_Type::user_directory_type, RootDirect_User);
 	Material_User = CreateDir("Material", Directory_Type::user_directory_type, RootDirect_User);
+	Scene_User = CreateDir("Scene", Directory_Type::user_directory_type, RootDirect_User);
 
 	Directories_User_V.push_back(RootDirect_User);
 	Directories_User_V.push_back(Mesh_User);

@@ -198,92 +198,93 @@ bool ModuleRenderer3D::Gui_Engine_Modules(float dt)
 
 void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 	
-	ResourceMesh* mesh_v=(ResourceMesh*)App->resources_mod->Get(uuid);
-	if (App->gui->inspection_node != nullptr) {
-		GameObject* par = m->Get_Parent();
-		//std::string str_ins = ((ResourceMesh*)App->gui->inspection_node->Get_GO_Mesh()->mesh_r)->Res_Mesh_Base->name;
-		if (App->gui->inspection_node == par) {
+	if (m->Get_Parent()->active) {
+		ResourceMesh* mesh_v = (ResourceMesh*)App->resources_mod->Get(uuid);
+		if (App->gui->inspection_node != nullptr) {
+			GameObject* par = m->Get_Parent();
+			//std::string str_ins = ((ResourceMesh*)App->gui->inspection_node->Get_GO_Mesh()->mesh_r)->Res_Mesh_Base->name;
+			if (App->gui->inspection_node == par) {
 
 
+				float3 position;
+				float3 scale;
+				Quat rotation;
+
+				glLineWidth(2.0f);
+				glColor3f(0.0f, 1.0f, 0.0f);
+				glEnableClientState(GL_VERTEX_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, ((ResourceMesh*)m->mesh_r)->Res_Mesh_Base->id_aabb);
+				glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((ResourceMesh*)m->mesh_r)->Res_Mesh_Base->id_index_aabb);
+				glDrawElements(GL_LINES, 8 * 3, GL_UNSIGNED_INT, NULL);
+				glLineWidth(1.0f);
+				glColor3f(1.0f, 1.0f, 1.0f);
+
+			}
+
+		}
+
+		if (mesh_v->Res_Mesh_Base->num_indices > 0 && mesh_v->Res_Mesh_Base->num_vertices > 0) {
+			if (texture_mesh != nullptr) {
+				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
+				if (mesh_v->Res_Mesh_Base != nullptr) {
+					glEnable(GL_TEXTURE_2D);
+					glBindTexture(GL_TEXTURE_2D, 0);
+					glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);
+
+					if (mesh_v->Res_Mesh_Base->textures_coord != nullptr) {
+
+						glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+						glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_texture);
+						glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+					}
+				}
+			}
+			glPushMatrix();
 			float3 position;
 			float3 scale;
 			Quat rotation;
+			float4x4 transform_mesh = m->Get_Parent()->GetMatrix_Trans();
+			transform_mesh.Transpose();
 
-			glLineWidth(2.0f);
-			glColor3f(0.0f, 1.0f, 0.0f);
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER,((ResourceMesh*)m->mesh_r)->Res_Mesh_Base->id_aabb);
-			glVertexPointer(3, GL_FLOAT, 0, NULL);
+			//glLoadMatrixf(trans_point);
+			glMultMatrixf(transform_mesh.ptr());
+			if (App->renderer3D->debugnormals == true && mesh_v->Res_Mesh_Base->normals != nullptr) {
+				for (uint k = 0; k < mesh_v->Res_Mesh_Base->num_vertices * 3; k += 3)
+				{
+					glLineWidth(2.0f);
+					glColor3f(1.0f, 0.0f, 0.0f);
 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((ResourceMesh*)m->mesh_r)->Res_Mesh_Base->id_index_aabb);
-			glDrawElements(GL_LINES, 8 * 3, GL_UNSIGNED_INT, NULL);
-			glLineWidth(1.0f);
-			glColor3f(1.0f, 1.0f, 1.0f);
+					glBegin(GL_LINES);
+					glVertex3f(mesh_v->Res_Mesh_Base->vertices[k], mesh_v->Res_Mesh_Base->vertices[k + 1], mesh_v->Res_Mesh_Base->vertices[k + 2]);
+					glVertex3f(mesh_v->Res_Mesh_Base->vertices[k] + mesh_v->Res_Mesh_Base->normals[k], mesh_v->Res_Mesh_Base->vertices[k + 1] + mesh_v->Res_Mesh_Base->normals[k + 1], mesh_v->Res_Mesh_Base->vertices[k + 2] + mesh_v->Res_Mesh_Base->normals[k + 2]);
+					glEnd();
 
-		}
-
-	}
-
-	if (mesh_v->Res_Mesh_Base->num_indices > 0 && mesh_v->Res_Mesh_Base->num_vertices > 0) {
-		if (texture_mesh != nullptr) {
-			Resource* text_m=App->resources_mod->Get(texture_mesh->UUID_mat);
-			if (mesh_v->Res_Mesh_Base != nullptr) {
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, 0);
-				glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);
-
-				if (mesh_v->Res_Mesh_Base->textures_coord != nullptr) {
-
-					glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-					glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_texture);
-					glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
+					glLineWidth(1.0f);
+					glColor3f(1.0f, 1.0f, 1.0f);
 				}
 			}
-		}
-		glPushMatrix();
-		float3 position;
-		float3 scale;
-		Quat rotation;
-		float4x4 transform_mesh = m->Get_Parent()->GetMatrix_Trans();
-		transform_mesh.Transpose();
 
-		//glLoadMatrixf(trans_point);
-		glMultMatrixf(transform_mesh.ptr());
-		if (App->renderer3D->debugnormals == true && mesh_v->Res_Mesh_Base->normals != nullptr) {
-			for (uint k = 0; k < mesh_v->Res_Mesh_Base->num_vertices * 3; k += 3)
-			{
-				glLineWidth(2.0f);
-				glColor3f(1.0f, 0.0f, 0.0f);
 
-				glBegin(GL_LINES);
-				glVertex3f(mesh_v->Res_Mesh_Base->vertices[k], mesh_v->Res_Mesh_Base->vertices[k + 1], mesh_v->Res_Mesh_Base->vertices[k + 2]);
-				glVertex3f(mesh_v->Res_Mesh_Base->vertices[k] + mesh_v->Res_Mesh_Base->normals[k], mesh_v->Res_Mesh_Base->vertices[k + 1] + mesh_v->Res_Mesh_Base->normals[k + 1], mesh_v->Res_Mesh_Base->vertices[k + 2] + mesh_v->Res_Mesh_Base->normals[k + 2]);
-				glEnd();
 
-				glLineWidth(1.0f);
-				glColor3f(1.0f, 1.0f, 1.0f);
+			if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
+				glEnableClientState(GL_VERTEX_ARRAY);
+				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_vertices);
+				glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+				glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_indices);
+				glDrawElements(GL_TRIANGLES, mesh_v->Res_Mesh_Base->num_indices, GL_UNSIGNED_INT, NULL);
 			}
+			glPopMatrix();
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-
-
-	
-		if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_vertices);
-			glVertexPointer(3, GL_FLOAT, 0, NULL);
-
-			glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_indices);
-			glDrawElements(GL_TRIANGLES, mesh_v->Res_Mesh_Base->num_indices, GL_UNSIGNED_INT, NULL);
+		else {
+			LOG("Impossible to draw the mesh");
 		}
-		glPopMatrix();
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-	else {
-		LOG("Impossible to draw the mesh");
-	}
-
 
 }
 

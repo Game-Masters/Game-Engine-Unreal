@@ -16,7 +16,7 @@ bool GameObject::IsComponentType(Component_Type_Enum temp_type)
 
 void GameObject::PreUpdate()
 {
-	if (active) {
+	
 	
 		for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
 			this->Childrens_GameObject_Vect[i]->PreUpdate();
@@ -26,21 +26,21 @@ void GameObject::PreUpdate()
 		for (int j = 0; j < this->Component_Vect.size(); j++) {
 			this->Component_Vect[j]->PreUpdate();
 		}
-	}
+	
 }
 
 void GameObject::Update()
 {
-	if (active) {
-		for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
-			this->Childrens_GameObject_Vect[i]->Update();
-			
-		}
+	
+	for (int i = 0; i < this->Childrens_GameObject_Vect.size(); i++) {
+		this->Childrens_GameObject_Vect[i]->Update();
+
+	}
 
 		for (int j = 0; j < this->Component_Vect.size(); j++) {
 			this->Component_Vect[j]->Update();
 		}
-	}
+	
 }
 
 Component * GameObject::AddNewComponent(Component_Type_Enum type)
@@ -148,6 +148,8 @@ void GameObject::Save(JSON_Object *root_object_scene)
 		json_object_set_value(root_object_scene, go_name.c_str(), json_value_init_object());
 		node = json_object_get_object(root_object_scene, go_name.c_str());
 		json_object_set_string(node, "Name", this->name.c_str());
+		json_object_set_boolean(node, "Active", this->active);
+		json_object_set_boolean(node, "Static", this->static_obj);
 		json_object_set_number(node, "UUID", this->UUID);
 
 		if (parent != nullptr) {
@@ -198,6 +200,10 @@ void GameObject::CleanUp()
 
 		case Component_Type_Enum::component_material_type:
 			((Material*)this->Component_Vect[i])->CleanUp();
+			break;
+
+		case Component_Type_Enum::component_camera:
+			((CameraComponent*)this->Component_Vect[i])->CleanUp();
 			break;
 
 		}

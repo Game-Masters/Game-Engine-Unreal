@@ -15,6 +15,7 @@
 #include"Mesh.h"
 #include"ModuleFileSystem_Engine.h"
 #include"ResourceTexture.h"
+#include "ImGui\imgui_internal.h"
 
 #define COLOR_ENGINE ImVec4(0.878, 0.262, 0, 1.0f)
 #define MAIN_COLOUR_HARDWARE ImVec4(1.00f, 0.60f, 0.0f, 1.0f)
@@ -233,6 +234,14 @@ update_status ModuleGui::Update(float dt)
 		
 
 		if (ImGui::BeginDock("World", false, false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+	
+			auto im_context = ImGui::GetCurrentContext();
+			auto focused_window = im_context->NavWindow;
+			auto this_window = ImGui::GetCurrentWindowRead();
+			world_focused = false;
+			if (focused_window == this_window) {
+				world_focused = true;
+			}			
 			ImGui::Image((void*)App->scene_intro->world_texture->GetTexture(), ImGui::GetContentRegionAvail(), ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::EndDock();

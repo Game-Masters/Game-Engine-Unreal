@@ -124,6 +124,8 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
+	if (App->gui->world_focused == false)
+		return update_status::UPDATE_CONTINUE;
 
 	float3 newPos(0, 0, 0);
 	float speed = 4.0f * dt;

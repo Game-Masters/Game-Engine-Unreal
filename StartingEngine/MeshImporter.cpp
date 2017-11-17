@@ -631,8 +631,10 @@ void MeshImporter::General_Bin_Mesh(char ** cursor, const aiScene * scene, aiNod
 			std::string str_parent_substracted = str_parent.substr(temp_uint, diff);
 			name_mesh = str_parent_substracted + "n"+ num_added_change_name_Str;
 			name_mesh_true = "parent" + num_added_change_name_Str;
+			name_mesh_true = node->mName.C_Str();
+		
 			node->mTransformation.Decompose(scaling, rotation, translation);
-
+			
 			
 			if (node->mNumMeshes > 0 && scene->mRootNode!= node) {
 				mesh_temp = scene->mMeshes[node->mMeshes[num_child_iterator]];

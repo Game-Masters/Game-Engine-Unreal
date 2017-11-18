@@ -134,10 +134,6 @@ update_status ModuleCamera3D::Update(float dt)
 	if (wheel_direction > 0) Position += ((Reference-Position) * 0.1f);
 	if (wheel_direction < 0) Position -= ((Reference - Position) * 0.1f);
 
-	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN && App->gui->n4 == false)
-	{
-		Can_Move_Camera = !Can_Move_Camera;
-	}
 
 	if (Can_Move_Camera) {
 		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
@@ -152,7 +148,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	float3x3 cam_rot_mouse_x= float3x3::identity;
 	float3x3 cam_rot_mouse_y= float3x3::identity;
-			if ((App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT)== KEY_REPEAT && App->gui->n4 == false) || (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && Can_Move_Camera==true))
+			if ((App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT)== KEY_REPEAT && App->gui->n4 == false) || (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && Can_Move_Camera==true))
 			{
 				int dx = -App->input->GetMouseXMotion();
 				int dy = -App->input->GetMouseYMotion();

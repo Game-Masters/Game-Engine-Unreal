@@ -301,24 +301,35 @@ update_status ModuleGui::Update(float dt)
 				n3 = true;
 			}
 			ImGui::SameLine();
-			if(ImGui::Button("Octree Options", ImVec2(120, 30))== true);
+			bool temp4 = ImGui::Button("Octree Options", ImVec2(120, 30));
+			if (temp4 == true)
 			{
 				Octree_Window = true ;
 			}
-			if (Octree_Window == true)
+			ImGui::SameLine();
+			bool temp5 = ImGui::Button("Free Cam", ImVec2(100, 30));
+			if (temp5 == true)
 			{
-				ImGui::Begin("Octree Options", &Octree_Window);
-				ImGui::Button("Bake tree", ImVec2(120, 30));
-				
-				ImGui::InputFloat3("Min node size", &App->scene_intro->scene_quadtree->root->max[0],3);
-				ImGui::Text("\n \n WARNING: Putting the minimum node size with really \n small numbers may  generate a crash ");
-				ImGui::End();
+				App->camera->Can_Move_Camera = !App->camera->Can_Move_Camera;
 			}
+			
 				
 			
 			ImGui::SameLine();
 
-			ImGui::Text("                             ");
+			
+			if (App->timeStatus == play)
+			{
+				ImGui::TextColored(ImVec4(0.81, 0, 0, 1.0f), "      PLAY                      ");
+			}
+			else if (App->timeStatus == pause)
+			{ 
+				ImGui::TextColored(ImVec4(0.81, 0, 0, 1.0f), "      PAUSE                   ");
+			}
+			else
+			{
+				ImGui::Text(                        "                                       ");
+			} 
 			ImGui::SameLine();
 			//ImGui::Begin("##15", NULL, ImVec2(App->window->win_width / 2, 0), 1.0f, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
 			if (ImGui::ImageButton((void*)Play, ImVec2(25, 25), ImVec2(0, 0), ImVec2(1, -1), 0))
@@ -349,9 +360,30 @@ update_status ModuleGui::Update(float dt)
 			{
 				ImGui::TextColored(COLOR_ENGINE, "FREE CAMERA MODE ACTIVATED");
 			}
+			ImGui::SameLine();
+			
 			//ImGui::End();
 		}
 		ImGui::EndDock();
+		if (Octree_Window == true)
+		{
+			ImGui::Begin("Octree Options", &Octree_Window);
+			bool temp5 = ImGui::Button("Bake tree", ImVec2(120, 30));
+			if (temp5 == true || App->scene_intro->calc_octree_stop_button == true)
+			{
+				App->scene_intro->calc_octree_stop_button = false;
+				App->scene_intro->scene_quadtree->Calculate();
+
+			}
+			ImGui::SameLine();
+			
+			ImGui::Text("                       ");
+			ImGui::SameLine();
+			ImGui::Checkbox("Debug Draw", &App->scene_intro->draw_quadtree);
+			ImGui::InputFloat3("Min node size", &App->scene_intro->scene_quadtree->root->max[0], 3);
+			ImGui::Text("\n \n WARNING: Putting the minimum node size with really \n small numbers may  generate a crash ");
+			ImGui::End();
+		}
 		if (n3 == true)
 		{
 			ImGui::Begin("Help", &n3);
@@ -729,9 +761,10 @@ void ModuleGui::InspectionNode_Gui()
 	float3 temp_transf;
 	ResourceTexture* temp_res;
 	if (inspection_node != nullptr) {
+		ImGui::Text("Name: %s", inspection_node->name.c_str());
 		ImGui::Text("Active:"); ImGui::SameLine(); ImGui::Checkbox("##100", &inspection_node->active);
 		ImGui::Text("Static:"); ImGui::SameLine();	ImGui::Checkbox("##105", &inspection_node->static_obj);
-		ImGui::Text("Name: %s", inspection_node->name.c_str());
+		
 		for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
 			bool modify = false;
 			Comp_temp = inspection_node->Component_Vect[j];
@@ -762,7 +795,7 @@ void ModuleGui::InspectionNode_Gui()
 					trans = t_temp->GetPosition();
 					temp_transf = trans;
 					//ImGui::Text("                                Position");
-					ImGui::Text("Pos :"); ImGui::SameLine();
+					ImGui::Text("Pos :   "); ImGui::SameLine();
 					ImGui::DragFloat3("##6", &trans[0], 0.1f, -500.0f, 500.0f);
 					if (trans.x != temp_transf.x || trans.y != temp_transf.y || trans.z != temp_transf.z) {
 						//t_temp->SetPosition(trans);
@@ -784,7 +817,7 @@ void ModuleGui::InspectionNode_Gui()
 					eul_ang = q_temp.ToEulerXYZ()*RADTODEG;
 					temp_transf = eul_ang;
 					//ImGui::Text("                                Rotation");
-					ImGui::Text("Rot :"); ImGui::SameLine();
+					ImGui::Text("Rot :   "); ImGui::SameLine();
 					ImGui::DragFloat3("##12", &eul_ang[0], 0.1f, -180.0f, 180.0f);
 
 					//Not really working

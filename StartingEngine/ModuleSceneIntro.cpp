@@ -95,16 +95,12 @@ update_status ModuleSceneIntro::Update(float dt)
 	drawGrid(50);
 	
 	root_gameobject->Update();
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
-		draw_quadtree = !draw_quadtree;
+	
 
 	if(draw_quadtree)
 	scene_quadtree->DebugDraw();
 
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN || calc_octree_stop_button == true) {
-		calc_octree_stop_button = false;
-		scene_quadtree->Calculate();
-	}
+
 
 	glLineWidth(5.0f);
 	glBegin(GL_LINES);

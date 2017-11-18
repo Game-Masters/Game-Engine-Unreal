@@ -373,31 +373,30 @@ Material* MeshImporter::AddTextureResourceToGO(Resource_Mesh_Base* n_temp_mesh, 
 	//need to fix
 	Material* mat = nullptr;
 	Resource* res_mat = nullptr;
-
-
-
-	if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size()>0) {
+	if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size() > 0) {
 		uint p_temp = 0;
 		std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);
-		size_t size_temp = it->second.rfind(".") + 1;
-		std::string f_path = it->second.substr(size_temp, it->second.size());
-		if (it == App->imp_mat->Mat_Map.end() || f_path == "psd" || f_path == "PSD") {}
-		else {
-			//App->resources_mod->Find(it->second.c_str());
-			int uuid_mat = App->resources_mod->Find_UserRes(it->second.c_str());
-			if (uuid_mat != -1) {
-				res_mat = App->resources_mod->Get(uuid_mat);
-				res_mat->LoadToMemory();
-				n_temp_mesh->id_image_devil = ((ResourceTexture*)res_mat)->id_image_devil;
-				mat = child_gameobj->AddNewMaterial(uuid_mat);
-				mat->UUID_mat = uuid_mat;
-			}
+		if (it != App->imp_mat->Mat_Map.end()) {
+			size_t size_temp = it->second.rfind(".") + 1;
+			std::string f_path = it->second.substr(size_temp, it->second.size());
+			if (f_path == "psd" || f_path == "PSD") {}
 			else {
-				ResourceTexture* text = (ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
-				std::string fbx_path_temp = path_fbx_gen;
-				text->Set_New_Resource_Files(it->second, fbx_path_temp);
-				text->LoadToMemory();
-				mat = child_gameobj->AddNewMaterial(text->GetUID());
+				//App->resources_mod->Find(it->second.c_str());
+				int uuid_mat = App->resources_mod->Find_UserRes(it->second.c_str());
+				if (uuid_mat != -1) {
+					res_mat = App->resources_mod->Get(uuid_mat);
+					res_mat->LoadToMemory();
+					n_temp_mesh->id_image_devil = ((ResourceTexture*)res_mat)->id_image_devil;
+					mat = child_gameobj->AddNewMaterial(uuid_mat);
+					mat->UUID_mat = uuid_mat;
+				}
+				else {
+					ResourceTexture* text = (ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
+					std::string fbx_path_temp = path_fbx_gen;
+					text->Set_New_Resource_Files(it->second, fbx_path_temp);
+					text->LoadToMemory();
+					mat = child_gameobj->AddNewMaterial(text->GetUID());
+				}
 			}
 		}
 	}

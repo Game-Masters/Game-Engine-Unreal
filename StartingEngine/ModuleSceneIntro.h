@@ -64,6 +64,7 @@ public:
 	GameObject* frustrumtest = nullptr;
 	bool load_scene=false;
 	bool save_scene=false;
+	bool calc_octree_stop_button = false;
 	void IterateChildGameObjects(GameObject* item);
 	GameObject* root_gameobject= nullptr;
 	JSON_Value *root_value_scene = nullptr;

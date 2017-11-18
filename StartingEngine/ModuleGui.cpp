@@ -150,6 +150,7 @@ bool ModuleGui::Start()
 	str_text_user = new char[100];
 	str_text_user = "";
 	SliderTest_Int_value = new int();
+	num_f = 0;
 	return true;
 }
 
@@ -318,9 +319,32 @@ update_status ModuleGui::Update(float dt)
 			{
 				App->scene_intro->root_gameobject->CleanUp();
 				inspection_node = nullptr;
+				num_f = 0;
+			}
+			ImGui::SameLine();
+			bool AddFrust_Scene = ImGui::Button("Add frustrum", ImVec2(100, 30));
+			if (AddFrust_Scene == true)
+			{
+				
+				for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+					if (App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->name == "Frustrum test") {
+						num_f++;
+					}
+				}
+				if (num_f == 0) {
+					GameObject* frustrumtest = nullptr;
+					frustrumtest = App->scene_intro->CreateNewGameObjects("Frustrum test", true, App->scene_intro->root_gameobject, Tag_Object_Enum::frustrum_obj_tag, false);
+					frustrumtest->AddNewTransform(float3(0, 0, 0), float3(1, 1, 1), Quat(0, 0, 0, 1));
+					frustrumtest->AddNewFrustum();
+					num_f = 0;
+				}
+				else {
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Adding Frustum", "The scene already has a frustum", App->window->window);
+				}
+				inspection_node = nullptr;
 			}
 
-				
+		
 			
 			ImGui::SameLine();
 
@@ -772,7 +796,11 @@ void ModuleGui::InspectionNode_Gui()
 		ImGui::Text("Name: %s", inspection_node->name.c_str());
 		ImGui::Text("Active:"); ImGui::SameLine(); ImGui::Checkbox("##100", &inspection_node->active);
 		ImGui::Text("Static:"); ImGui::SameLine();	ImGui::Checkbox("##105", &inspection_node->static_obj);
-		
+		if (inspection_node->parent == App->scene_intro->root_gameobject) {
+			App->scene_intro->StaticAllGameObject(inspection_node, inspection_node->static_obj);
+		}
+
+
 		for (int j = 0; j < inspection_node->Component_Vect.size(); j++) {
 			bool modify = false;
 			Comp_temp = inspection_node->Component_Vect[j];

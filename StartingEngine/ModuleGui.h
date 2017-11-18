@@ -77,7 +77,7 @@ public:
 
 	std::string str_path_fbx;
 	std::string str_path_img;
-	
+	int num_f = 0;
 	char filename_save[64] = { 0 };
 	char* str_geom_user;
 	char* str_text_user;

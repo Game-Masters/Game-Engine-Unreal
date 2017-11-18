@@ -207,16 +207,16 @@ void ModuleSceneIntro::StaticAllGameObject(GameObject * temp, bool static_t)
 
 }
 
-void ModuleSceneIntro::ActivateAllObj(GameObject * root)
+void ModuleSceneIntro::StaticAllObj(GameObject * root)
 {
 
 	for (int i = 0; i < root->Childrens_GameObject_Vect.size(); i++) {
-		root->Childrens_GameObject_Vect[i]->active = true;
+		root->Childrens_GameObject_Vect[i]->static_obj = true;
 
 		GameObject* temp = root->Childrens_GameObject_Vect[i];
 
 		for (int j = 0; j < temp->Childrens_GameObject_Vect.size(); j++) {
-			ActivateAllObj(temp);
+			StaticAllObj(temp);
 		}
 	}
 

@@ -366,11 +366,25 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 
 		if (ext_str==".fbx" || ext_str == ".FBX") {
 			ImGui::ImageButton_with_text((void*)Fbx_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
-			if(asset_editor)
-			ImGui::SameLine(0, 50);
-			if (ImGui::IsItemClicked()) {
-				if (ImGui::IsMouseDoubleClicked(0)) {
-					ptr = str_path.c_str();
+			if (asset_editor) {
+				ImGui::SameLine(0, 50);
+				if (ImGui::IsItemClicked()) {
+					if (ImGui::IsMouseDoubleClicked(0)) {
+						const aiScene* scene = aiImportFile(str_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+						App->imp_mesh->Load_Texture_Scenes(scene);
+						//Probably it has to be done in other way
+						//-------------------------------------------
+						std::string path_r;
+						App->fs_e->ChangeFormat_File(str_path.c_str(), "ric", &path_r, App->fs_e->Mesh_Engine);
+						App->imp_mesh->LoadMesh(path_r.c_str(), str_path.c_str(), nullptr, true);
+					}
+				}
+			}
+			else {
+				if (ImGui::IsItemClicked()) {
+					if (ImGui::IsMouseDoubleClicked(0)) {
+						ptr = str_path.c_str();
+					}
 				}
 			}
 		}

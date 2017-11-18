@@ -231,7 +231,7 @@ void MeshImporter::ImportMesh(Resource_Mesh_Base* temp_m, const char* path)
 
 //char** cursor, Object* parent, int* num_childs
 
-bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen, GameObject* parent)
+bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen, GameObject* parent, bool fbx_with_text)
 {
 
 
@@ -242,7 +242,7 @@ bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen, GameOb
 
 	//parent nullptr_ root go
 	if (buffer != nullptr) {
-		LoadRecursive(&cursor, nullptr, path, path_fbx_gen, parent);
+		LoadRecursive(&cursor, nullptr, path, path_fbx_gen, parent, fbx_with_text);
 	}
 	App->imp_mat->Mat_Map.clear();
 	RELEASE_ARRAY(buffer);
@@ -250,20 +250,20 @@ bool MeshImporter::LoadMesh(const char * path, const char * path_fbx_gen, GameOb
 }
 
 
-void MeshImporter::LoadRecursive(char ** cursor, GameObject* Parent, const char* path, const char * path_fbx_gen, GameObject* Parent_Gen_World) {
+void MeshImporter::LoadRecursive(char ** cursor, GameObject* Parent, const char* path, const char * path_fbx_gen, GameObject* Parent_Gen_World,bool fbx_with_text) {
 
 	int child_num = 0;
 	
-	Parent = LoadMesh_variables(&cursor[0], Parent, &child_num, path, path_fbx_gen, Parent_Gen_World);
+	Parent = LoadMesh_variables(&cursor[0], Parent, &child_num, path, path_fbx_gen, Parent_Gen_World, fbx_with_text);
 
 	for (int i = 0; i < child_num; i++) {
-		LoadRecursive(&cursor[0], Parent, path,path_fbx_gen, Parent_Gen_World);
+		LoadRecursive(&cursor[0], Parent, path,path_fbx_gen, Parent_Gen_World, fbx_with_text);
 	}
 
 
 }
 
-GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent, int* num_childs, const char* path, const char * path_fbx_gen, GameObject* Parent_Gen_World)
+GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent, int* num_childs, const char* path, const char * path_fbx_gen, GameObject* Parent_Gen_World, bool fbx_with_text)
 {
 	uint* ind = nullptr;
 	uint name_lenght;
@@ -349,8 +349,9 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 
 		if (n_temp_mesh!=nullptr) {
 			n_temp_mesh->name = name_mesh_true;
-			//mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str(), path_fbx_gen);
-			
+			if (fbx_with_text) {
+				mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str(), path_fbx_gen);
+			}
 				int uuid_mesh = App->resources_mod->Find_EngineRes(final_path_mesh.c_str());
 				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, path, path_fbx_gen);
 			}
@@ -378,14 +379,26 @@ Material* MeshImporter::AddTextureResourceToGO(Resource_Mesh_Base* n_temp_mesh, 
 	if (n_temp_mesh->id_image_devil != -1 && App->imp_mat->Mat_Map.size()>0) {
 		uint p_temp = 0;
 		std::map<int, std::string>::iterator it = App->imp_mat->Mat_Map.find(n_temp_mesh->id_image_devil);
-		if (it == App->imp_mat->Mat_Map.end()) {}
+		size_t size_temp = it->second.rfind(".") + 1;
+		std::string f_path = it->second.substr(size_temp, it->second.size());
+		if (it == App->imp_mat->Mat_Map.end() || f_path == "psd" || f_path == "PSD") {}
 		else {
 			//App->resources_mod->Find(it->second.c_str());
 			int uuid_mat = App->resources_mod->Find_UserRes(it->second.c_str());
-			res_mat = App->resources_mod->Get(uuid_mat);
-			n_temp_mesh->id_image_devil = ((ResourceTexture*)res_mat)->id_image_devil;
-			mat = child_gameobj->AddNewMaterial(uuid_mat);
-			mat->UUID_mat = uuid_mat;
+			if (uuid_mat != -1) {
+				res_mat = App->resources_mod->Get(uuid_mat);
+				res_mat->LoadToMemory();
+				n_temp_mesh->id_image_devil = ((ResourceTexture*)res_mat)->id_image_devil;
+				mat = child_gameobj->AddNewMaterial(uuid_mat);
+				mat->UUID_mat = uuid_mat;
+			}
+			else {
+				ResourceTexture* text = (ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
+				std::string fbx_path_temp = path_fbx_gen;
+				text->Set_New_Resource_Files(it->second, fbx_path_temp);
+				text->LoadToMemory();
+				mat = child_gameobj->AddNewMaterial(text->GetUID());
+			}
 		}
 	}
 
@@ -511,44 +524,47 @@ bool MeshImporter::Load_Texture_Scenes(const aiScene* scene)
 
 	/* initialization of DevIL */
 	ilInit();
+	if (scene != nullptr) {
+		/* scan scene's materials for textures */
+		for (unsigned int m = 0; m < scene->mNumMaterials; ++m)
+		{
+			int texIndex = 0;
+			aiString aipath;  // filename
 
-	/* scan scene's materials for textures */
-	for (unsigned int m = 0; m<scene->mNumMaterials; ++m)
-	{
-		int texIndex = 0;
-		aiString aipath;  // filename
 
+			if (scene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, 0, &aipath) == AI_SUCCESS) {
 
-		if (scene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, 0, &aipath) == AI_SUCCESS) {
-
-			std::string file_name = aipath.C_Str();
-			std::string file_name_end;
-			App->imp_mat->ImportMaterial(file_name.c_str(),&file_name_end);
-		}
-	}
-
-	for (int i = 0; i < scene->mNumMeshes; i++) {
-		uint id_text = scene->mMeshes[i]->mMaterialIndex;
-
-		aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
-		uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
-
-		aiString path;
-		uint p;
-		
-		
-		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path)== AI_SUCCESS) {
-			std::string temp = path.C_Str();
-			std::string final_path= App->fs_e->Material_User->path+ "\\" + temp;
-			//App->resources_mod->ImportFile(final_path.c_str());
-			//App->fs_e->ChangeFormat_File(temp.c_str(), "dds", &final_path, App->fs_e->Material_Engine);
-
-			std::pair<uint, std::string> pair_t;
-			pair_t.first = id_text;
-			pair_t.second = final_path;
-			App->imp_mat->Mat_Map.insert(pair_t);
+				std::string file_name = aipath.C_Str();
+				std::string file_name_end;
+				App->imp_mat->ImportMaterial(file_name.c_str(), &file_name_end);
+			}
 		}
 
+		for (int i = 0; i < scene->mNumMeshes; i++) {
+			uint id_text = scene->mMeshes[i]->mMaterialIndex;
+
+			aiMaterial* material = scene->mMaterials[scene->mMeshes[i]->mMaterialIndex];
+			uint numTextures = material->GetTextureCount(aiTextureType_DIFFUSE);
+
+			aiString path;
+			uint p;
+
+
+			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
+				std::string temp = path.C_Str();
+				size_t numt = temp.rfind("\\") + 1;
+				temp = temp.substr(numt, temp.size());
+				std::string final_path = App->fs_e->Material_User->path + "\\" + temp;
+				//App->resources_mod->ImportFile(final_path.c_str());
+				//App->fs_e->ChangeFormat_File(temp.c_str(), "dds", &final_path, App->fs_e->Material_Engine);
+
+				std::pair<uint, std::string> pair_t;
+				pair_t.first = id_text;
+				pair_t.second = final_path;
+				App->imp_mat->Mat_Map.insert(pair_t);
+			}
+
+		}
 	}
 
 	

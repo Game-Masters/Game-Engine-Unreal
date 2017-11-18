@@ -172,7 +172,7 @@ void Application::ReStartScene()
 	App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene,"..\\Game\\Library\\TempPlay");
 	App->scene_intro->Load_Scene(App->scene_intro->root_object_scene);
 	App->scene_intro->calc_octree_stop_button = true;
-
+	
 }
 
 void Application::StartPlayingScene()
@@ -286,6 +286,7 @@ bool Application::CleanUp()
 	json_class->CleanUp();
 	ImGui::SaveDocks();
 	App->imp_mat->Mat_Map.clear();
+
 	delete imp_mat;
 	delete imp_mesh;
 

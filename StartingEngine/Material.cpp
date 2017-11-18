@@ -44,7 +44,7 @@ void Material::Save(JSON_Object * root_object_scene)
 		}
 	json_object_set_string(node, "Resource Material", path_texture.c_str());
 	json_object_set_string(node, "Resource Material exported", path_texture_exported.c_str());
-
+	delete node;
 }
 
 void Material::Load(JSON_Object * root_object_scene)

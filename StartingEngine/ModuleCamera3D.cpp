@@ -205,19 +205,8 @@ update_status ModuleCamera3D::Update(float dt)
 
 		if (Closest_Ray_GO!=nullptr) {
 			App->gui->inspection_node = Closest_Ray_GO;
-		}
-		
-
-		glLineWidth(5.0f);
-		glBegin(GL_LINES);
-		glColor3f(1, 0, 0);
-		glVertex3f(r_cast_segm.a.x, r_cast_segm.a.y, r_cast_segm.a.z);
-		glVertex3f(r_cast_segm.b.x, r_cast_segm.b.y, r_cast_segm.b.z);
-		glEnd();
-		glColor3f(1, 1, 1);
+		}		
 		mymap.clear();
-
-
 	return UPDATE_CONTINUE;
 }
 
@@ -340,29 +329,15 @@ void ModuleCamera3D::CheckCollision_Mesh()
 		float3 hit_point = float3::zero;
 		int i = 0;
 		if (temp_mesh_base->num_indices >9) {
-			//while (i < temp_mesh_base->num_indices - 9) {
-
-			/*float point1[] = {
-			temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
-
-			};
-
-			float point2[] = {
-			temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
-			};
-
-			float point3[] = {
-			temp_mesh_base->vertices[temp_mesh_base->indices[i++]*3],
-
-			};*/
-
-
-			//}
+		
 			while (i < temp_mesh_base->num_indices) {
 				Triangle tri;
-				tri.a.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
-				tri.b.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
-				tri.c.Set(&temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3]);
+				float* point1 = &temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3];
+				float* point2 = &temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3];
+				float* point3 = &temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3];
+				tri.a.Set(point1);
+				tri.b.Set(point2);
+				tri.c.Set(point3);
 
 				if (temp_ray.Intersects(tri, &distance, &hit_point) && dist_to_cam < dist_min_ray_go) {
 					Closest_Ray_GO = temp;

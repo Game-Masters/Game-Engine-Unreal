@@ -12,6 +12,11 @@ Transform::~Transform()
 {
 }
 
+void Transform::CleanUp()
+{
+	delete this;
+}
+
 void Transform::Update()
 {
 	if (parent->active) {
@@ -139,6 +144,8 @@ void Transform::Save(JSON_Object * root_object_scene)
 	json_array_append_number(array, this->rotation.z);
 	json_array_append_number(array, this->rotation.w);
 
+	
+	//json_value_free(va);
 }
 
 void Transform::Load(JSON_Object * root_object_scene)

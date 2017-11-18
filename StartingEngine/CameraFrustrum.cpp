@@ -146,6 +146,8 @@ void CameraComponent::Save(JSON_Object * root_object_scene)
 	json_object_set_value(root_object_scene, "Frustum Comp", json_value_init_object());
 	node = json_object_get_object(root_object_scene, "Frustum Comp");
 
+
+//	delete node;
 }
 void CameraComponent::Load(JSON_Object * root_object_scene)
 {
@@ -175,6 +177,7 @@ void CameraComponent::CleanUp()
 {
 
 	App->scene_intro->scene_quadtree->Clear();
+	delete this;
 
 }
 void CameraComponent::Update()

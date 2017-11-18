@@ -78,6 +78,7 @@ void Parson_JSON::Create_JSON_DOC(JSON_Value **root_value_scene, JSON_Object **r
 	else {
 		*root_object_scene = json_value_get_object(*root_value_scene);
 	}
+
 }
 
 bool Parson_JSON::Load()
@@ -106,7 +107,6 @@ bool Parson_JSON::Save()
 	}
 	char* serialized_string = json_serialize_to_string_pretty(root_value);
 	json_serialize_to_file(root_value, file_name.c_str());
-
 	free(node);
 	return true;
 }

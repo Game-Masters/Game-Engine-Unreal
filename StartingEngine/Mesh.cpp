@@ -144,7 +144,7 @@ void Mesh::Save(JSON_Object * root_object_scene)
 	json_object_set_string(node, "General_Path_FBX", general_fb_path.c_str());
 	json_object_set_string(node, "Resource Mesh exported", path_fbx.c_str());
 	json_object_set_string(node, "Resource Mesh", path_fbx_mesh.c_str());
-
+//	delete node;
 }
 
 void Mesh::Load(JSON_Object * root_object_scene)

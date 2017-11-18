@@ -194,6 +194,10 @@ void GameObject::CleanUp()
 
 	for (int i = 0; i < this->Component_Vect.size(); i++) {
 		switch (this->Component_Vect[i]->GetComponentType()) {
+		case Component_Type_Enum::component_transform_type:
+			((Transform*)this->Component_Vect[i])->CleanUp();
+			break;
+
 		case Component_Type_Enum::component_mesh_type:
 			((Mesh*)this->Component_Vect[i])->CleanUp();
 			break;

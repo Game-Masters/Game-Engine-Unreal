@@ -18,6 +18,7 @@ public:
 	
 	Transform(GameObject *parent, float3 position, float3 scale, Quat rotations);
 	~Transform();
+	void CleanUp();
 	void SetPosition(float3 n_pos);
 	void SetRotation(Quat n_rot);
 	void SetScale(float3 n_scal);

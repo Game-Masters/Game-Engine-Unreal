@@ -305,6 +305,8 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 		name_mesh_true = name_mesh_temp;
 		cursor[0] += size;
 
+		delete[] name_mesh_temp;
+
 		size = sizeof(int);
 		memcpy(num_childs, cursor[0], size);
 		cursor[0] += size;
@@ -360,7 +362,6 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 
 
 	delete[] ind;
-
 	return child_gameobj;
 }
 

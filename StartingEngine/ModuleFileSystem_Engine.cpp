@@ -278,7 +278,7 @@ void ModuleFileSystem_Engine::Asset_User_File_Iteration() {
 		else {
 			App->resources_mod->ImportResources_Path_Usable(str_path_meta.c_str());
 		}
-	
+
 	}
 }
 

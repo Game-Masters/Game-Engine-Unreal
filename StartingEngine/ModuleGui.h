@@ -74,6 +74,7 @@ public:
 	bool world_focused = false;
 	bool assets_dock_focus = false;
 	bool Octree_Window = false;
+	bool createnew = false;
 
 	std::string str_path_fbx;
 	std::string str_path_img;

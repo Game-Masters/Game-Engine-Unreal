@@ -48,14 +48,14 @@ bool ModuleGui::Start()
 	//IMGUI STYLE START
 	ImGuiStyle& style = ImGui::GetStyle();
 
-
+	//style.ItemSpacing
 	style.AntiAliasedLines = true;
 	style.AntiAliasedShapes = true;
 	style.WindowPadding = ImVec2(12,15);
 	style.WindowRounding = 2.0f;
 	style.FramePadding = ImVec2(15, 5);
 	style.FrameRounding = 2.0f;
-	style.ItemSpacing = ImVec2(5,4);
+	style.ItemSpacing = ImVec2(6,4);
 	style.ItemInnerSpacing = ImVec2(14, 14);
 	style.IndentSpacing = 25.0f;
 	style.ScrollbarSize = 15.0f;
@@ -89,7 +89,7 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
 	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_Header] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
-	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+	style.Colors[ImGuiCol_HeaderHovered] = COLOR_ENGINE;
 	style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
 	style.Colors[ImGuiCol_Column] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
@@ -97,13 +97,13 @@ bool ModuleGui::Start()
 	style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
 	style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
 	style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
-	style.Colors[ImGuiCol_CloseButton] = ImVec4(1.0f, 0.49f, 0.00f, 0.3f);
+	style.Colors[ImGuiCol_CloseButton] = COLOR_ENGINE;
 	style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(1.0f, 0.49f, 0.00f, 0.6);
 	style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.40f, 0.39f, 0.38f, 1.00f);
 	style.Colors[ImGuiCol_PlotLines] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
 	style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 	style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
-	style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+	style.Colors[ImGuiCol_PlotHistogramHovered] = COLOR_ENGINE;
 	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 	//IMGUI STYLE END
@@ -231,6 +231,43 @@ update_status ModuleGui::Update(float dt)
 				ImGui::EndPopup();
 			}
 			*/
+				if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN ) {
+					ImGui::OpenPopup("Create new");
+
+				}
+
+				if (ImGui::BeginPopup("Create new")) {
+					if (ImGui::MenuItem("Create GameObject"))
+					{
+						create_empty_gameobject = true;
+					}
+					
+					if (ImGui::MenuItem("Create New Camera"))
+					{
+						createnew = true;
+					}
+					if (createnew == true)
+					{
+						for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+							if (App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->name == "Frustrum test") {
+								num_f++;
+							}
+						}
+						if (num_f == 0) {
+							GameObject* frustrumtest = nullptr;
+							frustrumtest = App->scene_intro->CreateNewGameObjects("Frustrum test", true, App->scene_intro->root_gameobject, Tag_Object_Enum::frustrum_obj_tag, false);
+							frustrumtest->AddNewTransform(float3(0, 0, 0), float3(1, 1, 1), Quat(0, 0, 0, 1));
+							frustrumtest->AddNewFrustum();
+							num_f = 0;
+						}
+						else {
+							SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Adding Frustum", "The scene already has a frustum", App->window->window);
+						}
+						inspection_node = nullptr;
+						createnew = false;
+					}
+					ImGui::EndPopup();
+				}
 			ImGui::EndDock();
 		}
 		//To print information about the geometry in the scene
@@ -314,35 +351,7 @@ update_status ModuleGui::Update(float dt)
 				App->camera->Can_Move_Camera = !App->camera->Can_Move_Camera;
 			}
 			ImGui::SameLine();
-			bool Clean_scene_b = ImGui::Button("Clean Scene", ImVec2(100, 30));
-			if (Clean_scene_b == true)
-			{
-				App->scene_intro->root_gameobject->CleanUp();
-				inspection_node = nullptr;
-				num_f = 0;
-			}
-			ImGui::SameLine();
-			bool AddFrust_Scene = ImGui::Button("Add frustrum", ImVec2(100, 30));
-			if (AddFrust_Scene == true)
-			{
-				
-				for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
-					if (App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->name == "Frustrum test") {
-						num_f++;
-					}
-				}
-				if (num_f == 0) {
-					GameObject* frustrumtest = nullptr;
-					frustrumtest = App->scene_intro->CreateNewGameObjects("Frustrum test", true, App->scene_intro->root_gameobject, Tag_Object_Enum::frustrum_obj_tag, false);
-					frustrumtest->AddNewTransform(float3(0, 0, 0), float3(1, 1, 1), Quat(0, 0, 0, 1));
-					frustrumtest->AddNewFrustum();
-					num_f = 0;
-				}
-				else {
-					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Adding Frustum", "The scene already has a frustum", App->window->window);
-				}
-				inspection_node = nullptr;
-			}
+			
 
 		
 			
@@ -594,12 +603,48 @@ update_status ModuleGui::Update(float dt)
 		ImGui::SameLine();
 		if (ImGui::BeginMenu("Menu"))
 		{
-			if (ImGui::MenuItem("Create Empty GameObject")) { create_empty_gameobject = true; }
+			
 			if (ImGui::MenuItem("Save Scene")) { App->scene_intro->save_scene = !App->scene_intro->save_scene; }
 			if (ImGui::MenuItem("Load Scene")) { App->scene_intro->load_scene = !App->scene_intro->load_scene; }
 			if (ImGui::MenuItem("Console")) { show_console = !show_console; }
 			if (ImGui::MenuItem("Go to github")) { ShellExecuteA(NULL, "open", "https://github.com/Game-Masters/Game-Engine-Unreal", NULL, NULL, SW_SHOWNORMAL); }
 			if (ImGui::MenuItem("Close App")) { button_exit_app = true; }
+			ImGui::EndMenu();
+		}
+		ImGui::SameLine();
+		if (ImGui::BeginMenu("GameObject"))
+		{
+			if (ImGui::MenuItem("Create Empty GameObject")) { create_empty_gameobject = true; }
+			if (ImGui::MenuItem("Create Camera Object"))
+			{
+				for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
+					if (App->scene_intro->root_gameobject->Childrens_GameObject_Vect[i]->name == "Frustrum test") {
+						num_f++;
+					}
+				}
+				if (num_f == 0) {
+					GameObject* frustrumtest = nullptr;
+					frustrumtest = App->scene_intro->CreateNewGameObjects("Frustrum test", true, App->scene_intro->root_gameobject, Tag_Object_Enum::frustrum_obj_tag, false);
+					frustrumtest->AddNewTransform(float3(0, 0, 0), float3(1, 1, 1), Quat(0, 0, 0, 1));
+					frustrumtest->AddNewFrustum();
+					num_f = 0;
+				}
+				else {
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Adding Frustum", "The scene already has a frustum", App->window->window);
+				}
+				inspection_node = nullptr;
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Scene"))
+		{
+			if (ImGui::MenuItem("Clean Scene")) 
+			{
+				App->scene_intro->root_gameobject->CleanUp();
+				inspection_node = nullptr;
+				num_f = 0;
+			}
+			
 			ImGui::EndMenu();
 		}
 		if (create_empty_gameobject)

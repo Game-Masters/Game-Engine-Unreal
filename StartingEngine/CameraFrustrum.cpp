@@ -7,7 +7,11 @@ CameraComponent::CameraComponent(GameObject* parent, bool Active) :Component(Com
 {
 	if (Active) Enable();
 	frustum.type = FrustumType::PerspectiveFrustum;
-
+	if (this->parent !=nullptr) {
+		frustum.nearPlaneDistance = NearPlaneDistance;
+		frustum.farPlaneDistance = 100.0f;
+		frustum.verticalFov = FOVVertical * DEGTORAD;
+	}
 
 	frustum.horizontalFov = Atan(AspectRatio * Tan(frustum.verticalFov * 0.5f)) * 2.0f;
 	frustum.pos = Pos;

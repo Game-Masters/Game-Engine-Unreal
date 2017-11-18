@@ -17,6 +17,7 @@ bool ModuleFileSystem_Engine::Init()
 	Directories_User_V.push_back(RootDirect_User);
 	Directories_User_V.push_back(Mesh_User);
 	Directories_User_V.push_back(Material_User);
+	Directories_User_V.push_back(Scene_User);
 
 	RootDirect_Engine = nullptr;
 	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr, true);
@@ -295,7 +296,7 @@ bool ModuleFileSystem_Engine::Find_in_Asset(const char* path) {
 bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_path, bool asset_editor) {
 
 	std::string ptr = "-1";
-
+	std::string dir_last = "-1";
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		App->gui->Current_Dir = RootDirect_User->path.c_str();
 	}
@@ -308,9 +309,25 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 	if (ImGui::BeginPopup("File Settings")) {
 		if (ImGui::MenuItem("Create Directory"))
 		{
-
+			creating_dir = true;
 		}
 		ImGui::EndPopup();
+	}
+
+	if (creating_dir) {
+		ImGui::Begin("Name Dir:",&creating_dir);
+		if (ImGui::InputText("Directory:", directory_save, 64, ImGuiInputTextFlags_EnterReturnsTrue)) {
+			Directory_* dir = nullptr;
+			for (int i = 0; i < Directories_User_V.size(); i++) {
+				if (Directories_User_V[i]->path == path) {
+					dir = Directories_User_V[i];
+					break;
+				}
+			}
+			CreateDir(directory_save, Directory_Type::user_directory_type, dir);
+			creating_dir = false;
+		}
+		ImGui::End();
 	}
 
 

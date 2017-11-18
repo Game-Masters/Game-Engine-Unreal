@@ -55,6 +55,8 @@ public:
 	GLuint Png_Image;
 	GLuint Fbx_Image;
 	GLuint Scene_Image;
+	bool creating_dir = false;
+	char directory_save[64] = { 0 };
 };
 
 class File_data {

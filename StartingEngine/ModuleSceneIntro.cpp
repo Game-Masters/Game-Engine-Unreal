@@ -235,7 +235,7 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 	node = json_object_get_object(root_object_scene, g_temp.c_str());
 	if (node == nullptr) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Loading", "You can only load Scene Files with this option", App->window->window);
-	
+		App->gui->inspection_node = nullptr;
 	}
 
 	while(node!=nullptr){

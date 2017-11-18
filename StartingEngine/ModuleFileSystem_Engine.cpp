@@ -211,7 +211,7 @@ void ModuleFileSystem_Engine::ChangeFormat_File(const char * path, const char * 
 
 void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir, std::string *new_path) {
 
-
+	*new_path = "-1";
 
 	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path_dir)) {
 		std::string str_path = item.path().string().c_str();
@@ -297,6 +297,7 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 
 	std::string ptr = "-1";
 	std::string dir_last = "-1";
+	std::string dir_last_del = "-1";
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		App->gui->Current_Dir = RootDirect_User->path.c_str();
 	}
@@ -311,6 +312,10 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 		{
 			creating_dir = true;
 		}
+		/*if (ImGui::MenuItem("Delete Directory"))
+		{
+			deleting_dir = true;
+		}*/
 		ImGui::EndPopup();
 	}
 
@@ -326,6 +331,17 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 			}
 			CreateDir(directory_save, Directory_Type::user_directory_type, dir);
 			creating_dir = false;
+		}
+		ImGui::End();
+	}
+
+	if (deleting_dir) {
+		ImGui::Begin("Delete Dir:", &creating_dir);
+		IterateAllDirect_To_Save(path, &dir_last_del);
+		if (dir_last_del != "-1") {
+			std::experimental::filesystem::path path_t = "..\\Game\\Assets\\Scene";
+			std::experimental::filesystem::remove_all(path_t);
+			deleting_dir = false;
 		}
 		ImGui::End();
 	}

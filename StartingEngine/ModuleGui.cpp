@@ -129,6 +129,7 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Data/Icons/directory-icon.png", &App->fs_e->Dir_Image);
 	App->assimp->LoadImage_devil("Data/Icons/fbx-icon.png", &App->fs_e->Fbx_Image);
 	App->assimp->LoadImage_devil("Data/Icons/image-icon.png", &App->fs_e->Png_Image);
+	App->assimp->LoadImage_devil("Data/Icons/zscene_icon.png", &App->fs_e->Scene_Image);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -575,6 +576,7 @@ update_status ModuleGui::Update(float dt)
 
 		App->fs_e->IterateAllDirect(App->fs_e->RootDirect_User->path.c_str(), &path_to_load);
 		if (path_to_load != "-1") {
+			App->scene_intro->root_gameobject->CleanUp();
 			App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, path_to_load.c_str());
 			App->scene_intro->Load_Scene(App->scene_intro->root_object_scene);
 			path_to_load = "-1";
@@ -600,7 +602,7 @@ update_status ModuleGui::Update(float dt)
 		}
 
 		if (filename_last != "-1") {
-
+			filename_last += ".json";
 			App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, filename_last.c_str());
 			json_object_clear(App->scene_intro->root_object_scene);
 			App->scene_intro->root_gameobject->Save(App->scene_intro->root_object_scene);

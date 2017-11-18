@@ -342,6 +342,17 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 			}
 		}
 
+		if (ext_str == ".json" || ext_str == ".JSON") {
+			ImGui::ImageButton_with_text((void*)Scene_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+			if (asset_editor)
+				ImGui::SameLine(0, 50);
+			if (ImGui::IsItemClicked()) {
+				if (ImGui::IsMouseDoubleClicked(0)) {
+					ptr = str_path.c_str();
+				}
+			}
+		}
+
 		if (ext_str == ".png" || ext_str == ".PNG" || ext_str == ".tga" || ext_str == ".TGA") {
 			ImGui::ImageButton_with_text((void*)Png_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
 			if(asset_editor)

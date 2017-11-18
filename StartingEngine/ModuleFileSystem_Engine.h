@@ -54,7 +54,7 @@ public:
 	GLuint Dir_Image;
 	GLuint Png_Image;
 	GLuint Fbx_Image;
-
+	GLuint Scene_Image;
 };
 
 class File_data {

@@ -47,6 +47,6 @@ private:
 	float zoom= 50;
 public:
 	float3 X= X_AXIS, Y= Y_AXIS, Z= Z_AXIS, Position= float3(2.0f, 2.0f, 2.0f), Reference= float3(0.0f, 0.0f, 0.0f);
-	bool Can_Move_Camera = false;
+	bool Can_Move_Camera = true;
 
 };

@@ -61,10 +61,6 @@ bool ModuleSceneIntro::Start()
 
 	
 
-	frustrumtest =CreateNewGameObjects("Frustrum test", true, root_gameobject, Tag_Object_Enum::frustrum_obj_tag, false);
-	frustrumtest->AddNewTransform(float3(0,0,0), float3(1, 1, 1), Quat(0,0,0,1));
-	frustrumtest->AddNewFrustum();
-
 	
 	//Load_Scene();
 

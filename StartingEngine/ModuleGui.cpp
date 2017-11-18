@@ -182,7 +182,7 @@ update_status ModuleGui::Update(float dt)
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::Begin("PanelEditor", NULL, ImVec2(0, 0), 1.0f, ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
+		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar | ImGuiTreeNodeFlags_DefaultOpen);
 
 
 	ImGui::Separator();
@@ -214,7 +214,7 @@ update_status ModuleGui::Update(float dt)
 
 		GameObject* temp=nullptr;
 	
-		if (ImGui::BeginDock("Scene", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar)) {
+		if (ImGui::BeginDock("Scene", false, false/*, App->IsPlaying()*/, ImGuiWindowFlags_HorizontalScrollbar )) {
 			
 
 				if (ImGui::TreeNode(App->scene_intro->root_gameobject->name.c_str())) {
@@ -426,6 +426,11 @@ update_status ModuleGui::Update(float dt)
 			ImGui::SameLine();
 			ImGui::Checkbox("Debug Draw", &App->scene_intro->draw_quadtree);
 			ImGui::InputFloat3("Min node size", &App->scene_intro->scene_quadtree->root->max[0], 3);
+			bool temp6 = ImGui::Button("Reset octree size", ImVec2(120, 30));
+			if (temp6)
+			{
+				App->scene_intro->scene_quadtree->SetBoundaries(&(AABB(float3(-10.0f, -10.0f, -10.0f), float3(10.0f, 10.0f, 10.0f))));
+			}
 			ImGui::Text("\n \n WARNING: Putting the minimum node size with really \n small numbers may  generate a crash ");
 			ImGui::End();
 		}
@@ -860,7 +865,7 @@ void ModuleGui::InspectionNode_Gui()
 
 			case Component_Type_Enum::component_material_type:
 				mat_temp = (Material*)Comp_temp;
-				if (ImGui::CollapsingHeader("Material"))
+				if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
 				{
 				temp_res = (ResourceTexture*)App->resources_mod->Get(mat_temp->UUID_mat);
 				if (mat_temp != nullptr) {
@@ -874,7 +879,7 @@ void ModuleGui::InspectionNode_Gui()
 			case Component_Type_Enum::component_null_type:
 				break;
 			case Component_Type_Enum::component_transform_type:
-				if (ImGui::CollapsingHeader("Transformation"))
+				if (ImGui::CollapsingHeader("Transformation",ImGuiTreeNodeFlags_DefaultOpen))
 				{
 					modify = false;
 					t_temp = (Transform*)Comp_temp;
@@ -918,7 +923,7 @@ void ModuleGui::InspectionNode_Gui()
 				}
 				break;
 			case Component_Type_Enum::component_mesh_type:
-				if (ImGui::CollapsingHeader("Mesh"))
+				if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
 				{
 					m_temp = (Mesh*)Comp_temp;
 					ImGui::Text("Geometry path: %s", m_temp->GetGeometryPath());

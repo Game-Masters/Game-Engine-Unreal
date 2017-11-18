@@ -226,7 +226,7 @@ void ModuleSceneIntro::StaticAllObj(GameObject * root)
 
 }
 
-void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
+void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene, bool load_scene)
 {
 	std::vector<GameObject*> GO_Load;
 	GameObject* temp_go = nullptr;
@@ -235,7 +235,9 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene)
 	JSON_Object* node;
 	node = json_object_get_object(root_object_scene, g_temp.c_str());
 	if (node == nullptr) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Loading", "You can only load Scene Files with this option", App->window->window);
+		if (load_scene) {
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Fail Loading", "You can only load Scene Files with this option", App->window->window);
+		}
 		App->gui->inspection_node = nullptr;
 	}
 

@@ -77,7 +77,7 @@ public:
 	Texture_Engine *world_texture;
 	void StaticAllGameObject(GameObject* temp, bool static_t);
 	void StaticAllObj(GameObject* root);
-	void Load_Scene(JSON_Object* root_object_scene);
+	void Load_Scene(JSON_Object* root_object_scene, bool load_scene = true);
 	void drawGrid(int grid_size);
 	void drawLines(const vec3 from, const vec3 to, const vec3 color);
 	QuadTreeZ* scene_quadtree;

@@ -231,11 +231,16 @@ update_status ModuleGui::Update(float dt)
 				ImGui::EndPopup();
 			}
 			*/
-				if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN ) {
-					ImGui::OpenPopup("Create new");
+				auto im_context = ImGui::GetCurrentContext();
+				auto focused_window = im_context->NavWindow;
+				auto this_window = ImGui::GetCurrentWindowRead();
+				world_focused = false;
+				if (focused_window == this_window) {
+					if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+						ImGui::OpenPopup("Create new");
 
+					}
 				}
-
 				if (ImGui::BeginPopup("Create new")) {
 					if (ImGui::MenuItem("Create GameObject"))
 					{

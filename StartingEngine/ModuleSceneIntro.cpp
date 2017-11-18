@@ -177,9 +177,10 @@ bool ModuleSceneIntro::Gui_Engine_Modules(float dt)
 
 bool ModuleSceneIntro::CleanUp()
 {
-	
+
 	root_gameobject->CleanUp();
 	delete world_texture;
+	//json_value_free(root_value_scene);
 	return true;
 }
 

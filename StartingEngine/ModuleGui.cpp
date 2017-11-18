@@ -312,7 +312,14 @@ update_status ModuleGui::Update(float dt)
 			{
 				App->camera->Can_Move_Camera = !App->camera->Can_Move_Camera;
 			}
-			
+			ImGui::SameLine();
+			bool Clean_scene_b = ImGui::Button("Clean Scene", ImVec2(100, 30));
+			if (Clean_scene_b == true)
+			{
+				App->scene_intro->root_gameobject->CleanUp();
+				inspection_node = nullptr;
+			}
+
 				
 			
 			ImGui::SameLine();
@@ -613,6 +620,7 @@ update_status ModuleGui::Update(float dt)
 			App->scene_intro->Load_Scene(App->scene_intro->root_object_scene);
 			path_to_load = "-1";
 			App->scene_intro->load_scene = false;
+			json_value_free(App->scene_intro->root_value_scene);
 		}
 		ImGui::End();
 	}

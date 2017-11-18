@@ -22,8 +22,8 @@ Parson_JSON::~Parson_JSON()
 }
 
 bool Parson_JSON::CleanUp() {
-	free(root_value);
-	free(root_object);
+	
+		
 	return true;
 }
 

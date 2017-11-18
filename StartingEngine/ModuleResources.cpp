@@ -90,6 +90,7 @@ void ModuleResources::ImportResources_Path_Usable(const char * new_file_in_asset
 	p.second = temp_mesh;
 	resources.insert(p);
 
+	json_value_free(val_doc);
 }
 
 

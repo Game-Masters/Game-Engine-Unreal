@@ -178,7 +178,7 @@ bool ModuleRenderer3D::CleanUp()
 	LOG("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
-	//delete Window_Color;
+	
 	return true;
 }
 

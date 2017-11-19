@@ -27,7 +27,7 @@ void MeshImporter::CalculateMeshAssimp_Values(const aiScene* scene, const char* 
 	*new_name = path_new_format;
 	RELEASE_ARRAY(buffer_total_gen);
 
-	Load_Texture_Scenes(scene);
+	//Load_Texture_Scenes(scene);
 
 
 	//std::vector<geometry_base_creating*> mesh_v;

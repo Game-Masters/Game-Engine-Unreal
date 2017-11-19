@@ -203,25 +203,6 @@ void ModuleSceneIntro::StaticAllGameObject(GameObject * temp, bool static_t)
 
 }
 
-void ModuleSceneIntro::StaticAllObj(GameObject * root)
-{
-
-	for (int i = 0; i < root->Childrens_GameObject_Vect.size(); i++) {
-		root->Childrens_GameObject_Vect[i]->static_obj = true;
-
-		GameObject* temp = root->Childrens_GameObject_Vect[i];
-
-		for (int j = 0; j < temp->Childrens_GameObject_Vect.size(); j++) {
-			StaticAllObj(temp);
-		}
-	}
-
-
-
-
-
-}
-
 void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene, bool load_scene)
 {
 	std::vector<GameObject*> GO_Load;
@@ -369,7 +350,7 @@ GameObject * ModuleSceneIntro::Find_UUID_Root(int uuid)
 	return this->root_gameobject->FindUUID(uuid);
 }
 
-void ModuleSceneIntro::drawLines(const vec3 from, const vec3 to, const vec3 color)
+void ModuleSceneIntro::drawLines(const vec3 from, const vec3 to, const vec3 color) const
 {
 	glLineWidth(2.0f);
 	glBegin(GL_LINES);

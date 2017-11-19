@@ -138,7 +138,7 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 	return ret;
 }
 
-int ModuleResources::GenerateNewUID()
+int ModuleResources::GenerateNewUID() const
 {
 	LCG p;
 	return p.Int();
@@ -186,7 +186,7 @@ Resources_Type ModuleResources::DetectFiles_Type(const char * new_file_in_assets
 	return type;
 }
 
-Resource * ModuleResources::Get(int uid)
+Resource * ModuleResources::Get(int uid)const
 {
 	if (uid == -1) {
 		return nullptr;

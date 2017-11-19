@@ -46,11 +46,11 @@ public:
 	~Mesh();
 	PrimitiveTypes_Mesh    GetType()const;
 	void CleanUp();
-	const char* GetGeometryPath();
-	Resource_Mesh_Base* GetGeometryBaseMesh();
-	AABB GetAABB()const;
+	const char* GetGeometryPath() const;
+	const Resource_Mesh_Base& GetGeometryBaseMesh() const;
+	const AABB GetAABB()const;
 	void SetMaterial(Material*);
-	Material* GetMaterial()const;
+	const Material& GetMaterial()const;
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
 	void Update_AABB();

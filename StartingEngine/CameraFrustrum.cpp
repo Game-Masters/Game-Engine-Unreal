@@ -155,7 +155,7 @@ void CameraComponent::Load(JSON_Object * root_object_scene)
 
 
 }
-Frustum CameraComponent::Get_Frustum() const
+const Frustum CameraComponent::Get_Frustum() const
 {
 	return frustum;
 }
@@ -315,7 +315,7 @@ void CameraComponent::CleanFrustumDraw()
 	}
 }
 
-float* CameraComponent::GetViewProjMatrix()const
+const float* CameraComponent::GetViewProjMatrix()const
 {
 	return frustum.ViewProjMatrix().Transposed().ptr();
 }

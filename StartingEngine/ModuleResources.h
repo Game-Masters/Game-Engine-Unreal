@@ -25,11 +25,11 @@ public:
 	int Find_EngineRes(const char* file_in_assets) const;
 	void ImportResources_Path_Usable(const char* new_file_in_assets);
 	int ImportFile(const char* new_file_in_assets, bool force = false);
-	int GenerateNewUID();
+	int GenerateNewUID() const;
 	//const Resource* Get(int uid) const;
 	int Create_New_resource_Text(std::string path_in_engine, const char* new_file_in_assets, int uid_r, Resources_Type type);
 	Resources_Type DetectFiles_Type(const char* new_file_in_assets);
-	Resource* Get(int uid);
+	Resource* Get(int uid)const;
 	Resource* CreateNewResource(Resources_Type type, int force_uid = 0);
 	bool AddResources(Resource* n_res);
 	//void SelectResourceUpdate(Resource* res);
@@ -52,7 +52,7 @@ public:
 	const char* GetExportedFile() const;
 	bool IsLoadedToMemory() const;
 	virtual bool LoadToMemory();
-	virtual void CreateMeta();
+	void CreateMeta();
 	virtual bool ReadMetaModif();
 	void Set_New_Resource_Files(std::string file, std::string exported_file);
 	uint CountReferences() const;
@@ -60,7 +60,6 @@ public:
 	void SetLastTimeModf(double time);
 	virtual void Update_Resource();
 	virtual void DeleteRes();
-//LOAD SAVE?
 
 
 protected:

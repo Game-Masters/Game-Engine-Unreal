@@ -209,9 +209,9 @@ void ModuleFileSystem_Engine::ChangeFormat_File(const char * path, const char * 
 	*new_path = final_path.c_str();
 }
 
-void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir, std::string *new_path) {
+void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir, std::string &new_path) {
 
-	*new_path = "-1";
+	new_path = "-1";
 
 	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path_dir)) {
 		std::string str_path = item.path().string().c_str();
@@ -221,7 +221,7 @@ void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir, std::string
 
 			if (ImGui::IsItemClicked()) {
 				if (ImGui::IsMouseDoubleClicked(0)) {
-					*new_path = str_path.c_str();
+					new_path = str_path.c_str();
 				}
 			}
 
@@ -237,7 +237,7 @@ void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir, std::string
 
 }
 
-void ModuleFileSystem_Engine::IterateAllDirect_To_Save(const char * path_dir, std::string * new_path)
+void ModuleFileSystem_Engine::IterateAllDirect_To_Save(const char * path_dir, std::string & new_path)
 {
 
 	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path_dir)) {
@@ -249,7 +249,7 @@ void ModuleFileSystem_Engine::IterateAllDirect_To_Save(const char * path_dir, st
 
 				if (ImGui::IsItemClicked()) {
 					if (ImGui::IsMouseDoubleClicked(0)) {
-						*new_path = str_path.c_str();
+						new_path = str_path.c_str();
 					}
 				}
 
@@ -335,16 +335,16 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 		ImGui::End();
 	}
 
-	if (deleting_dir) {
+	/*if (deleting_dir) {
 		ImGui::Begin("Delete Dir:", &creating_dir);
-		IterateAllDirect_To_Save(path, &dir_last_del);
+		IterateAllDirect_To_Save(path, dir_last_del);
 		if (dir_last_del != "-1") {
 			std::experimental::filesystem::path path_t = "..\\Game\\Assets\\Scene";
 			std::experimental::filesystem::remove_all(path_t);
 			deleting_dir = false;
 		}
 		ImGui::End();
-	}
+	}*/
 
 
 	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path)) {

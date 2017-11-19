@@ -105,18 +105,18 @@ void Mesh::CleanUp()
 	delete this;
 }
 
-const char * Mesh::GetGeometryPath()
+const char * Mesh::GetGeometryPath() const
 {
 	return path_fbx.c_str();
 }
 
-Resource_Mesh_Base* Mesh::GetGeometryBaseMesh()
+const Resource_Mesh_Base& Mesh::GetGeometryBaseMesh() const
 {
-	return ((ResourceMesh*)mesh_r)->Res_Mesh_Base;
+	return *((ResourceMesh*)mesh_r)->Res_Mesh_Base;
 	
 }
 
-AABB Mesh::GetAABB() const
+const AABB Mesh::GetAABB() const
 {
 	return Copy_aabb_using;
 }
@@ -126,9 +126,9 @@ void Mesh::SetMaterial(Material * mat)
 	texture_mesh = mat;
 }
 
-Material * Mesh::GetMaterial() const
+const Material& Mesh::GetMaterial() const
 {
-	return texture_mesh;
+	return *texture_mesh;
 }
 
 void Mesh::Save(JSON_Object * root_object_scene)

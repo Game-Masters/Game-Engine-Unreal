@@ -21,6 +21,7 @@ void Transform::Update()
 {
 	if (parent->active) {
 		if (!parent->static_obj) {
+			this->matrix.Decompose(this->position, this->rotation, this->scale);
 			if (this->parent == App->gui->inspection_node && App->input->GetKey(SDL_SCANCODE_LALT) != KEY_REPEAT) {
 				ImGuizmo::Enable(true);
 
@@ -60,9 +61,6 @@ void Transform::Update()
 
 				//ImGuizmo::Enable(false);
 			}
-			else {
-				this->matrix.Decompose(this->position, this->rotation, this->scale);
-			}
 		}
 	}
 }
@@ -82,22 +80,22 @@ void Transform::SetScale(float3 n_scal)
 	this->scale = n_scal;
 }
 
-float3 Transform::GetPosition()
+const float3 Transform::GetPosition() const
 {
 	return this->position;
 }
 
-Quat Transform::GetRotation()
+const Quat Transform::GetRotation() const
 {
 	return this->rotation;
 }
 
-float3 Transform::GetScale()
+const float3 Transform::GetScale() const
 {
 	return this->scale;
 }
 
-float4x4 Transform::GetMatrix()
+const float4x4 Transform::GetMatrix() const
 {
 	
 	return  float4x4::FromTRS(position, rotation, scale);

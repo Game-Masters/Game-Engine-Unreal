@@ -228,7 +228,7 @@ bool ModuleAudio::LoadConfig(JSON_Object* node) {
 	return true;
 }
 
-bool ModuleAudio::SaveConfig(JSON_Object* node) {
+bool ModuleAudio::SaveConfig(JSON_Object* node) const {
 
 	json_object_set_number(node, "Volume", volume);
 	return true;

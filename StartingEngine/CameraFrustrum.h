@@ -21,7 +21,7 @@ public:
 	void Update();
 	bool Enable();
 	bool Disable();
-	float* GetViewProjMatrix()const;
+	const float* GetViewProjMatrix()const;
 	bool ParentHasTransform(float3 &position, float3 &scaling, Quat &rotation);
 	void CheckInFrustum(QuadTreeNode*);
 	void CheckInFrustumNOStatic(GameObject*);
@@ -29,7 +29,7 @@ public:
 	const CamCulling InsideFrustrum(const AABB* aabb);
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);
-	Frustum Get_Frustum()const;
+	const Frustum Get_Frustum()const;
 	void SetVertFOV(float n_fov);
 	void SetNearFarPlane(float near_p, float far_p);
 	void SetFOV_WH();

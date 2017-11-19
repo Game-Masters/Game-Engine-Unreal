@@ -143,7 +143,7 @@ bool QuadTreeNode::IsLeaf() const
 	return children.size() <= 0;
 }
 
-bool QuadTreeNode::Full()
+bool QuadTreeNode::Full() const
 {
 	return gameobjs.size() >= NODE_CAPACITY;
 }
@@ -200,7 +200,7 @@ bool QuadTreeNode::IsSmall()
 	return (boundslength <= minlength);
 }
 
-void QuadTreeNode::DebugDraw()
+void QuadTreeNode::DebugDraw() const
 {
 	for (uint i = 0; i < 12; i++)
 	{
@@ -249,12 +249,12 @@ void QuadTreeZ::Erase(GameObject * game_object)
 {
 }
 
-void QuadTreeZ::Clear()
+void QuadTreeZ::Clear()const
 {
 	root->Clear();
 }
 
-void QuadTreeZ::DebugDraw()
+void QuadTreeZ::DebugDraw() const
 {
 	glBegin(GL_LINES);
 	glLineWidth(3.0f);

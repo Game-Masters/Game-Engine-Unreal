@@ -12,8 +12,6 @@ class Console
 public:
 
 	Console();
-
-	// Destructor
 	virtual ~Console();
 
 	void Enable_Console_Imgui(bool visible=false);

@@ -22,14 +22,14 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 	bool LoadConfig(JSON_Object* node);
-	bool SaveConfig(JSON_Object* node);
+	bool SaveConfig(JSON_Object* node)const;
 	bool Gui_Engine_Modules(float dt);
 	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const float3 &Spot);
 	void Move(const float3 &Movement);
 	void CameraCenter(AABB* mesh);
 	void CameraRecenter();
-	const float* GetViewMatrix();
+	const float* GetViewMatrix() const;
 	AABB* LCenter = nullptr;
 	void Create_Ray_Mouse();
 	void CheckCollision_Mesh();

@@ -39,7 +39,7 @@ public:
 		return true;
 	}
 
-	virtual bool SaveConfig(JSON_Object* node)
+	virtual bool SaveConfig(JSON_Object* node)const
 	{
 		return true;
 	}

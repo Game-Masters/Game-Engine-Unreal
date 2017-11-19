@@ -33,8 +33,8 @@ public:
 	~ModuleFileSystem_Engine();
 	bool SerchInDirectorySystem(const char* path, File_type type);
 	void ChangeFormat_File(const char* path, const char* n_format, std::string *new_path, Directory_ *Parent);
-	void IterateAllDirect_To_Save(const char * path_dir, std::string * new_path);
-	void IterateAllDirect(const char* path_dir, std::string *new_path);
+	void IterateAllDirect_To_Save(const char * path_dir, std::string & new_path);
+	void IterateAllDirect(const char* path_dir, std::string &new_path);
 	void Asset_User_File_Iteration();
 	bool Find_in_Asset(const char* path);
 	bool Asset_Editor(const char* path, std::string * new_path=nullptr, bool asset_editor=true);

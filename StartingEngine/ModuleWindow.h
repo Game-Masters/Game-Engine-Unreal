@@ -20,7 +20,7 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	void SetTitle(const char* title);
 	bool LoadConfig(JSON_Object* node);
-	bool SaveConfig(JSON_Object* node);
+	bool SaveConfig(JSON_Object* node)const;
 	update_status PreUpdate(float dt);
 
 public:

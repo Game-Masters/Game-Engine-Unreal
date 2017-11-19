@@ -332,7 +332,7 @@ bool ModuleRenderer3D::LoadConfig(JSON_Object * node)
 	return true;
 }
 
-bool ModuleRenderer3D::SaveConfig(JSON_Object * node)
+bool ModuleRenderer3D::SaveConfig(JSON_Object * node)const
 {
 	
 	json_object_set_number(node, "Window_Color.r", Window_Color[0]);

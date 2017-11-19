@@ -26,8 +26,8 @@ public:
 	virtual void SetActive(bool state);
 	virtual void PreUpdate();
 	virtual void Update();
-	Component_Type_Enum GetComponentType()const;
-	void Set_Parent(GameObject* par);
+	const Component_Type_Enum GetComponentType()const;
+	void Set_Parent(GameObject& par);
 	GameObject* Get_Parent()const;
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);

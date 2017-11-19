@@ -65,7 +65,6 @@ public:
 	bool load_scene=false;
 	bool save_scene=false;
 	bool calc_octree_stop_button = false;
-	void IterateChildGameObjects(GameObject* item);
 	GameObject* root_gameobject= nullptr;
 	JSON_Value *root_value_scene = nullptr;
 	JSON_Object *root_object_scene = nullptr;
@@ -76,10 +75,10 @@ public:
 	std::vector<GameObject*> game_objects_load;
 	Texture_Engine *world_texture;
 	void StaticAllGameObject(GameObject* temp, bool static_t);
-	void StaticAllObj(GameObject* root);
+
 	void Load_Scene(JSON_Object* root_object_scene, bool load_scene = true);
 	void drawGrid(int grid_size);
-	void drawLines(const vec3 from, const vec3 to, const vec3 color);
+	void drawLines(const vec3 from, const vec3 to, const vec3 color)const;
 	QuadTreeZ* scene_quadtree;
 	int num_gameobjects_empty_created = 0;
 	bool draw_quadtree = false;

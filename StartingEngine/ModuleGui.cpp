@@ -692,7 +692,7 @@ update_status ModuleGui::Update(float dt)
 	if (App->scene_intro->load_scene) {
 		ImGui::Begin("Load Directory:", &App->scene_intro->load_scene);
 
-		App->fs_e->IterateAllDirect(App->fs_e->RootDirect_User->path.c_str(), &path_to_load);
+		App->fs_e->IterateAllDirect(App->fs_e->RootDirect_User->path.c_str(), path_to_load);
 		if (path_to_load != "-1") {
 			App->scene_intro->root_gameobject->CleanUp();
 			App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, path_to_load.c_str());
@@ -707,7 +707,7 @@ update_status ModuleGui::Update(float dt)
 	if (App->scene_intro->save_scene) {
 		ImGui::Begin("Save Directory:", &App->scene_intro->save_scene);
 		std::string filename_last = "-1";
-		App->fs_e->IterateAllDirect_To_Save(App->fs_e->RootDirect_User->path.c_str(), &path_to_load);
+		App->fs_e->IterateAllDirect_To_Save(App->fs_e->RootDirect_User->path.c_str(), path_to_load);
 		ImGui::Text("Directory Selected:"); 
 		ImGui::SameLine();
 		if (path_to_load!="-1") {
@@ -1030,12 +1030,7 @@ void ModuleGui::InspectionNode_Gui()
 	}
 }
 
-void ModuleGui::CreateButtonWithTextAndImage(GLuint temp, const char * str)
-{
-	ImGui::ImageButton((void*)temp, ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
-	ImGui::Text(str);
-	ImGui::AlignFirstTextHeightToWidgets();
-}
+
 
 void ModuleGui::IterateChilds(GameObject * item)
 {

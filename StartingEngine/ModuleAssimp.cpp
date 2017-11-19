@@ -223,23 +223,6 @@ bool ModuleAssimp::loadTextureFromPixels32(GLuint * id_pixels, GLuint width_img,
 	return true;
 }
 
-bool ModuleAssimp::IsTexture(const char * path)
-{
-	bool ret = false;
-
-	uint imgID = 0;
-	ilGenImages(1, &imgID);
-	ilBindImage(imgID);
-
-	//Load image
-	ILboolean success = ilLoadImage(path);
-	if (success) {
-		ret = true;
-	}
-	ilDeleteImages(1, &imgID);
-
-	return ret;
-}
 
 
 aiNode* ModuleAssimp::Calc_AllGeometry_Childs(aiNode* Parent_node, uint search_mesh) {

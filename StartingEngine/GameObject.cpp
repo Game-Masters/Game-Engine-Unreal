@@ -2,7 +2,7 @@
 #include"CameraFrustrum.h"
 
 
-bool GameObject::IsComponentType(Component_Type_Enum temp_type)
+bool GameObject::IsComponentType(Component_Type_Enum temp_type) const 
 {
 
 	for (int i = 0; i < Component_Vect.size(); i++) {
@@ -77,7 +77,7 @@ CameraComponent* GameObject::AddNewFrustum()
 	return n_camera;
 }
 
-float4x4 GameObject::GetMatrix_Trans()
+const float4x4 GameObject::GetMatrix_Trans()
 {
 	float4x4 matrix = float4x4::identity;
 	if (GetTransform() != nullptr) {
@@ -133,7 +133,7 @@ GameObject::~GameObject()
 	
 }
 
-const int GameObject::Get_UUID()
+const int GameObject::Get_UUID() const
 {
 	return this->UUID;
 }
@@ -230,7 +230,7 @@ Mesh* GameObject::Get_GO_Mesh() const
 	return nullptr;
 }
 
-Transform * GameObject::GetTransform()
+Transform * GameObject::GetTransform() const
 {
 	for (int i = 0; i < Component_Vect.size(); i++) {
 		if (Component_Vect[i]->GetComponentType() == Component_Type_Enum::component_transform_type) {
@@ -240,7 +240,7 @@ Transform * GameObject::GetTransform()
 	return nullptr;
 }
 
-int GameObject::Get_UUID_Parent() const
+const int GameObject::Get_UUID_Parent() const
 {
 	return this->UUID_parent;
 }

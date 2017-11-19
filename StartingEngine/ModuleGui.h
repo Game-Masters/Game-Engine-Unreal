@@ -27,7 +27,6 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	bool CleanUp();
 	void InspectionNode_Gui();
-	void CreateButtonWithTextAndImage(GLuint temp, const char* str);
 public:
 	sMStats Gpu_Vram_Stats;
 	bool button_exit_app = false;

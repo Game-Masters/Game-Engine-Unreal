@@ -24,7 +24,7 @@ public:
 	bool Gui_Engine_Modules(float dt);
 	void OnResize(int width, int height);
 	bool LoadConfig(JSON_Object* node);
-	bool SaveConfig(JSON_Object* node);
+	bool SaveConfig(JSON_Object* node)const;
 	void Render_3D(Mesh* m , int uuid, Material* texture_mesh= nullptr);
 
 

@@ -23,10 +23,10 @@ public:
 	void SetRotation(Quat n_rot);
 	void SetScale(float3 n_scal);
 	void Update();
-	float3 GetPosition();
-	Quat GetRotation();
-	float3 GetScale();
-	float4x4 GetMatrix();
+	const float3 GetPosition() const;
+	const Quat GetRotation() const;
+	const float3 GetScale() const;
+	const float4x4 GetMatrix() const;
 	float4x4 SetMatrix(float4x4 temp);
 	virtual void Save(JSON_Object *root_object_scene);
 	virtual void Load(JSON_Object *root_object_scene);

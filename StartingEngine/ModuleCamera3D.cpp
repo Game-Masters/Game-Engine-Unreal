@@ -28,7 +28,7 @@ ModuleCamera3D::~ModuleCamera3D()
 
 bool ModuleCamera3D::Init() {
 
-	CamComp->Set_Parent(App->scene_intro->root_gameobject);
+	CamComp->Set_Parent(*App->scene_intro->root_gameobject);
 	CalculateViewMatrix();
 	return true;
 }
@@ -82,7 +82,7 @@ bool ModuleCamera3D::LoadConfig(JSON_Object * node)
 
 	return true;
 }
-bool ModuleCamera3D::SaveConfig(JSON_Object * node)
+bool ModuleCamera3D::SaveConfig(JSON_Object * node)const
 {
 
 	json_object_set_number(node, "vertical_fov", CamComp->Get_Frustum().verticalFov);
@@ -281,7 +281,7 @@ void ModuleCamera3D::Move(const float3 &Movement)
 }
 
 // -----------------------------------------------------------------
-const float* ModuleCamera3D::GetViewMatrix()
+const float* ModuleCamera3D::GetViewMatrix()const
 {
 	return CamComp->GetViewProjMatrix();
 }
@@ -300,8 +300,7 @@ void ModuleCamera3D::Create_Ray_Mouse()
 		mouse_pos.x = -(1.0f - ((mx - App->scene_intro->tx_vec.x) / (App->scene_intro->tx_vec.z / 2.0f)));
 		mouse_pos.y = (1.0f - ((my - App->scene_intro->tx_vec.y) / (App->scene_intro->tx_vec.w / 2.0f)));
 
-		LOG("mx: %f", mx - App->scene_intro->tx_vec.x - 12);
-		LOG("my: %f", my - App->scene_intro->tx_vec.y - 43);
+
 		r_cast_segm = temp_t.UnProjectLineSegment(mouse_pos.x, mouse_pos.y);
 
 		Recursive_Ray_Distance(App->scene_intro->root_gameobject);
@@ -323,18 +322,18 @@ void ModuleCamera3D::CheckCollision_Mesh()
 		float dist_to_cam = it->first;
 		float4x4 mat_trans = temp->GetMatrix_Trans().Inverted();
 		temp_ray.Transform(mat_trans);
-		Resource_Mesh_Base* temp_mesh_base = temp->Get_GO_Mesh()->GetGeometryBaseMesh();
+		const Resource_Mesh_Base& temp_mesh_base = temp->Get_GO_Mesh()->GetGeometryBaseMesh();
 		//iterate the index to iterate the tris in order
 		float distance = 0;
 		float3 hit_point = float3::zero;
 		int i = 0;
-		if (temp_mesh_base->num_indices >9) {
+		if (temp_mesh_base.num_indices >9) {
 		
-			while (i < temp_mesh_base->num_indices) {
+			while (i < temp_mesh_base.num_indices) {
 				Triangle tri;
-				float* point1 = &temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3];
-				float* point2 = &temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3];
-				float* point3 = &temp_mesh_base->vertices[temp_mesh_base->indices[i++] * 3];
+				float* point1 = &temp_mesh_base.vertices[temp_mesh_base.indices[i++] * 3];
+				float* point2 = &temp_mesh_base.vertices[temp_mesh_base.indices[i++] * 3];
+				float* point3 = &temp_mesh_base.vertices[temp_mesh_base.indices[i++] * 3];
 				tri.a.Set(point1);
 				tri.b.Set(point2);
 				tri.c.Set(point3);

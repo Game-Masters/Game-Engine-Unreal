@@ -18,10 +18,10 @@ public:
 	std::vector<QuadTreeNode*> GetChildren();
 	std::vector<GameObject*> GetGameObjects();
 	bool IsLeaf() const;
-	bool Full();
+	bool Full() const;
 	bool InsideTree(std::vector<GameObject*>::iterator it, QuadTreeNode* node);
 	bool IsSmall();
-	void DebugDraw();
+	void DebugDraw() const;
 	
 public:
 
@@ -48,8 +48,8 @@ public:
 	void SetBoundaries(const AABB* bounds);
 	void Insert(GameObject*  game_object);
 	void Erase(GameObject*  game_object);
-	void Clear();
-	void DebugDraw();
+	void Clear()const;
+	void DebugDraw() const;
 	void AdaptativeBoundaries(AABB temp);
 	QuadTreeNode* root;
 	std::vector<GameObject*> gameobjs;

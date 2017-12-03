@@ -19,13 +19,17 @@ public:
 	ShaderObject(ShaderType Type, const char* filename, const GLchar * Shader_obj_code);
 	~ShaderObject();
 	bool CompileShader();
-public:
+	GLuint GetID();
+	const char* GetFileName();
+	bool IsCompiled();
+private:
 
 	ShaderType shader_obj_type = ShaderType::no_type_shader;
 	GLuint id_shader_obj = 0;
 	const GLchar* shader_obj_code = nullptr;
 	std::string file_name_shader;
 	std::string log_shader;
+	bool compiled = false;
 };
 
 #endif // !

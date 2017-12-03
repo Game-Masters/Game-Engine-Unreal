@@ -14,6 +14,7 @@
 #include"Texture_Engine.h"
 #include"Imgui\ImGuizmo.h"
 #include"ShaderObject.h"
+#include"ShaderProgramObject.h"
 
 //#include"Geometry.h"
 #include"Cube_prim.h"
@@ -84,4 +85,6 @@ public:
 	bool draw_quadtree = false;
 	ShaderObject* test_shader_vertex = nullptr;
 	ShaderObject* test_shader_frag = nullptr;
+	std::vector<ShaderObject*> shader_obj_v;
+	ShaderProgramObject* test_program = nullptr;
 };

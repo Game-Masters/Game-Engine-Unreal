@@ -66,5 +66,21 @@ bool ShaderObject::CompileShader()
 		return false;
 	}
 
+	compiled = true;
 	return true;
+}
+
+GLuint ShaderObject::GetID()
+{
+	return id_shader_obj;
+}
+
+const char * ShaderObject::GetFileName()
+{
+	return file_name_shader.c_str();
+}
+
+bool ShaderObject::IsCompiled()
+{
+	return compiled;
 }

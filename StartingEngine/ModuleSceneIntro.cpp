@@ -56,7 +56,7 @@ bool ModuleSceneIntro::Start()
 	std::string path_temp2 = "..\\Game\\Data\\Baker_house.png";
 	Material* temp = nullptr;
 
-
+	//Testing shaders
 
 	const GLchar vertexShaderSource[] =
 	{
@@ -74,9 +74,10 @@ bool ModuleSceneIntro::Start()
 	test_shader_vertex->CompileShader();
 	test_shader_frag = new ShaderObject(ShaderType::fragment_shader, name_shader_frag.c_str(), fragmentShaderSource);
 	test_shader_frag->CompileShader();
-
-	
-
+	shader_obj_v.push_back(test_shader_vertex);
+	shader_obj_v.push_back(test_shader_frag);
+	test_program = new ShaderProgramObject(shader_obj_v);
+	test_program->Link_Program();
 	
 	//Load_Scene();
 
@@ -103,7 +104,7 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-
+	
 	drawGrid(50);
 	
 	root_gameobject->Update();

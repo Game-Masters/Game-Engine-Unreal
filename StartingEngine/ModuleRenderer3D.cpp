@@ -102,7 +102,20 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	App->scene_intro->test_program->Bind_program();
+	glTranslatef(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f);
+	glBegin(GL_QUADS);
+	glColor3f(0.f, 1.f, 1.f);
+	glVertex2f(-0.3f, -0.3f);
+	glVertex2f(0.3f, -0.3f);
+	glVertex2f(0.3f, 0.3f);
+	glVertex2f(-0.3f, 0.3f);
+	glEnd();
+	App->scene_intro->test_program->Unbind_program();
+	glMatrixMode(GL_MODELVIEW);
 
 
 	glMatrixMode(GL_PROJECTION);
@@ -150,14 +163,13 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	}
 
 
+
 	return UPDATE_CONTINUE;
 }
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-
-
 
 
 	

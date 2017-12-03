@@ -9,6 +9,7 @@
 #include"Imgui\imguidock.h"
 #include"Quadtree.h"
 #include"ResourceTexture.h"
+#include"ShaderObject.h"
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 {
@@ -57,7 +58,22 @@ bool ModuleSceneIntro::Start()
 
 
 
+	const GLchar vertexShaderSource[] =
+	{
+		"void main() { gl_Position = gl_Vertex; }"
+	};
+	std::string name_shader_vert = "shader_test_vertex";
 
+	const GLchar fragmentShaderSource[] =
+	{
+		"void main() { gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 ); }"
+	};
+	std::string name_shader_frag = "shader_test_frag";
+
+	test_shader_vertex = new ShaderObject(ShaderType::vertex_shader, name_shader_vert.c_str(), vertexShaderSource);
+	test_shader_vertex->CompileShader();
+	test_shader_frag = new ShaderObject(ShaderType::fragment_shader, name_shader_frag.c_str(), fragmentShaderSource);
+	test_shader_frag->CompileShader();
 
 	
 

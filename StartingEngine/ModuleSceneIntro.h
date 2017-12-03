@@ -13,7 +13,7 @@
 #include "SDL\include\SDL_opengl.h"
 #include"Texture_Engine.h"
 #include"Imgui\ImGuizmo.h"
-
+#include"ShaderObject.h"
 
 //#include"Geometry.h"
 #include"Cube_prim.h"
@@ -79,7 +79,9 @@ public:
 	void Load_Scene(JSON_Object* root_object_scene, bool load_scene = true);
 	void drawGrid(int grid_size);
 	void drawLines(const vec3 from, const vec3 to, const vec3 color)const;
-	QuadTreeZ* scene_quadtree;
+	QuadTreeZ* scene_quadtree = nullptr;
 	int num_gameobjects_empty_created = 0;
 	bool draw_quadtree = false;
+	ShaderObject* test_shader_vertex = nullptr;
+	ShaderObject* test_shader_frag = nullptr;
 };

@@ -233,6 +233,7 @@
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceTexture.h" />
+    <ClInclude Include="ShaderObject.h" />
     <ClInclude Include="Texture_Engine.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
@@ -311,6 +312,7 @@
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
+    <ClCompile Include="ShaderObject.cpp" />
     <ClCompile Include="Texture_Engine.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />

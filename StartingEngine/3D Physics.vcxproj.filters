@@ -67,6 +67,9 @@
     <Filter Include="Sources\Modules\Resources">
       <UniqueIdentifier>{d0885ff7-203a-4631-baf9-bb2e967bc880}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Shaders">
+      <UniqueIdentifier>{ffb20d55-ace1-4f92-afbb-10847d2d7a22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -553,6 +556,9 @@
     <ClInclude Include="ResourceTexture.h">
       <Filter>Sources\Modules\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderObject.h">
+      <Filter>Sources\Modules\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -780,6 +786,9 @@
     </ClCompile>
     <ClCompile Include="ResourceTexture.cpp">
       <Filter>Sources\Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderObject.cpp">
+      <Filter>Sources\Modules\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

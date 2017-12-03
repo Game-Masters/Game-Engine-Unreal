@@ -58,21 +58,13 @@ bool ModuleSceneIntro::Start()
 
 	//Testing shaders
 
-	const GLchar vertexShaderSource[] =
-	{
-		"void main() { gl_Position = gl_Vertex; }"
-	};
-	std::string name_shader_vert = "shader_test_vertex";
 
-	const GLchar fragmentShaderSource[] =
-	{
-		"void main() { gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 ); }"
-	};
-	std::string name_shader_frag = "shader_test_frag";
+	std::string name_shader_vert = "Test_vertex_shader";
+	std::string name_shader_frag = "Test_fragment_shader";
 
-	test_shader_vertex = new ShaderObject(ShaderType::vertex_shader, name_shader_vert.c_str(), vertexShaderSource);
+	test_shader_vertex = new ShaderObject(ShaderType::vertex_shader, name_shader_vert.c_str());
 	test_shader_vertex->CompileShader();
-	test_shader_frag = new ShaderObject(ShaderType::fragment_shader, name_shader_frag.c_str(), fragmentShaderSource);
+	test_shader_frag = new ShaderObject(ShaderType::fragment_shader, name_shader_frag.c_str());
 	test_shader_frag->CompileShader();
 	shader_obj_v.push_back(test_shader_vertex);
 	shader_obj_v.push_back(test_shader_frag);

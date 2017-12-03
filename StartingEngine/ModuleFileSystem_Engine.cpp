@@ -13,11 +13,13 @@ bool ModuleFileSystem_Engine::Init()
 	Mesh_User = CreateDir("Mesh", Directory_Type::user_directory_type, RootDirect_User);
 	Material_User = CreateDir("Material", Directory_Type::user_directory_type, RootDirect_User);
 	Scene_User = CreateDir("Scene", Directory_Type::user_directory_type, RootDirect_User);
+	Shader_User = CreateDir("Shader", Directory_Type::user_directory_type, RootDirect_User);
 
 	Directories_User_V.push_back(RootDirect_User);
 	Directories_User_V.push_back(Mesh_User);
 	Directories_User_V.push_back(Material_User);
 	Directories_User_V.push_back(Scene_User);
+	Directories_User_V.push_back(Shader_User);
 
 	RootDirect_Engine = nullptr;
 	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr, false);
@@ -105,7 +107,6 @@ int ModuleFileSystem_Engine::LoadFile(const char * path, char ** buffer)
 	bool ret = false;
 	int length_file = 0;
 	std::ifstream file_stream (path, std::ifstream::binary);
-	
 	if (file_stream.bad()) {
 		LOG("The file %s cannot be readed", path);
 	}

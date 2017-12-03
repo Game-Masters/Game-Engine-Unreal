@@ -1,13 +1,16 @@
 #include "ShaderObject.h"
 #include"Application.h"
-
+#include"ModuleFileSystem_Engine.h"
 
 ShaderObject::ShaderObject()
 {
 }
 
-ShaderObject::ShaderObject(ShaderType Type, const char* filename ,const GLchar * Shader_obj_code):shader_obj_type(Type), file_name_shader(filename), shader_obj_code(Shader_obj_code)
+ShaderObject::ShaderObject(ShaderType Type, const char* filename):shader_obj_type(Type)
 {
+	std::string str;
+	App->fs_e->ChangeFormat_File(filename, "txt", &str, App->fs_e->Shader_User);
+	file_name_shader = str;
 }
 
 
@@ -17,6 +20,10 @@ ShaderObject::~ShaderObject()
 
 bool ShaderObject::CompileShader()
 {
+	char* buffer=nullptr;
+	int size_file = App->fs_e->LoadFile(file_name_shader.c_str(), &buffer);
+	buffer[size_file] = '\0';
+	shader_obj_code = buffer;
 
 	switch (shader_obj_type) {
 	case ShaderType::vertex_shader:

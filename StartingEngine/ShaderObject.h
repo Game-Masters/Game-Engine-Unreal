@@ -16,7 +16,7 @@ class ShaderObject
 {
 public:
 	ShaderObject();
-	ShaderObject(ShaderType Type, const char* filename, const GLchar * Shader_obj_code);
+	ShaderObject(ShaderType Type, const char* filename);
 	~ShaderObject();
 	bool CompileShader();
 	GLuint GetID();

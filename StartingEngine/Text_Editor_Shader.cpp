@@ -9,12 +9,32 @@ Editor_Text_Shader::~Editor_Text_Shader()
 {
 }
 
-void Editor_Text_Shader::Enable_Text_Editor(bool visible)
+void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shader)
 {
 
 	if (visible) {
 	
-		ImGui::Begin("Test window", &App->gui->show_editor_shaders);
+		ImGui::Begin("Editor Shader", &App->gui->show_editor_shaders);
+
+		if (first_time_edit && path_shader == nullptr) {
+			editor_text_shader.InsertText("//This is meant to be an editor of shaders");
+			editor_text_shader.InsertText("\n");
+			first_time_edit = false;
+		}
+		else if (first_time_edit ==true && path_shader != nullptr) {
+
+			//In a close future will need to load the text of the shader
+			char* buffer = nullptr;
+			int size_file = App->fs_e->LoadFile(path_shader, &buffer);
+			if (buffer != nullptr) {
+				buffer[size_file] = '\0';
+				std::string str_shader = buffer;
+				editor_text_shader.InsertText(str_shader);
+				first_time_edit = false;
+			}
+
+		}
+
 
 		if (ImGui::Button("Compile"))
 		{
@@ -26,17 +46,11 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible)
 			//Modify txt
 		}
 
+
+
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 			editor_text_shader.InsertText("\n");
 		}
-
-		if (first_time_edit) {
-			editor_text_shader.InsertText("//This is mean to be an editor of shaders");
-			editor_text_shader.InsertText("\n");
-			first_time_edit = false;
-		}
-
-		editor_text_shader.Render("Test_shader_editor");
 
 		if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT ){
 			if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN) {
@@ -61,7 +75,9 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible)
 				editor_text_shader.Redo();
 			}
 		}
-		//TextEditor::Render()
+
+		editor_text_shader.Render("Test_shader_editor");
+
 		ImGui::End();
 	}
 	else {

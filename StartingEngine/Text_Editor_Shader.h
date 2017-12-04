@@ -8,7 +8,7 @@ public:
 	Editor_Text_Shader();
 	~Editor_Text_Shader();
 
-	void Enable_Text_Editor(bool visible = false);
+	void Enable_Text_Editor(bool visible = false, const char* path_shader=nullptr);
 
 public:
 	bool first_time_edit = true;

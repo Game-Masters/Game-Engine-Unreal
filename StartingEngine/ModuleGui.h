@@ -7,6 +7,7 @@
 #include "Fluid_Studios_Memory_Manager\mmgr.h"
 #include "Fluid_Studios_Memory_Manager\nommgr.h"
 #include"ModuleFileSystem_Engine.h"
+#include"Text_Editor_Shader.h"
 #define IM_ARRAYSIZE(_ARR)      ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 class Application;
 
@@ -36,6 +37,7 @@ public:
 	bool show_gui_engine = false;
 	bool show_performance = false;
 	bool show_console = false;
+	bool show_editor_shaders = false;
 	bool n1 = false;
 	bool n2 = false;
 	bool n3 = false;
@@ -61,6 +63,7 @@ public:
 		GLuint Stop;
 	//
 	Console console_imgui;
+	Editor_Text_Shader gui_editor_text_shader;
 	LCG rand_test;
 	int iop;
 	float iop2;

@@ -143,6 +143,7 @@ bool ModuleGui::Start()
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 14);
 	//io.Fonts->AddFontFromFileTTF("Fonts\Roboto-Regular.ttf", 18);
 	
+
 	//px = 0;
 	inspection_node = nullptr;
 	str_geom_user = new char[100];
@@ -159,7 +160,7 @@ update_status ModuleGui::PreUpdate(float dt)
 	//ImGui_ImplSdlGL2_NewFrame(App->window->window);
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 	ImGuizmo::BeginFrame();
-	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN) show_editor = !show_editor;
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) show_editor = !show_editor;
 	
 	return update_status::UPDATE_CONTINUE;
 }
@@ -200,8 +201,6 @@ update_status ModuleGui::Update(float dt)
 
 		}
 		ImGui::EndDock();
-
-	
 		
 		Quat result_rot;
 	
@@ -354,6 +353,12 @@ update_status ModuleGui::Update(float dt)
 			if (temp5 == true)
 			{
 				App->camera->Can_Move_Camera = !App->camera->Can_Move_Camera;
+			}
+			ImGui::SameLine();
+			bool temp6 = ImGui::Button("Editor Text Shader", ImVec2(150, 30));
+			if (temp6 == true)
+			{
+				show_editor_shaders = true;
 			}
 			ImGui::SameLine();
 			
@@ -683,6 +688,9 @@ update_status ModuleGui::Update(float dt)
 		console_imgui.Enable_Console_Imgui(show_console);
 	}
 
+	if (show_editor_shaders) {
+		gui_editor_text_shader.Enable_Text_Editor(show_editor_shaders);
+	}
 	
 
 	ImGui::EndDockspace();

@@ -14,6 +14,7 @@ public:
 	bool Link_Program();
 	bool Bind_program();
 	void Unbind_program();
+	GLuint GetID_program_shader();
 private:
 
 	std::vector<int> ShaderObject_Program_v;

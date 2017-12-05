@@ -254,7 +254,11 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 					}
 				}
 			}*/
-			glPushMatrix();
+		
+	
+
+			App->scene_intro->test_program->Bind_program();
+			//glPushMatrix();
 			float3 position;
 			float3 scale;
 			Quat rotation;
@@ -301,11 +305,17 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_indices);
 				glDrawElements(GL_TRIANGLES, mesh_v->Res_Mesh_Base->num_indices, GL_UNSIGNED_INT, NULL);
 			}
-			glPopMatrix();
+			GLint modelLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "model");
+			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, m->Get_Parent()->GetMatrix_Trans().ptr());
+			GLint projLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "projection_view");
+			float4x4 mat_float = App->camera->CamComp->Get_Frustum().ViewProjMatrix();
+			glUniformMatrix4fv(projLoc, 1, GL_TRUE, mat_float.ptr());
+		//	glPopMatrix();
 			glBindTexture(GL_TEXTURE_2D, 0);
 			glDisableVertexAttribArray(0);
 			glDisableVertexAttribArray(1);
 			glDisableVertexAttribArray(2);
+			App->scene_intro->test_program->Unbind_program();
 		}
 		else {
 			LOG("Impossible to draw the mesh");

@@ -84,3 +84,8 @@ void ShaderProgramObject::Unbind_program()
 {
 	glUseProgram(NULL);
 }
+
+GLuint ShaderProgramObject::GetID_program_shader()
+{
+	return id_program;
+}

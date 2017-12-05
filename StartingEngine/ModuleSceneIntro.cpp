@@ -68,10 +68,12 @@ bool ModuleSceneIntro::Start()
 	test_shader_vertex->Set_New_Resource_Files(temp_str, name_shader_vert);
 	test_shader_vertex->Set_Type_Shader(ShaderType::vertex_shader);
 	test_shader_vertex->LoadToMemory();
+	test_shader_vertex->CreateMeta();
 	test_shader_frag = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
 	test_shader_frag->Set_Type_Shader(ShaderType::fragment_shader);
 	test_shader_frag->Set_New_Resource_Files(temp_str, name_shader_frag);
 	test_shader_frag->LoadToMemory();
+	test_shader_frag->CreateMeta();
 	App->resources_mod->AddResources(test_shader_vertex);
 	App->resources_mod->AddResources(test_shader_frag);
 	shader_obj_v.push_back(test_shader_vertex->GetUID());

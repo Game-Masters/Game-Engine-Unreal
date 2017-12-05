@@ -277,7 +277,10 @@ void ModuleFileSystem_Engine::Asset_User_File_Iteration() {
 			App->resources_mod->ImportFile(str_path.c_str());
 		}
 		else {
-			App->resources_mod->ImportResources_Path_Usable(str_path_meta.c_str());
+			if(App->resources_mod->DetectFiles_Type(str_path.c_str())==Resources_Type::shader){}
+			else {
+				App->resources_mod->ImportResources_Path_Usable(str_path_meta.c_str());
+			}
 		}
 
 	}

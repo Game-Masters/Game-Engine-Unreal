@@ -565,7 +565,9 @@
     <ClInclude Include="Text_Editor_Shader.h">
       <Filter>Sources\Modules\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceShaderObject.h" />
+    <ClInclude Include="ResourceShaderObject.h">
+      <Filter>Sources\Modules\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -803,7 +805,9 @@
     <ClCompile Include="Text_Editor_Shader.cpp">
       <Filter>Sources\Modules\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceShaderObject.cpp" />
+    <ClCompile Include="ResourceShaderObject.cpp">
+      <Filter>Sources\Modules\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assimp\include\assimp\.editorconfig">

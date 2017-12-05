@@ -21,6 +21,8 @@ public:
 	ResourceShaderObject(ShaderType Type, const char* filename);
 	~ResourceShaderObject();
 
+	bool ComplieShaderObject();
+	void Update_Resource();
 	bool LoadToMemory();
 	GLuint GetID();
 	const char* GetFileName();

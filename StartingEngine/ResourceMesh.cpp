@@ -40,6 +40,44 @@ void ResourceMesh::DeleteRes() {
 void ResourceMesh::LoadMeshBase()
 {
 
+	//we need to add color vertex
+	int total_size_buffer = 0;
+	if (Res_Mesh_Base->vertices != nullptr) {
+		total_size_buffer += Res_Mesh_Base->num_vertices * 3;
+	}
+	if (Res_Mesh_Base->textures_coord != nullptr) {
+		total_size_buffer += Res_Mesh_Base->num_vertices * 2;
+	}
+	if (Res_Mesh_Base->normals != nullptr) {
+		total_size_buffer += Res_Mesh_Base->num_vertices * 3;
+	}
+	Res_Mesh_Base->total_buffer_mesh = new char[total_size_buffer * sizeof(float)];
+	char* cursor = Res_Mesh_Base->total_buffer_mesh;
+
+	for (int i = 0; i < Res_Mesh_Base->num_vertices; i++) {
+
+		if (Res_Mesh_Base->vertices != nullptr) {
+			memcpy(cursor, &Res_Mesh_Base->vertices[i*3], 3 * sizeof(float));
+			cursor += 3 * sizeof(float);
+		}
+		if (Res_Mesh_Base->textures_coord != nullptr) {
+			memcpy(cursor, &Res_Mesh_Base->textures_coord[i*2], 2 * sizeof(float));
+			cursor += 2 * sizeof(float);
+		}
+		if (Res_Mesh_Base->normals != nullptr) {
+			memcpy(cursor, &Res_Mesh_Base->normals[i*3], 3 * sizeof(float));
+			cursor += 3 * sizeof(float);
+		}
+		//color vertex
+
+	}
+
+
+	glGenBuffers(1, (GLuint*)&(Res_Mesh_Base->id_total_buffer));
+	glBindBuffer(GL_ARRAY_BUFFER, Res_Mesh_Base->id_total_buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) *total_size_buffer , &Res_Mesh_Base->total_buffer_mesh[0], GL_STATIC_DRAW);
+
+
 	if (Res_Mesh_Base->vertices != nullptr && Res_Mesh_Base->indices != nullptr) {
 		glGenBuffers(1, (GLuint*)&(Res_Mesh_Base->id_vertices));
 		glBindBuffer(GL_ARRAY_BUFFER, Res_Mesh_Base->id_vertices);
@@ -48,6 +86,7 @@ void ResourceMesh::LoadMeshBase()
 		glGenBuffers(1, (GLuint*)&(Res_Mesh_Base->id_texture));
 		glBindBuffer(GL_ARRAY_BUFFER, Res_Mesh_Base->id_texture);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) *Res_Mesh_Base->num_vertices * 2, &Res_Mesh_Base->textures_coord[0], GL_STATIC_DRAW);
+		
 
 		// Buffer for indices
 		glGenBuffers(1, (GLuint*)&(Res_Mesh_Base->id_indices));

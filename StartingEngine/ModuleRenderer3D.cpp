@@ -105,7 +105,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	App->scene_intro->test_program->Bind_program();
+	/*App->scene_intro->test_program->Bind_program();
 	glTranslatef(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f);
 	glBegin(GL_QUADS);
 	glColor3f(0.f, 1.f, 1.f);
@@ -115,7 +115,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glVertex2f(-0.3f, 0.3f);
 	glEnd();
 	App->scene_intro->test_program->Unbind_program();
-	glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);*/
 
 
 	glMatrixMode(GL_PROJECTION);
@@ -238,7 +238,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 		}
 
 		if (mesh_v->Res_Mesh_Base->num_indices > 0 && mesh_v->Res_Mesh_Base->num_vertices > 0) {
-			if (texture_mesh != nullptr) {
+			/*if (texture_mesh != nullptr) {
 				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
 				if (mesh_v->Res_Mesh_Base != nullptr) {
 					glEnable(GL_TEXTURE_2D);
@@ -253,7 +253,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 
 					}
 				}
-			}
+			}*/
 			glPushMatrix();
 			float3 position;
 			float3 scale;
@@ -279,12 +279,23 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				}
 			}
 
+			int tota_save_buffer = 8;
+			if (mesh_v->Res_Mesh_Base->textures_coord == nullptr) {
+				tota_save_buffer -= 2;
+			}
+			if (mesh_v->Res_Mesh_Base->normals == nullptr) {
+				tota_save_buffer -= 3;
+			}
 
 
 			if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
-				glEnableClientState(GL_VERTEX_ARRAY);
-				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_vertices);
-				glVertexPointer(3, GL_FLOAT, 0, NULL);
+				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_total_buffer);
+				glEnableVertexAttribArray(0);
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, tota_save_buffer * sizeof(GLfloat), (char *)NULL + (0 * sizeof(float)));
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, tota_save_buffer * sizeof(GLfloat), (char *)NULL + (3 * sizeof(float)));
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, tota_save_buffer * sizeof(GLfloat), (char *)NULL + (5 * sizeof(float)));
 
 				glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_indices);
@@ -292,6 +303,9 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			}
 			glPopMatrix();
 			glBindTexture(GL_TEXTURE_2D, 0);
+			glDisableVertexAttribArray(0);
+			glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(2);
 		}
 		else {
 			LOG("Impossible to draw the mesh");

@@ -28,6 +28,12 @@ struct Resource_Mesh_Base {
 	uint id_index_aabb = 0;
 	uint* index_aabb = nullptr;
 	uint num_tris = 0;
+	//----------------buffer_total
+	uint id_total_buffer;
+	char* total_buffer_mesh;
+
+
+	//-----------------
 	std::string name;
 	uint Know_if_m_have[4]{ 0,0,0,0 };
 	Resource_Mesh_Base() {
@@ -68,7 +74,7 @@ public:
 	LCG uid_rm;
 	Resource_Mesh_Base *Res_Mesh_Base=nullptr;
 	AABB Copy_aabb;
-	
+
 
 };
 

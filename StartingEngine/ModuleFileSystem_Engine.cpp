@@ -22,9 +22,9 @@ bool ModuleFileSystem_Engine::Init()
 	Directories_User_V.push_back(Shader_User);
 
 	RootDirect_Engine = nullptr;
-	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr, false);
-	Mesh_Engine = CreateDir("Mesh", Directory_Type::engine_directory_type, RootDirect_Engine, false);
-	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine, false);
+	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr);
+	Mesh_Engine = CreateDir("Mesh", Directory_Type::engine_directory_type, RootDirect_Engine);
+	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine);
 
 	return true;
 }

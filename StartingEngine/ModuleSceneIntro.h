@@ -13,8 +13,8 @@
 #include "SDL\include\SDL_opengl.h"
 #include"Texture_Engine.h"
 #include"Imgui\ImGuizmo.h"
-#include"ShaderObject.h"
 #include"ShaderProgramObject.h"
+#include"ResourceShaderObject.h"
 
 
 //#include"Geometry.h"
@@ -84,8 +84,8 @@ public:
 	QuadTreeZ* scene_quadtree = nullptr;
 	int num_gameobjects_empty_created = 0;
 	bool draw_quadtree = false;
-	ShaderObject* test_shader_vertex = nullptr;
-	ShaderObject* test_shader_frag = nullptr;
-	std::vector<ShaderObject*> shader_obj_v;
+	ResourceShaderObject* test_shader_vertex = nullptr;
+	ResourceShaderObject* test_shader_frag = nullptr;
+	std::vector<int> shader_obj_v;
 	ShaderProgramObject* test_program = nullptr;
 };

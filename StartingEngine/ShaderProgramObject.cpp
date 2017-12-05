@@ -1,12 +1,12 @@
 #include "ShaderProgramObject.h"
-
-
+#include"Application.h"
+#include"ResourceShaderObject.h"
 
 ShaderProgramObject::ShaderProgramObject()
 {
 }
 
-ShaderProgramObject::ShaderProgramObject(std::vector<ShaderObject*> id_all_shader_object): ShaderObject_Program_v(id_all_shader_object)
+ShaderProgramObject::ShaderProgramObject(std::vector<int> id_all_shader_object): ShaderObject_Program_v(id_all_shader_object)
 {
 }
 
@@ -26,12 +26,14 @@ bool ShaderProgramObject::Link_Program()
 		return false;
 	}
 	for (int i = 0; i < ShaderObject_Program_v.size(); i++) {
-		if (ShaderObject_Program_v[i]->IsCompiled()) {
-			glAttachShader(id_program, ShaderObject_Program_v[i]->GetID());
-			LOG("Attached %s shader object", ShaderObject_Program_v[i]->GetFileName());
+		int uuid_temp = ShaderObject_Program_v[i];
+		ResourceShaderObject* temp_shader_obj=	(ResourceShaderObject*)	App->resources_mod->Get(uuid_temp);
+		if (temp_shader_obj->GetLoadedNum()>0) {
+			glAttachShader(id_program, temp_shader_obj->GetID());
+			LOG("Attached %s shader object", temp_shader_obj->GetFileName());
 		}
 		else {
-			LOG("Error trying to attach %s shader object", ShaderObject_Program_v[i]->GetFileName());
+			LOG("Error trying to attach %s shader object", temp_shader_obj->GetFileName());
 			LOG("The shader object is not compiled");
 			return false;
 		}

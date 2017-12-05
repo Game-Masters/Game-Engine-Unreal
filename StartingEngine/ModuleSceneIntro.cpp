@@ -9,7 +9,6 @@
 #include"Imgui\imguidock.h"
 #include"Quadtree.h"
 #include"ResourceTexture.h"
-#include"ShaderObject.h"
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 {
@@ -58,16 +57,25 @@ bool ModuleSceneIntro::Start()
 
 	//Testing shaders
 
+	std::string temp_str=" ";
+	std::string name_shader_vert;
+	std::string name_shader_frag;
+	App->fs_e->ChangeFormat_File("Test_vertex_shader", "txt", &name_shader_vert, App->fs_e->Shader_User);
+	App->fs_e->ChangeFormat_File("Test_fragment_shader", "txt", &name_shader_frag, App->fs_e->Shader_User);
 
-	std::string name_shader_vert = "Test_vertex_shader";
-	std::string name_shader_frag = "Test_fragment_shader";
 
-	test_shader_vertex = new ShaderObject(ShaderType::vertex_shader, name_shader_vert.c_str());
-	test_shader_vertex->CompileShader();
-	test_shader_frag = new ShaderObject(ShaderType::fragment_shader, name_shader_frag.c_str());
-	test_shader_frag->CompileShader();
-	shader_obj_v.push_back(test_shader_vertex);
-	shader_obj_v.push_back(test_shader_frag);
+	test_shader_vertex = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
+	test_shader_vertex->Set_New_Resource_Files(temp_str, name_shader_vert);
+	test_shader_vertex->Set_Type_Shader(ShaderType::vertex_shader);
+	test_shader_vertex->LoadToMemory();
+	test_shader_frag = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
+	test_shader_frag->Set_Type_Shader(ShaderType::fragment_shader);
+	test_shader_frag->Set_New_Resource_Files(temp_str, name_shader_frag);
+	test_shader_frag->LoadToMemory();
+	App->resources_mod->AddResources(test_shader_vertex);
+	App->resources_mod->AddResources(test_shader_frag);
+	shader_obj_v.push_back(test_shader_vertex->GetUID());
+	shader_obj_v.push_back(test_shader_frag->GetUID());
 	test_program = new ShaderProgramObject(shader_obj_v);
 	test_program->Link_Program();
 	

@@ -9,6 +9,7 @@ enum Resources_Type {
 	mesh,
 	texture,
 	scene,
+	shader,
 	unknown_r
 };
 

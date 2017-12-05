@@ -205,7 +205,9 @@ Resource * ModuleResources::CreateNewResource(Resources_Type type, int force_uid
 	case Resources_Type::mesh:
 		ret = (Resource*)new ResourceMesh(uid);
 		break;
-
+	case Resources_Type::shader:
+		ret = (Resource*)new ResourceShaderObject(uid);
+		break;
 	default:
 		break;
 	}

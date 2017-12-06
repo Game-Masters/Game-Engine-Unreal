@@ -35,7 +35,7 @@ struct Resource_Mesh_Base {
 
 	//-----------------
 	std::string name;
-	uint Know_if_m_have[4]{ 0,0,0,0 };
+	uint Know_if_m_have[5]{ 0,0,0,0,0 };
 	Resource_Mesh_Base() {
 
 	}

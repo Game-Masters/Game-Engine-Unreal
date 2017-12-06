@@ -123,7 +123,17 @@ void MeshImporter::Resource_Assimp_Creation(const aiScene * scene, const char* p
 			m->textures_coord[z * 2] = scene->mMeshes[i]->mTextureCoords[0][z].x;
 			m->textures_coord[z * 2 + 1] = scene->mMeshes[i]->mTextureCoords[0][z].y;
 		}
+
 	}
+
+
+	if (scene->mMeshes[i]->HasVertexColors(0))
+	{
+		m->Know_if_m_have[4] = 1;
+		m->colors = new float[m->num_vertices * 3];
+		memcpy(m->colors, scene->mMeshes[i]->mColors, sizeof(float) * m->num_vertices * 3);
+	}
+
 	m->BoundBox.SetNegativeInfinity();
 	m->BoundBox.Enclose((float3*)m->vertices, m->num_vertices);
 	m->id_image_devil = scene->mMeshes[i]->mMaterialIndex;
@@ -155,12 +165,14 @@ void MeshImporter::ImportMesh(Resource_Mesh_Base* temp_m, const char* path)
 	float total_size = 0;
 	
 		uint ranges[2] = { temp_m->num_indices, temp_m->num_vertices };
-		total_size += sizeof(ranges) + sizeof(uint) * 4;
+		total_size += sizeof(ranges) + sizeof(uint) * 5;
 		if (temp_m->Know_if_m_have[0] == 1 && temp_m->Know_if_m_have[1] == 1)
 			total_size += sizeof(uint)*temp_m->num_indices + sizeof(float)*temp_m->num_vertices * 3;
 		if (temp_m->Know_if_m_have[3] == 1)
 			total_size += sizeof(float)*temp_m->num_vertices * 2;
 		if (temp_m->Know_if_m_have[2] == 1)
+			total_size += sizeof(float)*temp_m->num_vertices * 3;
+		if (temp_m->Know_if_m_have[4] == 1)
 			total_size += sizeof(float)*temp_m->num_vertices * 3;
 
 		total_size += sizeof(uint)*1;
@@ -211,6 +223,13 @@ void MeshImporter::ImportMesh(Resource_Mesh_Base* temp_m, const char* path)
 
 		}
 
+		if (temp_m->Know_if_m_have[4] == 1) {
+
+			size = sizeof(float)*temp_m->num_vertices * 3;
+			memcpy(cursor, temp_m->colors, size);
+			cursor += size;
+
+		}
 		
 		size = sizeof(uint);
 		memcpy(cursor, &temp_m->id_image_devil, size);
@@ -499,6 +518,15 @@ Resource_Mesh_Base * MeshImporter::Create_Base_Geometry(const char* path, const 
 		size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 3;
 		n_temp_mesh->normals = new float[n_temp_mesh->num_vertices * 3];
 		memcpy(n_temp_mesh->normals, cursor_Mesh, size_mesh);
+		cursor_Mesh += size_mesh;
+
+	}
+
+	if (ranges[4] == 1) {
+
+		size_mesh = sizeof(float)*n_temp_mesh->num_vertices * 3;
+		n_temp_mesh->normals = new float[n_temp_mesh->num_vertices * 3];
+		memcpy(n_temp_mesh->colors, cursor_Mesh, size_mesh);
 		cursor_Mesh += size_mesh;
 
 	}

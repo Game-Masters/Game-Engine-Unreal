@@ -24,8 +24,11 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 		else if (first_time_edit ==true && path_shader != nullptr) {
 
 			//In a close future will need to load the text of the shader
+			std::string str_temp = "";
+			editor_text_shader.SetText(str_temp);
 			char* buffer = nullptr;
 			int size_file = App->fs_e->LoadFile(path_shader, &buffer);
+			actual_path = path_shader;
 			if (buffer != nullptr) {
 				buffer[size_file] = '\0';
 				std::string str_shader = buffer;
@@ -43,9 +46,10 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 		ImGui::SameLine();
 		if (ImGui::Button("Save"))
 		{
+			//char* text_str_buffer = editor_text_shader.GetText().c_str();
+			App->fs_e->SaveFile(actual_path.c_str(), (char*)editor_text_shader.GetText().c_str(), editor_text_shader.GetText().size());
 			//Modify txt
 		}
-
 
 
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {

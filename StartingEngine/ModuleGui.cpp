@@ -130,12 +130,14 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Data/Icons/fbx-icon.png", &App->fs_e->Fbx_Image);
 	App->assimp->LoadImage_devil("Data/Icons/image-icon.png", &App->fs_e->Png_Image);
 	App->assimp->LoadImage_devil("Data/Icons/zscene_icon.png", &App->fs_e->Scene_Image);
+	App->assimp->LoadImage_devil("Data/Icons/txt_image.png", &App->fs_e->Txt_Image);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
+	io.Fonts->AddFontFromFileTTF("Data\\Fonts\\Product Sans Bold.ttf", 15);
+	io.Fonts->AddFontDefault();
 	
 
-	io.Fonts->AddFontFromFileTTF("Data\\Fonts\\Product Sans Bold.ttf", 15);
 	Current_Dir = App->fs_e->RootDirect_User->path.c_str();
 	str_path_fbx = "-1";
 	str_path_img = "-1";

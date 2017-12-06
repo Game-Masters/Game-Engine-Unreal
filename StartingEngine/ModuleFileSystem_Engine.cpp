@@ -5,6 +5,7 @@
 #include <experimental/filesystem>
 #include<fstream>
 #include"Imgui\imgui.h"
+#include"Text_Editor_Shader.h"
 
 bool ModuleFileSystem_Engine::Init()
 {
@@ -415,6 +416,17 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 			}
 		}
 
+		if (ext_str == ".txt" || ext_str == ".TXT") {
+			ImGui::ImageButton_with_text((void*)Txt_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
+			ImGui::SameLine(0, 50);
+			if (ImGui::IsItemClicked()) {
+				if (ImGui::IsMouseDoubleClicked(0)) {
+					App->gui->show_editor_shaders = true;
+					App->gui->gui_editor_text_shader.first_time_edit = true;
+					App->gui->gui_editor_text_shader.Enable_Text_Editor(App->gui->show_editor_shaders, str_path.c_str());
+				}
+			}
+		}
 	}
 	if (new_path != nullptr) {
 		*new_path = ptr;

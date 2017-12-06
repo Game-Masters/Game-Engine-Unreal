@@ -14,6 +14,7 @@ public:
 	bool first_time_edit = true;
 	TextEditor editor_text_shader;
 	std::string text_selected;
+	std::string actual_path;
 };
 #endif // !EDITOR_TEXT_SHADER_H_
 

@@ -56,6 +56,7 @@ public:
 	GLuint Png_Image;
 	GLuint Fbx_Image;
 	GLuint Scene_Image;
+	GLuint Txt_Image;
 	bool creating_dir = false;
 	bool deleting_dir = false;
 	char directory_save[64] = { 0 };

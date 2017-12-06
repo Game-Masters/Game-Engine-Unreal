@@ -73,7 +73,7 @@ bool ShaderProgramObject::Bind_program()
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR)
 	{
-		LOG("Error binding shader! %s\n", gluErrorString(error));
+		//LOG("Error binding shader! %s\n", gluErrorString(error));
 		return false;
 	}
 

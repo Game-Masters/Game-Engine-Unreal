@@ -28,10 +28,12 @@ public:
 	void Render_3D(Mesh* m , int uuid, Material* texture_mesh= nullptr);
 
 
-
 public:
+	uint id_checkImage = 0;
+	unsigned char checkImage[64][32][4];
 	GLint projLoc=0;
 	GLint modelLoc=0;
+	GLint testLoc = 0;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	//mat3x3 NormalMatrix;
@@ -43,4 +45,6 @@ public:
 	bool color = false;
 	bool debugnormals = false;
 	float* Window_Color = nullptr;
+
+
 };

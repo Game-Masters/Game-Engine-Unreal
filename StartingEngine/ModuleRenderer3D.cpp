@@ -96,6 +96,36 @@ bool ModuleRenderer3D::Init()
 	glClearColor(*(Window_Color), *(Window_Color + 1), *(Window_Color + 2), 1.f);
 
 	App->camera->CamComp->SetFOV_WH();
+
+	//---------------------------Checkers creation
+
+
+
+	for (int i = 0; i < 64; i++) {
+		for (int j = 0; j < 32; j++) {
+			//int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkImage[i][j][0] = (GLubyte)255;
+			checkImage[i][j][1] = (GLubyte)255;
+			checkImage[i][j][2] = (GLubyte)255;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &id_checkImage);
+	glBindTexture(GL_TEXTURE_2D, id_checkImage);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 64, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//---------------------------Checkers creation
+
+
+
+
 	return ret;
 }
 
@@ -295,6 +325,17 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			glUniformMatrix4fv(projLoc, 1, GL_TRUE, App->camera->CamComp->Get_Frustum().ViewProjMatrix().ptr());
 			modelLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "mat_model");
 			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, m->Get_Parent()->GetMatrix_Trans().ptr());
+
+			testLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "ourTexture");
+			if (texture_mesh != nullptr) {
+				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
+				glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);
+				glProgramUniform1ui(App->scene_intro->test_program->GetID_program_shader(), testLoc, (GLuint)((ResourceTexture*)text_m)->id_image_devil);
+			}
+			else {
+				glBindTexture(GL_TEXTURE_2D, id_checkImage);
+				glProgramUniform1ui(App->scene_intro->test_program->GetID_program_shader(), testLoc, (GLuint)id_checkImage);
+			}
 
 			if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
 				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_total_buffer);

@@ -39,11 +39,6 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 		}
 
 
-		if (ImGui::Button("Compile"))
-		{
-			//See if compile
-		}
-		ImGui::SameLine();
 		if (ImGui::Button("Save"))
 		{
 			//char* text_str_buffer = editor_text_shader.GetText().c_str();

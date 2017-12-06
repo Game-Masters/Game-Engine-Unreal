@@ -266,7 +266,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			transform_mesh.Transpose();
 
 			//glLoadMatrixf(trans_point);
-			glMultMatrixf(transform_mesh.ptr());
+			//glMultMatrixf(transform_mesh.ptr());
 			if (App->renderer3D->debugnormals == true && mesh_v->Res_Mesh_Base->normals != nullptr) {
 				for (uint k = 0; k < mesh_v->Res_Mesh_Base->num_vertices * 3; k += 3)
 				{
@@ -291,6 +291,10 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				tota_save_buffer -= 3;
 			}
 
+			projLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "projection_view");
+			glUniformMatrix4fv(projLoc, 1, GL_TRUE, App->camera->CamComp->Get_Frustum().ViewProjMatrix().ptr());
+			modelLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "mat_model");
+			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, m->Get_Parent()->GetMatrix_Trans().ptr());
 
 			if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
 				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_total_buffer);
@@ -304,13 +308,11 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_indices);
 				glDrawElements(GL_TRIANGLES, mesh_v->Res_Mesh_Base->num_indices, GL_UNSIGNED_INT, NULL);
+				glPopMatrix();
 			}
-			GLint modelLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "model");
-			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, m->Get_Parent()->GetMatrix_Trans().ptr());
-			GLint projLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "projection_view");
-			float4x4 mat_float = App->camera->CamComp->Get_Frustum().ViewProjMatrix();
-			glUniformMatrix4fv(projLoc, 1, GL_TRUE, mat_float.ptr());
-		//	glPopMatrix();
+		
+		
+	
 			glBindTexture(GL_TEXTURE_2D, 0);
 			glDisableVertexAttribArray(0);
 			glDisableVertexAttribArray(1);

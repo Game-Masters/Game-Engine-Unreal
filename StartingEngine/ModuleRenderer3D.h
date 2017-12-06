@@ -30,7 +30,8 @@ public:
 
 
 public:
-	
+	GLint projLoc=0;
+	GLint modelLoc=0;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	//mat3x3 NormalMatrix;

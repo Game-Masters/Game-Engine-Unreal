@@ -78,9 +78,11 @@ bool ModuleSceneIntro::Start()
 	App->resources_mod->AddResources(test_shader_frag);
 	shader_obj_v.push_back(test_shader_vertex->GetUID());
 	shader_obj_v.push_back(test_shader_frag->GetUID());
-	test_program = new ShaderProgramObject(shader_obj_v);
+	test_program = new ShaderProgramObject(shader_obj_v,"Default");
 	test_program->Link_Program();
 	
+	shader_program_v.push_back(test_program);
+
 	//Load_Scene();
 
 	

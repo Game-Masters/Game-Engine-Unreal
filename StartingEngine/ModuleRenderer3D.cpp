@@ -285,9 +285,13 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				}
 			}*/
 		
-	
-
-			App->scene_intro->test_program->Bind_program();
+			if (texture_mesh != nullptr) {
+				texture_mesh->shader_program_material->Bind_program();
+			}
+			else {
+				App->scene_intro->test_program->Bind_program();
+			}
+			//App->scene_intro->test_program->Bind_program();
 			//glPushMatrix();
 			float3 position;
 			float3 scale;
@@ -325,7 +329,6 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			glUniformMatrix4fv(projLoc, 1, GL_TRUE, App->camera->CamComp->Get_Frustum().ViewProjMatrix().ptr());
 			modelLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "mat_model");
 			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, m->Get_Parent()->GetMatrix_Trans().ptr());
-
 			testLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "ourTexture");
 			if (texture_mesh != nullptr) {
 				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
@@ -358,7 +361,13 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			glDisableVertexAttribArray(0);
 			glDisableVertexAttribArray(1);
 			glDisableVertexAttribArray(2);
-			App->scene_intro->test_program->Unbind_program();
+			if (texture_mesh != nullptr) {
+				texture_mesh->shader_program_material->Unbind_program();
+			}
+			else {
+				App->scene_intro->test_program->Unbind_program();
+			}
+
 		}
 		else {
 			LOG("Impossible to draw the mesh");

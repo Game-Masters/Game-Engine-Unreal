@@ -87,5 +87,6 @@ public:
 	ResourceShaderObject* test_shader_vertex = nullptr;
 	ResourceShaderObject* test_shader_frag = nullptr;
 	std::vector<int> shader_obj_v;
+	std::vector<ShaderProgramObject*> shader_program_v;
 	ShaderProgramObject* test_program = nullptr;
 };

@@ -1,31 +1,21 @@
 #include "Material.h"
 
-
-
-
-
-
 Material::Material(int UUID, GameObject * parent): Component(Component_Type_Enum::component_material_type,	parent, true)
 {
 	UUID_mat = UUID;
 	Resource* res =	App->resources_mod->Get(UUID_mat);
 	path_texture_exported = res->GetExportedFile();
 	path_texture = res->GetFile();
-
-
-
+	shader_program_material = App->scene_intro->test_program;
 }
 
 void Material::Update()
 {
-
 }
 
 Material::~Material()
 {
 }
-
-
 
 const char * Material::GetPathMaterial() const
 {

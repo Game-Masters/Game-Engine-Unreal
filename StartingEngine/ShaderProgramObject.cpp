@@ -6,8 +6,9 @@ ShaderProgramObject::ShaderProgramObject()
 {
 }
 
-ShaderProgramObject::ShaderProgramObject(std::vector<int> id_all_shader_object): ShaderObject_Program_v(id_all_shader_object)
+ShaderProgramObject::ShaderProgramObject(std::vector<int> id_all_shader_object, const char* name): ShaderObject_Program_v(id_all_shader_object)
 {
+	name_program = name;
 }
 
 
@@ -88,4 +89,9 @@ void ShaderProgramObject::Unbind_program()
 GLuint ShaderProgramObject::GetID_program_shader()
 {
 	return id_program;
+}
+
+const char * ShaderProgramObject::GetNameProgram()
+{
+	return name_program.c_str();
 }

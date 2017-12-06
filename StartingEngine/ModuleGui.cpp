@@ -877,12 +877,25 @@ void ModuleGui::InspectionNode_Gui()
 				mat_temp = (Material*)Comp_temp;
 				if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
 				{
-				temp_res = (ResourceTexture*)App->resources_mod->Get(mat_temp->UUID_mat);
-				if (mat_temp != nullptr) {
-					ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
-					ImGui::Text("Texture width: %f", temp_res->text_w_h.x);
-					ImGui::Text("Texture height: %f", temp_res->text_w_h.y);
-					ImGui::Image((void*)temp_res->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));			
+					temp_res = (ResourceTexture*)App->resources_mod->Get(mat_temp->UUID_mat);
+					if (mat_temp != nullptr) {
+						ImGui::Text("Texture path: %s", mat_temp->GetPathMaterial());
+						ImGui::Text("Texture width: %f", temp_res->text_w_h.x);
+						ImGui::Text("Texture height: %f", temp_res->text_w_h.y);
+						ImGui::Image((void*)temp_res->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
+						if (ImGui::Button("Shader type", ImVec2(250, 30)) && inspection_node)
+							ImGui::OpenPopup("Shader type");
+						if (ImGui::BeginPopup("Shader type"))
+						{
+							for (int i = 0; i<App->scene_intro->shader_program_v.size(); i++) {
+								ShaderProgramObject* shader_program_temp = App->scene_intro->shader_program_v[i];
+								if (ImGui::MenuItem(shader_program_temp->GetNameProgram()))
+								{
+									mat_temp->shader_program_material = shader_program_temp;
+								}
+							}
+							ImGui::EndPopup();
+						}
 					}
 				}
 				break;

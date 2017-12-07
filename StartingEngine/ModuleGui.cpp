@@ -898,8 +898,8 @@ void ModuleGui::InspectionNode_Gui()
 							ImGui::OpenPopup("Shader type");
 						if (ImGui::BeginPopup("Shader type"))
 						{
-							for (int i = 0; i<App->scene_intro->shader_program_v.size(); i++) {
-								ShaderProgramObject* shader_program_temp = App->scene_intro->shader_program_v[i];
+							for (int i = 0; i<App->shaders_manager->shader_program_v.size(); i++) {
+								ShaderProgramObject* shader_program_temp = App->shaders_manager->shader_program_v[i];
 								if (ImGui::MenuItem(shader_program_temp->GetNameProgram()))
 								{
 									mat_temp->shader_program_material = shader_program_temp;

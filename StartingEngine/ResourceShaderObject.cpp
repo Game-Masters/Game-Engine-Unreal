@@ -128,8 +128,8 @@ void ResourceShaderObject::Set_Type_Shader(ShaderType type)
 void ResourceShaderObject::ShaderUpdateInstances()
 {
 
-	for (int i = 0; i < App->scene_intro->shader_program_v.size();i++) {
-		ShaderProgramObject* temp=App->scene_intro->shader_program_v[i];
+	for (int i = 0; i < App->shaders_manager->shader_program_v.size();i++) {
+		ShaderProgramObject* temp= App->shaders_manager->shader_program_v[i];
 		std::vector<int> shader_object_uuid = temp->GetShaderObj_UUID();
 		for (int j = 0; j < shader_object_uuid.size(); j++) {
 			if (shader_object_uuid[j]==this->uid) {

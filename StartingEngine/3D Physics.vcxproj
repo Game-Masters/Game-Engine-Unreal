@@ -235,6 +235,7 @@
     <ClInclude Include="ResourceShaderObject.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="ShaderProgramObject.h" />
+    <ClInclude Include="Shaders_Manager.h" />
     <ClInclude Include="TextEditor.h" />
     <ClInclude Include="Texture_Engine.h" />
     <ClInclude Include="Text_Editor_Shader.h" />
@@ -317,6 +318,7 @@
     <ClCompile Include="ResourceShaderObject.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="ShaderProgramObject.cpp" />
+    <ClCompile Include="Shaders_Manager.cpp" />
     <ClCompile Include="TextEditor.cpp" />
     <ClCompile Include="Texture_Engine.cpp" />
     <ClCompile Include="Text_Editor_Shader.cpp" />

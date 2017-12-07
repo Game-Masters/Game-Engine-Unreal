@@ -94,8 +94,8 @@ bool ModuleSceneIntro::Start()
 	test_program2 = new ShaderProgramObject(shader_obj_v, "Color");
 	test_program2->Link_Program();
 	
-	shader_program_v.push_back(test_program);
-	shader_program_v.push_back(test_program2);
+	App->shaders_manager->shader_program_v.push_back(test_program);
+	App->shaders_manager->shader_program_v.push_back(test_program2);
 
 	//Load_Scene();
 

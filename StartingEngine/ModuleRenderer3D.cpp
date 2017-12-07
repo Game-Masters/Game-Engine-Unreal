@@ -318,12 +318,10 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			if (mesh_v->Res_Mesh_Base->colors == nullptr) {
 				tota_save_buffer -= 3;
 			}
-
-			projLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "projection_view");
-			glUniformMatrix4fv(projLoc, 1, GL_TRUE, App->camera->CamComp->Get_Frustum().ViewProjMatrix().ptr());
 			modelLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "mat_model");
 			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, m->Get_Parent()->GetMatrix_Trans().ptr());
 			testLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "ourTexture");
+
 			if (texture_mesh != nullptr) {
 				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
 				glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);

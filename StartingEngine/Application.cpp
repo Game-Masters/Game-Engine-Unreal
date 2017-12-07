@@ -17,6 +17,7 @@ Application::Application()
 	assimp = new ModuleAssimp();
 	fs_e = new ModuleFileSystem_Engine();
 	resources_mod = new ModuleResources();
+	shaders_manager = new Shaders_Manager();
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -29,6 +30,7 @@ Application::Application()
 	AddModule(audio);
 	AddModule(assimp);
 	AddModule(resources_mod);
+	AddModule(shaders_manager);
 	// Scenes
 	AddModule(scene_intro);
 
@@ -52,6 +54,7 @@ Application::Application()
 	scene_intro->name = "scene intro";
 	assimp->name = "assimp";
 	resources_mod->name = "resources_manager";
+	shaders_manager->name = "shader Manager";
 }
 
 Application::~Application()
@@ -345,4 +348,8 @@ void Application::AddModule(Module* mod)
 {
 
 	list_modules.push_back(mod);
+}
+
+float Application::GetPlay_Time()const {
+	return play_timer;
 }

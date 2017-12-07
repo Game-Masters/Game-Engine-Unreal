@@ -10,14 +10,13 @@
 #include "ModuleSceneIntro.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-
-
 #include "ModuleGui.h"
 #include "ModuleAssimp.h"
 #include "Parson_JSON.h"
 #include"Parson_JSON.h"
 #include"ModuleFileSystem_Engine.h"
 #include"ModuleResources.h"
+#include"Shaders_Manager.h"
 #include <list>
 #include <vector>
 #include "Geometry.h"
@@ -43,7 +42,7 @@ public:
 	ModuleSceneIntro* scene_intro;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
-
+	Shaders_Manager* shaders_manager;
 	ModuleGui* gui;
 	ModuleFileSystem_Engine* fs_e;
 	ModuleAssimp* assimp;
@@ -98,6 +97,7 @@ public:
 	void ReStartScene();
 	void StartPlayingScene();
 	TimeState timeStatus = TimeState::stop;
+	float GetPlay_Time()const;
 private:
 	float performance[90] = { 0 };
 	int performance_offset = 0;

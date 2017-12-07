@@ -568,6 +568,7 @@
     <ClInclude Include="ResourceShaderObject.h">
       <Filter>Sources\Modules\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="Shaders_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -808,6 +809,7 @@
     <ClCompile Include="ResourceShaderObject.cpp">
       <Filter>Sources\Modules\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Shaders_Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assimp\include\assimp\.editorconfig">

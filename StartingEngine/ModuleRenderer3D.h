@@ -31,9 +31,6 @@ public:
 public:
 	uint id_checkImage = 0;
 	unsigned char checkImage[64][32][4];
-	GLint projLoc=0;
-	GLint modelLoc=0;
-	GLint testLoc = 0;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	//mat3x3 NormalMatrix;
@@ -46,5 +43,6 @@ public:
 	bool debugnormals = false;
 	float* Window_Color = nullptr;
 
-
+	GLint modelLoc = 0;
+	GLint testLoc = 0;
 };

@@ -86,7 +86,9 @@ public:
 	bool draw_quadtree = false;
 	ResourceShaderObject* test_shader_vertex = nullptr;
 	ResourceShaderObject* test_shader_frag = nullptr;
+	ResourceShaderObject* test_shader_frag2 = nullptr;
 	std::vector<int> shader_obj_v;
 	std::vector<ShaderProgramObject*> shader_program_v;
 	ShaderProgramObject* test_program = nullptr;
+	ShaderProgramObject* test_program2 = nullptr;
 };

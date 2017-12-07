@@ -135,18 +135,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	/*App->scene_intro->test_program->Bind_program();
-	glTranslatef(SCREEN_WIDTH / 2.f, SCREEN_HEIGHT / 2.f, 0.f);
-	glBegin(GL_QUADS);
-	glColor3f(0.f, 1.f, 1.f);
-	glVertex2f(-0.3f, -0.3f);
-	glVertex2f(0.3f, -0.3f);
-	glVertex2f(0.3f, 0.3f);
-	glVertex2f(-0.3f, 0.3f);
-	glEnd();
-	App->scene_intro->test_program->Unbind_program();
-	glMatrixMode(GL_MODELVIEW);*/
-
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -285,11 +273,14 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				}
 			}*/
 		
+			ShaderProgramObject* selector_program = nullptr;
 			if (texture_mesh != nullptr) {
 				texture_mesh->shader_program_material->Bind_program();
+				selector_program = texture_mesh->shader_program_material;
 			}
 			else {
 				App->scene_intro->test_program->Bind_program();
+				selector_program = App->scene_intro->test_program;
 			}
 			//App->scene_intro->test_program->Bind_program();
 			//glPushMatrix();
@@ -325,15 +316,15 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				tota_save_buffer -= 3;
 			}
 
-			projLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "projection_view");
+			projLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "projection_view");
 			glUniformMatrix4fv(projLoc, 1, GL_TRUE, App->camera->CamComp->Get_Frustum().ViewProjMatrix().ptr());
-			modelLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "mat_model");
+			modelLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "mat_model");
 			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, m->Get_Parent()->GetMatrix_Trans().ptr());
-			testLoc = glGetUniformLocation(App->scene_intro->test_program->GetID_program_shader(), "ourTexture");
+			testLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "ourTexture");
 			if (texture_mesh != nullptr) {
 				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
 				glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);
-				glProgramUniform1ui(App->scene_intro->test_program->GetID_program_shader(), testLoc, (GLuint)((ResourceTexture*)text_m)->id_image_devil);
+				glProgramUniform1ui(selector_program->GetID_program_shader(), testLoc, (GLuint)((ResourceTexture*)text_m)->id_image_devil);
 			}
 			else {
 				glBindTexture(GL_TEXTURE_2D, id_checkImage);
@@ -362,7 +353,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			glDisableVertexAttribArray(1);
 			glDisableVertexAttribArray(2);
 			if (texture_mesh != nullptr) {
-				texture_mesh->shader_program_material->Unbind_program();
+				selector_program->Unbind_program();
 			}
 			else {
 				App->scene_intro->test_program->Unbind_program();

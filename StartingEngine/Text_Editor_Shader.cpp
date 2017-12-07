@@ -53,13 +53,15 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 
 		if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT ){
 			if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN) {
-				text_selected = editor_text_shader.GetSelectedText();
+				//text_selected = editor_text_shader.GetSelectedText();
+				editor_text_shader.Copy();
 			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT){
 			if (App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN) {
-				editor_text_shader.InsertText(text_selected);
+				//editor_text_shader.InsertText(text_selected);
+				editor_text_shader.Paste();
 			}
 		}
 
@@ -68,7 +70,7 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 				editor_text_shader.Undo();
 			}
 		}
-
+		
 		if (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT) {
 			if (App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN) {
 				editor_text_shader.Redo();

@@ -106,7 +106,7 @@ void ResourceShaderObject::Update_Resource()
 	glDeleteShader(id_shader_obj);
 	//RELEASE(shader_obj_code);
 	ComplieShaderObject();
-	App->scene_intro->test_program->Link_Program();
+	ShaderUpdateInstances();
 
 }
 
@@ -123,4 +123,21 @@ const char * ResourceShaderObject::GetFileName()
 void ResourceShaderObject::Set_Type_Shader(ShaderType type)
 {
 	shader_obj_type = type;
+}
+
+void ResourceShaderObject::ShaderUpdateInstances()
+{
+
+	for (int i = 0; i < App->scene_intro->shader_program_v.size();i++) {
+		ShaderProgramObject* temp=App->scene_intro->shader_program_v[i];
+		std::vector<int> shader_object_uuid = temp->GetShaderObj_UUID();
+		for (int j = 0; j < shader_object_uuid.size(); j++) {
+			if (shader_object_uuid[j]==this->uid) {
+				temp->Link_Program();
+			}
+		}
+
+	}
+
+
 }

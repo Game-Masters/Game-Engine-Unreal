@@ -14,8 +14,10 @@ public:
 	bool Link_Program();
 	bool Bind_program();
 	void Unbind_program();
-	GLuint GetID_program_shader();
+	const GLuint GetID_program_shader() const;
 	const char* GetNameProgram();
+	std::vector<int> GetShaderObj_UUID() const;
+
 private:
 
 	std::vector<int> ShaderObject_Program_v;

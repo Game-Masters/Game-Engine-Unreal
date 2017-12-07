@@ -91,7 +91,7 @@ bool ModuleSceneIntro::Start()
 	shader_obj_v.clear();
 	shader_obj_v.push_back(test_shader_vertex->GetUID());
 	shader_obj_v.push_back(test_shader_frag2->GetUID());
-	test_program2 = new ShaderProgramObject(shader_obj_v, "Red");
+	test_program2 = new ShaderProgramObject(shader_obj_v, "Color");
 	test_program2->Link_Program();
 	
 	shader_program_v.push_back(test_program);

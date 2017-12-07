@@ -27,6 +27,7 @@ public:
 	GLuint GetID();
 	const char* GetFileName();
 	void Set_Type_Shader(ShaderType type);
+	void ShaderUpdateInstances();
 private:
 	LCG uid_rm;
 	ShaderType shader_obj_type = ShaderType::no_type_shader;

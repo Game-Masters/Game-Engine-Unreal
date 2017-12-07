@@ -77,6 +77,7 @@ public:
 	bool assets_dock_focus = false;
 	bool Octree_Window = false;
 	bool createnew = false;
+	bool createnewshader = false;
 
 	std::string str_path_fbx;
 	std::string str_path_img;

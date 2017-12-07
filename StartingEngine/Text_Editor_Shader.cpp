@@ -84,3 +84,42 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 	}
 
 }
+
+void Editor_Text_Shader::Enable_CreateShader(bool visible)
+{
+
+	if (visible) {
+		ImGui::Begin("Shader Options", &App->gui->createnewshader);
+		ResourceShaderObject* temp= (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
+		std::string empty_file="";
+		ImGui::InputText("Name of the Shader", str_shad_temp, 64);
+			name_shader = str_shad_temp;
+		
+
+		App->fs_e->ChangeFormat_File(name_shader.c_str(), "txt", &name_shader, App->fs_e->Shader_User);
+	
+		temp->Set_New_Resource_Files(empty_file, name_shader);
+		
+		ImGui::Combo("Shaders Mode", &combo_shaders, "Vertex Shader\0Fragment Shader");
+		if (combo_shaders==1) {
+			temp->Set_Type_Shader(ShaderType::vertex_shader);
+		}
+		else if (combo_shaders == 2) {
+			temp->Set_Type_Shader(ShaderType::fragment_shader);
+		}
+		
+		if (ImGui::Button("Create")) {
+			App->gui->createnewshader = false;
+			App->fs_e->SaveFile(name_shader.c_str(), "", 1);
+			temp->LoadToMemory();
+			temp->CreateMeta();
+			App->resources_mod->AddResources(temp);
+			App->gui->show_editor_shaders = true;
+			App->gui->gui_editor_text_shader.first_time_edit = true;
+			App->gui->gui_editor_text_shader.Enable_Text_Editor(App->gui->show_editor_shaders, temp->GetExportedFile());
+		}
+
+		ImGui::End();
+	}
+
+}

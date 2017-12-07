@@ -252,6 +252,7 @@ update_status ModuleGui::Update(float dt)
 					{
 						createnew = true;
 					}
+
 					if (createnew == true)
 					{
 						for (int i = 0; i < App->scene_intro->root_gameobject->Childrens_GameObject_Vect.size(); i++) {
@@ -651,6 +652,13 @@ update_status ModuleGui::Update(float dt)
 				}
 				inspection_node = nullptr;
 			}
+
+
+			if (ImGui::MenuItem("Create New Shader"))
+			{
+				createnewshader = true;
+			}
+
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Scene"))
@@ -694,6 +702,9 @@ update_status ModuleGui::Update(float dt)
 		gui_editor_text_shader.Enable_Text_Editor(show_editor_shaders);
 	}
 	
+	if (createnewshader) {
+		gui_editor_text_shader.Enable_CreateShader(createnewshader);
+	}
 
 	ImGui::EndDockspace();
 	ImGui::End();

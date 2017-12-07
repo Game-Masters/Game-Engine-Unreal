@@ -2,6 +2,7 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texCoord;
 layout (location = 2) in vec3 normals;
+layout (location = 3) in vec3 color;
 out vec3 ourColor;
 out vec2 TexCoord;
 uniform mat4 mat_model;

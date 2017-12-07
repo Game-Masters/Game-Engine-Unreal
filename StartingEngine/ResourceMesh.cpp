@@ -51,6 +51,10 @@ void ResourceMesh::LoadMeshBase()
 	if (Res_Mesh_Base->normals != nullptr) {
 		total_size_buffer += Res_Mesh_Base->num_vertices * 3;
 	}
+	if (Res_Mesh_Base->colors != nullptr) {
+		total_size_buffer += Res_Mesh_Base->num_vertices * 3;
+	}
+
 	Res_Mesh_Base->total_buffer_mesh = new char[total_size_buffer * sizeof(float)];
 	char* cursor = Res_Mesh_Base->total_buffer_mesh;
 
@@ -66,6 +70,11 @@ void ResourceMesh::LoadMeshBase()
 		}
 		if (Res_Mesh_Base->normals != nullptr) {
 			memcpy(cursor, &Res_Mesh_Base->normals[i*3], 3 * sizeof(float));
+			cursor += 3 * sizeof(float);
+		}
+
+		if (Res_Mesh_Base->colors != nullptr) {
+			memcpy(cursor, &Res_Mesh_Base->colors[i * 3], 3 * sizeof(float));
 			cursor += 3 * sizeof(float);
 		}
 		//color vertex

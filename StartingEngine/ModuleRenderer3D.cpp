@@ -308,11 +308,14 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				}
 			}
 
-			int tota_save_buffer = 8;
+			int tota_save_buffer = 11;
 			if (mesh_v->Res_Mesh_Base->textures_coord == nullptr) {
 				tota_save_buffer -= 2;
 			}
 			if (mesh_v->Res_Mesh_Base->normals == nullptr) {
+				tota_save_buffer -= 3;
+			}
+			if (mesh_v->Res_Mesh_Base->colors == nullptr) {
 				tota_save_buffer -= 3;
 			}
 
@@ -339,6 +342,8 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, tota_save_buffer * sizeof(GLfloat), (char *)NULL + (3 * sizeof(float)));
 				glEnableVertexAttribArray(2);
 				glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, tota_save_buffer * sizeof(GLfloat), (char *)NULL + (5 * sizeof(float)));
+				glEnableVertexAttribArray(3);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, tota_save_buffer * sizeof(GLfloat), (char *)NULL + (8 * sizeof(float)));
 
 				glEnableClientState(GL_ELEMENT_ARRAY_BUFFER);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_indices);
@@ -352,6 +357,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			glDisableVertexAttribArray(0);
 			glDisableVertexAttribArray(1);
 			glDisableVertexAttribArray(2);
+			glDisableVertexAttribArray(3);
 			if (texture_mesh != nullptr) {
 				selector_program->Unbind_program();
 			}

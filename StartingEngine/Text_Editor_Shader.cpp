@@ -76,9 +76,10 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 				editor_text_shader.Redo();
 			}
 		}
-
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui::PushFont(io.Fonts->Fonts[1]);
 		editor_text_shader.Render("Test_shader_editor");
-
+		ImGui::PopFont();
 		ImGui::End();
 	}
 	else {

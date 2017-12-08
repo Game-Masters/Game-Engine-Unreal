@@ -15,7 +15,12 @@ ResourceShaderObject::ResourceShaderObject(int id) : Resource(id, Resources_Type
 ResourceShaderObject::ResourceShaderObject(ShaderType Type, const char* filename):Resource(uid_rm.Int(), Resources_Type::shader),	shader_obj_type(Type)
 {
 	std::string str;
-	App->fs_e->ChangeFormat_File(filename, "txt", &str, App->fs_e->Shader_User);
+	if (Type == ShaderType::vertex_shader) {
+		App->fs_e->ChangeFormat_File(filename, "vert", &str, App->fs_e->Shader_User);
+	}
+	if (Type == ShaderType::fragment_shader) {
+		App->fs_e->ChangeFormat_File(filename, "frag", &str, App->fs_e->Shader_User);
+	}
 	this->exported_file = str;
 }
 

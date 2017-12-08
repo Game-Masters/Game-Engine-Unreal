@@ -161,6 +161,44 @@ update_status ModuleInput::PreUpdate(float dt)
 						}
 					}
 
+					if (type_file == Resources_Type::shader) {
+						std::experimental::filesystem::path p2;
+						size_t end_name = dropped_filedir.rfind(".");
+						size_t sart_name = dropped_filedir.rfind("\\") + 1;
+						std::string name = dropped_filedir.substr(sart_name, end_name-sart_name);
+
+						std::string extension = dropped_filedir.substr(end_name+1, dropped_filedir.size());
+						ShaderType type_shader_temp = ShaderType::no_type_shader;
+						std::experimental::filesystem::path p1 = dropped_filedir;
+						if (extension == "vert") {
+							p2 = App->fs_e->Shader_User->path + "\\" + name + ".vert";
+							type_shader_temp = ShaderType::vertex_shader;
+						}
+						else if (extension == "frag") {
+							p2 = App->fs_e->Shader_User->path + "\\" + name + ".frag";
+							type_shader_temp = ShaderType::fragment_shader;
+						}
+						if (App->fs_e->Find_in_Asset(p2.string().c_str())) {
+							std::experimental::filesystem::remove(p2.string().c_str());
+						}
+						std::experimental::filesystem::copy_file(p1, p2);
+
+						if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {
+							ResourceShaderObject* temp_mesh_try = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
+							temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
+							temp_mesh_try->Set_Type_Shader(type_shader_temp);
+							App->resources_mod->AddResources(temp_mesh_try);
+							temp_mesh_try->CreateMeta();
+						}
+
+
+
+
+
+
+
+					}
+
 					
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir.c_str(), App->window->window);
 					App->imp_mesh->change_nameimporter = 0;

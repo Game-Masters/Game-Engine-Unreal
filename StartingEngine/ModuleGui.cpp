@@ -659,6 +659,11 @@ update_status ModuleGui::Update(float dt)
 				createnewshader = true;
 			}
 
+			if (ImGui::MenuItem("Link new Shader program"))
+			{
+				linkenewshader = true;
+			}
+
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Scene"))
@@ -705,6 +710,11 @@ update_status ModuleGui::Update(float dt)
 	if (createnewshader) {
 		gui_editor_text_shader.Enable_CreateShader(createnewshader);
 	}
+
+	if (linkenewshader) {
+		gui_editor_text_shader.Enable_LinkShader(linkenewshader);
+	}
+	
 
 	ImGui::EndDockspace();
 	ImGui::End();

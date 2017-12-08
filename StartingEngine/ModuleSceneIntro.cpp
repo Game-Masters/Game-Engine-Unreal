@@ -61,29 +61,52 @@ bool ModuleSceneIntro::Start()
 	std::string name_shader_vert;
 	std::string name_shader_frag;
 	std::string name_shader_frag2;
-	App->fs_e->ChangeFormat_File("Test_vertex_shader", "txt", &name_shader_vert, App->fs_e->Shader_User);
-	App->fs_e->ChangeFormat_File("Test_fragment_shader", "txt", &name_shader_frag, App->fs_e->Shader_User);
-	App->fs_e->ChangeFormat_File("Test_fragment_shader2", "txt", &name_shader_frag2, App->fs_e->Shader_User);
+	App->fs_e->ChangeFormat_File("Test_vertex_shader", "vert", &name_shader_vert, App->fs_e->Shader_User);
+	App->fs_e->ChangeFormat_File("Test_fragment_shader", "frag", &name_shader_frag, App->fs_e->Shader_User);
+	App->fs_e->ChangeFormat_File("Test_fragment_shader2", "frag", &name_shader_frag2, App->fs_e->Shader_User);
 
 
 	test_shader_vertex = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
 	test_shader_vertex->Set_New_Resource_Files(temp_str, name_shader_vert);
-	test_shader_vertex->Set_Type_Shader(ShaderType::vertex_shader);
-	test_shader_vertex->LoadToMemory();
-	test_shader_vertex->CreateMeta();
+	if (App->resources_mod->Find_UserRes(test_shader_vertex->GetExportedFile())==-1) {
+		test_shader_vertex->Set_Type_Shader(ShaderType::vertex_shader);
+		test_shader_vertex->LoadToMemory();
+		test_shader_vertex->CreateMeta();
+		App->resources_mod->AddResources(test_shader_vertex);
+	}
+	else {
+		test_shader_vertex = (ResourceShaderObject*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_shader_vertex->GetExportedFile()));
+		test_shader_vertex->Set_Type_Shader(ShaderType::vertex_shader);
+		test_shader_vertex->LoadToMemory();
+	}
+
 	test_shader_frag = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
 	test_shader_frag->Set_Type_Shader(ShaderType::fragment_shader);
 	test_shader_frag->Set_New_Resource_Files(temp_str, name_shader_frag);
-	test_shader_frag->LoadToMemory();
-	test_shader_frag->CreateMeta();
+	if (App->resources_mod->Find_UserRes(test_shader_frag->GetExportedFile()) == -1) {
+		test_shader_frag->LoadToMemory();
+		test_shader_frag->CreateMeta();
+		App->resources_mod->AddResources(test_shader_frag);
+	}
+	else {
+		test_shader_frag = (ResourceShaderObject*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_shader_frag->GetExportedFile()));
+		test_shader_frag->Set_Type_Shader(ShaderType::fragment_shader);
+		test_shader_frag->LoadToMemory();
+	}
+
 	test_shader_frag2 = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
 	test_shader_frag2->Set_Type_Shader(ShaderType::fragment_shader);
 	test_shader_frag2->Set_New_Resource_Files(temp_str, name_shader_frag2);
-	test_shader_frag2->LoadToMemory();
-	test_shader_frag2->CreateMeta();
-	App->resources_mod->AddResources(test_shader_vertex);
-	App->resources_mod->AddResources(test_shader_frag);
-	App->resources_mod->AddResources(test_shader_frag2);
+	if (App->resources_mod->Find_UserRes(test_shader_frag2->GetExportedFile()) == -1) {
+		test_shader_frag2->LoadToMemory();
+		test_shader_frag2->CreateMeta();
+		App->resources_mod->AddResources(test_shader_frag2);
+	}
+	else {
+		test_shader_frag2 = (ResourceShaderObject*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_shader_frag2->GetExportedFile()));
+		test_shader_frag2->Set_Type_Shader(ShaderType::fragment_shader);
+		test_shader_frag2->LoadToMemory();
+	}
 	shader_obj_v.push_back(test_shader_vertex->GetUID());
 	shader_obj_v.push_back(test_shader_frag->GetUID());
 	test_program = new ShaderProgramObject(shader_obj_v,"Default");
@@ -93,6 +116,8 @@ bool ModuleSceneIntro::Start()
 	shader_obj_v.push_back(test_shader_frag2->GetUID());
 	test_program2 = new ShaderProgramObject(shader_obj_v, "Color");
 	test_program2->Link_Program();
+
+
 	
 	App->shaders_manager->shader_program_v.push_back(test_program);
 	App->shaders_manager->shader_program_v.push_back(test_program2);

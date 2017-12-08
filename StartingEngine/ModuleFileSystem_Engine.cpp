@@ -278,10 +278,7 @@ void ModuleFileSystem_Engine::Asset_User_File_Iteration() {
 			App->resources_mod->ImportFile(str_path.c_str());
 		}
 		else {
-			if(App->resources_mod->DetectFiles_Type(str_path.c_str())==Resources_Type::shader){}
-			else {
 				App->resources_mod->ImportResources_Path_Usable(str_path_meta.c_str());
-			}
 		}
 
 	}
@@ -416,7 +413,7 @@ bool ModuleFileSystem_Engine::Asset_Editor(const char* path, std::string * new_p
 			}
 		}
 
-		if (ext_str == ".txt" || ext_str == ".TXT") {
+		if (ext_str == ".vert" || ext_str == ".frag") {
 			ImGui::ImageButton_with_text((void*)Txt_Image, name.c_str(), ImVec2(45, 45), ImVec2(0, 0), ImVec2(1, -1), 0);
 			ImGui::SameLine(0, 50);
 			if (ImGui::IsItemClicked()) {

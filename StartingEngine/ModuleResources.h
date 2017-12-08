@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 #include<map>
-
+#include<vector>
 class Resource;
 
 
@@ -32,6 +32,7 @@ public:
 	Resources_Type DetectFiles_Type(const char* new_file_in_assets);
 	Resource* Get(int uid)const;
 	Resource* CreateNewResource(Resources_Type type, int force_uid = 0);
+	std::vector<Resource*> Get_TypeResources(Resources_Type type);
 	bool AddResources(Resource* n_res);
 	//void SelectResourceUpdate(Resource* res);
 private:

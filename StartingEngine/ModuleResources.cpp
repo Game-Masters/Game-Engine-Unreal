@@ -82,6 +82,9 @@ void ModuleResources::ImportResources_Path_Usable(const char * new_file_in_asset
 	else if (str_type == "Mesh") {
 		temp_mesh = CreateNewResource(Resources_Type::mesh);
 	}
+	else if (str_type == "Shader") {
+		temp_mesh = CreateNewResource(Resources_Type::shader);
+	}
 	temp_mesh->Set_New_Resource_Files(json_object_get_string(obj_doc, "Path File"), json_object_get_string(obj_doc, "Path File Exported"));
 	temp_mesh->SetLastTimeModf(json_object_get_number(obj_doc, "Last Time Modification"));
 
@@ -181,7 +184,7 @@ Resources_Type ModuleResources::DetectFiles_Type(const char * new_file_in_assets
 	else if (ext_file == "fbx" || ext_file == "FBX") {
 		type = Resources_Type::mesh;
 	}
-	else if (ext_file == "txt") {
+	else if (ext_file == "frag" || ext_file == "vert") {
 		type = Resources_Type::shader;
 	}
 
@@ -217,6 +220,18 @@ Resource * ModuleResources::CreateNewResource(Resources_Type type, int force_uid
 
 
 	return ret;
+}
+
+std::vector<Resource*> ModuleResources::Get_TypeResources(Resources_Type type)
+{
+	std::vector<Resource*> shader_resources;
+	for (std::map<int, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it) {
+		if (it->second->GetType() == type) {
+			shader_resources.push_back(it->second);
+		}
+	}
+
+	return shader_resources;
 }
 
 bool ModuleResources::AddResources(Resource * n_res)
@@ -288,6 +303,9 @@ void Resource::CreateMeta()
 	}
 	else if (type == Resources_Type::mesh) {
 		json_object_set_string(obj_doc, "Type", "Mesh");
+	}
+	else if (type == Resources_Type::shader) {
+		json_object_set_string(obj_doc, "Type", "Shader");
 	}
 	json_object_set_string(obj_doc, "Path File Exported", exported_file.c_str());
 	json_object_set_string(obj_doc, "Path File", file.c_str());

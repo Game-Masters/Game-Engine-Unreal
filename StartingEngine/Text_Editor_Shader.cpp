@@ -79,6 +79,7 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::PushFont(io.Fonts->Fonts[1]);
 		editor_text_shader.Render("Test_shader_editor");
+		//Has crash! Take care!
 		ImGui::PopFont();
 		ImGui::End();
 	}
@@ -125,4 +126,57 @@ void Editor_Text_Shader::Enable_CreateShader(bool visible)
 		ImGui::End();
 	}
 
+}
+
+void Editor_Text_Shader::Enable_LinkShader(bool visible)
+{
+
+	if (visible) {
+		ImGui::Begin("Link new Shader Program", &App->gui->linkenewshader);
+
+		std::vector<int> Shader_Object_Selection;
+
+		std::vector<Resource*> Shader_Object_Compiled;
+		Shader_Object_Compiled=App->resources_mod->Get_TypeResources(Resources_Type::shader);
+		std::string shader_options;
+
+		std::string file_name;
+		std::string name;
+		for (int i = 0; i < Shader_Object_Compiled.size(); i++) {
+			file_name=Shader_Object_Compiled[i]->GetExportedFile();
+			size_t name_start = file_name.rfind("\\")+1;
+			size_t name_end = file_name.rfind(".");
+			name = file_name.substr(name_start,name_end-name_start);
+			shader_options += name;
+			shader_options += '\0';
+		}
+
+		ImGui::InputText("Name of the Program Shader", str_progrshad_temp, 64);
+		program_name = str_progrshad_temp;
+
+		ImGui::Combo("Shader 1:", &combo_shaders_obj, shader_options.c_str());
+		ImGui::Combo("Shader 2:", &combo_shaders_obj2, shader_options.c_str());
+	
+
+		if (ImGui::Button("Link Program")) {
+
+			if (combo_shaders_obj != -1) {
+				Shader_Object_Compiled[combo_shaders_obj]->LoadToMemory();
+				Shader_Object_Selection.push_back(Shader_Object_Compiled[combo_shaders_obj]->GetUID());
+			}
+
+			if (combo_shaders_obj2 != -1) {
+				Shader_Object_Compiled[combo_shaders_obj2]->LoadToMemory();
+				Shader_Object_Selection.push_back(Shader_Object_Compiled[combo_shaders_obj2]->GetUID());
+			}
+			ShaderProgramObject* temp_program;
+			temp_program = new ShaderProgramObject(Shader_Object_Selection, program_name.c_str());
+			temp_program->Link_Program();
+			App->shaders_manager->shader_program_v.push_back(temp_program);
+			App->gui->linkenewshader = false;
+		}
+
+
+		ImGui::End();
+	}
 }

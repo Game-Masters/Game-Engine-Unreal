@@ -78,6 +78,7 @@ public:
 	bool Octree_Window = false;
 	bool createnew = false;
 	bool createnewshader = false;
+	bool linkenewshader = false;
 
 	std::string str_path_fbx;
 	std::string str_path_img;

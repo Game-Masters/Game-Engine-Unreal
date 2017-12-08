@@ -398,7 +398,7 @@ void ModuleSceneIntro::drawLines(const vec3 from, const vec3 to, const vec3 colo
 
 void ModuleSceneIntro::drawGrid(int grid_size)
 {
-
+	/*
 	vec3 line_color = { 1, 1 ,1 };
 
 	for (int i = -grid_size; i <= grid_size; i++)
@@ -410,8 +410,8 @@ void ModuleSceneIntro::drawGrid(int grid_size)
 		vect = { (float)-grid_size, 0 , (float)i };
 		vect2 = { (float)grid_size, 0 , (float)i };
 		drawLines(vect, vect2, line_color);
-
-	}
+		
+	}*/
 }
 
 

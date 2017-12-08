@@ -8,14 +8,27 @@ out vec2 TexCoord;
 uniform mat4 mat_model;
 uniform mat4 projection_view;
 uniform float time;
+varying vec3 Vposition;
 void main()
 {
+
 float wave = sin(time);
 if(wave < 0)
 {
 wave = -wave;
 }
-vec3 newpos = vec3(position[0],position[1],position[2]*wave);
- gl_Position = projection_view * mat_model* vec4(newpos, 1.0f);
+
+
+
+vec3 pos = vec3(position[0],position[1],position[2]);
+
+pos.z = pos.z + (sin(pos.x*pos.y*time*0.25)*0.15);
+
+
+ gl_Position = projection_view * mat_model* vec4(pos, 1.0f);
+
+ 
+
  TexCoord = texCoord;
+ Vposition = position;
 }

@@ -161,7 +161,15 @@ void Application::DtSwitch()
 	}
 	if (timeStatus == stop)
 	{
-		tempdt = dtvariation;
+		if (dtvariation != 0)
+		{
+			tempdt = dtvariation;
+		}
+		else
+		{
+			tempdt = 1;
+		}
+		
 		dtvariation = 0.0f;
 		ReStartScene();
 	}

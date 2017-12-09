@@ -97,22 +97,23 @@ void Editor_Text_Shader::Enable_CreateShader(bool visible)
 		ResourceShaderObject* temp= (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
 		std::string empty_file="";
 		ImGui::InputText("Name of the Shader", str_shad_temp, 64);
-			name_shader = str_shad_temp;
-		
-
-		App->fs_e->ChangeFormat_File(name_shader.c_str(), "txt", &name_shader, App->fs_e->Shader_User);
-	
-		temp->Set_New_Resource_Files(empty_file, name_shader);
+		name_shader = str_shad_temp;
 		
 		ImGui::Combo("Shaders Mode", &combo_shaders, "Vertex Shader\0Fragment Shader");
-		if (combo_shaders==1) {
-			temp->Set_Type_Shader(ShaderType::vertex_shader);
-		}
-		else if (combo_shaders == 2) {
-			temp->Set_Type_Shader(ShaderType::fragment_shader);
-		}
-		
+	
+	
+
 		if (ImGui::Button("Create")) {
+			if (combo_shaders == 0) {
+				temp->Set_Type_Shader(ShaderType::vertex_shader);
+				App->fs_e->ChangeFormat_File(name_shader.c_str(), "vert", &name_shader, App->fs_e->Shader_User);
+			}
+			else if (combo_shaders == 1) {
+				temp->Set_Type_Shader(ShaderType::fragment_shader);
+				App->fs_e->ChangeFormat_File(name_shader.c_str(), "frag", &name_shader, App->fs_e->Shader_User);
+			}
+
+			temp->Set_New_Resource_Files(empty_file, name_shader);
 			App->gui->createnewshader = false;
 			App->fs_e->SaveFile(name_shader.c_str(), "", 1);
 			temp->LoadToMemory();

@@ -161,7 +161,7 @@ update_status ModuleInput::PreUpdate(float dt)
 						}
 					}
 
-					if (type_file == Resources_Type::shader) {
+					if (type_file == Resources_Type::shader_obj) {
 						std::experimental::filesystem::path p2;
 						size_t end_name = dropped_filedir.rfind(".");
 						size_t sart_name = dropped_filedir.rfind("\\") + 1;
@@ -184,7 +184,7 @@ update_status ModuleInput::PreUpdate(float dt)
 						std::experimental::filesystem::copy_file(p1, p2);
 
 						if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {
-							ResourceShaderObject* temp_mesh_try = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
+							ResourceShaderObject* temp_mesh_try = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
 							temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
 							temp_mesh_try->Set_Type_Shader(type_shader_temp);
 							App->resources_mod->AddResources(temp_mesh_try);

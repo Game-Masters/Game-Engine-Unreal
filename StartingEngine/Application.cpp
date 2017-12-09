@@ -179,11 +179,17 @@ void Application::ReStartScene()
 {
 	App->gui->inspection_node = nullptr;
 	App->scene_intro->num_GO = 0;
-	App->scene_intro->root_gameobject->CleanUp();
-	App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene,"..\\Game\\Library\\TempPlay");
-	App->scene_intro->Load_Scene(App->scene_intro->root_object_scene,false);
-	App->scene_intro->calc_octree_stop_button = true;
-	json_value_free(App->scene_intro->root_value_scene);
+
+	JSON_Object* node;
+
+	App->json_class->Create_JSON_DOC(&App->scene_intro->root_value_scene, &App->scene_intro->root_object_scene, "..\\Game\\Library\\TempPlay");
+	node = json_object_get_object(App->scene_intro->root_object_scene, "GameObject1");
+	if (node != nullptr) {
+		App->scene_intro->root_gameobject->CleanUp();
+		App->scene_intro->Load_Scene(App->scene_intro->root_object_scene, false);
+		App->scene_intro->calc_octree_stop_button = true;
+		json_value_free(App->scene_intro->root_value_scene);
+	}
 	
 }
 

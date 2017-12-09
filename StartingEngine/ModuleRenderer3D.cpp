@@ -273,7 +273,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				}
 			}*/
 		
-			ShaderProgramObject* selector_program = nullptr;
+			ResourceShaderMaterial* selector_program = nullptr;
 			if (texture_mesh != nullptr) {
 				texture_mesh->shader_program_material->Bind_program();
 				selector_program = texture_mesh->shader_program_material;

@@ -94,7 +94,7 @@ void Editor_Text_Shader::Enable_CreateShader(bool visible)
 
 	if (visible) {
 		ImGui::Begin("Shader Options", &App->gui->createnewshader);
-		ResourceShaderObject* temp= (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader);
+		ResourceShaderObject* temp= (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
 		std::string empty_file="";
 		ImGui::InputText("Name of the Shader", str_shad_temp, 64);
 		name_shader = str_shad_temp;
@@ -138,7 +138,7 @@ void Editor_Text_Shader::Enable_LinkShader(bool visible)
 		std::vector<int> Shader_Object_Selection;
 
 		std::vector<Resource*> Shader_Object_Compiled;
-		Shader_Object_Compiled=App->resources_mod->Get_TypeResources(Resources_Type::shader);
+		Shader_Object_Compiled=App->resources_mod->Get_TypeResources(Resources_Type::shader_obj);
 		std::string shader_options;
 
 		std::string file_name;
@@ -170,10 +170,15 @@ void Editor_Text_Shader::Enable_LinkShader(bool visible)
 				Shader_Object_Compiled[combo_shaders_obj2]->LoadToMemory();
 				Shader_Object_Selection.push_back(Shader_Object_Compiled[combo_shaders_obj2]->GetUID());
 			}
-			ShaderProgramObject* temp_program;
-			temp_program = new ShaderProgramObject(Shader_Object_Selection, program_name.c_str());
-			temp_program->Link_Program();
-			App->shaders_manager->shader_program_v.push_back(temp_program);
+			ResourceShaderMaterial* temp_program;
+			temp_program=(ResourceShaderMaterial*)App->resources_mod->CreateNewResource(Resources_Type::shader_program);
+			temp_program->SetShaderObj_Vect(Shader_Object_Selection);
+			temp_program->SetProgram_Name(program_name.c_str());
+			std::string path_str = App->fs_e->ShaderMaterial_Engine->path + "\\" + program_name + ".shadermat";
+			temp_program->Set_New_Resource_Files("", path_str);
+			temp_program->LoadToMemory();
+			temp_program->CreateMeta();
+			App->resources_mod->AddResources(temp_program);
 			App->gui->linkenewshader = false;
 		}
 

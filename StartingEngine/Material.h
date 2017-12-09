@@ -3,6 +3,7 @@
 #include"Globals.h"
 #include <vector>
 #include "Component.h"
+#include"ResourceShaderMaterial.h";
 
 class Material :
 	public Component
@@ -12,7 +13,7 @@ protected:
 	std::string path_texture;
 public:
 	geometry_base_creating* texture_v = nullptr;
-	ShaderProgramObject* shader_program_material = nullptr;
+	ResourceShaderMaterial* shader_program_material = nullptr;
 	int UUID_mat;
 	Material(int UUID, GameObject* parent);
 	void Update();

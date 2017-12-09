@@ -51,6 +51,7 @@ public:
 	Directory_ *RootDirect_Engine = nullptr;
 	Directory_ *Mesh_Engine = nullptr;
 	Directory_ *Material_Engine = nullptr;
+	Directory_ *ShaderMaterial_Engine = nullptr;
 
 	GLuint Dir_Image;
 	GLuint Png_Image;

@@ -5,6 +5,7 @@
 #include"Timer.h"
 #include <chrono>
 #include <experimental/filesystem>
+#include"ResourceShaderMaterial.h"
 
 ModuleResources::ModuleResources()
 {
@@ -83,10 +84,35 @@ void ModuleResources::ImportResources_Path_Usable(const char * new_file_in_asset
 		temp_mesh = CreateNewResource(Resources_Type::mesh);
 	}
 	else if (str_type == "Shader") {
-		temp_mesh = CreateNewResource(Resources_Type::shader);
+		temp_mesh = CreateNewResource(Resources_Type::shader_obj);
+	}
+	else if (str_type == "ShaderMaterial") {
+		temp_mesh = CreateNewResource(Resources_Type::shader_program);
 	}
 	temp_mesh->Set_New_Resource_Files(json_object_get_string(obj_doc, "Path File"), json_object_get_string(obj_doc, "Path File Exported"));
 	temp_mesh->SetLastTimeModf(json_object_get_number(obj_doc, "Last Time Modification"));
+	if (temp_mesh->GetType() == Resources_Type::shader_program) {
+
+		std::string path_t1 = temp_mesh->GetExportedFile();
+		size_t end_name = path_t1.rfind(".");
+		size_t sart_name = path_t1.rfind("\\") + 1;
+		std::string name_t1 = path_t1.substr(sart_name, end_name - sart_name);
+		((ResourceShaderMaterial*)temp_mesh)->SetProgram_Name(name_t1.c_str());
+		((ResourceShaderMaterial*)temp_mesh)->GetJsonShaderProgram();
+		((ResourceShaderMaterial*)temp_mesh)->LoadToMemory();
+	}
+	else if (temp_mesh->GetType() == Resources_Type::shader_obj) {
+		std::string path_t1 = temp_mesh->GetExportedFile();
+		size_t end_name = path_t1.rfind(".");
+		std::string ext_t1 = path_t1.substr(end_name, path_t1.size());
+		if (ext_t1 == ".vert") {
+			((ResourceShaderObject*)temp_mesh)->Set_Type_Shader(ShaderType::vertex_shader);
+		}
+		else if (ext_t1 == ".frag") {
+			((ResourceShaderObject*)temp_mesh)->Set_Type_Shader(ShaderType::fragment_shader);
+		}
+		((ResourceShaderObject*)temp_mesh)->LoadToMemory();
+	}
 
 	std::pair<int, Resource*> p;
 	p.first = temp_mesh->GetUID();
@@ -185,9 +211,11 @@ Resources_Type ModuleResources::DetectFiles_Type(const char * new_file_in_assets
 		type = Resources_Type::mesh;
 	}
 	else if (ext_file == "frag" || ext_file == "vert") {
-		type = Resources_Type::shader;
+		type = Resources_Type::shader_obj;
 	}
-
+	else if (ext_file == "shadermat") {
+		type = Resources_Type::shader_program;
+	}
 	
 	return type;
 }
@@ -211,8 +239,11 @@ Resource * ModuleResources::CreateNewResource(Resources_Type type, int force_uid
 	case Resources_Type::mesh:
 		ret = (Resource*)new ResourceMesh(uid);
 		break;
-	case Resources_Type::shader:
+	case Resources_Type::shader_obj:
 		ret = (Resource*)new ResourceShaderObject(uid);
+		break;
+	case Resources_Type::shader_program:
+		ret = (Resource*)new ResourceShaderMaterial(uid);
 		break;
 	default:
 		break;
@@ -248,6 +279,7 @@ bool ModuleResources::AddResources(Resource * n_res)
 
 	return false;
 }
+
 
 
 
@@ -304,14 +336,16 @@ void Resource::CreateMeta()
 	else if (type == Resources_Type::mesh) {
 		json_object_set_string(obj_doc, "Type", "Mesh");
 	}
-	else if (type == Resources_Type::shader) {
+	else if (type == Resources_Type::shader_obj) {
 		json_object_set_string(obj_doc, "Type", "Shader");
+	}
+	else if (type == Resources_Type::shader_program) {
+		json_object_set_string(obj_doc, "Type", "ShaderMaterial");
 	}
 	json_object_set_string(obj_doc, "Path File Exported", exported_file.c_str());
 	json_object_set_string(obj_doc, "Path File", file.c_str());
-	
+	std::experimental::filesystem::path p = exported_file;
 
-		std::experimental::filesystem::path p = exported_file;
 		auto ftime = std::experimental::filesystem::last_write_time(p);
 		std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
 		time_from_last_modify = cftime;
@@ -330,7 +364,7 @@ bool Resource::ReadMetaModif()
 	std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
 	double last_mod = cftime;
 
-	if (time_from_last_modify != last_mod && type== Resources_Type::texture || type == Resources_Type::shader) {
+	if (time_from_last_modify != last_mod && type== Resources_Type::texture || type == Resources_Type::shader_obj) {
 		Update_Resource();
 		SetLastTimeModf(last_mod);
 		ret= true;

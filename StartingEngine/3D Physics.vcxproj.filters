@@ -556,9 +556,6 @@
     <ClInclude Include="ResourceTexture.h">
       <Filter>Sources\Modules\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderProgramObject.h">
-      <Filter>Sources\Modules\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="TextEditor.h">
       <Filter>Sources\Modules\Shaders</Filter>
     </ClInclude>
@@ -569,6 +566,7 @@
       <Filter>Sources\Modules\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Shaders_Manager.h" />
+    <ClInclude Include="ResourceShaderMaterial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -797,9 +795,6 @@
     <ClCompile Include="ResourceTexture.cpp">
       <Filter>Sources\Modules\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderProgramObject.cpp">
-      <Filter>Sources\Modules\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="TextEditor.cpp">
       <Filter>Sources\Modules\Shaders</Filter>
     </ClCompile>
@@ -810,6 +805,7 @@
       <Filter>Sources\Modules\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Shaders_Manager.cpp" />
+    <ClCompile Include="ResourceShaderMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assimp\include\assimp\.editorconfig">

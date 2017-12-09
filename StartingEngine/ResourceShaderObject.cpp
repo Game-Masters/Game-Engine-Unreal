@@ -2,17 +2,17 @@
 #include"Application.h"
 
 
-ResourceShaderObject::ResourceShaderObject():Resource(uid_rm.Int(), Resources_Type::shader)
+ResourceShaderObject::ResourceShaderObject():Resource(uid_rm.Int(), Resources_Type::shader_obj)
 {
 }
 
-ResourceShaderObject::ResourceShaderObject(int id) : Resource(id, Resources_Type::shader)
+ResourceShaderObject::ResourceShaderObject(int id) : Resource(id, Resources_Type::shader_obj)
 {
 }
 
 
 
-ResourceShaderObject::ResourceShaderObject(ShaderType Type, const char* filename):Resource(uid_rm.Int(), Resources_Type::shader),	shader_obj_type(Type)
+ResourceShaderObject::ResourceShaderObject(ShaderType Type, const char* filename):Resource(uid_rm.Int(), Resources_Type::shader_obj),	shader_obj_type(Type)
 {
 	std::string str;
 	if (Type == ShaderType::vertex_shader) {
@@ -132,9 +132,9 @@ void ResourceShaderObject::Set_Type_Shader(ShaderType type)
 
 void ResourceShaderObject::ShaderUpdateInstances()
 {
-
-	for (int i = 0; i < App->shaders_manager->shader_program_v.size();i++) {
-		ShaderProgramObject* temp= App->shaders_manager->shader_program_v[i];
+	std::vector<Resource*> temp_V = App->resources_mod->Get_TypeResources(Resources_Type::shader_program);
+	for (int i = 0; i < temp_V.size();i++) {
+		ResourceShaderMaterial* temp= (ResourceShaderMaterial*)temp_V[i];
 		std::vector<int> shader_object_uuid = temp->GetShaderObj_UUID();
 		for (int j = 0; j < shader_object_uuid.size(); j++) {
 			if (shader_object_uuid[j]==this->uid) {

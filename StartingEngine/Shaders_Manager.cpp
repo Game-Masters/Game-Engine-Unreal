@@ -24,10 +24,10 @@ bool Shaders_Manager::Start()
 
 update_status Shaders_Manager::Update(float dt)
 {
+	std::vector<Resource*> temp_V= App->resources_mod->Get_TypeResources(Resources_Type::shader_program);
+	for (int i = 0; i < temp_V.size(); i++) {
 
-	for (int i = 0; i < shader_program_v.size(); i++) {
-
-		ShaderProgramObject* selector_program = shader_program_v[i];
+		ResourceShaderMaterial* selector_program = (ResourceShaderMaterial*)temp_V[i];
 		selector_program->Bind_program();
 
 		projLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "projection_view");

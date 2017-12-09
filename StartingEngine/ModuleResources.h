@@ -9,7 +9,8 @@ enum Resources_Type {
 	mesh,
 	texture,
 	scene,
-	shader,
+	shader_obj,
+	shader_program,
 	unknown_r
 };
 
@@ -34,6 +35,7 @@ public:
 	Resource* CreateNewResource(Resources_Type type, int force_uid = 0);
 	std::vector<Resource*> Get_TypeResources(Resources_Type type);
 	bool AddResources(Resource* n_res);
+	
 	//void SelectResourceUpdate(Resource* res);
 private:
 	Timer tim_check_Assets;

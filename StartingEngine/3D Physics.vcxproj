@@ -232,9 +232,9 @@
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="ResourceShaderMaterial.h" />
     <ClInclude Include="ResourceShaderObject.h" />
     <ClInclude Include="ResourceTexture.h" />
-    <ClInclude Include="ShaderProgramObject.h" />
     <ClInclude Include="Shaders_Manager.h" />
     <ClInclude Include="TextEditor.h" />
     <ClInclude Include="Texture_Engine.h" />
@@ -315,9 +315,9 @@
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="ResourceShaderMaterial.cpp" />
     <ClCompile Include="ResourceShaderObject.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
-    <ClCompile Include="ShaderProgramObject.cpp" />
     <ClCompile Include="Shaders_Manager.cpp" />
     <ClCompile Include="TextEditor.cpp" />
     <ClCompile Include="Texture_Engine.cpp" />

@@ -15,17 +15,21 @@ bool ModuleFileSystem_Engine::Init()
 	Material_User = CreateDir("Material", Directory_Type::user_directory_type, RootDirect_User);
 	Scene_User = CreateDir("Scene", Directory_Type::user_directory_type, RootDirect_User);
 	Shader_User = CreateDir("Shader", Directory_Type::user_directory_type, RootDirect_User);
+	ShaderMaterial_Engine = CreateDir("ShaderMaterial", Directory_Type::user_directory_type, RootDirect_User);
 
 	Directories_User_V.push_back(RootDirect_User);
 	Directories_User_V.push_back(Mesh_User);
 	Directories_User_V.push_back(Material_User);
 	Directories_User_V.push_back(Scene_User);
 	Directories_User_V.push_back(Shader_User);
+	Directories_User_V.push_back(ShaderMaterial_Engine);
 
 	RootDirect_Engine = nullptr;
 	RootDirect_Engine = CreateDir("Library", Directory_Type::engine_directory_type, nullptr);
 	Mesh_Engine = CreateDir("Mesh", Directory_Type::engine_directory_type, RootDirect_Engine);
 	Material_Engine = CreateDir("Material", Directory_Type::engine_directory_type, RootDirect_Engine);
+	
+
 
 	return true;
 }

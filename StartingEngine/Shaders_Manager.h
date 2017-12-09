@@ -2,7 +2,8 @@
 #define SHADERS_MANAGER_H_
 
 #include "Module.h"
-#include"ShaderProgramObject.h"
+
+#include"ResourceShaderMaterial.h"
 
 class Shaders_Manager :
 	public Module
@@ -16,7 +17,6 @@ public:
 	bool CleanUp();
 
 public:
-	std::vector<ShaderProgramObject*> shader_program_v;
 	GLint projLoc = 0;
 	GLint timeloc = 0;
 };

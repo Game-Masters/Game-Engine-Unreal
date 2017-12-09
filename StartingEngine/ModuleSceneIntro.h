@@ -13,9 +13,9 @@
 #include "SDL\include\SDL_opengl.h"
 #include"Texture_Engine.h"
 #include"Imgui\ImGuizmo.h"
-#include"ShaderProgramObject.h"
-#include"ResourceShaderObject.h"
 
+#include"ResourceShaderObject.h"
+#include"ResourceShaderMaterial.h"
 
 //#include"Geometry.h"
 #include"Cube_prim.h"
@@ -88,6 +88,6 @@ public:
 	ResourceShaderObject* test_shader_frag = nullptr;
 	ResourceShaderObject* test_shader_frag2 = nullptr;
 	std::vector<int> shader_obj_v;
-	ShaderProgramObject* test_program = nullptr;
-	ShaderProgramObject* test_program2 = nullptr;
+	ResourceShaderMaterial* test_program = nullptr;
+	ResourceShaderMaterial* test_program2 = nullptr;
 };

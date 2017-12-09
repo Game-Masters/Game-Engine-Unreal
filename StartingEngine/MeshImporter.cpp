@@ -82,6 +82,7 @@ void MeshImporter::Resource_Assimp_Creation(const aiScene * scene, const char* p
 		{
 			if (scene->mMeshes[i]->mFaces[k].mNumIndices != 3) {
 				LOG("WARNING, geometry face with != 3 indices!");
+				m->num_indices -= 3;
 			}
 			else {
 				memcpy(&m->indices[k * 3], scene->mMeshes[i]->mFaces[k].mIndices, 3 * sizeof(uint));

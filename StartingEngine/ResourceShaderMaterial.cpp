@@ -52,44 +52,49 @@ bool ResourceShaderMaterial::Link_Program()
 		LOG("Error creating program object.");
 		return false;
 	}
-	for (int i = 0; i < ShaderObject_Program_v.size(); i++) {
-		int uuid_temp = ShaderObject_Program_v[i];
-		ResourceShaderObject* temp_shader_obj = (ResourceShaderObject*)App->resources_mod->Get(uuid_temp);
-		if (temp_shader_obj->GetLoadedNum()>0) {
-			glAttachShader(id_program, temp_shader_obj->GetID());
-			LOG("Attached %s shader object", temp_shader_obj->GetFileName());
+	if (ShaderObject_Program_v.size() >= 2) {
+		for (int i = 0; i < ShaderObject_Program_v.size(); i++) {
+			int uuid_temp = ShaderObject_Program_v[i];
+			ResourceShaderObject* temp_shader_obj = (ResourceShaderObject*)App->resources_mod->Get(uuid_temp);
+			if (temp_shader_obj->GetLoadedNum() > 0) {
+				glAttachShader(id_program, temp_shader_obj->GetID());
+				LOG("Attached %s shader object", temp_shader_obj->GetFileName());
+			}
+			else {
+				LOG("Error trying to attach %s shader object", temp_shader_obj->GetFileName());
+				LOG("The shader object is not compiled");
+				return false;
+			}
 		}
-		else {
-			LOG("Error trying to attach %s shader object", temp_shader_obj->GetFileName());
-			LOG("The shader object is not compiled");
+		glLinkProgram(id_program);
+
+		GLint status;
+		glGetProgramiv(id_program, GL_LINK_STATUS, &status);
+
+		if (GL_FALSE == status) {
+			LOG("Failed to link shader program!");
+			GLint logLen;
+			glGetProgramiv(id_program, GL_INFO_LOG_LENGTH, &logLen);
+
+			if (logLen > 0)
+			{
+				char * log = new char[logLen];
+				GLsizei written;
+				glGetProgramInfoLog(id_program, logLen, &written, log);
+				log_shader = log;
+				delete[] log;
+			}
+			if (log_shader.size() > 0) {
+				LOG("Program log: \n%s", log_shader.c_str());
+			}
 			return false;
 		}
+		LOG("Program linked");
 	}
-	glLinkProgram(id_program);
-
-	GLint status;
-	glGetProgramiv(id_program, GL_LINK_STATUS, &status);
-
-	if (GL_FALSE == status) {
-		LOG("Failed to link shader program!");
-		GLint logLen;
-		glGetProgramiv(id_program, GL_INFO_LOG_LENGTH, &logLen);
-
-		if (logLen > 0)
-		{
-			char * log = new char[logLen];
-			GLsizei written;
-			glGetProgramInfoLog(id_program, logLen, &written, log);
-			log_shader = log;
-			delete[] log;
-		}
-		if (log_shader.size()>0) {
-			LOG("Program log: \n%s", log_shader.c_str());
-		}
+	else {
+		LOG("Program cannot be linked because the program has only one shader attached");
 		return false;
 	}
-	LOG("Program linked");
-
 	return true;
 }
 
@@ -143,8 +148,11 @@ void ResourceShaderMaterial::GetJsonShaderProgram()
 	for (int i = 0; i < 2; i++) {
 		std::string temo_str = "Shader" + std::to_string(i + 1);
 		std::string temp_path= json_object_get_string(obj_proj, temo_str.c_str());
-		ResourceShaderObject* res_temp=(ResourceShaderObject*)App->resources_mod->Get(App->resources_mod->Find_UserRes(temp_path.c_str()));
-		ShaderObject_Program_v.push_back(res_temp->GetUID());
+		int temp_uid=App->resources_mod->Find_UserRes(temp_path.c_str());
+		if (temp_uid != -1) {
+			ResourceShaderObject* res_temp = (ResourceShaderObject*)App->resources_mod->Get(temp_uid);
+			ShaderObject_Program_v.push_back(res_temp->GetUID());
+		}
 	}
 
 

@@ -127,18 +127,28 @@ update_status ModuleInput::PreUpdate(float dt)
 						std::experimental::filesystem::path p1 = dropped_filedir;
 						std::experimental::filesystem::path p2 = App->fs_e->Mesh_User->path+ "\\"+name;
 						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "ric", &path_r, App->fs_e->Mesh_Engine);
-						if (App->fs_e->Find_in_Asset(p1.string().c_str())) {
-							std::experimental::filesystem::remove(p1.string().c_str());
+						std::string temp_drop_file = dropped_filedir;
+						int size_game = dropped_filedir.rfind("Game");
+						if (size_game != -1) {
+							temp_drop_file = temp_drop_file.substr(size_game, temp_drop_file.size());
+							temp_drop_file = "..\\" + temp_drop_file;
 						}
-						std::experimental::filesystem::copy_file(p1, p2);
-					
-						if (App->resources_mod->Find_UserRes(p2.string().c_str())==-1) {
-							ResourceMesh* temp_mesh_try = (ResourceMesh*)App->resources_mod->CreateNewResource(Resources_Type::mesh);
-							temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
-							App->resources_mod->AddResources(temp_mesh_try);
-							temp_mesh_try->CreateMeta();
-						}
+							if (p2 != temp_drop_file) {
 
+								if (App->fs_e->Find_in_Asset(p1.string().c_str())) {
+									std::experimental::filesystem::remove(p1.string().c_str());
+								}
+								std::experimental::filesystem::copy_file(p1, p2);
+
+								if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {
+									ResourceMesh* temp_mesh_try = (ResourceMesh*)App->resources_mod->CreateNewResource(Resources_Type::mesh);
+									temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
+									App->resources_mod->AddResources(temp_mesh_try);
+									temp_mesh_try->CreateMeta();
+								}
+
+							
+						}
 						//App->imp_mesh->LoadMesh(path_r.c_str(), dropped_filedir.c_str());
 					}
 					if (type_file == Resources_Type::texture) {
@@ -148,16 +158,26 @@ update_status ModuleInput::PreUpdate(float dt)
 						std::experimental::filesystem::path p1 = dropped_filedir;
 						std::experimental::filesystem::path p2 = App->fs_e->Material_User->path + "\\" + name;
 						App->fs_e->ChangeFormat_File(dropped_filedir.c_str(), "dds", &path_r, App->fs_e->Material_Engine);
-						if (App->fs_e->Find_in_Asset(p2.string().c_str())) {
-							std::experimental::filesystem::remove(p2.string().c_str());
+						std::string temp_drop_file = dropped_filedir;
+						int size_game = dropped_filedir.rfind("Game");
+						if (size_game != -1) {
+							temp_drop_file = temp_drop_file.substr(size_game, temp_drop_file.size());
+							temp_drop_file = "..\\" + temp_drop_file;
 						}
-						std::experimental::filesystem::copy_file(p1, p2);
 
-						if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {
-							ResourceTexture* temp_mesh_try = (ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
-							temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
-							App->resources_mod->AddResources(temp_mesh_try);
-							temp_mesh_try->CreateMeta();
+						if (p2 != temp_drop_file) {
+
+							if (App->fs_e->Find_in_Asset(p2.string().c_str())) {
+								std::experimental::filesystem::remove(p2.string().c_str());
+							}
+							std::experimental::filesystem::copy_file(p1, p2);
+
+							if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {
+								ResourceTexture* temp_mesh_try = (ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
+								temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
+								App->resources_mod->AddResources(temp_mesh_try);
+								temp_mesh_try->CreateMeta();
+							}
 						}
 					}
 
@@ -178,20 +198,30 @@ update_status ModuleInput::PreUpdate(float dt)
 							p2 = App->fs_e->Shader_User->path + "\\" + name + ".frag";
 							type_shader_temp = ShaderType::fragment_shader;
 						}
-						if (App->fs_e->Find_in_Asset(p2.string().c_str())) {
-							std::experimental::filesystem::remove(p2.string().c_str());
+
+						std::string temp_drop_file = dropped_filedir;
+						int size_game = 100;
+						size_game = dropped_filedir.rfind("Game");
+						if (size_game != -1) {
+							temp_drop_file = temp_drop_file.substr(size_game, temp_drop_file.size());
+							temp_drop_file = "..\\" + temp_drop_file;
 						}
-						std::experimental::filesystem::copy_file(p1, p2);
+							if (p2 != temp_drop_file) {
+								if (App->fs_e->Find_in_Asset(p2.string().c_str())) {
+									std::experimental::filesystem::remove(p2.string().c_str());
+								}
+								std::experimental::filesystem::copy_file(p1, p2);
 
-						if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {
-							ResourceShaderObject* temp_mesh_try = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
-							temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
-							temp_mesh_try->Set_Type_Shader(type_shader_temp);
-							App->resources_mod->AddResources(temp_mesh_try);
-							temp_mesh_try->CreateMeta();
+								if (App->resources_mod->Find_UserRes(p2.string().c_str()) == -1) {
+									ResourceShaderObject* temp_mesh_try = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
+									temp_mesh_try->Set_New_Resource_Files(path_r.c_str(), p2.string().c_str());
+									temp_mesh_try->Set_Type_Shader(type_shader_temp);
+									App->resources_mod->AddResources(temp_mesh_try);
+									temp_mesh_try->CreateMeta();
+								}
+
+							
 						}
-
-
 
 
 

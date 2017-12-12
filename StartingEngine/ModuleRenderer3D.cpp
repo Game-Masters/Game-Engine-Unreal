@@ -273,6 +273,13 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				}
 			}*/
 		
+
+
+
+			//glEnable(GL_BLEND);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
 			ResourceShaderMaterial* selector_program = nullptr;
 			if (texture_mesh != nullptr) {
 				texture_mesh->shader_program_material->Bind_program();

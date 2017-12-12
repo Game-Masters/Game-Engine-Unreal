@@ -1,3 +1,4 @@
+//This is meant to be an editor of shaders
 #version 330 core
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texCoord;
@@ -11,4 +12,5 @@ uniform mat4 projection_view;
 void main()
 {
  gl_Position = projection_view * mat_model* vec4(position, 1.0f);
+ TexCoord = texCoord;
 }

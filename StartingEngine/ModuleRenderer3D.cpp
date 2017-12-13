@@ -338,16 +338,23 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				glBindTexture(GL_TEXTURE_2D, id_checkImage);
 				glProgramUniform1ui(App->scene_intro->test_program->GetID_program_shader(), testLoc, (GLuint)id_checkImage);
 			}
-			//--------------------------------------------
-			//GLint shader_next_id = 0;
-			//Name of the uniform variable
-			//testLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "ourTexture");
-			//id to bind texture
-			//glBindTexture(GL_TEXTURE_2D, ();
-			//pass the id to shader
-			//glProgramUniform1ui(selector_program->GetID_program_shader(), testLoc, (GLuint)((ResourceTexture*)text_m)->id_image_devil);
-			//_-------------------------------------------
+			
+			GLint shader_next_id = 0;
+			
+			shader_next_id = glGetUniformLocation(selector_program->GetID_program_shader(), "alphatexture");
+			
+			glBindTexture(GL_TEXTURE_2D, alphatexture);
+			
+			glProgramUniform1ui(selector_program->GetID_program_shader(), shader_next_id, alphatexture);
+			
+			GLint shader_next_id2 = 0;
+			shader_next_id2 = glGetUniformLocation(selector_program->GetID_program_shader(), "watertexture");
 
+			glBindTexture(GL_TEXTURE_2D, watertexture);
+
+			glProgramUniform1ui(selector_program->GetID_program_shader(), shader_next_id2, watertexture);
+			
+			
 			if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
 				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_total_buffer);
 				glEnableVertexAttribArray(0);

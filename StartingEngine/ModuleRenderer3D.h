@@ -45,4 +45,6 @@ public:
 
 	GLint modelLoc = 0;
 	GLint testLoc = 0;
+	GLuint alphatexture=0;
+	GLuint watertexture = 0;
 };

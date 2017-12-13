@@ -29,7 +29,7 @@ aux.x = aux.x + (sin(aux.y*Time*.5)*0.05);
 color = texture(ourTexture, TexCoord);
 color = texture2D( ourTexture,aux);
 color = vec4(0.0,0.9,0.8,01.0);
-color = texture2D( alphatexture,TexCoord);
+color = texture2D( watertexture,TexCoord);
 //color = mix( texture2D( alphatexture,TexCoord),texture2D(watertexture,TexCoord), vec4(0.5,0.5,0.5,0.5));
 if(pos.z >= Position.z)
 {
@@ -37,6 +37,6 @@ if(pos.z >= Position.z)
 	
 	ar = 0 +( pos.z - (Position.z)/ pos.z);
 	ar = mix( Position.z,pos.z, pos.z);
-color = mix( texture2D(watertexture,TexCoord),vec4(1,1,1,1),vec4(ar,ar,ar,ar));
+color = mix( texture2D(watertexture,TexCoord),vec4(1,1,1,0.5),vec4(ar,ar,ar,ar*0.5));
 }
 }

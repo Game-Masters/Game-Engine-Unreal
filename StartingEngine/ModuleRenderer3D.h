@@ -45,8 +45,10 @@ public:
 
 	GLint shader_next_id = 0;
 	GLint shader_next_id2 = 0;
+	GLint shader_next_id3 = 0;
 	GLint modelLoc = 0;
 	GLint testLoc = 0;
 	GLuint alphatexture=0;
 	GLuint watertexture = 0;
+	GLuint foam = 0;
 };

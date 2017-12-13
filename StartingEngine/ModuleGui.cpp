@@ -133,6 +133,7 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Data/Icons/txt_image.png", &App->fs_e->Txt_Image);
 	App->assimp->LoadImage_devil("Data/shading/alpha.jpg",&App->renderer3D->alphatexture);
 	App->assimp->LoadImage_devil("Data/shading/water.jpg",&App->renderer3D->watertexture);
+	App->assimp->LoadImage_devil("Data/shading/foam.jpg", &App->renderer3D->foam);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };

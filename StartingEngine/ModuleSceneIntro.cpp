@@ -123,13 +123,6 @@ bool ModuleSceneIntro::Start()
 	}
 	else {
 		test_program =(ResourceShaderMaterial*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_program->GetExportedFile()));
-		std::string path_t1 = test_program->GetExportedFile();
-		size_t end_name = path_t1.rfind(".");
-		size_t sart_name = path_t1.rfind("\\") + 1;
-		std::string name_t1 = path_t1.substr(sart_name, end_name - sart_name);
-		test_program->SetProgram_Name(name_t1.c_str());
-		test_program->GetJsonShaderProgram();
-		test_program->LoadToMemory();
 	}
 
 	shader_obj_v.clear();
@@ -149,13 +142,6 @@ bool ModuleSceneIntro::Start()
 	}
 	else {
 		test_program2 = (ResourceShaderMaterial*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_program2->GetExportedFile()));
-		std::string path_t2 = test_program2->GetExportedFile();
-		size_t end_name = path_t2.rfind(".");
-		size_t sart_name = path_t2.rfind("\\") + 1;
-		std::string name_t2 = path_t2.substr(sart_name, end_name - sart_name);
-		test_program2->SetProgram_Name(name_t2.c_str());
-		test_program2->GetJsonShaderProgram();
-		test_program2->LoadToMemory();
 	}
 
 	return ret;

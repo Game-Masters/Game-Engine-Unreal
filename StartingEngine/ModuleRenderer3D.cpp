@@ -280,14 +280,17 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
+
 			ResourceShaderMaterial* selector_program = nullptr;
 			if (texture_mesh != nullptr) {
-				texture_mesh->shader_program_material->Bind_program();
 				selector_program = texture_mesh->shader_program_material;
+				texture_mesh->shader_program_material->Bind_program();
+			
 			}
 			else {
-				App->scene_intro->test_program->Bind_program();
 				selector_program = App->scene_intro->test_program;
+				App->scene_intro->test_program->Bind_program();
+		
 			}
 			//App->scene_intro->test_program->Bind_program();
 			//glPushMatrix();
@@ -325,36 +328,39 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			if (mesh_v->Res_Mesh_Base->colors == nullptr) {
 				tota_save_buffer -= 3;
 			}
+
+
+
 			modelLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "mat_model");
 			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, m->Get_Parent()->GetMatrix_Trans().ptr());
 			testLoc = glGetUniformLocation(selector_program->GetID_program_shader(), "ourTexture");
+			shader_next_id = glGetUniformLocation(selector_program->GetID_program_shader(), "alphatexture");
+			shader_next_id2 = glGetUniformLocation(selector_program->GetID_program_shader(), "watertexture");
+
 
 			if (texture_mesh != nullptr) {
 				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
+				glUniform1i(testLoc, 0);
+				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);
-				glProgramUniform1ui(selector_program->GetID_program_shader(), testLoc, (GLuint)((ResourceTexture*)text_m)->id_image_devil);
+
 			}
 			else {
 				glBindTexture(GL_TEXTURE_2D, id_checkImage);
-				glProgramUniform1ui(App->scene_intro->test_program->GetID_program_shader(), testLoc, (GLuint)id_checkImage);
+				glUniform1i(testLoc, (GLuint)id_checkImage);
 			}
 			
-			GLint shader_next_id = 0;
-			
-			shader_next_id = glGetUniformLocation(selector_program->GetID_program_shader(), "alphatexture");
-			
-			glBindTexture(GL_TEXTURE_2D, alphatexture);
-			
-			glProgramUniform1ui(selector_program->GetID_program_shader(), shader_next_id, alphatexture);
-			
-			GLint shader_next_id2 = 0;
-			shader_next_id2 = glGetUniformLocation(selector_program->GetID_program_shader(), "watertexture");
+			glUniform1i(shader_next_id, 1);
+			glUniform1i(shader_next_id2, 2);
 
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, alphatexture);
+
+			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, watertexture);
 
-			glProgramUniform1ui(selector_program->GetID_program_shader(), shader_next_id2, watertexture);
-			
-			
+
 			if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
 				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_total_buffer);
 				glEnableVertexAttribArray(0);
@@ -372,8 +378,12 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				glPopMatrix();
 			}
 		
-		
-	
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			glDisableVertexAttribArray(0);
 			glDisableVertexAttribArray(1);

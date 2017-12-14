@@ -29,9 +29,7 @@ update_status ModuleResources::Update(float dt)
 	if (tim_check_Assets.ReadSec()>3) {
 		tim_check_Assets.Stop();
 		for (std::map<int, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it){
-			if (App->fs_e->Find_in_Asset(it->second->GetExportedFile())) {
 				it->second->ReadMetaModif();
-			}
 		}
 		tim_check_Assets.Start();
 	}

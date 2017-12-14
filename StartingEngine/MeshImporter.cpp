@@ -373,7 +373,7 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 				mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str(), path_fbx_gen);
 			}
 				int uuid_mesh = App->resources_mod->Find_EngineRes(final_path_mesh.c_str());
-				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, path, path_fbx_gen);
+				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, final_path_mesh.c_str(), path_fbx_gen);
 			}
 			child_gameobj->AddNewTransform(translation_f, scale_f, Final_quat);
 		
@@ -432,7 +432,7 @@ void MeshImporter::AddMeshResourceToGO(Resource_Mesh_Base * n_temp_mesh, GameObj
 	if (uuid_mesh == -1) {
 		temp = App->resources_mod->CreateNewResource(Resources_Type::mesh);
 		((ResourceMesh*)temp)->Res_Mesh_Base = n_temp_mesh;
-		((ResourceMesh*)temp)->Set_New_Resource_Files(n_temp_mesh->name.c_str(), path);
+		((ResourceMesh*)temp)->Set_New_Resource_Files(path, path_fbx_gen);
 		((ResourceMesh*)temp)->LoadToMemory();
 		App->resources_mod->AddResources(temp);
 		if (mat != nullptr) {

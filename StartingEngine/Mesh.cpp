@@ -45,6 +45,7 @@ void Mesh::Update_AABB() {
 		Copy_aabb_using.CornerPoint(6).x,Copy_aabb_using.CornerPoint(6).y,Copy_aabb_using.CornerPoint(6).z,
 		Copy_aabb_using.CornerPoint(7).x,Copy_aabb_using.CornerPoint(7).y,Copy_aabb_using.CornerPoint(7).z
 	};
+	m_t->vertex_aabb = new float[24];
 	memcpy(m_t->vertex_aabb, vertex_Aabb, sizeof(float) * 24);
 
 	
@@ -140,10 +141,11 @@ void Mesh::Save(JSON_Object * root_object_scene)
 	if (parent != nullptr) {
 		json_object_set_number(node, "UUID_parent", this->UUID_parent_GO);
 	}
+	ResourceMesh* temp=(ResourceMesh*)App->resources_mod->Get(uuid_mesh);
 	
-	json_object_set_string(node, "General_Path_FBX", general_fb_path.c_str());
-	json_object_set_string(node, "Resource Mesh exported", path_fbx.c_str());
-	json_object_set_string(node, "Resource Mesh", path_fbx_mesh.c_str());
+	json_object_set_string(node, "General_Path_FBX", temp->GetExportedFile());
+	json_object_set_string(node, "Resource Mesh exported", temp->GetFile());
+	json_object_set_string(node, "Resource Mesh", temp->Res_Mesh_Base->name.c_str());
 //	delete node;
 }
 

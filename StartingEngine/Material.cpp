@@ -32,6 +32,9 @@ void Material::Save(JSON_Object * root_object_scene)
 		if (parent != nullptr) {
 			json_object_set_number(node, "UUID_parent", this->UUID_parent_GO);
 		}
+		if (shader_program_material != nullptr) {
+			json_object_set_string(node, "Shader", shader_program_material->GetExportedFile());
+		}
 	json_object_set_string(node, "Resource Material", path_texture.c_str());
 	json_object_set_string(node, "Resource Material exported", path_texture_exported.c_str());
 }

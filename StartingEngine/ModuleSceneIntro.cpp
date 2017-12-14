@@ -366,17 +366,24 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene, bool load_scen
 				std::string str_p_fbx = json_object_get_string(node_mesh, "General_Path_FBX");
 				std::string str_p_ex = json_object_get_string(node_mesh, "Resource Mesh exported");
 				std::string str_p = json_object_get_string(node_mesh, "Resource Mesh");
-				int uuid_pp = App->resources_mod->Find_EngineRes(str_p.c_str());
+				int uuid_pp = App->resources_mod->Find_EngineRes(str_p_ex.c_str());
 				if (uuid_pp == -1) {
 					temp_mesh_try=(ResourceMesh*)App->resources_mod->CreateNewResource(Resources_Type::mesh);
-					temp_mesh_try->Set_New_Resource_Files(str_p, str_p_fbx);
+					/*int name_var = str_p_ex.rfind("\\") + 1;
+					int name_var_last = str_p_ex.rfind(".");
+					std::string name_go_st = str_p_ex.substr(name_var, name_var_last - name_var);
+
+					std::string final_string = App->fs_e->Mesh_Engine->path + "\\" + name_go_st + " " + std::to_string(i - 1) + ".ric";
+				*/
+					temp_mesh_try->Set_New_Resource_Files(str_p_ex, str_p_fbx);
 					if (temp_mesh_try->GetLoadedNum() == 0) {
 						temp_mesh_try->CreateOnlyMesh();
 					}
 					App->resources_mod->AddResources(temp_mesh_try);
 				}
 				else {
-					temp_mesh_try= (ResourceMesh*)App->resources_mod->Get(uuid_pp);
+					temp_mesh_try= (ResourceMesh*)App->resources_mod->Get(uuid_pp);				
+					temp_mesh_try->CreateOnlyMesh();
 				}
 
 				if (temp_mesh_try != nullptr) {

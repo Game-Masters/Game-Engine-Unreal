@@ -30,7 +30,7 @@ wave = -wave;
 pos = vec3(position[0],position[1],position[2]);
 
 //pos.z = position.z + (sin(((pos.y*pos.x)*0.5)*time/100*0.25));
-pos.z = position.z + (sin(time+pos.x-pos.y));
+pos.z = position.z + (sin(time*0.5+pos.x-pos.y));
 
  gl_Position = projection_view * mat_model* vec4(pos, 1.0f);
 
@@ -40,15 +40,17 @@ pos.z = position.z + (sin(time+pos.x-pos.y));
  Vposition = position;
  float angle = 0;
 //if(sin(time)< pi/2 ||sin(time)> (3/2)*pi )
-if(sin(time)< 1 &&sin(time)> 0 )
+
+//if(sin(time/2*pi)< pi/2  || sin(time/2*pi)> (3/2)*pi)
 {
-Normals = rotate(Normals,vec3(0,0,1),radians(1.0));
+Normals = rotate(Normals,vec3(0,1,0),radians(abs(sin(time/2*pi))))+position.z + (cos(time+pos.x-pos.y))*0.5;
 }
-//if(sin(time)> pi/2  || sin(time)< (3/2)*pi)
+if(sin(time/2*pi)> pi/2  && sin(time/2*pi)< (3/2)*pi)
 {
-//Normals = rotate(Normals,vec3(0,1,0),radians(-1.0));
+//Normals = rotate(Normals,vec3(0,1,0),-abs(asin(time/2*pi)));
 }
- ;
+ 
+ 
 // Normals = rotate(Normals,vec3(0,1,0),radians(90.0));
 }
 

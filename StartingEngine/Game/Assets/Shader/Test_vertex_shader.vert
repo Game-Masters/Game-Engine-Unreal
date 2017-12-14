@@ -14,6 +14,7 @@ uniform float time;
 varying vec3 Vposition;
 vec3 rotate(vec3 v, vec3 axis, float angle);
 mat4 rotationMatrix(vec3 axis, float angle);
+float pi = 3.1415926535;
 
 void main()
 {
@@ -38,9 +39,17 @@ pos.z = position.z + (sin(time+pos.x-pos.y));
  TexCoord = texCoord;
  Vposition = position;
  float angle = 0;
- angle = (position.z + abs((cos(time+pos.x-pos.y))));
- Normals = rotate(Normals,vec3(0,1,0),angle);
-rotationMatrix(vec3(0,1,0), 1.1);
+//if(sin(time)< pi/2 ||sin(time)> (3/2)*pi )
+if(sin(time)< 1 &&sin(time)> 0 )
+{
+Normals = rotate(Normals,vec3(0,0,1),radians(1.0));
+}
+//if(sin(time)> pi/2  || sin(time)< (3/2)*pi)
+{
+//Normals = rotate(Normals,vec3(0,1,0),radians(-1.0));
+}
+ ;
+// Normals = rotate(Normals,vec3(0,1,0),radians(90.0));
 }
 
 

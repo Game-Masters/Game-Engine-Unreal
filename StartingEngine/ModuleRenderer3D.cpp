@@ -337,7 +337,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			shader_next_id = glGetUniformLocation(selector_program->GetID_program_shader(), "alphatexture");
 			shader_next_id2 = glGetUniformLocation(selector_program->GetID_program_shader(), "watertexture");
 			shader_next_id3 = glGetUniformLocation(selector_program->GetID_program_shader(), "foam");
-
+			shader_next_id4 = glGetUniformLocation(selector_program->GetID_program_shader(), "alphatexture2");
 
 			if (texture_mesh != nullptr) {
 				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
@@ -354,7 +354,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			glUniform1i(shader_next_id, 1);
 			glUniform1i(shader_next_id2, 2);
 			glUniform1i(shader_next_id3,3);
-
+			glUniform1i(shader_next_id4, 4);
 
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, alphatexture);
@@ -365,6 +365,9 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			glActiveTexture(GL_TEXTURE3);
 			glBindTexture(GL_TEXTURE_2D, foam);
 
+
+			glActiveTexture(GL_TEXTURE4);
+			glBindTexture(GL_TEXTURE_2D,alphatexture2);
 
 			if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
 				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_total_buffer);

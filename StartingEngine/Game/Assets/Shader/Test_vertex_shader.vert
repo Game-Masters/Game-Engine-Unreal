@@ -12,6 +12,9 @@ uniform mat4 mat_model;
 uniform mat4 projection_view;
 uniform float time;
 varying vec3 Vposition;
+vec3 rotate(vec3 v, vec3 axis, float angle);
+mat4 rotationMatrix(vec3 axis, float angle);
+
 void main()
 {
 Position = position;
@@ -34,4 +37,26 @@ pos.z = position.z + (sin(time+pos.x-pos.y));
  Normals = normals;
  TexCoord = texCoord;
  Vposition = position;
+ float angle = 0;
+ angle = (position.z + abs((cos(time+pos.x-pos.y))));
+ Normals = rotate(Normals,vec3(0,1,0),angle);
+rotationMatrix(vec3(0,1,0), 1.1);
+}
+
+
+mat4 rotationMatrix(vec3 axis, float angle)
+{
+    axis = normalize(axis);
+    float s = sin(angle);
+    float c = cos(angle);
+    float sc = 1.0 - c;
+    
+    return mat4(sc * axis.x * axis.x + c,           sc * axis.x * axis.y - axis.z * s,  sc * axis.z * axis.x + axis.y * s,  0.0,
+                sc * axis.x * axis.y + axis.z * s,  sc * axis.y * axis.y + c,           sc * axis.y * axis.z - axis.x * s,  0.0,
+                sc * axis.z * axis.x - axis.y * s,  sc * axis.y * axis.z + axis.x * s,  sc * axis.z * axis.z + c,           0.0,
+                0.0,                                0.0,                                0.0,                                1.0);
+}
+vec3 rotate(vec3 v, vec3 axis, float angle) {
+	mat4 m = rotationMatrix(axis, angle);
+	return (m * vec4(v, 1.0)).xyz;
 }

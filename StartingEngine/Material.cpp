@@ -6,7 +6,7 @@ Material::Material(int UUID, GameObject * parent): Component(Component_Type_Enum
 	Resource* res =	App->resources_mod->Get(UUID_mat);
 	path_texture_exported = res->GetExportedFile();
 	path_texture = res->GetFile();
-	shader_program_material = App->scene_intro->test_program;
+	shader_program_material = App->scene_intro->Default_program;
 }
 
 void Material::Update()

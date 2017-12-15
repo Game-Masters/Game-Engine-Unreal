@@ -371,7 +371,14 @@ GameObject* MeshImporter::LoadMesh_variables(char ** cursor, GameObject* parent,
 			n_temp_mesh->name = name_mesh_true;
 			if (fbx_with_text) {
 				mat = AddTextureResourceToGO(n_temp_mesh, child_gameobj, final_path_mesh.c_str(), path_fbx_gen);
+				if (mat == nullptr) {
+					mat = child_gameobj->AddNewMaterial(App->scene_intro->texture_default->GetUID());
+				}
 			}
+			else {
+				mat = child_gameobj->AddNewMaterial(App->scene_intro->texture_default->GetUID());
+			}
+		
 				int uuid_mesh = App->resources_mod->Find_EngineRes(final_path_mesh.c_str());
 				AddMeshResourceToGO(n_temp_mesh, child_gameobj, uuid_mesh, mat, final_path_mesh.c_str(), path_fbx_gen);
 			}

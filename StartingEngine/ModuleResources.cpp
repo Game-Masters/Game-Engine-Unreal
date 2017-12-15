@@ -356,19 +356,20 @@ void Resource::CreateMeta()
 bool Resource::ReadMetaModif()
 {
 	bool ret = false;
+	if (exported_file != "DefaultMaterialEngine" && file != "DefaultMaterialEngine") {
+		std::experimental::filesystem::path p = exported_file;
+		auto ftime = std::experimental::filesystem::last_write_time(p);
+		std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
+		double last_mod = cftime;
 
-	std::experimental::filesystem::path p = exported_file;
-	auto ftime = std::experimental::filesystem::last_write_time(p);
-	std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
-	double last_mod = cftime;
-
-	if (time_from_last_modify != last_mod && type== Resources_Type::texture || type == Resources_Type::shader_obj) {
-		Update_Resource();
-		SetLastTimeModf(last_mod);
-		ret= true;
-	}
-	else {
-		ret= false;
+		if (time_from_last_modify != last_mod && type == Resources_Type::texture || type == Resources_Type::shader_obj) {
+			Update_Resource();
+			SetLastTimeModf(last_mod);
+			ret = true;
+		}
+		else {
+			ret = false;
+		}
 	}
 	return ret;
 }

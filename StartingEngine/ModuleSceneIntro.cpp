@@ -59,11 +59,13 @@ bool ModuleSceneIntro::Start()
 
 	std::string temp_str=" ";
 	std::string name_shader_vert;
+	std::string Normal_Texture_Shader_vertex;
 	std::string name_shader_frag;
 	std::string name_shader_frag2;
 	App->fs_e->ChangeFormat_File("Test_vertex_shader", "vert", &name_shader_vert, App->fs_e->Shader_User);
 	App->fs_e->ChangeFormat_File("Test_fragment_shader", "frag", &name_shader_frag, App->fs_e->Shader_User);
 	App->fs_e->ChangeFormat_File("Test_fragment_shader2", "frag", &name_shader_frag2, App->fs_e->Shader_User);
+	App->fs_e->ChangeFormat_File("VertexShader_Normal ", "vert", &Normal_Texture_Shader_vertex, App->fs_e->Shader_User);
 
 
 	test_shader_vertex = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
@@ -107,13 +109,48 @@ bool ModuleSceneIntro::Start()
 		test_shader_frag2->Set_Type_Shader(ShaderType::fragment_shader);
 		test_shader_frag2->LoadToMemory();
 	}
+
+
+	Shader_Texture_Normal_Default = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
+	Shader_Texture_Normal_Default->Set_New_Resource_Files(temp_str, Normal_Texture_Shader_vertex);
+	if (App->resources_mod->Find_UserRes(Shader_Texture_Normal_Default->GetExportedFile()) == -1) {
+		Shader_Texture_Normal_Default->Set_Type_Shader(ShaderType::vertex_shader);
+		Shader_Texture_Normal_Default->LoadToMemory();
+		Shader_Texture_Normal_Default->CreateMeta();
+		App->resources_mod->AddResources(Shader_Texture_Normal_Default);
+	}
+	else {
+		Shader_Texture_Normal_Default = (ResourceShaderObject*)App->resources_mod->Get(App->resources_mod->Find_UserRes(Shader_Texture_Normal_Default->GetExportedFile()));
+		Shader_Texture_Normal_Default->Set_Type_Shader(ShaderType::vertex_shader);
+		Shader_Texture_Normal_Default->LoadToMemory();
+	}
+
+	shader_obj_v.push_back(Shader_Texture_Normal_Default->GetUID());
+	shader_obj_v.push_back(test_shader_frag2->GetUID());
+
+	std::string name_program = "Default Shader";
+	Default_program = (ResourceShaderMaterial*)App->resources_mod->CreateNewResource(Resources_Type::shader_program);
+	Default_program->SetProgram_Name(name_program.c_str());
+	std::string path_prog_str = App->fs_e->ShaderMaterial_Engine->path + "\\" + name_program + ".shadermat";
+	Default_program->Set_New_Resource_Files("", path_prog_str);
+	if (App->resources_mod->Find_UserRes(Default_program->GetExportedFile()) == -1) {
+		Default_program->SetShaderObj_Vect(shader_obj_v);
+		Default_program->LoadToMemory();
+		Default_program->CreateMeta();
+		App->resources_mod->AddResources(Default_program);
+	}
+	else {
+		Default_program = (ResourceShaderMaterial*)App->resources_mod->Get(App->resources_mod->Find_UserRes(Default_program->GetExportedFile()));
+	}
+
+	shader_obj_v.clear();
 	shader_obj_v.push_back(test_shader_vertex->GetUID());
 	shader_obj_v.push_back(test_shader_frag->GetUID());
 
-	std::string name_program = "Default";
+	name_program = "Water_Shader";
 	test_program = (ResourceShaderMaterial*)App->resources_mod->CreateNewResource(Resources_Type::shader_program);
 	test_program->SetProgram_Name(name_program.c_str());
-	std::string path_prog_str = App->fs_e->ShaderMaterial_Engine->path+ "\\" + name_program + ".shadermat";
+	path_prog_str = App->fs_e->ShaderMaterial_Engine->path+ "\\" + name_program + ".shadermat";
 	test_program->Set_New_Resource_Files("", path_prog_str);
 	if (App->resources_mod->Find_UserRes(test_program->GetExportedFile()) == -1) {
 		test_program->SetShaderObj_Vect(shader_obj_v);
@@ -144,6 +181,14 @@ bool ModuleSceneIntro::Start()
 		test_program2 = (ResourceShaderMaterial*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_program2->GetExportedFile()));
 	}
 
+
+	//-------Resource Material Defect
+	//id_checkImage
+	texture_default =(ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
+	texture_default->text_w_h = float2(64, 32);
+	texture_default->id_image_devil = App->renderer3D->id_checkImage;
+	texture_default->Set_New_Resource_Files("DefaultMaterialEngine", "DefaultMaterialEngine");
+	App->resources_mod->AddResources(texture_default);
 	return ret;
 }
 
@@ -345,18 +390,33 @@ void ModuleSceneIntro::Load_Scene(JSON_Object* root_object_scene, bool load_scen
 			if (node_mat != nullptr) {
 				std::string str_p_t = json_object_get_string(node_mat, "Resource Material");
 				std::string str_p_t_Ex = json_object_get_string(node_mat, "Resource Material exported");
-				int uuid_text = App->resources_mod->Find_EngineRes(str_p_t.c_str());
-				if (uuid_text == -1) {
-					ResourceTexture* res_text = (ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
-					res_text->Set_New_Resource_Files(str_p_t, str_p_t_Ex);
-					res_text->LoadToMemory();
+				int uuid_text = -1;
+				if (str_p_t != "DefaultMaterialEngine") {
+					uuid_text = App->resources_mod->Find_EngineRes(str_p_t.c_str());
+					if (uuid_text == -1) {
+						ResourceTexture* res_text = (ResourceTexture*)App->resources_mod->CreateNewResource(Resources_Type::texture);
+						res_text->Set_New_Resource_Files(str_p_t, str_p_t_Ex);
+						res_text->LoadToMemory();
 
+					}
+					else {
+						ResourceTexture* res_text = (ResourceTexture*)App->resources_mod->Get(uuid_text);
+						res_text->LoadToMemory();
+					}
 				}
 				else {
-					ResourceTexture* res_text = (ResourceTexture*)App->resources_mod->Get(uuid_text);
-					res_text->LoadToMemory();
+					uuid_text = App->scene_intro->texture_default->GetUID();
 				}
 				mat=temp_go->AddNewMaterial(uuid_text);
+
+				std::string str_p_t_shader = json_object_get_string(node_mat, "Shader");
+				int uuid_shader=App->resources_mod->Find_UserRes(str_p_t_shader.c_str());
+				if (uuid_shader != -1) {
+					ResourceShaderMaterial* shader_mat_temp=(ResourceShaderMaterial*)App->resources_mod->Get(uuid_shader);
+					shader_mat_temp->LoadToMemory();
+					mat->shader_program_material = shader_mat_temp;
+				}
+
 			}
 		
 			ResourceMesh* temp_mesh_try = nullptr;

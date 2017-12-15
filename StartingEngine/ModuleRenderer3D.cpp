@@ -287,11 +287,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				texture_mesh->shader_program_material->Bind_program();
 			
 			}
-			else {
-				selector_program = App->scene_intro->test_program;
-				App->scene_intro->test_program->Bind_program();
-		
-			}
+
 			//App->scene_intro->test_program->Bind_program();
 			//glPushMatrix();
 			float3 position;
@@ -345,10 +341,6 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);
 
-			}
-			else {
-				glBindTexture(GL_TEXTURE_2D, id_checkImage);
-				glUniform1i(testLoc, (GLuint)id_checkImage);
 			}
 			
 			glUniform1i(shader_next_id, 1);

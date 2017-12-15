@@ -908,6 +908,18 @@ void ModuleGui::InspectionNode_Gui()
 						ImGui::Text("Texture width: %f", temp_res->text_w_h.x);
 						ImGui::Text("Texture height: %f", temp_res->text_w_h.y);
 						ImGui::Image((void*)temp_res->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
+						if (strcmp(mat_temp->shader_program_material->GetNameProgram(),"Water_Shader")==0) {
+							if (App->renderer3D->Water_Color_Shader != nullptr) {
+								ImGui::ColorPicker3("Water Color", App->renderer3D->Water_Color_Shader);
+								//glClearColor(*(App->renderer3D->Water_Color_Shader), *(App->renderer3D->Water_Color_Shader + 1), *(App->renderer3D->Water_Color_Shader + 2), 1.f);
+							}
+							mat_temp->shader_program_material->Bind_program();
+							App->renderer3D->water_color_engine_g = glGetUniformLocation(mat_temp->shader_program_material->GetID_program_shader(), "water_color_engine");
+							if (App->renderer3D->water_color_engine_g != -1) {
+								glUniform3fv(App->renderer3D->water_color_engine_g,1, App->renderer3D->Water_Color_Shader);
+							}
+							mat_temp->shader_program_material->Unbind_program();
+						}
 						if (ImGui::Button("Shader type", ImVec2(250, 30)) && inspection_node)
 							ImGui::OpenPopup("Shader type");
 						if (ImGui::BeginPopup("Shader type"))

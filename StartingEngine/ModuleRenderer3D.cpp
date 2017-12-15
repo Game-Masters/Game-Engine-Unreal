@@ -122,9 +122,10 @@ bool ModuleRenderer3D::Init()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//---------------------------Checkers creation
-
-
-
+	Water_Color_Shader = new float[3];
+	Water_Color_Shader[0] = 0;
+	Water_Color_Shader[1] = 0.8;
+	Water_Color_Shader[2] = 0.9;
 
 	return ret;
 }
@@ -206,7 +207,8 @@ bool ModuleRenderer3D::Start()
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
-
+	delete[] Water_Color_Shader;
+	delete[]Window_Color;
 	SDL_GL_DeleteContext(context);
 	
 	return true;
@@ -335,6 +337,7 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			shader_next_id3 = glGetUniformLocation(selector_program->GetID_program_shader(), "foam");
 			shader_next_id4 = glGetUniformLocation(selector_program->GetID_program_shader(), "alphatexture2");
 
+
 			if (texture_mesh != nullptr) {
 				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
 				glUniform1i(testLoc, 0);
@@ -429,7 +432,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 bool ModuleRenderer3D::LoadConfig(JSON_Object * node)
 {
-	Window_Color = new float(2);
+	Window_Color = new float[3];
 	if (json_object_get_value(node, "Window_Color.r") == NULL || 
 		json_object_get_value(node, "Window_Color.g") == NULL ||
 		json_object_get_value(node, "Window_Color.b") == NULL) {

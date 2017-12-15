@@ -42,7 +42,9 @@ public:
 	bool color = false;
 	bool debugnormals = false;
 	float* Window_Color = nullptr;
-
+	float* Water_Color_Shader = nullptr;
+	GLint water_color_engine_g = 0;
+	float3 water_color_rgb = float3(0, 0.8, 0.9);
 	GLint shader_next_id = 0;
 	GLint shader_next_id2 = 0;
 	GLint shader_next_id3 = 0;

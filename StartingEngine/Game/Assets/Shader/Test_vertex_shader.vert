@@ -37,7 +37,8 @@ pos.z = position.z + 0.8*(sin(time+pos.x-pos.y)+0.8*sin(time+pos.x+pos.y));
  
  Normals = normals;
  TexCoord = texCoord;
- Vposition = position;
+  Vposition = position;
+ Vposition.z = position.z + 0.8*(sin(time+pos.x-pos.y));
  float angle = 0;
 //if(sin(time)< pi/2 ||sin(time)> (3/2)*pi )
 

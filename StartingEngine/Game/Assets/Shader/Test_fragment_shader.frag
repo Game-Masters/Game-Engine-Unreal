@@ -67,8 +67,8 @@ if(pos.z >= Position.z)
 {
 
 	
-	//ar = 0 +( pos.z - (Position.z)/ pos.z);
-	//ar = mix( Position.z,pos.z, pos.z+0.2);
+	ar = 0 +( pos.z - (Position.z)/ pos.z);
+	ar = mix( Position.z,pos.z, pos.z+0.2);
 //color = mix( texture2D(watertexture,TexCoord),texture2D(foam,TexCoord),vec4(ar,ar,ar,ar*0.5));
 //color = mix( texture2D(watertexture,TexCoord)*vec4(0,0.3,0.5,1),texture2D(foam,TexCoord),texture2D(alphatexture,TexCoord)*ar);
 //color = mix(  mix( texture2D( watertexture,TexCoord)*vec4(0,0.3,0.5,1),texture2D( watertexture,TexCoord)*vec4(0,0.9,0.9,1),texture2D( alphatexture,TexCoord)),texture2D(foam,TexCoord),texture2D(alphatexture,TexCoord)*ar);

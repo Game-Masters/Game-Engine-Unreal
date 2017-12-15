@@ -43,13 +43,21 @@ Color = texture2D( watertexture,TexCoord);
 
 //Normal maps
 vec3 NormalMap = texture2D(alphatexture, TexCoord).rgb;
-vec3 Light = normalize(vec3(0,1,1));
+vec3 Light = normalize(vec3(0,-1,1));
+vec3 Light2 = normalize(vec3(0,-1,1));
 
 vec3 N = normalize((NormalMap+Normals) * 2.0 - 1.0);
-max(dot(N, Light),1);
+
 color =max(vec4(Color.rgb*max(dot(N, Light),0),1)*vec4(1,1,1,1),vec4(0,0,0.5,1));
 color =max(vec4(vec3(0,0.8,0.9)*max(dot(N, Light),0),1),vec4(0,0.4,0.9,1));
-
+//if(dot(N, Light2)>0.99 &&pos.z >= Position.z)
+if(dot(N, Light2)>0.90)
+{
+//ar = 0 +( dot(N, Light2));
+ar = mix( 0,1, ((dot(N, Light2)-0.90)*10));
+color =max(max(vec4(vec3(0,0.8,0.9)*max(dot(N, Light2),0),1),vec4(0,0.4,0.9,1)),vec4(1,1,1,1));
+color = mix(max(vec4(vec3(0,0.8,0.9)*max(dot(N, Light),0),1),vec4(0,0.4,0.9,1)),vec4(1,1,1,1), vec4(ar,ar,ar,ar));
+}
 
 
 
@@ -59,14 +67,14 @@ if(pos.z >= Position.z)
 {
 
 	
-	ar = 0 +( pos.z - (Position.z)/ pos.z);
-	ar = mix( Position.z,pos.z, pos.z);
+	//ar = 0 +( pos.z - (Position.z)/ pos.z);
+	//ar = mix( Position.z,pos.z, pos.z+0.2);
 //color = mix( texture2D(watertexture,TexCoord),texture2D(foam,TexCoord),vec4(ar,ar,ar,ar*0.5));
 //color = mix( texture2D(watertexture,TexCoord)*vec4(0,0.3,0.5,1),texture2D(foam,TexCoord),texture2D(alphatexture,TexCoord)*ar);
 //color = mix(  mix( texture2D( watertexture,TexCoord)*vec4(0,0.3,0.5,1),texture2D( watertexture,TexCoord)*vec4(0,0.9,0.9,1),texture2D( alphatexture,TexCoord)),texture2D(foam,TexCoord),texture2D(alphatexture,TexCoord)*ar);
 //color = mix( vec4( Color.xyz *dot(Normals, vec3(1,1,1)),1),texture2D(foam,TexCoord),texture2D(alphatexture,TexCoord)*ar);
 //color = mix(max(vec4(Color.rgb*max(dot(N, Light),0),1)*vec4(1,1,1,1),vec4(0,0,0.5,1)),texture2D(foam,TexCoord),texture2D(alphatexture2,TexCoord)*ar);
-color = mix(max(vec4(vec3(0,0.8,0.9)*max(dot(N, Light),0),1),vec4(0,0.4,0.9,1)),texture2D(foam,TexCoord),texture2D(alphatexture2,TexCoord)*ar);
+//color = mix(max(vec4(vec3(0,0.8,0.9)*max(dot(N, Light),0),1),vec4(0,0.4,0.9,1)),vec4(vec3(1,1,1),1),texture2D(alphatexture2,TexCoord)*ar);
 
 }
 }

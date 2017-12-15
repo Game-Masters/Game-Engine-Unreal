@@ -30,7 +30,7 @@ wave = -wave;
 pos = vec3(position[0],position[1],position[2]);
 
 //pos.z = position.z + (sin(((pos.y*pos.x)*0.5)*time/100*0.25));
-pos.z = position.z + (sin(time+pos.x-pos.y));
+pos.z = position.z + (sin(time+pos.x-pos.y)+0.7*sin(time+pos.x+pos.y));
 
  gl_Position = projection_view * mat_model* vec4(pos, 1.0f);
 

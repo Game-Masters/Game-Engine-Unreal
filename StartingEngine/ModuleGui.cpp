@@ -131,7 +131,7 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Data/Icons/image-icon.png", &App->fs_e->Png_Image);
 	App->assimp->LoadImage_devil("Data/Icons/zscene_icon.png", &App->fs_e->Scene_Image);
 	App->assimp->LoadImage_devil("Data/Icons/txt_image.png", &App->fs_e->Txt_Image);
-	App->assimp->LoadImage_devil("Data/shading/alpha.jpg",&App->renderer3D->alphatexture);
+	App->assimp->LoadImage_devil("Data/shading/Nmap.jpg",&App->renderer3D->alphatexture);
 	App->assimp->LoadImage_devil("Data/shading/alpha2.png", &App->renderer3D->alphatexture2);
 	App->assimp->LoadImage_devil("Data/shading/water.jpg",&App->renderer3D->watertexture);
 	App->assimp->LoadImage_devil("Data/shading/foam.jpg", &App->renderer3D->foam);

@@ -160,7 +160,46 @@ int ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 			
 			type = Resources_Type::mesh;
 		}
+		else if (type == Resources_Type::shader_obj) {
+			res = CreateNewResource(Resources_Type::shader_obj);
+			std::string str_path_shad = new_file_in_assets;
+			size_t end_name = str_path_shad.rfind(".");
+			std::string ext_t1 = str_path_shad.substr(end_name, str_path_shad.size());
+			if (ext_t1 == ".vert") {
+				((ResourceShaderObject*)res)->Set_Type_Shader(ShaderType::vertex_shader);
+			}
+			else if (ext_t1 == ".frag") {
+				((ResourceShaderObject*)res)->Set_Type_Shader(ShaderType::fragment_shader);
+			}
+			((ResourceShaderObject*)res)->Set_New_Resource_Files("", new_file_in_assets);
+			((ResourceShaderObject*)res)->LoadToMemory();
+			((ResourceShaderObject*)res)->CreateMeta();
+			std::pair<int, Resource*> p;
+			p.first = res->GetUID();
+			p.second = res;
+			resources.insert(p);
+		}
+		else if (type == Resources_Type::shader_program) {
+			res = CreateNewResource(Resources_Type::shader_program);
+			std::string path_t1 = new_file_in_assets;
+			size_t end_name = path_t1.rfind(".");
+			size_t sart_name = path_t1.rfind("\\") + 1;
+			std::string name_t1 = path_t1.substr(sart_name, end_name - sart_name);
+			((ResourceShaderObject*)res)->Set_New_Resource_Files("", new_file_in_assets);
+			((ResourceShaderMaterial*)res)->SetProgram_Name(name_t1.c_str());
+			((ResourceShaderMaterial*)res)->GetJsonShaderProgram();
+			((ResourceShaderMaterial*)res)->LoadToMemory();
+			((ResourceShaderMaterial*)res)->CreateMeta();
+			std::pair<int, Resource*> p;
+			p.first = res->GetUID();
+			p.second = res;
+			resources.insert(p);
+		}
+
 	
+
+
+
 
 	return ret;
 }

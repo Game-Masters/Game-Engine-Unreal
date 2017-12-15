@@ -66,7 +66,7 @@ if(pos.z >= Position.z)
 //color = mix(  mix( texture2D( watertexture,TexCoord)*vec4(0,0.3,0.5,1),texture2D( watertexture,TexCoord)*vec4(0,0.9,0.9,1),texture2D( alphatexture,TexCoord)),texture2D(foam,TexCoord),texture2D(alphatexture,TexCoord)*ar);
 //color = mix( vec4( Color.xyz *dot(Normals, vec3(1,1,1)),1),texture2D(foam,TexCoord),texture2D(alphatexture,TexCoord)*ar);
 //color = mix(max(vec4(Color.rgb*max(dot(N, Light),0),1)*vec4(1,1,1,1),vec4(0,0,0.5,1)),texture2D(foam,TexCoord),texture2D(alphatexture2,TexCoord)*ar);
-
+color = mix(max(vec4(vec3(0,0.8,0.9)*max(dot(N, Light),0),1),vec4(0,0.4,0.9,1)),texture2D(foam,TexCoord),texture2D(alphatexture2,TexCoord)*ar);
 
 }
 }

@@ -1,3 +1,4 @@
+//This is meant to be an editor of shaders
 #version 330 core
 in vec3 ourColor;
 in vec2 TexCoord;
@@ -54,8 +55,8 @@ if(Vposition.z >= Position.z)
 
 	
 	
-	
-	ar = mix( Vposition.z,Position.z, Position.z-0.5);
+	ar = mix( Position.z,pos.z, pos.z);
+
 
 color = mix(max(vec4(Color1.rgb*max(dot(N, Light),0),1),Color2),vec4(vec3(1,1,1),1),texture2D(AlphaTexture,TexCoord)*ar);
 

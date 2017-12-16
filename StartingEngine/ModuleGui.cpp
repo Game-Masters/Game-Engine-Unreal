@@ -910,7 +910,7 @@ void ModuleGui::InspectionNode_Gui()
 						ImGui::Text("Texture width: %f", temp_res->text_w_h.x);
 						ImGui::Text("Texture height: %f", temp_res->text_w_h.y);
 						ImGui::Image((void*)temp_res->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
-						if (strcmp(mat_temp->shader_program_material->GetNameProgram(),"Water_with_foam")==0) {
+						if (strcmp(mat_temp->shader_program_material->GetNameProgram(),"Water_with_foam")==0 || strcmp(mat_temp->shader_program_material->GetNameProgram(), "Water_with_Foam_NoUniform") == 0) {
 							if (App->renderer3D->Color1 != nullptr && App->renderer3D->Color2 != nullptr && App->renderer3D->Color3 != nullptr) {
 								ImGui::ColorPicker4("Water Color1", App->renderer3D->Color1);
 								ImGui::ColorPicker4("Water Color2", App->renderer3D->Color2);

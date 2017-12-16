@@ -357,6 +357,20 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 				glBindTexture(GL_TEXTURE_2D, ((ResourceTexture*)text_m)->id_image_devil);
 
 			}
+
+			App->renderer3D->water_color_engine_g = glGetUniformLocation(selector_program->GetID_program_shader(), "Color1");
+			if (App->renderer3D->water_color_engine_g != -1) {
+				glUniform4fv(App->renderer3D->water_color_engine_g, 1, App->renderer3D->Color1);
+			}
+			App->renderer3D->water_color_engine_g1 = glGetUniformLocation(selector_program->GetID_program_shader(), "Color2");
+			if (App->renderer3D->water_color_engine_g != -1) {
+				glUniform4fv(App->renderer3D->water_color_engine_g1, 1, App->renderer3D->Color2);
+			}
+			App->renderer3D->water_color_engine_g2 = glGetUniformLocation(selector_program->GetID_program_shader(), "Color3");
+			if (App->renderer3D->water_color_engine_g != -1) {
+				glUniform4fv(App->renderer3D->water_color_engine_g2, 1, App->renderer3D->Color3);
+			}
+
 			
 			glUniform1i(shader_next_id, 1);
 			glUniform1i(shader_next_id2, 2);

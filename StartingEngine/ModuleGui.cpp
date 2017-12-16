@@ -917,20 +917,7 @@ void ModuleGui::InspectionNode_Gui()
 								ImGui::ColorPicker4("Water Color3", App->renderer3D->Color3);
 								//glClearColor(*(App->renderer3D->Water_Color_Shader), *(App->renderer3D->Water_Color_Shader + 1), *(App->renderer3D->Water_Color_Shader + 2), 1.f);
 							}
-							mat_temp->shader_program_material->Bind_program();
-							App->renderer3D->water_color_engine_g = glGetUniformLocation(mat_temp->shader_program_material->GetID_program_shader(), "Color1");
-							if (App->renderer3D->water_color_engine_g != -1) {
-								glUniform4fv(App->renderer3D->water_color_engine_g,1, App->renderer3D->Color1);
-							}
-							App->renderer3D->water_color_engine_g1 = glGetUniformLocation(mat_temp->shader_program_material->GetID_program_shader(), "Color2");
-							if (App->renderer3D->water_color_engine_g != -1) {
-								glUniform4fv(App->renderer3D->water_color_engine_g1, 1, App->renderer3D->Color2);
-							}
-							App->renderer3D->water_color_engine_g2 = glGetUniformLocation(mat_temp->shader_program_material->GetID_program_shader(), "Color3");
-							if (App->renderer3D->water_color_engine_g != -1) {
-								glUniform4fv(App->renderer3D->water_color_engine_g2, 1, App->renderer3D->Color3);
-							}
-							mat_temp->shader_program_material->Unbind_program();
+
 						}
 						if (ImGui::Button("Shader type", ImVec2(250, 30)) && inspection_node)
 							ImGui::OpenPopup("Shader type");

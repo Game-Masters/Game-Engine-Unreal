@@ -63,39 +63,10 @@ bool ModuleSceneIntro::Start()
 	std::string Normal_Texture_Shader_vertex;
 	std::string name_shader_frag;
 	std::string name_shader_frag2;
-	App->fs_e->ChangeFormat_File("Test_vertex_shader", "vert", &name_shader_vert, App->fs_e->Shader_User);
-	App->fs_e->ChangeFormat_File("Test_fragment_shader", "frag", &name_shader_frag, App->fs_e->Shader_User);
+
 	App->fs_e->ChangeFormat_File("Test_fragment_shader2", "frag", &name_shader_frag2, App->fs_e->Shader_User);
 	App->fs_e->ChangeFormat_File("VertexShader_Normal ", "vert", &Normal_Texture_Shader_vertex, App->fs_e->Shader_User);
 
-
-	test_shader_vertex = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
-	test_shader_vertex->Set_New_Resource_Files(temp_str, name_shader_vert);
-	if (App->resources_mod->Find_UserRes(test_shader_vertex->GetExportedFile())==-1) {
-		test_shader_vertex->Set_Type_Shader(ShaderType::vertex_shader);
-		test_shader_vertex->LoadToMemory();
-		test_shader_vertex->CreateMeta();
-		App->resources_mod->AddResources(test_shader_vertex);
-	}
-	else {
-		test_shader_vertex = (ResourceShaderObject*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_shader_vertex->GetExportedFile()));
-		test_shader_vertex->Set_Type_Shader(ShaderType::vertex_shader);
-		test_shader_vertex->LoadToMemory();
-	}
-
-	test_shader_frag = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
-	test_shader_frag->Set_Type_Shader(ShaderType::fragment_shader);
-	test_shader_frag->Set_New_Resource_Files(temp_str, name_shader_frag);
-	if (App->resources_mod->Find_UserRes(test_shader_frag->GetExportedFile()) == -1) {
-		test_shader_frag->LoadToMemory();
-		test_shader_frag->CreateMeta();
-		App->resources_mod->AddResources(test_shader_frag);
-	}
-	else {
-		test_shader_frag = (ResourceShaderObject*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_shader_frag->GetExportedFile()));
-		test_shader_frag->Set_Type_Shader(ShaderType::fragment_shader);
-		test_shader_frag->LoadToMemory();
-	}
 
 	test_shader_frag2 = (ResourceShaderObject*)App->resources_mod->CreateNewResource(Resources_Type::shader_obj);
 	test_shader_frag2->Set_Type_Shader(ShaderType::fragment_shader);
@@ -145,42 +116,8 @@ bool ModuleSceneIntro::Start()
 	}
 
 	shader_obj_v.clear();
-	shader_obj_v.push_back(test_shader_vertex->GetUID());
-	shader_obj_v.push_back(test_shader_frag->GetUID());
 
-	name_program = "Water_Shader";
-	test_program = (ResourceShaderMaterial*)App->resources_mod->CreateNewResource(Resources_Type::shader_program);
-	test_program->SetProgram_Name(name_program.c_str());
-	path_prog_str = App->fs_e->ShaderMaterial_Engine->path+ "\\" + name_program + ".shadermat";
-	test_program->Set_New_Resource_Files("", path_prog_str);
-	if (App->resources_mod->Find_UserRes(test_program->GetExportedFile()) == -1) {
-		test_program->SetShaderObj_Vect(shader_obj_v);
-		test_program->LoadToMemory();
-		test_program->CreateMeta();
-		App->resources_mod->AddResources(test_program);
-	}
-	else {
-		test_program =(ResourceShaderMaterial*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_program->GetExportedFile()));
-	}
 
-	shader_obj_v.clear();
-	shader_obj_v.push_back(test_shader_vertex->GetUID());
-	shader_obj_v.push_back(test_shader_frag2->GetUID());
-
-	name_program = "Colors";
-	test_program2 = (ResourceShaderMaterial*)App->resources_mod->CreateNewResource(Resources_Type::shader_program);
-	test_program2->SetProgram_Name(name_program.c_str());
-	path_prog_str = App->fs_e->ShaderMaterial_Engine->path + "\\" + name_program + ".shadermat";
-	test_program2->Set_New_Resource_Files("", path_prog_str);
-	if (App->resources_mod->Find_UserRes(test_program2->GetExportedFile()) == -1) {
-		test_program2->SetShaderObj_Vect(shader_obj_v);
-		test_program2->LoadToMemory();
-		test_program2->CreateMeta();
-		App->resources_mod->AddResources(test_program2);
-	}
-	else {
-		test_program2 = (ResourceShaderMaterial*)App->resources_mod->Get(App->resources_mod->Find_UserRes(test_program2->GetExportedFile()));
-	}
 
 
 	//-------Resource Material Defect

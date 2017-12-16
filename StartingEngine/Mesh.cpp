@@ -45,7 +45,7 @@ void Mesh::Update_AABB() {
 		Copy_aabb_using.CornerPoint(6).x,Copy_aabb_using.CornerPoint(6).y,Copy_aabb_using.CornerPoint(6).z,
 		Copy_aabb_using.CornerPoint(7).x,Copy_aabb_using.CornerPoint(7).y,Copy_aabb_using.CornerPoint(7).z
 	};
-	m_t->vertex_aabb = new float[24];
+
 	memcpy(m_t->vertex_aabb, vertex_Aabb, sizeof(float) * 24);
 
 	

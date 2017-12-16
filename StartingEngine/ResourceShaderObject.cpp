@@ -51,7 +51,7 @@ bool ResourceShaderObject::ComplieShaderObject()
 
 	char* buffer = nullptr;
 
-	int size_file = App->fs_e->LoadFile(this->exported_file.c_str(), &buffer);
+	int size_file = App->fs_e->LoadFile(this->exported_file.c_str(), &buffer,true);
 	buffer[size_file] = '\0';
 	shader_obj_code = buffer;
 
@@ -144,5 +144,13 @@ void ResourceShaderObject::ShaderUpdateInstances()
 
 	}
 
+
+}
+
+void ResourceShaderObject::DeleteRes()
+{
+	glDeleteShader(id_shader_obj);
+	delete[] shader_obj_code;
+	delete this;
 
 }

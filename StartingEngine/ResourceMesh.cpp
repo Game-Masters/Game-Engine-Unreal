@@ -37,6 +37,7 @@ bool ResourceMesh::LoadToMemory()
 
 void ResourceMesh::DeleteRes() {
 	delete Res_Mesh_Base;
+	delete this;
 }
 
 void ResourceMesh::LoadMeshBase()

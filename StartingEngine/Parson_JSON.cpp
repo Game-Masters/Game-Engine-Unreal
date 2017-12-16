@@ -22,8 +22,9 @@ Parson_JSON::~Parson_JSON()
 }
 
 bool Parson_JSON::CleanUp() {
-	
-		
+
+
+	json_value_free(App->scene_intro->root_value_scene);
 	return true;
 }
 

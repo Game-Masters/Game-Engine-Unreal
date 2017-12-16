@@ -107,7 +107,7 @@ bool  ModuleFileSystem_Engine::IterateChild_Exsist(Directory_ *temp, const char*
 	return false;
 }
 
-int ModuleFileSystem_Engine::LoadFile(const char * path, char ** buffer)
+int ModuleFileSystem_Engine::LoadFile(const char * path, char ** buffer, bool one_more_unit)
 {
 	bool ret = false;
 	int length_file = 0;
@@ -123,7 +123,12 @@ int ModuleFileSystem_Engine::LoadFile(const char * path, char ** buffer)
 			length_file = file_stream.tellg();
 			file_stream.seekg(0, file_stream.beg);
 			LOG("Reading File %s of %i characters", path, length_file);
-			*buffer = new char[length_file];
+			if (one_more_unit) {
+				*buffer = new char[length_file + 1];
+			}
+			else {
+				*buffer = new char[length_file];
+			}
 			// read data as a block:
 			file_stream.read(*buffer, length_file);
 

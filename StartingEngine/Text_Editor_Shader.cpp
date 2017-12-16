@@ -22,7 +22,7 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 			std::string str_temp = "";
 			editor_text_shader.SetText(str_temp);
 			char* buffer = nullptr;
-			int size_file = App->fs_e->LoadFile(path_shader, &buffer);
+			int size_file = App->fs_e->LoadFile(path_shader, &buffer,true);
 			actual_path = path_shader;
 			if ((buffer != nullptr) && size_file>1) {
 				buffer[size_file] = '\0';
@@ -34,8 +34,9 @@ void Editor_Text_Shader::Enable_Text_Editor(bool visible, const char* path_shade
 				editor_text_shader.InsertText("//This is meant to be an editor of shaders");
 				editor_text_shader.InsertText("\n");
 			}
-
+			delete[] buffer;
 		}
+
 
 
 		if (ImGui::Button("Save"))

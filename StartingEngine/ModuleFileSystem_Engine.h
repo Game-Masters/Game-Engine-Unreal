@@ -27,7 +27,7 @@ public:
 	bool CleanUp();
 	Directory_* CreateDir(const char* name, Directory_Type type, Directory_* parent=nullptr, bool visible=true);
 	bool IterateChild_Exsist(Directory_ *temp, const char* name);
-	int LoadFile(const char* path, char** buffer);
+	int LoadFile(const char* path, char** buffer, bool one_more_unit=false);
 	bool SaveFile(const char* path, char* buffer, uint size, Directory_* parent=nullptr);
 	ModuleFileSystem_Engine();
 	~ModuleFileSystem_Engine();

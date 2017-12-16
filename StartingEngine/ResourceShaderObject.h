@@ -28,11 +28,12 @@ public:
 	const char* GetFileName();
 	void Set_Type_Shader(ShaderType type);
 	void ShaderUpdateInstances();
+	void DeleteRes();
 private:
 	LCG uid_rm;
 	ShaderType shader_obj_type = ShaderType::no_type_shader;
 	GLuint id_shader_obj = 0;
-	const GLchar* shader_obj_code = nullptr;
+	GLchar* shader_obj_code = nullptr;
 	std::string log_shader;
 
 };

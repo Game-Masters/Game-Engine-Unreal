@@ -28,11 +28,12 @@ if(Time>200)
 Time = 0;
 }
 
-aux.x = aux.x + (sin(aux.y*Time*.5)*0.05);
-
+//aux.x = aux.x + (sin(aux.y*Time*.5)*0.05);
+aux.x += aux.x/2 ;
+aux.y += aux.y/2;
 
 //Normal maps
-vec3 NormalMap = texture2D(NormalTexture, TexCoord).rgb;
+vec3 NormalMap = texture2D(NormalTexture, aux).rgb;
 vec3 Light = normalize(vec3(0,-1,1));
 vec3 Light2 = normalize(vec3(0,-1,1));
 
@@ -49,22 +50,24 @@ ar2 = mix( 0,1, ((dot(N, Light2)-0.90)*10));
 color = mix(max(vec4(Color1.rgb*max(dot(N, Light),0),1),Color2),Color3, vec4(ar2,ar2,ar2,ar2));
 }
 
-if(Vposition.z >= Position.z)
+if(Vposition.z >= Position.z+0.4)
 {
 
 	
-	
-	
-	ar = mix( Vposition.z,Position.z, Position.z-0.5);
 
-color = mix(max(vec4(Color1.rgb*max(dot(N, Light),0),1),Color2),vec4(vec3(1,1,1),1),texture2D(AlphaTexture,TexCoord)*ar);
+	{
+	ar = mix(0,3,Vposition.z-(Position.z+0.4));
+	}
+	
+
+color = mix(max(vec4(Color1.rgb*max(dot(N, Light),0),1),Color2),vec4(vec3(texture2D(NormalTexture, aux).a,texture2D(NormalTexture, aux).a,texture2D(NormalTexture, aux).a),1),texture2D(AlphaTexture,aux)*ar);
 
 }
 if(dot(N, Light2)>0.90)
 {
 
 ar2 = mix( 0,1, ((dot(N, Light2)-0.90)*10));
-color =  mix(mix(max(vec4(Color1.rgb*max(dot(N, Light),0),1),Color2),Color3, vec4(ar2,ar2,ar2,ar2)),vec4(vec3(1,1,1),1),texture2D(AlphaTexture,TexCoord)*ar);
+color =  mix(mix(max(vec4(Color1.rgb*max(dot(N, Light),0),1),Color2),Color3, vec4(ar2,ar2,ar2,ar2)),vec4(vec3(1,1,1),1),texture2D(AlphaTexture,aux)*ar);
 }
 
 }

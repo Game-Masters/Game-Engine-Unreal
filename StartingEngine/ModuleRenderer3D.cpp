@@ -123,19 +123,19 @@ bool ModuleRenderer3D::Init()
 
 	//---------------------------Checkers creation
 	Color1 = new float[4];
-	Color1[0] = 0;
-	Color1[1] = 0.8;
-	Color1[2] = 0.9;
+	Color1[0] = 0.031;
+	Color1[1] = 0.278;
+	Color1[2] = 0.431;
 	Color1[3] = 1;
 	Color2 = new float[4];
-	Color2[0] = 0;
-	Color2[1] = 0.4;
-	Color2[2] = 0.9;
+	Color2[0] = 0.031;
+	Color2[1] = 0.109;
+	Color2[2] = 0.207;
 	Color2[3] = 1;
 	Color3 = new float[4];
-	Color3[0] = 1;
-	Color3[1] = 1;
-	Color3[2] = 1;
+	Color3[0] = 0.576;
+	Color3[1] = 0.835;
+	Color3[2] = 0.925;
 	Color3[3] = 1;
 	return ret;
 }

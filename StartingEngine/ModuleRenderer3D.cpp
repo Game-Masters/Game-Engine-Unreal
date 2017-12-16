@@ -122,11 +122,21 @@ bool ModuleRenderer3D::Init()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//---------------------------Checkers creation
-	Water_Color_Shader = new float[3];
-	Water_Color_Shader[0] = 0;
-	Water_Color_Shader[1] = 0.8;
-	Water_Color_Shader[2] = 0.9;
-
+	Color1 = new float[4];
+	Color1[0] = 0;
+	Color1[1] = 0.8;
+	Color1[2] = 0.9;
+	Color1[3] = 1;
+	Color2 = new float[4];
+	Color2[0] = 0;
+	Color2[1] = 0.4;
+	Color2[2] = 0.9;
+	Color2[3] = 1;
+	Color3 = new float[4];
+	Color3[0] = 1;
+	Color3[1] = 1;
+	Color3[2] = 1;
+	Color3[3] = 1;
 	return ret;
 }
 
@@ -207,7 +217,9 @@ bool ModuleRenderer3D::Start()
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
-	delete[] Water_Color_Shader;
+	delete[] Color1;
+	delete[] Color3;
+	delete[] Color2;
 	delete[]Window_Color;
 	SDL_GL_DeleteContext(context);
 	
@@ -336,8 +348,8 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			shader_next_id2 = glGetUniformLocation(selector_program->GetID_program_shader(), "watertexture");
 			shader_next_id3 = glGetUniformLocation(selector_program->GetID_program_shader(), "foam");
 			shader_next_id4 = glGetUniformLocation(selector_program->GetID_program_shader(), "alphatexture2");
-
-
+			shader_next_id5 = glGetUniformLocation(selector_program->GetID_program_shader(), "NormalTexture");
+			shader_next_id6 = glGetUniformLocation(selector_program->GetID_program_shader(), "AlphaTexture");
 			if (texture_mesh != nullptr) {
 				Resource* text_m = App->resources_mod->Get(texture_mesh->UUID_mat);
 				glUniform1i(testLoc, 0);
@@ -350,7 +362,8 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 			glUniform1i(shader_next_id2, 2);
 			glUniform1i(shader_next_id3,3);
 			glUniform1i(shader_next_id4, 4);
-
+			glUniform1i(shader_next_id5, 5);
+			glUniform1i(shader_next_id6, 6);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, alphatexture);
 
@@ -363,6 +376,10 @@ void ModuleRenderer3D::Render_3D(Mesh* m, int uuid, Material* texture_mesh) {
 
 			glActiveTexture(GL_TEXTURE4);
 			glBindTexture(GL_TEXTURE_2D,alphatexture2);
+			glActiveTexture(GL_TEXTURE5);
+			glBindTexture(GL_TEXTURE_2D, NormalTexture);
+			glActiveTexture(GL_TEXTURE6);
+			glBindTexture(GL_TEXTURE_2D, AlphaTexture);
 
 			if (mesh_v->Res_Mesh_Base->vertices != nullptr && mesh_v->Res_Mesh_Base->indices != nullptr) {
 				glBindBuffer(GL_ARRAY_BUFFER, mesh_v->Res_Mesh_Base->id_total_buffer);

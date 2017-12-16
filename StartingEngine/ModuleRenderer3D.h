@@ -42,17 +42,26 @@ public:
 	bool color = false;
 	bool debugnormals = false;
 	float* Window_Color = nullptr;
-	float* Water_Color_Shader = nullptr;
+	float* Color1 = nullptr;
+	float* Color2 = nullptr;
+	float* Color3 = nullptr;
 	GLint water_color_engine_g = 0;
+	GLint water_color_engine_g1 = 0;
+	GLint water_color_engine_g2 = 0;
 	float3 water_color_rgb = float3(0, 0.8, 0.9);
 	GLint shader_next_id = 0;
 	GLint shader_next_id2 = 0;
 	GLint shader_next_id3 = 0;
 	GLint shader_next_id4 = 0;
+	GLint shader_next_id5 = 0;
+	GLint shader_next_id6 = 0;
 	GLint modelLoc = 0;
 	GLint testLoc = 0;
 	GLuint alphatexture=0;
 	GLuint alphatexture2 = 0;
 	GLuint watertexture = 0;
 	GLuint foam = 0;
+	// final Water Textures
+	GLuint NormalTexture;
+	GLuint AlphaTexture;
 };

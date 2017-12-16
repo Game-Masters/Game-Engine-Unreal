@@ -135,6 +135,8 @@ bool ModuleGui::Start()
 	App->assimp->LoadImage_devil("Data/shading/noise.jpg", &App->renderer3D->alphatexture2);
 	App->assimp->LoadImage_devil("Data/shading/water.jpg",&App->renderer3D->watertexture);
 	App->assimp->LoadImage_devil("Data/shading/foam.jpg", &App->renderer3D->foam);
+	App->assimp->LoadImage_devil("Data/shading/noise.jpg", &App->renderer3D->AlphaTexture);
+	App->assimp->LoadImage_devil("Data/shading/Nmap.jpg", &App->renderer3D->NormalTexture);
 	//ImGui_ImplSdlGL2_Init(App->window->window);
 	ImGui_ImplSdlGL3_Init(App->window->window);
 	ImGuiIO& io{ ImGui::GetIO() };
@@ -908,15 +910,25 @@ void ModuleGui::InspectionNode_Gui()
 						ImGui::Text("Texture width: %f", temp_res->text_w_h.x);
 						ImGui::Text("Texture height: %f", temp_res->text_w_h.y);
 						ImGui::Image((void*)temp_res->id_image_devil, ImVec2(100, 100), ImVec2(0, 0), ImVec2(1, -1));
-						if (strcmp(mat_temp->shader_program_material->GetNameProgram(),"Water_Shader")==0) {
-							if (App->renderer3D->Water_Color_Shader != nullptr) {
-								ImGui::ColorPicker3("Water Color", App->renderer3D->Water_Color_Shader);
+						if (strcmp(mat_temp->shader_program_material->GetNameProgram(),"Water_with_foam")==0) {
+							if (App->renderer3D->Color1 != nullptr && App->renderer3D->Color2 != nullptr && App->renderer3D->Color3 != nullptr) {
+								ImGui::ColorPicker3("Water Color1", App->renderer3D->Color1);
+								ImGui::ColorPicker3("Water Color2", App->renderer3D->Color2);
+								ImGui::ColorPicker3("Water Color3", App->renderer3D->Color3);
 								//glClearColor(*(App->renderer3D->Water_Color_Shader), *(App->renderer3D->Water_Color_Shader + 1), *(App->renderer3D->Water_Color_Shader + 2), 1.f);
 							}
 							mat_temp->shader_program_material->Bind_program();
-							App->renderer3D->water_color_engine_g = glGetUniformLocation(mat_temp->shader_program_material->GetID_program_shader(), "water_color_engine");
+							App->renderer3D->water_color_engine_g = glGetUniformLocation(mat_temp->shader_program_material->GetID_program_shader(), "Color1");
 							if (App->renderer3D->water_color_engine_g != -1) {
-								glUniform3fv(App->renderer3D->water_color_engine_g,1, App->renderer3D->Water_Color_Shader);
+								glUniform3fv(App->renderer3D->water_color_engine_g,1, App->renderer3D->Color1);
+							}
+							App->renderer3D->water_color_engine_g1 = glGetUniformLocation(mat_temp->shader_program_material->GetID_program_shader(), "Color2");
+							if (App->renderer3D->water_color_engine_g != -1) {
+								glUniform3fv(App->renderer3D->water_color_engine_g1, 1, App->renderer3D->Color2);
+							}
+							App->renderer3D->water_color_engine_g2 = glGetUniformLocation(mat_temp->shader_program_material->GetID_program_shader(), "Color3");
+							if (App->renderer3D->water_color_engine_g != -1) {
+								glUniform3fv(App->renderer3D->water_color_engine_g2, 1, App->renderer3D->Color3);
 							}
 							mat_temp->shader_program_material->Unbind_program();
 						}

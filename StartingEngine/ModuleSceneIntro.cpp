@@ -9,6 +9,7 @@
 #include"Imgui\imguidock.h"
 #include"Quadtree.h"
 #include"ResourceTexture.h"
+#include"Console_ImGui.h"
 
 ModuleSceneIntro::ModuleSceneIntro(bool start_enabled) : Module(start_enabled)
 {
@@ -200,6 +201,14 @@ update_status ModuleSceneIntro::PreUpdate(float dt)
 	world_texture->Resize(tx_vec.z, tx_vec.w);
 	//world_texture->Resize()
 	root_gameobject->PreUpdate();
+	if (App->gui->console_imgui.console_log_str.size() >= 50) {
+		std::list<std::string>::iterator item = App->gui->console_imgui.console_log_str.begin();
+		for (int i = 0; i < 25; i++) {
+			item++;
+		}
+			App->gui->console_imgui.console_log_str.erase(App->gui->console_imgui.console_log_str.begin(), item);
+		
+	}
 
 	return UPDATE_CONTINUE;
 }

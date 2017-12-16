@@ -130,13 +130,20 @@ int Application::GetFramesCapped()
 void Application::Play()
 {
 	timeStatus = play;
-	play_timer = 0;
+	if (continue_timer != 0) {
+		play_timer = continue_timer;
+		continue_timer = 0;
+	}
+	else {
+		play_timer = 0;
+	}
 	DtSwitch();
 }
 
 void Application::Pause()
 {
 	timeStatus = pause;
+	continue_timer = play_timer;
 	DtSwitch();
 }
 

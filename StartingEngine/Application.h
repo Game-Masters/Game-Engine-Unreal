@@ -56,6 +56,7 @@ private:
 
 	Timer	ms_timer;
 	float play_timer = 0;
+	float continue_timer = 0;
 	float	dt;
 	float	dtvariation = 0;
 	float	tempdt = 1;

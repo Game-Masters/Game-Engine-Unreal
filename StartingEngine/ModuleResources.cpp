@@ -401,7 +401,7 @@ bool Resource::ReadMetaModif()
 		std::time_t cftime = decltype(ftime)::clock::to_time_t(ftime);
 		double last_mod = cftime;
 
-		if (time_from_last_modify != last_mod && type == Resources_Type::texture || type == Resources_Type::shader_obj) {
+		if ((time_from_last_modify != last_mod && type == Resources_Type::texture) || (time_from_last_modify != last_mod && type == Resources_Type::shader_obj)) {
 			Update_Resource();
 			SetLastTimeModf(last_mod);
 			ret = true;

@@ -226,20 +226,31 @@ void ModuleFileSystem_Engine::IterateAllDirect(const char* path_dir, std::string
 
 	for (std::experimental::filesystem::directory_iterator::value_type item : std::experimental::filesystem::directory_iterator(path_dir)) {
 		std::string str_path = item.path().string().c_str();
+		size_t bullet_end = str_path.rfind(".");
+		std::string extens = str_path.substr(bullet_end, str_path.size());
 		bool is_dir = false;
-		if (ImGui::TreeNode(str_path.c_str()))
-		{
+		if (extens == ".json" || item.status().type() == std::experimental::filesystem::file_type::directory) {
+			if (ImGui::TreeNode(str_path.c_str()))
+			{
 
+			
+
+				if (item.status().type() == std::experimental::filesystem::file_type::directory) {
+					IterateAllDirect(str_path.c_str(), new_path);
+				}
+				ImGui::TreePop();
+				if (file_chosen == true) {
+					file_chosen = false;
+					return;
+				}
+			}
 			if (ImGui::IsItemClicked()) {
 				if (ImGui::IsMouseDoubleClicked(0)) {
 					new_path = str_path.c_str();
+					file_chosen = true;
+					return;
 				}
 			}
-
-			if (item.status().type() == std::experimental::filesystem::file_type::directory) {
-				IterateAllDirect(str_path.c_str(), new_path);
-			}
-			ImGui::TreePop();
 		}
 
 

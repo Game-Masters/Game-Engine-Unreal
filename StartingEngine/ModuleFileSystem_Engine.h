@@ -60,6 +60,7 @@ public:
 	GLuint Txt_Image;
 	bool creating_dir = false;
 	bool deleting_dir = false;
+	bool file_chosen = false;
 	char directory_save[64] = { 0 };
 };
 

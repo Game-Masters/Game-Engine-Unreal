@@ -66,6 +66,8 @@ https://www.apache.org/licenses/LICENSE-2.0
 -You can clean scene.
 [NEW]- You can choose the colors of the light, albedo, and shines of the water shader, from the shader inspector.
 [NEW]- Water Shader Variations.
+[NEW]- Use of normal maps in the water shader.
+
 
 [NEW]
 ##SHADER PIPELINE
@@ -88,7 +90,7 @@ https://www.apache.org/licenses/LICENSE-2.0
 	The Default shader is set if you double click a fbx in the Asset Window.
 	To change it, double click the object in the World Window or select the mesh from the Scene window. 
 	In the Inspector Window, click Shader Type, and select the shader you want to use.
-	
+	If you save a scene and load it. It will load the shaders you have used.
 	
 
 

@@ -142,6 +142,8 @@ Gameobject:
 	However we added two variations to the shader, with the middle one having no foam on top  of the waves and using the Water_No_Foam shader, and the third one
 	with non homogeneous foam on top  of the waves with the shader Water_With_Foam_NoUniform. 
 	All those three shaders use 3 color pickers, where you can change the color of the albedo, light, and specular light maps. 
+	Advice: Try not to load or save while the engine is in play mode because it has some bugs.
+	
 
 
 

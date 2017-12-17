@@ -37,6 +37,9 @@ bool ResourceShaderObject::LoadToMemory()
 	if (loaded == 0) {
 		loaded++;
 		ret=ComplieShaderObject();
+		if (ret == false) {
+			loaded--;
+		}
 	}
 	else {
 			loaded++;

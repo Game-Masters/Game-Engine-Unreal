@@ -12,10 +12,20 @@ Github: https://github.com/danielolondriz
 Arstation: https://www.artstation.com/drixxart
 
 
+Link to our website:
+There you can see more detailed explanations with gifs of the shader pipeline, and the how the Engine Works.
+https://nicobabotaltisen.wixsite.com/zenigine
+
 ##VERSIONS:
 	check [NEW] tag for the new things implemented in the last version (please check important notes down below) :
 	
-	[NEW]
+	V0.7 [NEW]
+	
+	Now the game engine works with the Shader Pipeline. Now any mesh will be rendered using shaders. You can create vertex and fragment shaders and link them
+	to a Program Shader. You can switch between shaders from the inspector tab. If you double click on a shader, it will open in a built-in editor, where you can 
+	edit and save your shaders. Shaders will change in realtime, so you can see the changes you're making. Keep in mind that if a shader does not compile
+ 	the shader will show an uncompiled shader.
+
 	V0.4
 	Code is based on a structure of gameobjects and components, and files are saved in our own file format (.ric). You can save and load scenes
 	from your directories (serialization), and load meshes and fbx aswell. Optimization has been added to the scene, like frustrum Culling and Octree implementation.
@@ -51,6 +61,33 @@ Arstation: https://www.artstation.com/drixxart
 -You can add components (mesh and material) to a gameobject.
 -Gizmos.
 -You can clean scene.
+[NEW]- You can choose the colors of the light, albedo, and shines of the water shader, from the shader inspector.
+[NEW]- Water Shader Variations.
+
+[NEW]
+##SHADER PIPELINE
+
+	If you want to load the scene asked in the 3rd Assignment, go to Menu, Load Scene, open the Assets/Scene tab and Choose Scene_Water_Assignment3.json
+	Please check the Assigment 3 Notes paragraph  for more info in the scene.
+ 
+	##Create a shader
+	Go to gameobject menu-> Create New Shader. 
+	Choose the type of shader and its name and press Enter to save it.
+
+	##Edit a shader in the builtIn Editor
+	In the Assets tab, go to the Shader Folder, double click your shader and the editor will open.
+	There you can edit and Save all the changes.
+
+	##Build a Program Shader
+	Go to gameobject menu->Link new shader program.
+	Choose the two shaders you want to attach, add a name to the Shader Program and press Enter to save it.
+	##Change shader
+	The Default shader is set if you double click a fbx in the Asset Window.
+	To change it, double click the object in the World Window or select the mesh from the Scene window. 
+	In the Inspector Window, click Shader Type, and select the shader you want to use.
+	
+	
+
 
 
 
@@ -70,32 +107,40 @@ Tabs:
 
 	Main tabs:
 		Rendering options:Buttons that let you activate different rendering options, check out it's help icon for more...
-	[NEW]	UPDATE: There is also the OCTREE window and PLAY PAUSE buttons
+		UPDATE: There is also the OCTREE window and PLAY PAUSE buttons
 
 		World:World is displayed.
 
 		About:Info about the engine and its creators.
 
 		Application:Performance graphs.
-	[NEW]	Assets: Directories, FBX and textures are displayed here. Double clikc a folder to open it, press ESC to go back.
+		Assets: Directories, FBX and textures are displayed here. Double clikc a folder to open it, press ESC to go back.
  
 	Left tabs:
-	[NEW]	Scene Inspector: here you can see all gameobjects in scene with his parents. Click on "root" to open it's children.
+		Scene Inspector: here you can see all gameobjects in scene with his parents. Click on "root" to open it's children.
 
 
 Menu:
 	Console:opens the console.
 	Open github:opens developer github's page.
 	Close:closes the app.
-	[NEW] Save & Load Scene: You can save and load scenes
+	Save & Load Scene: You can save and load scenes
 
-[NEW] Gameobject:
+Gameobject:
 	Create Empty Gameobject: Creates new empty gameobject.
 	Create Camera: Creates camera gameobject with Frustum.
 
 
 
 [NEW]
+##ASSIGMENT 3 NOTES
+	The scene is composed by the Street Enviroment rendered with the Default Shader and 3 planes with a water shader. 
+	The right one is render with the shader Water_with_Foam which should be the definitive and most complete water shader, with homogeneous foam on top of the waves. 
+	However we added two variations to the shader, with the middle one having no foam on top  of the waves and using the Water_No_Foam shader, and the third one
+	with non homogeneous foam on top  of the waves with the shader Water_With_Foam_NoUniform. 
+	All those three shaders use 3 color pickers, where you can change the color of the albedo, light, and specular light maps. 
+
+
 
 ##IMPORTANT NOTES AND HOW TO LOAD FBX AND GAMEOBJECTS
 

@@ -16,6 +16,9 @@ Link to our website:
 There you can see more detailed explanations with gifs of the shader pipeline, and the how the Engine Works.
 https://nicobabotaltisen.wixsite.com/zenigine
 
+Link to the official License:
+https://www.apache.org/licenses/LICENSE-2.0
+
 ##VERSIONS:
 	check [NEW] tag for the new things implemented in the last version (please check important notes down below) :
 	
